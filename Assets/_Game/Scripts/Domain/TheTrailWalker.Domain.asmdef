@@ -1,0 +1,5 @@
+{
+  "name": "TheTrailWalker.Domain",
+  "rootNamespace": "TheTrailWalker.Domain",
+  "noEngineReferences": true
+}
