@@ -9,6 +9,7 @@ using TheTrailWalker.Domain.Equipment;
 using TheTrailWalker.Input;
 using TheTrailWalker.Movement;
 using TheTrailWalker.Persistence;
+using TheTrailWalker.Travel;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -16,16 +17,18 @@ using UnityEngine.UI;
 namespace TheTrailWalker
 {
     [DefaultExecutionOrder(50)]
-    public sealed class CollectionPrototype : MonoBehaviour, IResourceGestures
+    public sealed partial class CollectionPrototype : MonoBehaviour, IResourceGestures
     {
         private sealed class Bundle
         {
             public ItemEntry Item; public GameObject View; public Collider Collider; public Text Badge;
+            // Meshed resources scale evenly (no squashing); MeshScale is 0 for the placeholder cube.
+            public Transform Visual; public float MeshScale, MeshBottom; public Vector3 MeshCentre;
         }
         private sealed class Contact
         {
             public ItemEntry Item; public Bundle Bundle; public Vector2 Start, Position, Offset;
-            public float Started; public bool World, Side, Dragging; public Text Ghost;
+            public float Started; public bool World, Side, Dragging; public RectTransform Ghost;
         }
         private SpatialInventory ledger;
         private MovementState movement;
@@ -46,6 +49,7 @@ namespace TheTrailWalker
         private bool inventoryOpen;
         private SessionSaveStore saveStore;
         private bool saveBlocked, resetPending, initialized;
+        private float fpsAverage = 60f; // smoothed frame rate shown in the status line while testing device limits
         private float nextSave, resetDeadline;
         private string lastSavedState;
         private bool milestone4;
@@ -68,30 +72,49 @@ namespace TheTrailWalker
         private float bagScroll, contentWidth, laidOutWidth, scrollStartX, scrollStartOffset;
         private int? scrollPointer;
         private const int VisibleColumns = 6;
+        // Gap below the open bag (share of the safe height) so dragging near its lower edge never hits the home gesture.
+        private const float BagLift = 0.06f;
+        private const float OpeningDropBand = 0.10f; // share of screen height above the opening that still counts as a drop
         private RectTransform speedGauge, speedFill;
         private Text speedValue;
         // Thermometer sits just above the closed bag button; its full height represents the maximum boots cap.
-        private const float ThermometerBase = 0.095f, ThermometerFull = 0.30f, MaximumSpeedCap = MovementState.MaximumSpeedCap;
+        private const float ThermometerBase = 0.125f, ThermometerFull = 0.30f, MaximumSpeedCap = MovementState.MaximumSpeedCap;
         // Authored drain for the test leg: region-1 opening rate of 12 hearts/km, raised from 8 after phone testing found it too slow.
         private const double LegDrainPerMetre = 0.012;
-        private Text slotGhost;
+        private RectTransform slotGhost;
         private Text detailsText;
-        private Text gearSummary;
-        private readonly List<Text> gearLabels = new List<Text>();
+        private QualityStarStrip detailsQuality;
         private Rect lastSafe;
         private Vector2Int lastSize;
 
-        public void Bind(MovementState state, TrailMotor trailMotor, ITrailPath trail, CameraOrbitController cameraOrbit, GestureRouter gestures, Material sharedMaterial, bool enableMilestone4 = false)
+        public void Bind(MovementState state, TrailMotor trailMotor, ITrailPath trail, CameraOrbitController cameraOrbit, GestureRouter gestures, Material sharedMaterial, bool enableMilestone4 = false, TravelSceneInfo travelScene = null)
         {
             movement = state; motor = trailMotor; path = trail; orbit = cameraOrbit; router = gestures; material = sharedMaterial;
-            milestone4 = enableMilestone4;
+            milestone4 = enableMilestone4 || travelScene != null; milestone5 = travelScene != null; scene = travelScene;
             if (milestone4) { equipment = new EquipmentState(); stamina = new StaminaState(); motor.LimitMovementSeconds = LimitMovementSeconds; }
             cameraView = cameraOrbit.GetComponent<Camera>(); router.Resources = this; router.SpeedBlocked += ExplainSpeedBlocked;
             CreateHud();
             string directory = Path.Combine(Application.persistentDataPath, "PrototypeSession");
-            saveStore = new SessionSaveStore(directory, new SystemClock(), milestone4 ? 2 : 1);
+            saveStore = new SessionSaveStore(directory, new SystemClock(), milestone5 ? 3 : milestone4 ? 2 : 1);
             LoadStatus result = saveStore.Load(path.Length, out SessionSnapshot snapshot, out string message);
-            if (milestone4 && result == LoadStatus.Fresh)
+            bool migratedToTravel = false;
+            if (milestone5 && result == LoadStatus.Fresh)
+            {
+                // Copy the Milestone 4 profile (or the Milestone 3 one through it); the older files stay untouched.
+                var v2Store = new SessionSaveStore(directory, new SystemClock(), 2);
+                LoadStatus v2Result = v2Store.Load(float.MaxValue, out SessionSnapshot v2Snapshot, out string v2Message);
+                if (v2Result == LoadStatus.Fresh)
+                {
+                    var v1Store = new SessionSaveStore(directory, new SystemClock());
+                    LoadStatus v1Result = v1Store.Load(float.MaxValue, out SessionSnapshot v1Snapshot, out string v1Message);
+                    if (v1Result == LoadStatus.Loaded || v1Result == LoadStatus.Recovered) { v2Snapshot = SessionSaveStore.MigrateV1(v1Snapshot, float.MaxValue); v2Result = v1Result; v2Message = v1Message; }
+                    else if (v1Result != LoadStatus.Fresh) { v2Result = v1Result; v2Message = v1Message; }
+                }
+                if (v2Result == LoadStatus.Loaded || v2Result == LoadStatus.Recovered)
+                { snapshot = SessionSaveStore.MigrateV2(v2Snapshot); result = v2Result; migratedToTravel = true; message = "Migrated a copy of your profile: seated at Dawn Meadow, carried items and gear kept."; }
+                else if (v2Result != LoadStatus.Fresh) { result = v2Result; message = v2Message; }
+            }
+            else if (milestone4 && !milestone5 && result == LoadStatus.Fresh)
             {
                 var oldStore = new SessionSaveStore(directory, new SystemClock());
                 LoadStatus oldResult = oldStore.Load(path.Length, out SessionSnapshot oldSnapshot, out string oldMessage);
@@ -99,10 +122,36 @@ namespace TheTrailWalker
                 { snapshot = SessionSaveStore.MigrateV1(oldSnapshot, path.Length); result = oldResult; message = oldResult == LoadStatus.Recovered ? oldMessage : "Migrated a copy of the Milestone 3 profile."; }
                 else if (oldResult != LoadStatus.Fresh) { result = oldResult; message = oldMessage; }
             }
-            if (result == LoadStatus.Fresh) { ResetFixture(0); initialized = true; SaveNow(); }
+            if (result == LoadStatus.Fresh && milestone5)
+            {
+                ledger = new SpatialInventory(equipment.BackpackWidth * 1000, equipment.BackpackHeight * 1000);
+                ledger.Reconfigure(ledger.Width, ledger.Height, equipment.Pockets, equipment.Hooks, out _);
+                StartTravelProfile(); initialized = true; ApplyTravelPose(); LayoutBackpack(); Redraw(); SaveNow();
+                Say("New test profile: seated at " + travel.CurrentCamp.Name + ". Swipe UP on the centre line to stand up.");
+            }
+            else if (result == LoadStatus.Fresh) { ResetFixture(0); initialized = true; SaveNow(); }
             else if (result == LoadStatus.Loaded || result == LoadStatus.Recovered)
             {
                 RestoreSnapshot(snapshot); initialized = true;
+                if (milestone5)
+                {
+                    // A migrated profile starts its first drop cycle here; later loads never roll again.
+                    if (migratedToTravel) { RollDrops(travel.CurrentSegment.Id); SaveNow(); }
+                    // Closed mid-segment: return to the previous camp; saved resources stay, segment progress resets.
+                    string restarted = ContinuingReload() ? null : travel.ResumeAtCampAfterRestart();
+                    if (restarted != null)
+                    {
+                        RollDrops(restarted);
+                        if (inventoryOpen) { movement.CloseInventory(); inventoryOpen = false; LayoutBackpack(); }
+                        movement.Reset(); lastDistance = 0;
+                        if (stamina.Fainted) { movement.BeginHarvest(); movement.EndHarvest(); }
+                        movement.SetPause(MovementPauseReasons.Seated, true); lastSavedState = null;
+                        message = "The game was closed on the road: back at " + travel.CurrentCamp.Name + ". Collected items were kept; the segment restarts with fresh resources.";
+                        ApplyTravelPose(); SaveNow();
+                    }
+                    ApplyTravelPose();
+                    if (travel.CurrentSegment.Id != scene.Segment.Id && scene.RequestReload != null) { scene.RequestReload(); return; }
+                }
                 Say(string.IsNullOrEmpty(message) ? "Session restored." : message);
             }
             else
@@ -147,47 +196,50 @@ namespace TheTrailWalker
             speedGauge.gameObject.SetActive(false); speedValue.gameObject.SetActive(false);
             Label(safe, "THE TRAIL WALKER / COLLECTION", 0.02f, 0.94f, 0.98f, 0.99f, 27);
             status = Label(safe, "", 0.02f, 0.865f, 0.98f, 0.94f, 23);
+            // Four status lines with travel info: shrink to fit instead of clipping.
+            status.resizeTextForBestFit = true; status.resizeTextMinSize = 12; status.resizeTextMaxSize = 23;
             Button(safe, "EMPTY", 0.02f, 0.81f, 0.24f, 0.86f, () => ResetFixture(0));
             Button(safe, "MIXED", 0.26f, 0.81f, 0.48f, 0.86f, () => ResetFixture(1));
             Button(safe, "FULL BAG", 0.5f, 0.81f, 0.74f, 0.86f, () => ResetFixture(2));
             Button(safe, "RESET SAVE", 0.76f, 0.81f, 0.98f, 0.86f, ConfirmReset);
             feedback = Label(safe, "Swipe a pickup DOWN quickly, or hold then drag into the bag.", 0.02f, 0.735f, 0.98f, 0.81f, 23);
-            Button(safe, "TEST HARVEST", 0.20f, 0.67f, 0.45f, 0.72f, () =>
-            {
-                if (saveBlocked || inventoryOpen || (milestone4 && stamina.Fainted)) return;
-                router.CancelAll(); movement.BeginHarvest(); movement.EndHarvest();
-                Say("Harvest ended. Swipe UP on the centre line to restart."); SaveNow();
-            });
-            Button(safe, "TRAIL START", 0.47f, 0.67f, 0.72f, 0.72f, ReturnToTrailStart);
+            // Milestone 6 debug: interactable target tier and tool kits for Normal/Elite and tier comparisons.
+            targetTierLabel = Button(safe, "TARGET T1", 0.20f, 0.67f, 0.45f, 0.72f, CycleTargetTier);
+            if (milestone5) Button(safe, "BACK TO CAMP", 0.47f, 0.67f, 0.72f, 0.72f, BackToCamp);
+            else Button(safe, "TRAIL START", 0.47f, 0.67f, 0.72f, 0.72f, ReturnToTrailStart);
             if (milestone4)
             {
-                Button(safe, "GEAR / SLOTS", 0.20f, 0.61f, 0.45f, 0.66f, ToggleGearPanel);
                 Button(safe, "EAT SELECTED", 0.47f, 0.61f, 0.72f, 0.66f, EatSelected);
+                if (milestone5) Button(safe, "+ TOOL KIT", 0.20f, 0.61f, 0.45f, 0.66f, GrantToolKit);
                 Button(safe, "TEST EMPTY", 0.74f, 0.61f, 0.98f, 0.66f, DebugEmptyStamina);
+                Button(safe, "TREE FOOD", 0.20f, 0.55f, 0.45f, 0.60f, () => ResetFixture(3));
                 Button(safe, "ADD SPARE GEAR", 0.47f, 0.55f, 0.72f, 0.60f, GrantSpareGear);
                 Button(safe, "CLAIM OVERFLOW", 0.74f, 0.55f, 0.98f, 0.60f, ClaimOverflow);
                 CreateGearPanel();
             }
             inventoryLabel = Button(safe, "BAG", 0.02f, 0.04f, 0.22f, 0.085f, ToggleInventory);
             inventoryButton = (RectTransform)inventoryLabel.transform.parent;
+            HudIconStyle.Apply(inventoryLabel, "inventory");
             // Discard pocket opposite CLOSE: dragging an item here drops it back onto the trail.
             dropPocket = Rect("Drop pocket", safe, 0.78f, 0.04f, 0.98f, 0.085f);
             Image dropImage = dropPocket.gameObject.AddComponent<Image>(); dropImage.color = new Color(0.42f, 0.2f, 0.16f); dropImage.raycastTarget = false;
-            Label(dropPocket, "DROP", 0, 0, 1, 1, 22);
+            Text dropLabel = Label(dropPocket, "DROP", 0, 0, 1, 1, 22);
+            if (HudIconStyle.ApplyTo(dropPocket, "trash", false)) dropLabel.enabled = false;
             // The backpack opening doubles as the quick-storage aperture; the full bag shows only while open.
             aperture = Rect("Backpack opening", safe, 0, 0, 1, 0.035f);
-            aperture.gameObject.AddComponent<Image>().color = new Color(0.36f, 0.25f, 0.15f);
+            InventoryContainerStyle.Apply(aperture, "BaseRagsOpening");
             // Full-width viewport at the bottom edge; its content scrolls sideways: hooks | bag | pockets.
             bagFrame = Rect("Bag viewport", safe, 0, 0, 1, 0.3f);
-            bagFrame.gameObject.AddComponent<Image>().color = new Color(0.04f, 0.08f, 0.09f, 0.97f);
+            bagFrame.gameObject.AddComponent<Image>().color = new Color(0.12f, 0.105f, 0.085f, 0.97f);
             bagFrame.gameObject.AddComponent<RectMask2D>();
             bagFrame.gameObject.AddComponent<BagPointerSurface>().Owner = this;
             bagContent = Pinned("Bag content", bagFrame);
             hookPanel = Pinned("Hooks", bagContent);
             bag = Pinned("Backpack", bagContent);
-            Image bagImage = bag.gameObject.AddComponent<Image>(); bagImage.color = new Color(0.06f, 0.12f, 0.14f, 0.96f); bagImage.raycastTarget = false;
+            InventoryContainerStyle.Apply(bag, "BaseRags");
             pocketPanel = Pinned("Pockets", bagContent);
             itemsLayer = Rect("Item views", bag, 0, 0, 1, 1);
+            CreateUserMenu();
             if (milestone4)
             {
                 detailsPanel = Rect("Item details", safe, 0.10f, 0.40f, 0.90f, 0.60f).gameObject;
@@ -197,12 +249,15 @@ namespace TheTrailWalker
                 // Food and wearables never overlap, so EQUIP shares EAT's position.
                 detailEquip = Button(detailsPanel.transform, "EQUIP", 0.05f, 0.05f, 0.47f, 0.32f, () => EquipItem(selected)).transform.parent.gameObject;
                 Button(detailsPanel.transform, "CLOSE", 0.53f, 0.05f, 0.95f, 0.32f, () => detailsPanel.SetActive(false));
+                ItemDetailsStyle.Apply(detailsPanel, detailsText);
+                detailsQuality = Rect("Quality breakdown", detailsPanel.transform, .08f, .33f, .92f, .48f).gameObject.AddComponent<QualityStarStrip>();
                 detailsPanel.SetActive(false);
                 faintOverlay = Rect("Faint recovery", safe, 0, 0, 1, 1).gameObject;
                 faintOverlay.AddComponent<Image>().color = new Color(0.02f, 0.03f, 0.04f, 0.92f);
                 faintMessage = Label(faintOverlay.transform, "", 0.08f, 0.3f, 0.92f, 0.7f, 32);
                 faintOverlay.SetActive(false);
             }
+            if (milestone5) CreateTravelHud();
             LayoutBackpack();
             ApplySafeArea();
         }
@@ -221,12 +276,12 @@ namespace TheTrailWalker
         // Closed: only the opening and a small BAG button above it. Open: the whole bag with the opening on top.
         private void LayoutBackpack()
         {
+            RefreshContainerArt();
             bagFrame.gameObject.SetActive(inventoryOpen);
             if (inventoryOpen) LayoutBag(true);
             float top = inventoryOpen ? bagFrame.anchorMax.y : 0;
             aperture.anchorMin = new Vector2(0, top); aperture.anchorMax = new Vector2(1, top + 0.035f);
-            inventoryButton.anchorMin = new Vector2(0.02f, top + 0.04f); inventoryButton.anchorMax = new Vector2(0.22f, top + 0.085f);
-            dropPocket.anchorMin = new Vector2(0.78f, top + 0.04f); dropPocket.anchorMax = new Vector2(0.98f, top + 0.085f);
+            LayoutSquares(top + 0.04f);
             dropPocket.gameObject.SetActive(inventoryOpen);
             inventoryLabel.text = inventoryOpen ? "CLOSE" : "BAG";
         }
@@ -241,10 +296,11 @@ namespace TheTrailWalker
         // Six bag columns span the screen width; wider bags and the side panels are reached by scrolling.
         private void LayoutBag(bool resetScroll)
         {
+            RefreshContainerArt();
             // Cells fill the width in portrait but shrink on short screens so the bag never exceeds 45% of the height.
             float cell = Mathf.Min(safe.rect.width / VisibleColumns, safe.rect.height * 0.45f * 1000f / ledger.Height), height = cell * ledger.Height / 1000f;
             if (cell <= 0) return;
-            bagFrame.anchorMax = new Vector2(1, height / safe.rect.height);
+            bagFrame.anchorMin = new Vector2(0, BagLift); bagFrame.anchorMax = new Vector2(1, BagLift + height / safe.rect.height);
             float hooks = ledger.HookCount > 0 ? cell * (ledger.HookCount * (HookSlot + SideGap) + SideGap) : 0;
             float pockets = ledger.PocketCount > 0 ? cell * ((ledger.PocketCount + 1) / 2 * (PocketSlot + SideGap) + SideGap) : 0;
             float width = cell * ledger.Width / 1000f;
@@ -253,6 +309,7 @@ namespace TheTrailWalker
             laidOutWidth = safe.rect.width;
             RebuildSidePanels(cell, height);
             SetScroll(resetScroll ? -hooks : bagScroll);
+            LayoutGearPanel();
         }
         private void SetScroll(float offset)
         {
@@ -269,18 +326,14 @@ namespace TheTrailWalker
             float panelWidth = hookPanel.sizeDelta.x;
             if (ledger.HookCount > 0)
             {
-                // Placeholder belt; final art should read as a real tool belt with hooks holding each tool.
-                RectTransform belt = Pinned("Tool belt", hookPanel); Place(belt, 0, panelWidth, cell * 0.12f);
-                belt.anchoredPosition = new Vector2(0, height - cell * 0.12f);
-                belt.gameObject.AddComponent<Image>().color = new Color(0.36f, 0.25f, 0.15f);
+                RectTransform belt = Pinned("Pants tool belt", hookPanel); Place(belt, 0, panelWidth, cell * 0.26f);
+                belt.anchoredPosition = new Vector2(0, height - cell * 0.26f);
+                InventoryContainerStyle.Apply(belt, InventoryContainerStyle.BeltSkin(EquippedContainerDefinition(GearSlot.Pants)));
             }
             for (int i = 0; i < ledger.HookCount; i++)
             {
                 float x = panelWidth - (i + 1) * (HookSlot + SideGap) * cell;
-                RectTransform hook = Pinned("Hook nub", hookPanel); Place(hook, x + cell * (HookSlot * 0.5f - 0.08f), cell * 0.16f, cell * 0.3f);
-                hook.anchoredPosition = new Vector2(hook.anchoredPosition.x, height - cell * 0.4f);
-                hook.gameObject.AddComponent<Image>().color = new Color(0.72f, 0.72f, 0.68f);
-                hookCells.Add(SideCell(hookPanel, ItemOwner.Hook, i, "H", x, cell * 0.15f, cell * HookSlot, height - cell * 0.6f));
+                hookCells.Add(SideCell(hookPanel, ItemOwner.Hook, i, "H", x, cell * 0.15f, cell * HookSlot, height - cell * 0.35f));
             }
             float rowHeight = (height - cell * SideGap * 3) / 2;
             for (int i = 0; i < ledger.PocketCount; i++)
@@ -299,11 +352,33 @@ namespace TheTrailWalker
         {
             RectTransform cellRect = Pinned(prefix + (index + 1), panel); Place(cellRect, x, width, height); cellRect.anchoredPosition = new Vector2(x, y);
             ItemEntry occupant = null; foreach (ItemEntry item in ledger.Entries) if (item.Owner == owner && item.X == index) { occupant = item; break; }
-            Image image = cellRect.gameObject.AddComponent<Image>(); image.raycastTarget = false;
-            image.color = occupant == null ? new Color(0.1f, 0.2f, 0.2f, 0.8f) : ColorFor(occupant.Definition);
-            Text label = Label(cellRect, prefix + (index + 1) + (occupant == null ? "" : $"\n{occupant.Definition.Name} x{occupant.Quantity}"), 0.03f, 0.03f, 0.97f, 0.97f, 16);
-            label.resizeTextForBestFit = true; label.resizeTextMinSize = 9; label.resizeTextMaxSize = 16;
+            bool isHook = owner == ItemOwner.Hook;
+            string cellSkin = isHook ? InventoryContainerStyle.LoopSkin(EquippedContainerDefinition(GearSlot.Pants)) : InventoryContainerStyle.PocketSkin(EquippedContainerDefinition(GearSlot.Shirt));
+            InventoryContainerStyle.Apply(cellRect, cellSkin);
+            if (occupant == null)
+            {
+                Text number = Label(cellRect, (index + 1).ToString(), 0.1f, 0.08f, 0.9f, 0.2f, 13);
+                number.color = new Color(.78f,.7f,.53f,.65f);
+            }
+            else DrawItemView(Rect("Item", cellRect, 0.08f, 0.08f, 0.92f, isHook ? 0.98f : 0.81f), occupant, 16);
+            if (isHook)
+                InventoryContainerStyle.Apply(Rect("Front retaining loop", cellRect, 0, 0, 1, 1), cellSkin, true);
             return cellRect;
+        }
+        private ItemDefinition EquippedContainerDefinition(GearSlot slot)
+        {
+            WornGear worn = equipment?.Get(slot);
+            if (worn == null) return null;
+            foreach (ItemEntry item in ledger.Entries) if (item.Id == worn.InstanceId) return item.Definition;
+            // Legacy debug gear can lack a matching inventory entry; use its existing fixture identity for art only.
+            return slot == GearSlot.Backpack ? PrototypeItems.TestBackpack : slot == GearSlot.Shirt ? PrototypeItems.TestShirt : PrototypeItems.TestPants;
+        }
+        private void RefreshContainerArt()
+        {
+            if (bag == null || aperture == null) return;
+            ItemDefinition pack = EquippedContainerDefinition(GearSlot.Backpack);
+            InventoryContainerStyle.Apply(bag, InventoryContainerStyle.BagSkin(pack));
+            InventoryContainerStyle.Apply(aperture, InventoryContainerStyle.OpeningSkin(pack));
         }
         private bool SideCellAt(Vector2 screen, out bool hook, out int index)
         {
@@ -313,8 +388,8 @@ namespace TheTrailWalker
         }
         private void ToggleInventory()
         {
-            if (saveBlocked || (milestone4 && stamina.Fainted)) return;
-            router.CancelAll(); inventoryOpen = !inventoryOpen;
+            if (saveBlocked || (milestone4 && stamina.Fainted) || TravelInputLocked) return;
+            router.CancelAll(); inventoryOpen = !inventoryOpen; SetMenu(false);
             if (!inventoryOpen && gearPanel != null) { gearPanel.SetActive(false); detailsPanel.SetActive(false); }
             if (inventoryOpen) movement.OpenInventory(); else movement.CloseInventory();
             LayoutBackpack();
@@ -330,7 +405,15 @@ namespace TheTrailWalker
                 saveStore.ArchiveForReset(); saveBlocked = false; lastSavedState = null;
                 if (inventoryOpen) { movement.CloseInventory(); inventoryOpen = false; LayoutBackpack(); }
                 router.CancelAll(); movement.Reset();
-                if (milestone4) { equipment = new EquipmentState(); stamina = new StaminaState(); router.InteractionLocked = false; movement.SetSpeedCap(0.8f); faintEventId = null; faintLoss.Clear(); if (gearPanel != null) gearPanel.SetActive(false); }
+                if (milestone4) { equipment = new EquipmentState(); stamina = new StaminaState(); router.InteractionLocked = false; movement.SetSpeedCap(MovementState.StarterSpeedCap); faintEventId = null; faintLoss.Clear(); if (gearPanel != null) gearPanel.SetActive(false); }
+                if (milestone5)
+                {
+                    ledger = new SpatialInventory(equipment.BackpackWidth * 1000, equipment.BackpackHeight * 1000);
+                    ledger.Reconfigure(ledger.Width, ledger.Height, equipment.Pockets, equipment.Hooks, out _);
+                    StartTravelProfile(); movement.SetPause(MovementPauseReasons.Seated, true); lastDistance = 0; phase = TravelPhase.Transition;
+                    SaveNow(); if (!saveBlocked && scene.RequestReload != null) scene.RequestReload();
+                    return;
+                }
                 motor.Present(); lastDistance = movement.Distance; ResetFixture(0); SaveNow();
             }
             catch (Exception error) { saveBlocked = true; Say("Reset failed; existing data was preserved. " + error.Message); }
@@ -343,6 +426,9 @@ namespace TheTrailWalker
             if (definition == PrototypeItems.Hemp) return new Color(0.3f, 0.63f, 0.32f);
             if (definition == PrototypeItems.Berries) return new Color(0.67f, 0.17f, 0.31f);
             if (definition == PrototypeItems.TestBread) return new Color(0.82f, 0.62f, 0.36f);
+            if (definition.Category == ItemCategory.RawIngredient) return new Color(0.55f, 0.47f, 0.3f);
+            if (definition.Category == ItemCategory.RefinedIngredient) return new Color(0.76f, 0.7f, 0.56f);
+            if (definition.Category == ItemCategory.PreparedFood) return new Color(0.86f, 0.45f, 0.22f);
             return new Color(0.85f, 0.65f, 0.2f);
         }
         public void ResetFixture(int preset)
@@ -379,17 +465,35 @@ namespace TheTrailWalker
             }
             if (preset == 2)
                 for (int y = 0; y < 4; y++) for (int x = 0; x < 6; x++) AddBag("full-" + x + "-" + y, PrototypeItems.Stone, 1, 5, x * 1000, y * 1000);
-            // Debug fixture, not a regional spawn table: logs/tools are explicit test grants.
-            for (int i = 0; i < 18; i++)
+            if (preset == 3)
             {
-                ItemDefinition definition = PrototypeItems.All[i % 6];
+                // Tree-food retest fixture (section 7.1.1): dishes in several quantities, refined inputs, a pending (not ready)
+                // dish, and a partial raw stack that a matching Q1 trail stack can top up. Not a recipe or harvest grant.
+                AddBag("tree-dish-1000", PrototypeItems.ToastedPineNuts, 1000, 3, 0, 0);
+                AddBag("tree-drink", PrototypeItems.BirchSapMilkDrink, 3, 3, 1300, 0);
+                AddBag("tree-cakes", PrototypeItems.MesquitePodCakes, 5, 4, 2150, 0);
+                AddBag("tree-biscuits", PrototypeItems.AcornBiscuits, 2, 5, 3150, 0);
+                AddBag("tree-cakes-pending", PrototypeItems.MesquitePodCakes, 1, 4, 4100, 0, ready: false);
+                AddBag("tree-flour-999", PrototypeItems.MesquiteFlour, 999, 2, 0, 1300);
+                AddBag("tree-meal-1", PrototypeItems.RoastedAcornMeal, 1, 5, 1300, 1300);
+                AddBag("tree-nuts-400", PrototypeItems.PineNuts, 400, 1, 2200, 1300);
+            }
+            // Debug fixture, not a regional spawn table: logs/tools are explicit test grants.
+            ItemDefinition[] worldSet = preset == 3 ? TreeWorldFixture : PrototypeItems.All;
+            int worldKinds = preset == 3 ? TreeWorldFixture.Length : 6;
+            // In the camp world the trail holds only the region's own drops and harvest rewards (user feedback: Stone and
+            // Red berries are not region-one gathering items), so fixtures only reset the bag there.
+            for (int i = 0; i < (milestone5 ? 0 : 18); i++)
+            {
+                ItemDefinition definition = worldSet[i % worldKinds];
                 float distance = Mathf.Clamp(movement.Distance + 2 + (i / 2) * 6f, 0, path.Length);
                 var item = ledger.AddWorld("fixture-" + fixtureCycle + "-" + i, definition, definition.Stackable ? 1000 : 1, i % 5 + 1,
                     definition.Stackable ? new ItemProfile(100) : new ItemProfile(100, 30, 30), distance: distance);
+                if (milestone5) ledger.AssignSegment(item, CurrentSegmentId);
                 path.Evaluate(distance, out Vector3 p, out Vector3 t); Vector3 side = Vector3.Cross(Vector3.up, t);
                 AddBundle(item, p + side * (i % 2 == 0 ? -1.9f : 1.9f) + Vector3.up * 0.45f);
             }
-            Say(preset == 0 ? "Empty bag. Every stackable trail bundle contains 1,000." : preset == 1 ? "Mixed test: 1 / 999 / 1,000, Q1-Q5, different values and one unique axe." : "Bag full. Failed pickups must remain on the trail.");
+            Say(preset == 0 ? "Empty bag. Every stackable trail bundle contains 1,000." : preset == 1 ? "Mixed test: 1 / 999 / 1,000, Q1-Q5, different values and one unique axe." : preset == 2 ? "Bag full. Failed pickups must remain on the trail." : "Tree food test: raw tree ingredients and dishes on the trail; dishes, refined inputs and a pending dish in the bag.");
             Redraw(); WriteReport("fixture");
             if (initialized) SaveNow();
         }
@@ -398,7 +502,7 @@ namespace TheTrailWalker
         private void DropToTrail(int pointer, Contact contact)
         {
             ItemEntry item = contact.Item;
-            bool dropped = ledger.TryDropToTrail(item, pointer, movement.Distance, out string reason);
+            bool dropped = ledger.TryDropToTrail(item, pointer, movement.Distance, out string reason, CurrentSegmentId);
             Release(pointer, contact);
             if (dropped)
             {
@@ -418,12 +522,44 @@ namespace TheTrailWalker
             model.transform.position = position;
             model.GetComponent<Renderer>().sharedMaterial = material;
             var color = new MaterialPropertyBlock(); color.SetColor("_BaseColor", ColorFor(item.Definition)); model.GetComponent<Renderer>().SetPropertyBlock(color);
-            var badge = Label(safe, "", 0, 0, 0, 0, 19); badge.rectTransform.sizeDelta = new Vector2(170, 55);
-            bundles.Add(new Bundle { Item = item, View = model, Collider = model.GetComponent<Collider>(), Badge = badge });
+            GameObject visual = ResourceVisualTuning.Attach(model, item.Definition);
+            if (visual != null) visual.transform.localRotation = ResourceVisualTuning.TrailRotation(item.Definition);
+            var badge = Label(safe, "", 0, 0, 0, 0, 19); badge.rectTransform.sizeDelta = new Vector2(170, 82);
+            badge.alignment = TextAnchor.LowerCenter;
+            var bundle = new Bundle { Item = item, View = model, Collider = model.GetComponent<Collider>(), Badge = badge };
+            if (visual != null)
+            {
+                // Mesh bounds in the pickup's own space: the pick box matches the mesh, and the largest front dimension
+                // matches the item's inventory footprint, so world and bag sizes agree.
+                Bounds local = LocalMeshBounds(model.transform, visual);
+                var box = (BoxCollider)bundle.Collider; box.center = local.center; box.size = local.size;
+                bundle.Visual = visual.transform; bundle.MeshBottom = local.min.y; bundle.MeshCentre = local.center;
+                bundle.MeshScale = ResourceVisualTuning.World(item.Definition) * Mathf.Max(item.Definition.Width, item.Definition.Height) / 1000f / Mathf.Max(0.01f, Mathf.Max(local.size.x, local.size.y));
+            }
+            bundles.Add(bundle);
         }
-        private void AddBag(string id, ItemDefinition definition, int quantity, int quality, int x, int y, ItemProfile? profile = null)
+        private static Bounds LocalMeshBounds(Transform root, GameObject visual)
         {
-            ItemEntry item = ledger.AddWorld(fixtureCycle + "-" + id, definition, quantity, quality, profile);
+            var bounds = new Bounds(); bool first = true;
+            foreach (MeshFilter filter in visual.GetComponentsInChildren<MeshFilter>(true))
+            {
+                if (filter.sharedMesh == null) continue;
+                Bounds mesh = filter.sharedMesh.bounds;
+                for (int i = 0; i < 8; i++)
+                {
+                    Vector3 corner = mesh.center + Vector3.Scale(mesh.extents, new Vector3((i & 1) == 0 ? -1 : 1, (i & 2) == 0 ? -1 : 1, (i & 4) == 0 ? -1 : 1));
+                    Vector3 point = root.InverseTransformPoint(filter.transform.TransformPoint(corner));
+                    if (first) { bounds = new Bounds(point, Vector3.zero); first = false; } else bounds.Encapsulate(point);
+                }
+            }
+            return bounds;
+        }
+        private static readonly ItemDefinition[] TreeWorldFixture = {
+            PrototypeItems.PineNuts, PrototypeItems.BirchSap, PrototypeItems.MesquitePods, PrototypeItems.Acorns,
+            PrototypeItems.ToastedPineNuts, PrototypeItems.BirchSapMilkDrink, PrototypeItems.MesquitePodCakes, PrototypeItems.AcornBiscuits };
+        private void AddBag(string id, ItemDefinition definition, int quantity, int quality, int x, int y, ItemProfile? profile = null, bool ready = true)
+        {
+            ItemEntry item = ledger.AddWorld(fixtureCycle + "-" + id, definition, quantity, quality, profile, ready);
             ledger.Reserve(item, int.MinValue);
             if (!ledger.TryPlace(item, int.MinValue, x, y, false, out string reason)) throw new InvalidOperationException("Invalid debug fixture: " + reason);
             ledger.Release(item, int.MinValue);
@@ -450,6 +586,9 @@ namespace TheTrailWalker
         public bool Begin(int pointer, Vector2 position)
         {
             if (saveBlocked || (milestone4 && stamina.Fainted)) return false;
+            // Interactables first: their selection colliders are triggers, which the pickup ray below ignores (and that
+            // ray finds nothing at all when only an interactable is under the finger).
+            if (milestone5 && TryStartHarvestAt(position)) return true;
             if (!Physics.Raycast(cameraView.ScreenPointToRay(position), out RaycastHit hit, cameraView.farClipPlane, ~0, QueryTriggerInteraction.Ignore)) return false;
             Bundle bundle = bundles.Find(b => b.Collider == hit.collider && b.Item.Owner == ItemOwner.World);
             if (bundle == null) return false;
@@ -471,7 +610,7 @@ namespace TheTrailWalker
                     if (!ledger.Reserve(item, pointer)) return;
                     selected = item;
                     contacts[pointer] = new Contact { Item = item, Side = true, Start = position, Position = position, Started = Time.unscaledTime };
-                    Say($"{item.Definition.Name} / Q{item.Quality} / {item.Quantity}"); return;
+                    Say($"{item.Definition.Name} / {item.Quantity}"); return;
                 }
             }
             else if (RectTransformUtility.RectangleContainsScreenPoint(bag, position))
@@ -483,7 +622,7 @@ namespace TheTrailWalker
                     if (!ledger.Reserve(item, pointer)) return;
                     selected = item;
                     contacts[pointer] = new Contact { Item = item, Start = position, Position = position, Started = Time.unscaledTime, Offset = point - new Vector2(item.X, item.Y) };
-                    Say($"{item.Definition.Name} / Q{item.Quality} / {item.Quantity} / {(item.Ready ? "Ready" : "Pending")} / Value {item.Profile.UnitValue}" + (item.Definition.Stackable ? "" : $" / Durability {item.Profile.Durability}/{item.Profile.MaxDurability}")); return;
+                    Say($"{item.Definition.Name} / {item.Quantity} / {(item.Ready ? "Ready" : "Pending")} / Value {item.Profile.UnitValue}" + (item.Definition.Stackable ? "" : " / Durability " + DurabilityText(item.Definition, item.Profile.Durability, item.Profile.MaxDurability))); return;
                 }
             }
             // Touching the container rather than an item scrolls it sideways.
@@ -511,9 +650,8 @@ namespace TheTrailWalker
             if (elapsed >= 0.25f && delta.sqrMagnitude > Mathf.Pow(Screen.height * 0.008f, 2))
             {
                 contact.Dragging = true;
-                if (contact.Ghost == null) contact.Ghost = Label(safe, contact.Item.Definition.Name + " x" + contact.Item.Quantity, 0, 0, 0, 0, 24);
-                contact.Ghost.rectTransform.sizeDelta = new Vector2(260, 70); contact.Ghost.rectTransform.position = position;
-                contact.Ghost.color = new Color(1, 0.9f, 0.3f);
+                if (contact.Ghost == null) contact.Ghost = DragGhost(contact.Item);
+                PlaceGhost(contact.Ghost, position);
             }
         }
         public void End(int pointer, Vector2 position, bool canceled)
@@ -533,7 +671,7 @@ namespace TheTrailWalker
             if (!canceled && contact.Dragging && !contact.World && milestone4 && gearPanel.activeSelf && contact.Item.Definition.GearSlot.HasValue &&
                 RectTransformUtility.RectangleContainsScreenPoint((RectTransform)gearPanel.transform, position))
             { Release(pointer, contact); EquipItem(contact.Item); return; }
-            if (!canceled && contact.Dragging) Commit(pointer, contact, RectTransformUtility.RectangleContainsScreenPoint(aperture, position), position);
+            if (!canceled && contact.Dragging) Commit(pointer, contact, OverOpening(position), position);
             else
             {
                 if (!canceled && milestone4 && !contact.World && Time.unscaledTime - contact.Started >= 0.25f) ShowDetails(contact.Item);
@@ -570,18 +708,57 @@ namespace TheTrailWalker
         }
         private void Redraw()
         {
+            RefreshContainerArt();
             foreach (Transform child in itemsLayer) Destroy(child.gameObject);
             foreach (ItemEntry item in ledger.Entries)
             {
                 if (item.Owner != ItemOwner.Backpack) continue;
                 RectTransform rect = Rect(item.Id, itemsLayer, (float)item.X / ledger.Width, (float)item.Y / ledger.Height, (float)(item.X + item.Width) / ledger.Width, (float)(item.Y + item.Height) / ledger.Height);
-                Image image = rect.gameObject.AddComponent<Image>(); image.color = ColorFor(item.Definition); image.raycastTarget = false;
-                Text label = Label(rect, $"{item.Definition.Name}\nQ{item.Quality} x{item.Quantity}", 0.02f, 0.02f, 0.98f, 0.98f, 18);
-                label.resizeTextForBestFit = true; label.resizeTextMinSize = 10; label.resizeTextMaxSize = 19;
+                DrawItemView(rect, item, 18);
             }
             if (inventoryOpen) LayoutBag(false);
             revision = ledger.Revision;
         }
+        // Meshed items show their model (about 10% larger than the footprint, which acts as the collision box) and
+        // only a quantity; items without a model yet keep a coloured placeholder with their name.
+        private static void DrawItemView(RectTransform rect, ItemEntry item, int size)
+        {
+            Sprite icon = ItemIconRenderer.For(ItemArt.ModelFor(item.Definition));
+            if (icon != null)
+            {
+                Image picture = Rect("Model", rect, -0.05f, -0.05f, 1.05f, 1.05f).gameObject.AddComponent<Image>();
+                picture.sprite = icon; picture.preserveAspect = true; picture.raycastTarget = false;
+            }
+            else
+            {
+                Image box = rect.gameObject.AddComponent<Image>(); box.color = ColorFor(item.Definition); box.raycastTarget = false;
+                Text name = Label(rect, item.Definition.Name, 0.02f, 0.35f, 0.98f, 0.98f, size);
+                name.resizeTextForBestFit = true; name.resizeTextMinSize = 8; name.resizeTextMaxSize = size;
+            }
+            // Tools and wearables carry their durability on the model: uses for tools, walking distance for wearables.
+            if (!item.Definition.Stackable && item.Profile.MaxDurability > 0)
+            {
+                bool wearable = item.Definition.GearSlot.HasValue;
+                double remaining = wearable && item.HasWearRemaining ? item.WearRemaining : item.Profile.Durability;
+                string value = wearable ? Distance(remaining) : remaining.ToString("0", System.Globalization.CultureInfo.InvariantCulture);
+                RectTransform badge = DurabilityStyle.AddBadge(rect, value, remaining, item.Profile.MaxDurability, true);
+                badge.anchorMin = badge.anchorMax = new Vector2(0.5f, 0f); badge.pivot = new Vector2(0.5f, 0f);
+                badge.sizeDelta = new Vector2(wearable ? 92f : 64f, 40f); badge.anchoredPosition = new Vector2(0, 2f);
+            }
+            string amount = ItemIconRenderer.Quantity(item);
+            if (amount.Length == 0) return;
+            // Fixed readable size in the bottom-right corner, even on thin items such as branches.
+            Text count = Label(rect, amount, 1f, 0f, 1f, 0f, size);
+            count.rectTransform.pivot = new Vector2(1f, 0f); count.rectTransform.sizeDelta = new Vector2(70f, 26f);
+            count.alignment = TextAnchor.LowerRight; count.fontStyle = FontStyle.Bold;
+            count.horizontalOverflow = HorizontalWrapMode.Overflow; count.verticalOverflow = VerticalWrapMode.Overflow;
+            Outline edge = count.gameObject.AddComponent<Outline>(); edge.effectColor = new Color(0, 0, 0, 0.85f); edge.effectDistance = new Vector2(1.2f, -1.2f);
+        }
+        // Wearable durability is walking distance: 100 m and above shows in km ("0.12 km", "0.2 km", "50 km"). Tool
+        // durability counts uses and stays a plain number.
+        private static string Distance(double metres) => metres >= 100 ? (metres / 1000).ToString("0.##", System.Globalization.CultureInfo.InvariantCulture) + " km" : metres.ToString("0.#", System.Globalization.CultureInfo.InvariantCulture) + " m";
+        private static string DurabilityText(ItemDefinition definition, double remaining, double maximum) =>
+            definition.GearSlot.HasValue ? Distance(remaining) + " / " + Distance(maximum) : $"{remaining:0.##}/{maximum:0}";
         private void Say(string text) { feedback.text = text; }
         // Tube length follows the current boots cap; the fill shows requested speed within it.
         private void UpdateSpeedGauge()
@@ -595,8 +772,10 @@ namespace TheTrailWalker
             speedValue.rectTransform.anchorMin = new Vector2(0.01f, top + 0.003f); speedValue.rectTransform.anchorMax = new Vector2(0.30f, top + 0.035f);
             speedValue.text = $"{movement.RequestedSpeed:F1}/{movement.SpeedCap:F1}";
         }
-        private void ExplainSpeedBlocked(MovementPauseReasons pauses)
+        private void ExplainSpeedBlocked(MovementPauseReasons pauses, float drag)
         {
+            if (milestone5 && phase == TravelPhase.Seated && drag > 0) { TryStandUp(drag); return; }
+            if (milestone5 && (pauses & MovementPauseReasons.Seated) != 0) { if (phase == TravelPhase.Seated) Say(travel.CanStandUp(out string why) ? "Seated at camp. Swipe UP on the centre line to stand up." : why); return; }
             if (milestone4 && stamina.Fainted) Say("Recovering from fainting; walking resumes once hearts refill.");
             else if (inventoryOpen || (pauses & MovementPauseReasons.Inventory) != 0) Say("Walking is paused while the backpack is open. Tap CLOSE to resume.");
             else if ((pauses & MovementPauseReasons.Camp) != 0) Say("You are at camp; the next segment arrives in a later milestone. Use RESET SAVE or fixtures to test again.");
@@ -607,6 +786,8 @@ namespace TheTrailWalker
         {
             if (ledger == null) return;
             if (milestone4) AdvanceSurvival(Time.deltaTime);
+            if (milestone5 && initialized && travel != null) UpdateTravel();
+            if (milestone5) UpdateHarvest();
             if (milestone4 && faintOverlay != null)
             {
                 bool show = stamina.Fainted && !saveBlocked; faintOverlay.SetActive(show);
@@ -625,32 +806,41 @@ namespace TheTrailWalker
                 if (visible)
                 {
                     float scale = bundle.Item.Definition.Stackable ? (float)ItemEntry.Scale(bundle.Item.Quantity) : 1f;
-                    bundle.View.transform.localScale = new Vector3(bundle.Item.Width / 2000f, 0.3f * scale, bundle.Item.Height / 1500f);
-                    Vector3 screen = cameraView.WorldToScreenPoint(bundle.View.transform.position + Vector3.up * 0.55f);
-                    bundle.Badge.gameObject.SetActive(screen.z > 0 && screen.x >= 0 && screen.x <= Screen.width && screen.y > Screen.height * (inventoryOpen ? bagFrame.anchorMax.y + 0.09f : 0.09f) && screen.y < Screen.height * 0.74f);
-                    bundle.Badge.rectTransform.position = screen;
-                    bundle.Badge.text = $"{bundle.Item.Definition.Name}\nQ{bundle.Item.Quality} x{bundle.Item.Quantity}";
+                    if (bundle.MeshScale > 0)
+                    {
+                        float uniform = bundle.MeshScale * scale;
+                        bundle.View.transform.localScale = Vector3.one * uniform;
+                        // Pickups are placed 0.45 m above the path; rest the mesh on the ground at any stack size.
+                        bundle.Visual.localPosition = new Vector3(0, -bundle.MeshBottom - 0.43f / uniform, 0);
+                        // The pick box moves with the lowered model, so touches land on what is drawn.
+                        ((BoxCollider)bundle.Collider).center = bundle.MeshCentre + bundle.Visual.localPosition;
+                    }
+                    else bundle.View.transform.localScale = new Vector3(bundle.Item.Width / 2000f, 0.3f * scale, bundle.Item.Height / 1500f);
+                    bundle.Badge.gameObject.SetActive(false); // trail items show only their model
                 }
                 else bundle.Badge.gameObject.SetActive(false);
             }
             if (Time.unscaledTime >= nextHud)
             {
                 nextHud = Time.unscaledTime + 0.15f;
-                status.text = $"{movement.Distance:F1}/{path.Length:F1} m | {movement.ActualSpeed:F2} m/s | Camera {orbit.Yaw:F0}°\n{movement.Pauses} | Bag {ledger.Width / 1000} x {ledger.Height / 1000} | Pickups x1,000" + (milestone4 ? $"\nHearts {stamina.Hearts:F2}/{stamina.Maximum:F0}  Food delivering {stamina.PendingFood:F2}" : "");
+                fpsAverage = Mathf.Lerp(fpsAverage, 1f / Mathf.Max(0.0001f, Time.unscaledDeltaTime), 0.05f);
+                status.text = $"{movement.Distance:F1}/{path.Length:F1} m | {movement.ActualSpeed:F2} m/s | Camera {orbit.Yaw:F0}° | {fpsAverage:F0} FPS\n{movement.Pauses} | Bag {ledger.Width / 1000} x {ledger.Height / 1000} | Pickups x1,000" + (milestone4 ? $"\nHearts {stamina.Hearts:F2}/{stamina.Maximum:F0}  Food delivering {stamina.PendingFood:F2}" : "") + (milestone5 ? TravelStatus() : "");
                 if (milestone4 && gearPanel != null && gearPanel.activeSelf) RefreshGearPanel();
             }
             if (Time.unscaledTime >= nextReport) { nextReport = Time.unscaledTime + 3; WriteReport("sample"); }
             if (Time.unscaledTime >= nextSave) { nextSave = Time.unscaledTime + 2; SaveNow(); }
+            CheckBackgroundSave();
+            SyncAvatarVisibility();
         }
         private void ApplySafeArea()
         {
             lastSafe = Screen.safeArea; lastSize = new Vector2Int(Screen.width, Screen.height);
             safe.anchorMin = lastSafe.min / new Vector2(Screen.width, Screen.height); safe.anchorMax = lastSafe.max / new Vector2(Screen.width, Screen.height);
         }
-        private void OnApplicationPause(bool paused) { if (paused) { CancelAll(); SaveNow(); } }
-        private void OnApplicationFocus(bool focused) { if (!focused) { CancelAll(); SaveNow(); } }
-        private void OnApplicationQuit() => SaveNow();
-        private void OnDestroy() { CancelAll(); if (router != null) { router.Resources = null; router.SpeedBlocked -= ExplainSpeedBlocked; } }
+        private void OnApplicationPause(bool paused) { if (paused) { CancelAll(); SaveNow(true); } }
+        private void OnApplicationFocus(bool focused) { if (!focused) { CancelAll(); SaveNow(true); } }
+        private void OnApplicationQuit() => SaveNow(true);
+        private void OnDestroy() { avatarView?.Destroy(); CancelAll(); if (router != null) { router.Resources = null; router.SpeedBlocked -= ExplainSpeedBlocked; } }
         private float LimitMovementSeconds(float delta)
         {
             if (saveBlocked || stamina == null || movement.ActualSpeed <= 0) return delta;
@@ -707,7 +897,7 @@ namespace TheTrailWalker
                 SaveNow(); if (!saveBlocked) Say(expired.Count + " worn item(s) expired; contents were retained.");
             }
             bool wasFainted = stamina.Fainted;
-            bool safeArea = (movement.Pauses & MovementPauseReasons.Camp) != 0;
+            bool safeArea = (movement.Pauses & (MovementPauseReasons.Camp | MovementPauseReasons.Seated)) != 0;
             stamina.Advance(delta, walked, safeArea, foreground, LegDrainPerMetre);
             if (!foreground) return;
             if (wasFainted && !stamina.Fainted)
@@ -769,13 +959,33 @@ namespace TheTrailWalker
         {
             if (detailsPanel == null || item == null || item.Owner == ItemOwner.Consumed) return;
             selected = item;
-            string durability = item.Definition.Stackable ? "" : item.HasWearRemaining ? $"\nDurability {item.WearRemaining:F2}/{item.Profile.MaxDurability}" : $"\nDurability {item.Profile.Durability}/{item.Profile.MaxDurability}";
-            detailsText.text = $"{item.Definition.Name}\nQuality Q{item.Quality} | Quantity {item.Quantity}\n{(item.Ready ? "Ready" : "Pending")} | Value {item.Profile.UnitValue}{durability}";
+            string durability = item.Definition.Stackable ? "" : "\nDurability " + DurabilityText(item.Definition, item.HasWearRemaining ? item.WearRemaining : item.Profile.Durability, item.Profile.MaxDurability);
+            detailsText.text = $"{item.Definition.Name}  ({CategoryLabel(item.Definition)})\nQuantity {item.Quantity} | {(item.Ready ? "Ready" : "Pending")} | Value {item.Profile.UnitValue}{durability}";
+            detailsQuality.Bind(item, true);
             detailEat.SetActive(item.Definition.FoodHearts > 0 && item.Ready);
             detailEquip.SetActive(item.Definition.GearSlot.HasValue && item.Owner == ItemOwner.Backpack);
             detailsPanel.SetActive(true);
             // Auto-close when no action is taken; EAT and EQUIP close it immediately.
             detailsCloseAt = Time.unscaledTime + 4f;
+        }
+        // The opening is a thin strip at the screen edge; releasing anywhere over it or in the band just above it stores the item.
+        private bool OverOpening(Vector2 screen)
+        {
+            var corners = new Vector3[4]; aperture.GetWorldCorners(corners);
+            return screen.x >= corners[0].x && screen.x <= corners[2].x && screen.y >= corners[0].y - Screen.height * 0.02f && screen.y <= corners[2].y + Screen.height * OpeningDropBand;
+        }
+        private static string CategoryLabel(ItemDefinition definition)
+        {
+            switch (definition.Category)
+            {
+                case ItemCategory.RawIngredient: return "Raw ingredient - recipe input";
+                case ItemCategory.RefinedIngredient: return "Refined ingredient - recipe input";
+                case ItemCategory.RawFood: return $"Raw food - {definition.FoodHearts} heart(s), eat manually";
+                case ItemCategory.PreparedFood: return $"Prepared food - {definition.FoodHearts} heart(s)";
+                case ItemCategory.Tool: return "Tool";
+                case ItemCategory.Wearable: return "Wearable";
+                default: return "Material";
+            }
         }
         private void DebugEmptyStamina()
         {
@@ -795,9 +1005,12 @@ namespace TheTrailWalker
                 return;
             }
             if (!inventoryOpen) ToggleInventory();
-            gearPanel.SetActive(true); RefreshGearPanel();
+            gearPanel.transform.SetAsLastSibling(); LayoutGearPanel(); gearPanel.SetActive(true); RefreshGearPanel();
             Say("Hold a wearable in the bag and drag it here to equip. Drag a slot down into the bag to take it off.");
         }
+        // Rank-four test and spare gear lasts 50 km so later segments can be explored without constant breakage;
+        // EXPIRE SLOT / EXPIRE ALL and the MIXED fixture (180 m hat) still cover expiry tests.
+        private const int TestGearWear = 50000;
         private void GrantTestGear()
         {
             if (saveBlocked || stamina.Fainted) return;
@@ -807,11 +1020,11 @@ namespace TheTrailWalker
             {
                 GearSlot slot = definition.GearSlot.Value;
                 if (equipment.Get(slot) != null) continue;
-                ItemEntry item = ledger.AddWorld("gear-" + Guid.NewGuid().ToString("N"), definition, 1, 5, new ItemProfile(100, 180, 180));
+                ItemEntry item = ledger.AddWorld("gear-" + Guid.NewGuid().ToString("N"), definition, 1, 5, new ItemProfile(100, TestGearWear, TestGearWear));
                 if (!ledger.RestoreStored(item, ItemOwner.Worn, 0, 0)) throw new InvalidOperationException("Could not equip test gear");
                 equipment.Equip(new WornGear(item.Id, slot, definition.GearRank, item.Quality, item.WearRemaining));
             }
-            if (ApplyCapabilities()) { SaveNow(); Say("Rank-four test gear equipped. Wear is measured in metres."); }
+            if (ApplyCapabilities()) { SaveNow(); Say("Rank-four test gear equipped (lasts 50 km of walking)."); }
         }
         private void GrantSpareGear()
         {
@@ -819,7 +1032,7 @@ namespace TheTrailWalker
             router.CancelAll(); int overflowCount = 0;
             foreach (ItemDefinition definition in PrototypeItems.TestWearables)
             {
-                var item = ledger.AddWorld("spare-" + Guid.NewGuid().ToString("N"), definition, 1, 5, new ItemProfile(100, 180, 180));
+                var item = ledger.AddWorld("spare-" + Guid.NewGuid().ToString("N"), definition, 1, 5, new ItemProfile(100, TestGearWear, TestGearWear));
                 const int token = -832;
                 if (!ledger.Reserve(item, token)) throw new InvalidOperationException("Could not reserve debug gear");
                 bool stored = ledger.TryQuickStore(item, token, out _); ledger.Release(item, token);
@@ -930,16 +1143,32 @@ namespace TheTrailWalker
             WornGear gear = equipment.Get(slot);
             if (gear == null || !inventoryOpen || saveBlocked || stamina.Fainted) return;
             selectedGearSlot = slot;
-            if (slotGhost == null) slotGhost = Label(safe, "", 0, 0, 0, 0, 24);
-            slotGhost.text = slot.ToString().ToUpperInvariant(); slotGhost.color = new Color(1, 0.9f, 0.3f);
-            slotGhost.rectTransform.sizeDelta = new Vector2(260, 70); slotGhost.rectTransform.position = position;
+            ItemEntry worn = null; foreach (ItemEntry entry in ledger.Entries) if (entry.Id == gear.InstanceId) { worn = entry; break; }
+            if (slotGhost == null && worn != null) slotGhost = DragGhost(worn);
+            if (slotGhost != null) PlaceGhost(slotGhost, position);
         }
-        public void DragSlot(Vector2 position) { if (slotGhost != null) slotGhost.rectTransform.position = position; }
+        public void DragSlot(Vector2 position) { if (slotGhost != null) PlaceGhost(slotGhost, position); }
+        // Dragged items show the item itself (its bag picture at its bag size, durability badge included), slightly
+        // transparent and lifted above the finger; drop targets still use the touch position.
+        private RectTransform DragGhost(ItemEntry item)
+        {
+            float cell = bag.rect.width * 1000f / Mathf.Max(1, ledger.Width);
+            if (cell <= 0) cell = 60f;
+            var size = new Vector2(item.Width / 1000f * cell, item.Height / 1000f * cell);
+            float limit = 320f / Mathf.Max(size.x, size.y); if (limit < 1f) size *= limit;
+            RectTransform ghost = Rect("Drag ghost", safe, 0, 0, 0, 0);
+            ghost.sizeDelta = size; ghost.pivot = new Vector2(0.5f, 0f);
+            var group = ghost.gameObject.AddComponent<CanvasGroup>(); group.alpha = 0.9f; group.blocksRaycasts = false; group.interactable = false;
+            DrawItemView(ghost, item, 16);
+            ghost.SetAsLastSibling();
+            return ghost;
+        }
+        private static void PlaceGhost(RectTransform ghost, Vector2 position) => ghost.position = position + new Vector2(0, Screen.height * 0.025f);
         public void EndSlotDrag(GearSlot slot, Vector2 position)
         {
             if (slotGhost == null) return;
             Destroy(slotGhost.gameObject); slotGhost = null;
-            if (RectTransformUtility.RectangleContainsScreenPoint(bag, position) || RectTransformUtility.RectangleContainsScreenPoint(aperture, position)) TakeOffSlot(slot, position);
+            if (RectTransformUtility.RectangleContainsScreenPoint(bag, position) || OverOpening(position)) TakeOffSlot(slot, position);
             else Say("Drop the slot inside the backpack to take it off.");
         }
         private void ClaimOverflow()
@@ -951,44 +1180,137 @@ namespace TheTrailWalker
             bool ok = ledger.TryReturnToBackpack(item, token, out string reason); ledger.Release(item, token); Say(reason);
             if (ok) { Redraw(); SaveNow(); }
         }
+        // Equipment menu (design v1, October 31, 2026; Docs/Art/UI/Equipment): fills the space above the open bag, covering
+        // the top debug buttons and stats. Avatar stage in the centre (the player avatar arrives with the default
+        // designs), Hat/Boots/Shirt on the left, Pants/Backpack on the right, each slot showing the worn item's model
+        // with its durability badge, and the equipment debug actions in two rows below. Drag bag gear onto the panel to
+        // equip; drag a slot down into the bag to take it off.
+        private sealed class GearSlotView { public GearSlot Slot; public Image Frame; public RectTransform Content; public string Shown; }
+        private readonly List<GearSlotView> gearSlots = new List<GearSlotView>();
+        private Text gearHint;
+        private EquipmentAvatarView avatarView;
+        private bool avatarShown;
+        private static readonly GearSlot[] LeftSlots = { GearSlot.Hat, GearSlot.Boots, GearSlot.Shirt }, RightSlots = { GearSlot.Pants, GearSlot.Backpack };
         private void CreateGearPanel()
         {
-            // Pockets and hooks live beside the bag (scroll sideways), so this panel only holds worn equipment.
-            gearPanel = Rect("Equipment", safe, 0.02f, 0.56f, 0.98f, 0.80f).gameObject;
-            gearPanel.AddComponent<Image>().color = new Color(0.04f, 0.10f, 0.11f, 0.98f);
-            gearSummary = Label(gearPanel.transform, "", 0.01f, 0.66f, 0.99f, 0.99f, 20);
+            gearPanel = Rect("Equipment", safe, 0.02f, 0.56f, 0.98f, 0.995f).gameObject;
+            Image panel = gearPanel.AddComponent<Image>(); panel.sprite = DurabilityStyle.RoundedSprite; panel.type = Image.Type.Sliced;
+            // Fully opaque: the project blends in linear space, so even 1.5% transparency let the bright HUD show through.
+            panel.color = DurabilityStyle.Panel;
+            Text title = Label(gearPanel.transform, "EQUIPMENT", 0.05f, 0.925f, 0.6f, 0.99f, 30);
+            title.alignment = TextAnchor.MiddleLeft; title.fontStyle = FontStyle.Bold; title.color = DurabilityStyle.Text;
+            Image rule = Rect("Title rule", gearPanel.transform, 0.40f, 0.955f, 0.84f, 0.958f).gameObject.AddComponent<Image>(); rule.color = DurabilityStyle.Border; rule.raycastTarget = false;
+            Text close = GearButton(gearPanel.transform, "X", 0.87f, 0.925f, 0.97f, 0.99f, ToggleGearPanel); close.resizeTextMaxSize = 28;
+            gearHint = Label(gearPanel.transform, "", 0.04f, 0.885f, 0.96f, 0.925f, 16); gearHint.color = new Color(DurabilityStyle.Text.r, DurabilityStyle.Text.g, DurabilityStyle.Text.b, 0.8f);
+            gearHint.resizeTextForBestFit = true; gearHint.resizeTextMinSize = 10; gearHint.resizeTextMaxSize = 16;
+
+            // Avatar stage (placeholder until the default player avatars are designed).
+            RectTransform stage = Rect("Avatar stage", gearPanel.transform, 0.33f, 0.22f, 0.67f, 0.875f);
+            Image stageImage = stage.gameObject.AddComponent<Image>(); stageImage.sprite = DurabilityStyle.RoundedSprite; stageImage.type = Image.Type.Sliced;
+            stageImage.color = Color.Lerp(DurabilityStyle.Panel, DurabilityStyle.Slot, 0.5f) * 1.12f; stageImage.color = new Color(stageImage.color.r, stageImage.color.g, stageImage.color.b, 1f); stageImage.raycastTarget = false;
+            // The default player avatar, picked at random until the start-of-game selection exists.
+            avatarView = EquipmentAvatarView.Create(stage, PlayerAppearance.Current());
+            if (avatarView == null)
+            {
+                Text stageNote = Label(stage, "PLAYER AVATAR\narrives with the default designs", 0.05f, 0.4f, 0.95f, 0.6f, 15);
+                stageNote.color = new Color(DurabilityStyle.Text.r, DurabilityStyle.Text.g, DurabilityStyle.Text.b, 0.35f);
+            }
+
+            // Left column three slots, right column two, top-aligned like the concept.
+            const float top = 0.875f, slotHeight = 0.205f, gap = 0.02f;
+            for (int i = 0; i < LeftSlots.Length; i++) gearSlots.Add(CreateGearSlot(LeftSlots[i], 0.03f, top - (i + 1) * slotHeight - i * gap, 0.31f, top - i * (slotHeight + gap)));
+            for (int i = 0; i < RightSlots.Length; i++) gearSlots.Add(CreateGearSlot(RightSlots[i], 0.69f, top - (i + 1) * slotHeight - i * gap, 0.97f, top - i * (slotHeight + gap)));
+
             string[] actions = { "R4 TEST GEAR", "EXPIRE SLOT", "EXPIRE ALL", "TAKE OFF", "CLOSE" };
             UnityEngine.Events.UnityAction[] handlers = { GrantTestGear, ExpireSelectedSlot, () => ExpireTestGear(null), UnequipSelectedGear, ToggleGearPanel };
-            for (int i = 0; i < actions.Length; i++)
-            {
-                Text action = Button(gearPanel.transform, actions[i], 0.01f + i * 0.198f, 0.36f, 0.19f + i * 0.198f, 0.62f, handlers[i]);
-                action.resizeTextForBestFit = true; action.resizeTextMinSize = 10; action.resizeTextMaxSize = 20;
-            }
-            for (int i = 0; i < 5; i++)
-            {
-                int slot = i; float x0 = 0.01f + i * 0.198f;
-                Text gearLabel = Button(gearPanel.transform, ((GearSlot)i).ToString().ToUpperInvariant(), x0, 0.03f, x0 + 0.19f, 0.33f, () => GearSlotAction((GearSlot)slot));
-                gearLabel.fontSize = 15; gearLabels.Add(gearLabel);
-                var drag = gearLabel.transform.parent.gameObject.AddComponent<GearSlotDragSurface>(); drag.Owner = this; drag.Slot = (GearSlot)slot;
-            }
+            for (int i = 0; i < 3; i++) GearButton(gearPanel.transform, actions[i], 0.03f + i * 0.32f, 0.115f, 0.33f + i * 0.32f, 0.195f, handlers[i]);
+            for (int i = 3; i < 5; i++) GearButton(gearPanel.transform, actions[i], 0.12f + (i - 3) * 0.39f, 0.02f, 0.49f + (i - 3) * 0.39f, 0.10f, handlers[i]);
             gearPanel.SetActive(false);
+        }
+        private GearSlotView CreateGearSlot(GearSlot slot, float x0, float y0, float x1, float y1)
+        {
+            RectTransform root = Rect(slot + " slot", gearPanel.transform, x0, y0, x1, y1);
+            Image fill = root.gameObject.AddComponent<Image>(); fill.sprite = DurabilityStyle.RoundedSprite; fill.type = Image.Type.Sliced; fill.color = DurabilityStyle.Slot;
+            var button = root.gameObject.AddComponent<Button>(); button.targetGraphic = fill; button.onClick.AddListener(() => GearSlotAction(slot));
+            var drag = root.gameObject.AddComponent<GearSlotDragSurface>(); drag.Owner = this; drag.Slot = slot;
+            Image frame = Rect("Frame", root, 0, 0, 1, 1).gameObject.AddComponent<Image>(); frame.sprite = DurabilityStyle.FrameSprite; frame.type = Image.Type.Sliced; frame.raycastTarget = false;
+            return new GearSlotView { Slot = slot, Frame = frame, Content = Rect("Content", root, 0, 0, 1, 1) };
+        }
+        // Secondary action: dark backing with the border colour, as in the debug-action frame.
+        private static Text GearButton(Transform parent, string value, float x0, float y0, float x1, float y1, UnityEngine.Events.UnityAction action)
+        {
+            RectTransform rect = Rect(value, parent, x0, y0, x1, y1);
+            Image image = rect.gameObject.AddComponent<Image>(); image.sprite = DurabilityStyle.RoundedSprite; image.type = Image.Type.Sliced; image.color = DurabilityStyle.Slot;
+            var button = rect.gameObject.AddComponent<Button>(); button.targetGraphic = image; button.onClick.AddListener(action);
+            Image edge = Rect("Frame", rect, 0, 0, 1, 1).gameObject.AddComponent<Image>(); edge.sprite = DurabilityStyle.FrameSprite; edge.type = Image.Type.Sliced; edge.color = DurabilityStyle.Border; edge.raycastTarget = false;
+            Text text = Label(rect, value, 0.04f, 0, 0.96f, 1, 20); text.color = DurabilityStyle.Text;
+            text.resizeTextForBestFit = true; text.resizeTextMinSize = 10; text.resizeTextMaxSize = 20;
+            return text;
+        }
+        private ItemDefinition WornDefinition(GearSlot slot)
+        {
+            WornGear gear = equipment.Get(slot); if (gear == null) return null;
+            foreach (ItemEntry entry in ledger.Entries) if (entry.Id == gear.InstanceId) return entry.Definition;
+            return null;
+        }
+        // The avatar camera renders only while the equipment menu is showing.
+        private void SyncAvatarVisibility()
+        {
+            bool show = gearPanel != null && gearPanel.activeInHierarchy;
+            if (avatarView == null || show == avatarShown) return;
+            avatarShown = show; avatarView.SetVisible(show);
+        }
+        // The panel spans from just above the open bag to the top of the safe area.
+        private void LayoutGearPanel()
+        {
+            if (gearPanel == null || bagFrame == null) return;
+            var rect = (RectTransform)gearPanel.transform;
+            rect.anchorMin = new Vector2(0.02f, Mathf.Min(0.7f, bagFrame.anchorMax.y + 0.008f)); rect.anchorMax = new Vector2(0.98f, 0.995f);
         }
         private void RefreshGearPanel()
         {
-            int overflow = 0; foreach (ItemEntry item in ledger.Entries) if (item.Owner == ItemOwner.Overflow) overflow++;
-            gearSummary.text = $"Hat {equipment.MaxHearts} hearts | Boots {equipment.SpeedCap:F1} m/s\nPockets {equipment.Pockets}/10 | Hooks {equipment.Hooks}/10 | Overflow {overflow}\nDrag bag gear here to equip; drag a slot to the bag to take off" + (selectedGearSlot.HasValue ? " | Selected " + selectedGearSlot.Value : "");
-            for (int i = 0; i < gearLabels.Count; i++)
+            gearHint.text = feedback.text;
+            avatarView?.Dress(WornDefinition(GearSlot.Hat), WornDefinition(GearSlot.Backpack));
+            foreach (GearSlotView view in gearSlots)
             {
-                WornGear item = equipment.Get((GearSlot)i);
-                gearLabels[i].text = ((GearSlot)i).ToString().ToUpperInvariant() + (item == null ? "\nDEFAULT" : item.Infinite ? "\nINFINITE" : $"\n{item.RemainingDistance:F1} m");
+                bool selectedSlot = selectedGearSlot == view.Slot;
+                view.Frame.color = selectedSlot ? DurabilityStyle.Selection : DurabilityStyle.Border;
+                WornGear gear = equipment.Get(view.Slot);
+                ItemEntry worn = null;
+                if (gear != null) foreach (ItemEntry entry in ledger.Entries) if (entry.Id == gear.InstanceId) { worn = entry; break; }
+                double maximum = worn != null ? worn.Profile.MaxDurability : 0;
+                bool finite = gear != null && !gear.Infinite;
+                string value = gear == null ? "DEFAULT" : gear.Infinite ? "INFINITE" : Distance(gear.RemainingDistance);
+                string shown = (worn != null ? worn.Definition.Id : "") + "|" + value + "|" + (finite ? DurabilityStyle.Fill(gear.RemainingDistance, maximum) : 0f);
+                if (shown == view.Shown) continue;
+                view.Shown = shown;
+                foreach (Transform child in view.Content) Destroy(child.gameObject);
+                // The worn item's model, or a faint silhouette of the slot's tier-1 item over the default gear.
+                ItemDefinition model = worn != null ? ItemArt.ModelFor(worn.Definition) : ItemArt.SlotSilhouette(view.Slot);
+                Sprite icon = model != null ? ItemIconRenderer.For(model) : null;
+                if (icon != null)
+                {
+                    Image picture = Rect("Model", view.Content, 0.08f, worn != null ? 0.22f : 0.18f, 0.92f, 0.86f).gameObject.AddComponent<Image>();
+                    picture.sprite = icon; picture.preserveAspect = true; picture.raycastTarget = false;
+                    if (worn == null) picture.color = new Color(DurabilityStyle.Text.r, DurabilityStyle.Text.g, DurabilityStyle.Text.b, 0.14f);
+                }
+                else Label(view.Content, worn != null ? worn.Definition.Name : view.Slot.ToString().ToUpperInvariant(), 0.05f, 0.35f, 0.95f, 0.85f, 18).color = DurabilityStyle.Text;
+                Text name = Label(view.Content, view.Slot.ToString().ToUpperInvariant(), 0.07f, 0.86f, 0.93f, 0.98f, 13);
+                name.alignment = TextAnchor.UpperLeft; name.color = new Color(DurabilityStyle.Text.r, DurabilityStyle.Text.g, DurabilityStyle.Text.b, 0.55f);
+                RectTransform badge = DurabilityStyle.AddBadge(view.Content, value, finite ? gear.RemainingDistance : 0, finite ? maximum : 0, false);
+                DurabilityStyle.Stretch(badge, 0.12f, 0.04f, 0.88f, 0.25f);
             }
         }
-        private void SaveNow()
+        // Builds the snapshot on the main thread; validation, hashing and the atomic write run on the background writer
+        // (immediate: written before returning, for pause/focus loss/quit, when the process may be killed next).
+        private void SaveNow() => SaveNow(false);
+        private void SaveNow(bool immediate)
         {
             if (!initialized || saveBlocked || saveStore == null || ledger == null) return;
+            var watch = System.Diagnostics.Stopwatch.StartNew(); double built = 0, compared = 0;
             try
             {
-                var snapshot = new SessionSnapshot { version = milestone4 ? 2 : 1, distance = movement.Distance, requestedSpeed = movement.RequestedSpeed,
+                var snapshot = new SessionSnapshot { version = milestone5 ? 3 : milestone4 ? 2 : 1, distance = movement.Distance, requestedSpeed = movement.RequestedSpeed,
                     speedCap = movement.SpeedCap, inventoryResume = movement.InventoryResumeSpeed, inventoryOpen = inventoryOpen,
                     postHarvest = movement.PostHarvestStop, camp = (movement.Pauses & MovementPauseReasons.Camp) != 0, yaw = orbit.Yaw };
                 if (milestone4)
@@ -1002,9 +1324,11 @@ namespace TheTrailWalker
                             quality = gear.Quality, remainingDistance = gear.RemainingDistance, infinite = gear.Infinite });
                     }
                 }
+                if (milestone5) { snapshot.segmentId = travel.CurrentSegment.Id; snapshot.travel = SessionSaveStore.SaveTravel(travel); snapshot.harvested = HarvestedForSave(); }
                 foreach (ItemEntry item in ledger.Entries)
                 {
                     if (item.Owner == ItemOwner.Consumed) continue;
+                    if (milestone5 && item.Owner == ItemOwner.World && item.SegmentId == null) ledger.AssignSegment(item, travel.CurrentSegment.Id);
                     Bundle bundle = bundles.Find(b => b.Item == item);
                     Vector3 position = bundle == null ? Vector3.zero : bundle.View.transform.position;
                     WornGear worn = item.Owner == ItemOwner.Worn && item.Definition.GearSlot.HasValue ? equipment?.Get(item.Definition.GearSlot.Value) : null;
@@ -1012,25 +1336,37 @@ namespace TheTrailWalker
                         quality = item.Quality, ready = item.Ready, x = item.X, y = item.Y, unitValue = item.Profile.UnitValue,
                         maxDurability = item.Profile.MaxDurability, durability = item.Profile.Durability, variant = item.Profile.Variant,
                         hasWear = worn != null ? !worn.Infinite : item.HasWearRemaining, wearRemaining = worn != null ? worn.RemainingDistance : item.WearRemaining,
-                        dropped = item.Owner == ItemOwner.World && item.Dropped, trailDistance = item.TrailDistance, worldX = position.x, worldY = position.y, worldZ = position.z });
+                        dropped = item.Owner == ItemOwner.World && item.Dropped, trailDistance = item.TrailDistance, worldX = position.x, worldY = position.y, worldZ = position.z, pile = SavedPile(item),
+                        segmentId = milestone5 && item.Owner == ItemOwner.World ? item.SegmentId : null });
                 }
-                SessionSaveStore.Validate(snapshot, path.Length, out _);
+                built = watch.Elapsed.TotalMilliseconds;
                 string state = JsonUtility.ToJson(snapshot);
-                if (state == lastSavedState) return;
+                compared = watch.Elapsed.TotalMilliseconds;
+                if (state == lastSavedState) { if (immediate) SessionSaveStore.FlushBackgroundSaves(); LogSaveTiming(watch, built, compared, false); return; }
                 snapshot.transactionId = Guid.NewGuid().ToString("N");
-                saveStore.Save(snapshot);
+                if (immediate) saveStore.Save(snapshot, path.Length);
+                else saveStore.SaveInBackground(snapshot, path.Length);
                 lastSavedState = state;
+                LogSaveTiming(watch, built, compared, true);
             }
-            catch (Exception error)
-            {
-                saveBlocked = true; movement.SetPause(MovementPauseReasons.Exhausted, true);
-                Say("Save failed. Progress is paused; do not close the app. " + error.Message);
-                Debug.LogException(error);
-            }
+            catch (Exception error) { SaveFailed(error); }
+            if (immediate) CheckBackgroundSave();
+        }
+        private void CheckBackgroundSave()
+        {
+            Exception failure = SessionSaveStore.TakeBackgroundFailure();
+            if (failure != null && !saveBlocked) SaveFailed(failure);
+        }
+        private void SaveFailed(Exception error)
+        {
+            saveBlocked = true; movement.SetPause(MovementPauseReasons.Exhausted, true);
+            Say("Save failed. Progress is paused; do not close the app. " + error.Message);
+            Debug.LogException(error);
         }
         private void RestoreSnapshot(SessionSnapshot snapshot)
         {
             SessionSaveStore.Validate(snapshot, path.Length, out ledger);
+            if (milestone5) { travel = SessionSaveStore.RestoreTravel(snapshot, scene.Catalog); RestoreHarvested(snapshot.harvested); }
             if (milestone4)
             {
                 equipment = new EquipmentState();
@@ -1050,9 +1386,40 @@ namespace TheTrailWalker
             {
                 if (saved.owner != "World") continue;
                 ItemEntry item = null; foreach (ItemEntry candidate in ledger.Entries) if (candidate.Id == saved.id) { item = candidate; break; }
+                if (milestone5)
+                {
+                    var position = new Vector3(saved.worldX, saved.worldY, saved.worldZ);
+                    // Harvest rewards not yet shown (saved at zero) stay in the queue; SpawnPendingHarvest places them.
+                    bool queued = (saved.id.StartsWith("harvest-", StringComparison.Ordinal) && position == Vector3.zero) || saved.id.StartsWith("fixture-", StringComparison.Ordinal);
+                    if (item.SegmentId == scene.Segment.Id && !queued) SpawnSegmentBundle(item, position);
+                    continue;
+                }
                 AddBundle(item, new Vector3(saved.worldX, saved.worldY, saved.worldZ));
             }
             Redraw();
+        }
+        // Development builds: per-save stage timings, flushed to save-timing.txt every 10 saves (read over adb).
+        private readonly System.Text.StringBuilder saveTimings = new System.Text.StringBuilder();
+        private int timedSaves;
+        private void LogSaveTiming(System.Diagnostics.Stopwatch watch, double built, double compared, bool written)
+        {
+            if (!Debug.isDebugBuild) return;
+            double total = watch.Elapsed.TotalMilliseconds; double[] store = SessionSaveStore.LastStageMs;
+            saveTimings.Append($"{Time.realtimeSinceStartup:F1}s main thread {total:F2} | build {built:F2} json {compared - built:F2}");
+            if (written) saveTimings.Append($" | queued; previous write (background): validate {store[0]:F2} json {store[1]:F2} hash {store[2]:F2} write {store[3]:F2} replace {store[4]:F2}");
+            else saveTimings.Append(" | unchanged");
+            saveTimings.Append($" | items {ledger.Entries.Count}").Append('\n');
+            if (++timedSaves % 10 != 0) return;
+            try { File.AppendAllText(Path.Combine(Application.persistentDataPath, "save-timing.txt"), saveTimings.ToString()); } catch (IOException) { }
+            saveTimings.Clear();
+        }
+        private static List<SavedPortion> SavedPile(ItemEntry item)
+        {
+            var portions = new List<SavedPortion>(item.Pile.Count);
+            foreach (PilePortion portion in item.Pile)
+                portions.Add(new SavedPortion { quality = portion.Quality, quantity = portion.Quantity, unitValue = portion.Profile.UnitValue,
+                    maxDurability = portion.Profile.MaxDurability, durability = portion.Profile.Durability, variant = portion.Profile.Variant });
+            return portions;
         }
         private void WriteReport(string reason)
         {

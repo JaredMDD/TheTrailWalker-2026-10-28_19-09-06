@@ -31,7 +31,8 @@ namespace TheTrailWalker.Input
         public int OrbitGestures { get; private set; }
         public int SpeedGestures { get; private set; }
         // Raised when a SPEED-area swipe is ignored, so the UI can explain why walking did not change.
-        public event System.Action<MovementPauseReasons> SpeedBlocked;
+        // The float is the vertical drag that resolved the gesture (positive = upward), or 0 when only a touch began.
+        public event System.Action<MovementPauseReasons, float> SpeedBlocked;
         // Unscaled time of the last accepted speed input, so the HUD can show the gauge while it is being adjusted.
         public float LastSpeedInput { get; private set; } = float.NegativeInfinity;
         public bool AdjustingSpeed
@@ -56,7 +57,7 @@ namespace TheTrailWalker.Input
             {
                 if (contacts.Count > 0) CancelAll();
                 foreach (Touch touch in Touch.activeTouches)
-                    if (touch.phase == UnityEngine.InputSystem.TouchPhase.Began && OverAvatar(touch.screenPosition) && !OverUi(touch.screenPosition)) SpeedBlocked?.Invoke(movement.Pauses);
+                    if (touch.phase == UnityEngine.InputSystem.TouchPhase.Began && OverAvatar(touch.screenPosition) && !OverUi(touch.screenPosition)) SpeedBlocked?.Invoke(movement.Pauses, 0f);
                 return;
             }
             foreach (Touch touch in Touch.activeTouches)
@@ -136,7 +137,7 @@ namespace TheTrailWalker.Input
                 delta = total;
                 if (resolved == GestureOwner.Orbit) OrbitGestures++;
                 if (resolved == GestureOwner.Speed) SpeedGestures++;
-                if (resolved == GestureOwner.Speed && movement.Pauses != MovementPauseReasons.None) SpeedBlocked?.Invoke(movement.Pauses);
+                if (resolved == GestureOwner.Speed && movement.Pauses != MovementPauseReasons.None) SpeedBlocked?.Invoke(movement.Pauses, total.y);
             }
             if (contact.Owner == GestureOwner.Orbit) orbit.Rotate(delta.x * 360f / Screen.width);
             if (contact.Owner == GestureOwner.Speed) { movement.SpeedGesture(delta.y * 4f / Screen.height); LastSpeedInput = Time.unscaledTime; }

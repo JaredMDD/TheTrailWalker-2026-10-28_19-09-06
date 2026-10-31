@@ -60,7 +60,13 @@ namespace TheTrailWalker.Domain.Inventory
             if (merge)
                 foreach (ItemEntry other in entries)
                     if (other.Owner == ItemOwner.Backpack && other.Quantity < 1000 && item.CanMerge(other) && Touches(x, y, item.Width, item.Height, other))
-                        return TryMerge(item, other, pointer, out reason);
+                    {
+                        if (!TryMerge(item, other, pointer, out reason)) return false;
+                        // A pickup gives all of its units: any trail remainder becomes its own stack when space allows.
+                        if (item.Owner == ItemOwner.World && item.Quantity > 0)
+                            reason = TryPlaceFree(item, pointer, out _) ? "Merged and stored the rest as a new stack" : "Merged; no space for the rest, which stays on the trail";
+                        return true;
+                    }
             if (!Fits(item, item.Quantity, x, y)) { reason = "No space: item stays where it was"; return false; }
             item.X = x; item.Y = y; item.Owner = ItemOwner.Backpack; Revision++; reason = "Stored " + item.Definition.Name; return true;
         }
@@ -72,8 +78,19 @@ namespace TheTrailWalker.Domain.Inventory
             if (moved <= 0) { reason = "Stack already has 1,000"; return false; }
             // A partial source remains in its original position and still blocks growth.
             ItemEntry ignore = moved == source.Quantity ? source : null;
-            if (!Fits(target, target.Quantity + moved, target.X, target.Y, ignore)) { reason = "Larger stack would overlap or leave the bag"; return false; }
-            target.Quantity += moved; source.Quantity -= moved;
+            if (!Fits(target, target.Quantity + moved, target.X, target.Y, ignore))
+            {
+                // The grown stack does not fit in place: move just that stack to free space, otherwise top up only as far as it fits.
+                if (TryFindSpot(target, target.Quantity + moved, ignore, out int freeX, out int freeY)) { target.X = freeX; target.Y = freeY; }
+                else
+                {
+                    int lo = 0, hi = moved - 1;
+                    while (lo < hi) { int mid = (lo + hi + 1) / 2; if (Fits(target, target.Quantity + mid, target.X, target.Y)) lo = mid; else hi = mid - 1; }
+                    if (lo == 0) { reason = "Larger stack would overlap or leave the bag"; return false; }
+                    moved = lo;
+                }
+            }
+            source.MoveLowestTo(target, moved);
             if (source.Quantity == 0) source.Owner = ItemOwner.Consumed;
             Revision++; reason = "Merged " + moved + (source.Quantity > 0 ? "; remainder stays at source" : ""); return true;
         }
@@ -81,15 +98,43 @@ namespace TheTrailWalker.Domain.Inventory
         {
             reason = "Item is already in use";
             if (!Owns(item) || !ReservedBy(item, pointer) || item.Owner != ItemOwner.World) return false;
+            // Top up every compatible stack first, then store whatever is left as a new stack: a pickup gives all its units.
+            bool merged = false;
             foreach (ItemEntry other in entries)
-                if (other.Owner == ItemOwner.Backpack && item.CanMerge(other) && TryMerge(item, other, pointer, out reason)) return true;
-            // Candidate edges give a deterministic bottom-left placement without visible slots.
+            {
+                if (other.Owner != ItemOwner.Backpack || other.Quantity >= 1000 || !item.CanMerge(other)) continue;
+                if (TryMerge(item, other, pointer, out reason)) merged = true;
+                if (item.Owner == ItemOwner.Consumed) { reason = "Stored " + item.Definition.Name; return true; }
+            }
+            if (TryPlaceFree(item, pointer, out reason)) { if (merged) reason = "Stored " + item.Definition.Name + "; the rest started a new stack"; return true; }
+            reason = merged ? "Backpack full: the rest of the pickup remains on the trail" : "Backpack full: pickup remains on the trail"; return merged;
+        }
+        private bool TryFindSpot(ItemEntry item, int quantity, ItemEntry ignoredSource, out int spotX, out int spotY)
+        {
+            var xs = new SortedSet<int> { 0 }; var ys = new SortedSet<int> { 0 };
+            foreach (ItemEntry other in entries)
+                if (other.Owner == ItemOwner.Backpack && other != item && other != ignoredSource) { xs.Add(other.X + other.Width); ys.Add(other.Y + other.Height); }
+            foreach (int y in ys) foreach (int x in xs)
+                if (Fits(item, quantity, x, y, ignoredSource)) { spotX = x; spotY = y; return true; }
+            spotX = spotY = 0; return false;
+        }
+        // Candidate edges give a deterministic bottom-left placement without visible slots.
+        private bool TryPlaceFree(ItemEntry item, int pointer, out string reason)
+        {
             var xs = new SortedSet<int> { 0 }; var ys = new SortedSet<int> { 0 };
             foreach (ItemEntry other in entries)
                 if (other.Owner == ItemOwner.Backpack) { xs.Add(other.X + other.Width); ys.Add(other.Y + other.Height); }
             foreach (int y in ys) foreach (int x in xs)
                 if (Fits(item, item.Quantity, x, y)) return TryPlace(item, pointer, x, y, false, out reason);
-            reason = "Backpack full: pickup remains on the trail"; return false;
+            reason = "No free backpack space"; return false;
+        }
+        // Lowest quality is used first; the removed portion is reported for callers that need its quality.
+        public bool TryConsumeLowest(ItemEntry item, int pointer, out PilePortion eaten, out string reason)
+        {
+            eaten = default; reason = "No accessible ready food";
+            if (!Owns(item) || !ReservedBy(item, pointer) || (item.Owner != ItemOwner.Backpack && item.Owner != ItemOwner.Pocket) || !item.Ready || item.Definition.FoodHearts <= 0) return false;
+            eaten = item.TakeLowest(1)[0]; if (item.Quantity == 0) item.Owner = ItemOwner.Consumed;
+            Revision++; reason = "Consumed one Q" + eaten.Quality + " serving"; return true;
         }
 
         public bool TryMoveToSide(ItemEntry item, int pointer, bool hook, int index, out string reason)
@@ -97,31 +142,41 @@ namespace TheTrailWalker.Domain.Inventory
             reason = "Item is unavailable or the slot is invalid";
             int count = hook ? HookCount : PocketCount;
             if (!Owns(item) || !ReservedBy(item, pointer) || item.Owner != ItemOwner.Backpack || index < 0 || index >= count) return false;
-            if (hook ? item.Definition != PrototypeItems.Tool : !item.Definition.Stackable)
-            { reason = hook ? "Hooks hold eligible tools" : "Pockets hold eligible resource or food stacks"; return false; }
+            if (hook ? !IsTool(item.Definition) : !item.Definition.Stackable)
+            { reason = hook ? "Hooks hold tools (one per hook)" : "Pockets hold eligible resource or food stacks"; return false; }
             ItemOwner target = hook ? ItemOwner.Hook : ItemOwner.Pocket;
             foreach (ItemEntry existing in entries)
                 if (existing.Owner == target && existing.X == index) { reason = "Slot is occupied"; return false; }
             item.Owner = target; item.X = index; item.Y = 0; Revision++; reason = "Stored in " + (hook ? "hook" : "pocket"); return true;
         }
 
+        // Hooks hold any tool, one per hook (user, October 31, 2026): unique items that are not wearables.
+        public static bool IsTool(ItemDefinition definition) => definition != null && !definition.Stackable && !definition.GearSlot.HasValue;
+
         public bool TryReturnToBackpack(ItemEntry item, int pointer, out string reason)
         {
             reason = "Item is unavailable";
             if (!Owns(item) || !ReservedBy(item, pointer) || (item.Owner != ItemOwner.Pocket && item.Owner != ItemOwner.Hook && item.Owner != ItemOwner.Overflow)) return false;
-            var xs = new SortedSet<int> { 0 }; var ys = new SortedSet<int> { 0 };
-            foreach (ItemEntry other in entries)
-                if (other.Owner == ItemOwner.Backpack) { xs.Add(other.X + other.Width); ys.Add(other.Y + other.Height); }
-            foreach (int y in ys) foreach (int x in xs)
-                if (Fits(item, item.Quantity, x, y)) return TryPlace(item, pointer, x, y, false, out reason);
+            if (TryPlaceFree(item, pointer, out reason)) return true;
             reason = "No backpack space; item remains in its current container"; return false;
         }
         public bool TryConsumeOne(ItemEntry item, int pointer, out string reason)
         {
-            reason = "No accessible ready food";
-            if (!Owns(item) || !ReservedBy(item, pointer) || (item.Owner != ItemOwner.Backpack && item.Owner != ItemOwner.Pocket) || !item.Ready || item.Definition.FoodHearts <= 0) return false;
-            item.Quantity--; if (item.Quantity == 0) item.Owner = ItemOwner.Consumed;
-            Revision++; reason = "Consumed one serving"; return true;
+            return TryConsumeLowest(item, pointer, out _, out reason);
+        }
+        // One committed harvest action (section 8.2): spends one use of a carried tool (backpack or hook). The tool breaks,
+        // and leaves the inventory, when that action brings it to zero.
+        public bool TryUseTool(ItemEntry tool, out bool broke)
+        {
+            broke = false;
+            if (!Owns(tool) || tool.Definition.Stackable || tool.Definition.GearSlot.HasValue || (tool.Owner != ItemOwner.Backpack && tool.Owner != ItemOwner.Hook)
+                || tool.Profile.MaxDurability <= 0 || tool.Profile.Durability <= 0 || reservations.ContainsKey(tool.Id)) return false;
+            ItemProfile used = tool.Profile;
+            int left = used.Durability - 1;
+            tool.ReplacePile(new[] { new PilePortion(tool.Quality, new ItemProfile(used.UnitValue, used.MaxDurability, left, used.Variant), 1) });
+            if (left == 0) { tool.Owner = ItemOwner.Consumed; broke = true; }
+            Revision++;
+            return true;
         }
         public bool TryWear(ItemEntry item, int pointer, out string reason)
         {
@@ -130,13 +185,37 @@ namespace TheTrailWalker.Domain.Inventory
             item.Owner = ItemOwner.Worn; item.X = item.Y = 0; Revision++; reason = "Equipped " + item.Definition.Name; return true;
         }
         // Discard pocket: a carried entry goes back onto the trail as an ordinary pickup at the given distance.
-        public bool TryDropToTrail(ItemEntry item, int pointer, float distance, out string reason)
+        public bool TryDropToTrail(ItemEntry item, int pointer, float distance, out string reason, string segmentId = null)
         {
             reason = "Only carried bag, pocket, hook or overflow items can be dropped";
             if (!Owns(item) || !ReservedBy(item, pointer) || float.IsNaN(distance) || float.IsInfinity(distance) || distance < 0 ||
                 (item.Owner != ItemOwner.Backpack && item.Owner != ItemOwner.Pocket && item.Owner != ItemOwner.Hook && item.Owner != ItemOwner.Overflow)) return false;
-            item.Owner = ItemOwner.World; item.X = item.Y = 0; item.TrailDistance = distance; item.Dropped = true; Revision++;
+            item.Owner = ItemOwner.World; item.X = item.Y = 0; item.TrailDistance = distance; item.Dropped = true; item.SegmentId = segmentId; Revision++;
             reason = "Dropped " + item.Definition.Name + " on the trail"; return true;
+        }
+        // Used only while reconstructing a validated save: replaces the single default portion with the saved pile.
+        public bool RestorePile(ItemEntry item, IReadOnlyList<PilePortion> portions)
+        {
+            if (!Owns(item) || item.Owner != ItemOwner.World || reservations.ContainsKey(item.Id) || portions == null) return false;
+            int total = 0; foreach (PilePortion portion in portions) total += portion.Quantity;
+            return total == item.Quantity && item.ReplacePile(portions);
+        }
+        public bool AssignSegment(ItemEntry item, string segmentId)
+        {
+            if (!Owns(item) || item.Owner != ItemOwner.World || string.IsNullOrWhiteSpace(segmentId)) return false;
+            item.SegmentId = segmentId; return true;
+        }
+        // A new drop cycle for a segment replaces everything still lying on it: uncollected generated drops and player drops.
+        public int RemoveWorldItems(string segmentId)
+        {
+            int removed = 0;
+            foreach (ItemEntry item in entries)
+            {
+                if (item.Owner != ItemOwner.World || item.SegmentId != segmentId || reservations.ContainsKey(item.Id)) continue;
+                item.Owner = ItemOwner.Consumed; item.Clear(); removed++;
+            }
+            if (removed > 0) Revision++;
+            return removed;
         }
         public bool RestoreDropped(ItemEntry item)
         {
@@ -150,7 +229,7 @@ namespace TheTrailWalker.Domain.Inventory
             foreach (ItemEntry item in entries)
             {
                 if (item.Owner != ItemOwner.World || !item.Dropped || reservations.ContainsKey(item.Id)) continue;
-                item.Owner = ItemOwner.Consumed; item.Quantity = 0; removed++;
+                item.Owner = ItemOwner.Consumed; item.Clear(); removed++;
             }
             if (removed > 0) Revision++;
             return removed;
@@ -158,7 +237,7 @@ namespace TheTrailWalker.Domain.Inventory
         public bool ExpireWorn(string id)
         {
             if (string.IsNullOrWhiteSpace(id) || !identities.TryGetValue(id, out ItemEntry item) || item.Owner != ItemOwner.Worn || reservations.ContainsKey(id)) return false;
-            item.Owner = ItemOwner.Consumed; item.Quantity = 0; Revision++; return true;
+            item.Owner = ItemOwner.Consumed; item.Clear(); Revision++; return true;
         }
         public bool TakeOff(string id, double remainingDistance)
         {
@@ -205,7 +284,7 @@ namespace TheTrailWalker.Domain.Inventory
                     (item.Owner != ItemOwner.Backpack && item.Owner != ItemOwner.Pocket && item.Owner != ItemOwner.Hook)) return false;
             }
             foreach (LossEntry loss in plan.Entries)
-            { ItemEntry item = identities[loss.Id]; item.Quantity = 0; item.Owner = ItemOwner.Consumed; }
+            { ItemEntry item = identities[loss.Id]; item.Clear(); item.Owner = ItemOwner.Consumed; }
             // Increment even for an empty bag so a committed zero-loss event cannot be replayed.
             Revision++; return true;
         }
@@ -227,7 +306,7 @@ namespace TheTrailWalker.Domain.Inventory
             }
             if (owner != ItemOwner.Pocket && owner != ItemOwner.Hook) return false;
             int count = owner == ItemOwner.Pocket ? PocketCount : HookCount;
-            if (x < 0 || x >= count || y != 0 || (owner == ItemOwner.Pocket ? !item.Definition.Stackable : item.Definition != PrototypeItems.Tool)) return false;
+            if (x < 0 || x >= count || y != 0 || (owner == ItemOwner.Pocket ? !item.Definition.Stackable : !IsTool(item.Definition))) return false;
             foreach (ItemEntry existing in entries) if (existing.Owner == owner && existing.X == x) return false;
             item.Owner = owner; item.X = x; item.Y = 0; Revision++; return true;
         }

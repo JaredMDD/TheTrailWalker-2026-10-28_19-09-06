@@ -43,7 +43,7 @@ namespace TheTrailWalker.Domain.Equipment
         private static readonly int[] BagWidth = { 6, 8, 10, 12, 14 };
         public WornGear Get(GearSlot slot) => worn.TryGetValue(slot, out WornGear gear) ? gear : null;
         private int Rank(GearSlot slot) => Get(slot)?.Rank ?? 0;
-        public double SpeedCap => 0.8 + Rank(GearSlot.Boots) * 0.3; // 0.8 m/s starter up to 2.0 m/s at rank four
+        public double SpeedCap => MovementState.StarterSpeedCap + Rank(GearSlot.Boots) * 0.5; // 1.0 m/s starter up to 3.0 m/s at rank four
         public int MaxHearts => Hearts[Rank(GearSlot.Hat)];
         public int Pockets => Capacity[Rank(GearSlot.Shirt)];
         public int Hooks => Capacity[Rank(GearSlot.Pants)];

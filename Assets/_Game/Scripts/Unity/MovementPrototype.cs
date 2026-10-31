@@ -1,9 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using TheTrailWalker.CameraControl;
 using TheTrailWalker.Domain;
+using TheTrailWalker.Domain.Travel;
 using TheTrailWalker.Input;
 using TheTrailWalker.Movement;
+using TheTrailWalker.Travel;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.UI;
@@ -22,8 +25,11 @@ namespace TheTrailWalker
         [SerializeField] private Vector3[] knots = DefaultKnots();
         [SerializeField] private bool collectionEnabled;
         [SerializeField] private bool milestone4Enabled;
+        [SerializeField] private bool milestone5Enabled;
         public void EnableCollection() => collectionEnabled = true;
         public void EnableMilestone4() { collectionEnabled = true; milestone4Enabled = true; }
+        public void EnableMilestone5() { collectionEnabled = true; milestone4Enabled = true; milestone5Enabled = true; }
+        private TravelSceneInfo travelScene;
         public static Vector3[] DefaultKnots() => new[] { Vector3.zero, new Vector3(8, 0, 25), new Vector3(-10, 0, 52), new Vector3(12, 0, 82), new Vector3(4, 0, 112), new Vector3(-5, 0, 140) };
         private MovementState state;
         private SampledTrailPath path;
@@ -42,16 +48,36 @@ namespace TheTrailWalker
         public void Configure(Material terrain, Material trail, Material avatar)
         { terrainMaterial = terrain; trailMaterial = trail; avatarMaterial = avatar; }
 
-        public void Bind(MovementState movement)
+        public void Bind(MovementState movement, Action requestReload = null)
         {
             if (state != null) return;
             state = movement;
+            // Benchmark mode shows a fixed, representative Dawn Plains leg and never loads or writes the session save.
+            bool benchmark = milestone5Enabled && File.Exists(PerformanceBenchmark.TriggerPath);
+            if (milestone5Enabled)
+            {
+                // The saved camp decides which segment this scene presents; the road starts at that camp.
+                if (benchmark)
+                {
+                    TravelCatalog catalog = TravelCatalog.Prototype();
+                    travelScene = new TravelSceneInfo { Catalog = catalog, Segment = catalog.Segment(PerformanceBenchmark.SegmentId) };
+                }
+                else travelScene = CollectionPrototype.ResolveTravelScene();
+                travelScene.RequestReload = requestReload;
+                knots = TravelScenery.KnotsFor(travelScene.Segment);
+            }
             path = new SampledTrailPath(knots);
             CreateWorld(); CreateHud();
+            if (benchmark)
+            {
+                safe.parent.gameObject.SetActive(false);
+                gameObject.AddComponent<PerformanceBenchmark>().Bind(orbit, motor, state);
+                return;
+            }
             if (collectionEnabled)
             {
                 safe.parent.gameObject.SetActive(false);
-                gameObject.AddComponent<CollectionPrototype>().Bind(state, motor, path, orbit, gestures, avatarMaterial, milestone4Enabled);
+                gameObject.AddComponent<CollectionPrototype>().Bind(state, motor, path, orbit, gestures, avatarMaterial, milestone4Enabled, travelScene);
             }
             Debug.Log($"[Milestone1] Ready: {path.Length:F2} m trail; cap {state.SpeedCap:F1} m/s.");
         }
@@ -65,17 +91,58 @@ namespace TheTrailWalker
             return item;
         }
 
-        private void CreateWorld()
+        // Segment dressing: each leg's regional environment kit (ground cover, shrubs, decorative pines, rocks) placed on the
+        // actual ground, clear of the road, camps and interactables; every region keeps the meadow ground and dirt trail for now.
+        private void DressSegment(RegionDefinition region, IReadOnlyList<InteractableAnchor> anchors, IReadOnlyList<InteractableAnchor> nextAnchors, IReadOnlyList<InteractableAnchor> previousAnchors)
         {
-            Primitive("Ground", PrimitiveType.Cube, new Vector3(0, -0.3f, 70), new Vector3(110, 0.5f, 200), terrainMaterial);
-            // Ribbon follows the exact distance lookup used by the motor.
-            int count = Mathf.CeilToInt(path.Length) + 1;
+            Transform terrain = transform.Find("Terrain");
+            // Every region uses the palette-styled ground (built with the terrain) and the dirt trail for now.
+            Material dirt = Region01Environment.TrailMaterial;
+            // Both road ribbons, camp clearings and their footpaths are trodden earth.
+            if (dirt != null) foreach (Transform piece in GetComponentsInChildren<Transform>())
+                if (piece.name.StartsWith("Curved trail") || piece.name == "Clearing" || piece.name == "Footpath") piece.GetComponent<MeshRenderer>().sharedMaterial = dirt;
+            if (terrain == null) return;
+            var ground = terrain.gameObject.AddComponent<MeshCollider>();
+            ground.sharedMesh = terrain.GetComponent<MeshFilter>().sharedMesh;
+            Func<Vector3, float> height = position =>
+                ground.Raycast(new Ray(position + Vector3.up * 100f, Vector3.down), out RaycastHit hit, 300f) ? hit.point.y : position.y - 0.12f;
+            // Interactables were placed at road height; rest each on the terrain under it (feet on the ground for animals,
+            // whose rig marks a ground anchor), on every shown leg. Fixes rabbits floating above the ground.
+            foreach (Harvest.Tier1HarvestVisual visual in GetComponentsInChildren<Harvest.Tier1HarvestVisual>(true))
+            {
+                var rig = visual.GetComponent<Harvest.Tier1RabbitRig>();
+                float feet = rig != null && rig.GroundAnchor != null ? rig.GroundAnchor.position.y : visual.transform.position.y;
+                visual.transform.position += Vector3.up * (height(visual.transform.position) - feet);
+            }
+            // Roadside and field scenery along all shown legs, each from its own region's tier-one kit, clear of camps and interactables.
+            var roads = new List<ITrailPath>(); var regions = new List<int>(); var anchorPoints = new List<Vector3>(); var campPoints = new List<Vector3>();
+            void Add(ITrailPath road, SegmentDefinition leg, IReadOnlyList<InteractableAnchor> legAnchors)
+            {
+                if (road == null) return;
+                roads.Add(road); regions.Add(travelScene.Catalog.RegionOf(leg).Number);
+                if (legAnchors != null) foreach (InteractableAnchor anchor in legAnchors)
+                {
+                    road.Evaluate(Mathf.Clamp(anchor.Distance, 0, road.Length), out Vector3 p, out Vector3 t);
+                    anchorPoints.Add(p + Vector3.Cross(Vector3.up, t).normalized * anchor.Lateral);
+                }
+            }
+            Add(previousPath, previousSegment, previousAnchors); Add(path, travelScene.Segment, anchors); Add(nextPath, nextSegment, nextAnchors);
+            if (travelScene.StartCamp != null) campPoints.Add(travelScene.StartCamp.LookTarget);
+            if (travelScene.EndCamp != null) campPoints.Add(travelScene.EndCamp.LookTarget);
+            SceneryScatter.Build(transform, roads, regions, campPoints, anchorPoints, height, travelScene.Segment.Id);
+            Destroy(ground); // only for placement; pickups and touches never hit the ground
+        }
+
+        // Road ribbon that follows the exact distance lookup used by the motor.
+        private void BuildRibbon(string name, ITrailPath trail)
+        {
+            int count = Mathf.CeilToInt(trail.Length) + 1;
             var vertices = new Vector3[count * 2]; var triangles = new int[(count - 1) * 6];
             var uv = new Vector2[vertices.Length];
             for (int i = 0; i < count; i++)
             {
-                float distance = path.Length * i / (count - 1);
-                path.Evaluate(distance, out Vector3 p, out Vector3 t);
+                float distance = trail.Length * i / (count - 1);
+                trail.Evaluate(distance, out Vector3 p, out Vector3 t);
                 Vector3 side = Vector3.Cross(Vector3.up, t) * 1.7f;
                 vertices[i * 2] = p - side; vertices[i * 2 + 1] = p + side;
                 uv[i * 2] = new Vector2(0, distance); uv[i * 2 + 1] = new Vector2(1, distance);
@@ -84,13 +151,61 @@ namespace TheTrailWalker
                 triangles[k] = v; triangles[k + 1] = v + 2; triangles[k + 2] = v + 1;
                 triangles[k + 3] = v + 1; triangles[k + 4] = v + 2; triangles[k + 5] = v + 3;
             }
-            var ribbon = new GameObject("Curved trail", typeof(MeshFilter), typeof(MeshRenderer));
+            var ribbon = new GameObject(name, typeof(MeshFilter), typeof(MeshRenderer));
             ribbon.transform.SetParent(transform, false);
             var mesh = new Mesh { name = "Arc-length trail ribbon", vertices = vertices, triangles = triangles, uv = uv };
             mesh.RecalculateNormals(); mesh.RecalculateBounds();
             ribbon.GetComponent<MeshFilter>().sharedMesh = mesh;
             ribbon.GetComponent<MeshRenderer>().sharedMaterial = trailMaterial;
-            for (int i = 10; i < path.Length; i += 10)
+        }
+
+        // The leg after the end camp, shown beyond it so the road visibly continues on arrival (no drops; visual only).
+        private SegmentDefinition nextSegment;
+        private ITrailPath nextPath;
+        // The leg already walked into the start camp, shown behind it so the view back is not an empty expanse. Its
+        // resources are not repopulated (they roll only when the player returns to that leg's camp).
+        private SegmentDefinition previousSegment;
+        private ITrailPath previousPath;
+
+        private static Vector3 Heading(Vector3 tangent)
+        {
+            var flat = new Vector3(tangent.x, 0, tangent.z);
+            return flat.sqrMagnitude > 1e-6f ? flat.normalized : Vector3.forward;
+        }
+
+        private void CreateWorld()
+        {
+            if (milestone5Enabled)
+            {
+                ITrailPath ground = path;
+                nextSegment = travelScene.Segment.RiverApproach ? null : travelScene.Catalog.Outgoing(travelScene.Segment.ToCampId);
+                if (nextSegment != null)
+                {
+                    path.Evaluate(path.Length, out Vector3 end, out Vector3 tangent);
+                    nextPath = new PlacedTrailPath(new SampledTrailPath(TravelScenery.KnotsFor(nextSegment)), Quaternion.LookRotation(Heading(tangent)), end);
+                    ground = new JoinedTrailPath(path, nextPath);
+                }
+                // A landing already starts at the river; other legs show the leg that arrived at their start camp.
+                previousSegment = travelScene.Segment.Landing ? null : travelScene.Catalog.Incoming(travelScene.Segment.FromCampId);
+                if (previousSegment != null)
+                {
+                    // Turn and move the previous leg so it ends exactly where this road starts, heading the same way.
+                    var own = new SampledTrailPath(TravelScenery.KnotsFor(previousSegment));
+                    own.Evaluate(own.Length, out Vector3 ownEnd, out Vector3 ownTangent);
+                    path.Evaluate(0, out Vector3 start, out Vector3 startTangent);
+                    Quaternion turn = Quaternion.FromToRotation(Heading(ownTangent), Heading(startTangent));
+                    previousPath = new PlacedTrailPath(own, turn, start - turn * ownEnd);
+                    ground = new JoinedTrailPath(previousPath, ground);
+                }
+                Material palette = Region01Environment.GroundMaterial;
+                TravelScenery.BuildTerrain(transform, ground, palette != null ? palette : terrainMaterial, 70f, 3f, TravelScenery.Undulation(travelScene.Segment), palette != null);
+            }
+            else Primitive("Ground", PrimitiveType.Cube, new Vector3(0, -0.3f, 70), new Vector3(110, 0.5f, 200), terrainMaterial);
+            BuildRibbon("Curved trail", path);
+            if (nextPath != null) BuildRibbon("Curved trail (next leg)", nextPath);
+            if (previousPath != null) BuildRibbon("Curved trail (previous leg)", previousPath);
+            // Camp segments are dressed with the environment kit instead (DressSegment); markers remain for older prototypes.
+            for (int i = 10; i < path.Length && !milestone5Enabled; i += 10)
             {
                 path.Evaluate(i, out Vector3 p, out Vector3 t);
                 Vector3 side = Vector3.Cross(Vector3.up, t);
@@ -98,9 +213,51 @@ namespace TheTrailWalker
                 // Low silhouettes provide readable parallax without camera obstructions.
                 Primitive("Trail scenery", PrimitiveType.Sphere, p - side * 5f + Vector3.up * 0.4f, new Vector3(2f, 1f, 2f), terrainMaterial);
             }
-            path.Evaluate(path.Length, out Vector3 camp, out _);
-            Primitive("End camp anchor", PrimitiveType.Cylinder, camp + Vector3.down * 0.02f, new Vector3(7, 0.08f, 7), avatarMaterial);
-            Primitive("Camp beacon", PrimitiveType.Cube, camp + new Vector3(3, 2, 0), new Vector3(0.4f, 4, 0.4f), trailMaterial);
+            if (milestone5Enabled)
+            {
+                // Camps sit in clearings beside the road: the one this segment leaves from, and the next one (or the river ferry).
+                TravelCatalog catalog = travelScene.Catalog;
+                RegionDefinition region = catalog.RegionOf(travelScene.Segment);
+                // Trader looks need learned wearable recipes, which arrive with Milestone 7; until then every set is tier 0.
+                var knownRecipes = new HashSet<string>();
+                string fromCamp = travelScene.Segment.FromCampId, toCamp = travelScene.Segment.ToCampId;
+                // A ferry landing starts on the far riverbank instead of at a camp.
+                if (travelScene.Segment.Landing) TravelScenery.BuildRiver(transform, path, terrainMaterial, trailMaterial, avatarMaterial, landing: true);
+                else travelScene.StartCamp = TravelScenery.BuildCamp(transform, catalog.Camp(fromCamp), path, 0, terrainMaterial, trailMaterial, avatarMaterial,
+                    region.Number, CampNpcs.Roll(fromCamp, travelScene.StartVisit, knownRecipes));
+                if (travelScene.Segment.RiverApproach) TravelScenery.BuildRiver(transform, path, terrainMaterial, trailMaterial, avatarMaterial);
+                else travelScene.EndCamp = TravelScenery.BuildCamp(transform, catalog.Camp(toCamp), path, path.Length, terrainMaterial, trailMaterial, avatarMaterial,
+                    region.Number, CampNpcs.Roll(toCamp, travelScene.StartVisit + 1, knownRecipes));
+                var anchors = SegmentLayout.Build(region, travelScene.Segment);
+                TravelScenery.BuildInteractables(transform, path, anchors, trailMaterial, avatarMaterial, terrainMaterial, SegmentLayout.Tier(region));
+                IReadOnlyList<InteractableAnchor> nextAnchors = null;
+                if (nextSegment != null)
+                {
+                    // Preview of the next leg: its trees and animals (visual only) and, for a river leg, the river.
+                    var preview = new GameObject("Next leg preview").transform; preview.SetParent(transform, false);
+                    RegionDefinition nextRegion = catalog.RegionOf(nextSegment);
+                    nextAnchors = SegmentLayout.Build(nextRegion, nextSegment);
+                    TravelScenery.BuildInteractables(preview, nextPath, nextAnchors, trailMaterial, avatarMaterial, terrainMaterial, SegmentLayout.Tier(nextRegion));
+                    if (nextSegment.RiverApproach) TravelScenery.BuildRiver(preview, nextPath, terrainMaterial, trailMaterial, avatarMaterial);
+                }
+                IReadOnlyList<InteractableAnchor> previousAnchors = null;
+                if (previousSegment != null)
+                {
+                    // The walked leg behind the start camp: trees and animals (visual only) and, for a landing, the river it began at.
+                    var behind = new GameObject("Previous leg").transform; behind.SetParent(transform, false);
+                    RegionDefinition previousRegion = catalog.RegionOf(previousSegment);
+                    previousAnchors = SegmentLayout.Build(previousRegion, previousSegment);
+                    TravelScenery.BuildInteractables(behind, previousPath, previousAnchors, trailMaterial, avatarMaterial, terrainMaterial, SegmentLayout.Tier(previousRegion));
+                    if (previousSegment.Landing) TravelScenery.BuildRiver(behind, previousPath, terrainMaterial, trailMaterial, avatarMaterial, landing: true);
+                }
+                DressSegment(region, anchors, nextAnchors, previousAnchors);
+            }
+            else
+            {
+                path.Evaluate(path.Length, out Vector3 camp, out _);
+                Primitive("End camp anchor", PrimitiveType.Cylinder, camp + Vector3.down * 0.02f, new Vector3(7, 0.08f, 7), avatarMaterial);
+                Primitive("Camp beacon", PrimitiveType.Cube, camp + new Vector3(3, 2, 0), new Vector3(0.4f, 4, 0.4f), trailMaterial);
+            }
 
             var player = new GameObject("Trail walker"); player.transform.SetParent(transform, false);
             GameObject body = Primitive("Avatar speed gesture target", PrimitiveType.Capsule, Vector3.up, Vector3.one, avatarMaterial);
@@ -116,14 +273,14 @@ namespace TheTrailWalker
 
             var cameraObject = new GameObject("Main Camera", typeof(Camera), typeof(AudioListener));
             cameraObject.tag = "MainCamera"; cameraObject.transform.SetParent(transform, false);
-            Camera camera = cameraObject.GetComponent<Camera>(); camera.fieldOfView = 52; camera.farClipPlane = 200;
+            Camera camera = cameraObject.GetComponent<Camera>(); camera.fieldOfView = 52; camera.farClipPlane = 320;
             camera.clearFlags = CameraClearFlags.SolidColor; camera.backgroundColor = new Color(0.44f, 0.64f, 0.7f);
             camera.GetUniversalAdditionalCameraData().renderPostProcessing = false;
             orbit = cameraObject.AddComponent<CameraOrbitController>();
             var rig = cameraObject.AddComponent<FollowCameraRig>(); rig.Target = player.transform; rig.Orbit = orbit;
             var lightObject = new GameObject("Sun", typeof(Light)); lightObject.transform.SetParent(transform, false);
             lightObject.transform.rotation = Quaternion.Euler(45, -30, 0);
-            Light light = lightObject.GetComponent<Light>(); light.type = LightType.Directional; light.intensity = 1.1f; light.shadows = LightShadows.Hard;
+            Light light = lightObject.GetComponent<Light>(); light.type = LightType.Directional; light.intensity = 1.1f; light.shadows = LightShadows.Soft;
             RenderSettings.sun = light; RenderSettings.ambientMode = AmbientMode.Flat; RenderSettings.ambientLight = Color.gray;
             gestures = gameObject.AddComponent<GestureRouter>(); gestures.Bind(state, camera, body.GetComponent<Collider>(), orbit);
         }
@@ -142,7 +299,7 @@ namespace TheTrailWalker
             Button(safe, "INVENTORY", 0.04f, 0.135f, 0.48f, 0.205f, OpenInventory);
             harvestLabel = Button(safe, "TEST HARVEST", 0.52f, 0.135f, 0.96f, 0.205f, Harvest);
             Button(safe, "RESTART TRAIL", 0.04f, 0.045f, 0.48f, 0.115f, Restart);
-            Button(safe, "CAP: 0.8 / 2.0", 0.52f, 0.045f, 0.96f, 0.115f, () => state.SetSpeedCap(state.SpeedCap < 1 ? MovementState.MaximumSpeedCap : 0.8f));
+            Button(safe, "CAP: 1.0 / 3.0", 0.52f, 0.045f, 0.96f, 0.115f, () => state.SetSpeedCap(state.SpeedCap < MovementState.MaximumSpeedCap ? MovementState.MaximumSpeedCap : MovementState.StarterSpeedCap));
             inventory = Rect("Inventory placeholder", safe, 0, 0, 1, 1).gameObject;
             inventory.AddComponent<Image>().color = new Color(0.06f, 0.11f, 0.13f, 0.98f);
             Label(inventory.transform, "BACKPACK\nMovement is paused", 0.07f, 0.66f, 0.93f, 0.85f, 36);

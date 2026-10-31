@@ -6,17 +6,17 @@ namespace TheTrailWalker.Domain
     public enum MovementPauseReasons
     {
         None = 0, Inventory = 1, Harvest = 2, Camp = 4, Loading = 8,
-        Suspended = 16, Exhausted = 32, Unfocused = 64
+        Suspended = 16, Exhausted = 32, Unfocused = 64, Seated = 128
     }
 
     // Walking intent survives temporary pauses, but never a harvest start or camp arrival.
     public sealed class MovementState
     {
-        // Highest boots cap (rank-four boots); the starter cap stays 0.8 m/s.
-        public const float MaximumSpeedCap = 2f;
+        // Starter cap (no boots) and highest boots cap (rank-four boots), raised October 30, 2026.
+        public const float StarterSpeedCap = 1f, MaximumSpeedCap = 3f;
         public float Distance { get; private set; }
         public float RequestedSpeed { get; private set; }
-        public float SpeedCap { get; private set; } = 0.8f;
+        public float SpeedCap { get; private set; } = StarterSpeedCap;
         public float InventoryResumeSpeed { get; private set; }
         public int InventoryDepth { get; private set; }
         public bool PostHarvestStop { get; private set; }

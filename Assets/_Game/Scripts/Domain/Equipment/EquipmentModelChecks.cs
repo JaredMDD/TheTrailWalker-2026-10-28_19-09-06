@@ -11,16 +11,16 @@ namespace TheTrailWalker.Domain.Equipment
             int count = 0;
             void Check(bool value, string name) { if (!value) throw new InvalidOperationException("Milestone 4: " + name); count++; }
             var gear = new EquipmentState();
-            Check(gear.MaxHearts == 3 && gear.Pockets == 0 && gear.Hooks == 0 && gear.BackpackWidth == 6 && Math.Abs(gear.SpeedCap - 0.8) < 1e-8, "starter capabilities");
+            Check(gear.MaxHearts == 3 && gear.Pockets == 0 && gear.Hooks == 0 && gear.BackpackWidth == 6 && Math.Abs(gear.SpeedCap - 1.0) < 1e-8, "starter capabilities");
             gear.Equip(new WornGear("hat", GearSlot.Hat, 4, 5, 10));
             gear.Equip(new WornGear("boots", GearSlot.Boots, 4, 5, 10));
             gear.Equip(new WornGear("shirt", GearSlot.Shirt, 4, 5, 10));
             gear.Equip(new WornGear("pants", GearSlot.Pants, 4, 5, 10));
             gear.Equip(new WornGear("bag", GearSlot.Backpack, 4, 5, 10));
-            Check(gear.MaxHearts == 12 && gear.Pockets == 10 && gear.Hooks == 10 && gear.BackpackWidth == 14 && Math.Abs(gear.SpeedCap - 2.0) < 1e-8, "maximum capabilities");
+            Check(gear.MaxHearts == 12 && gear.Pockets == 10 && gear.Hooks == 10 && gear.BackpackWidth == 14 && Math.Abs(gear.SpeedCap - 3.0) < 1e-8, "maximum capabilities");
             Check(gear.ApplyDistance(0).Count == 0 && gear.Get(GearSlot.Hat).RemainingDistance == 10, "zero distance does not wear equipment");
             Check(gear.ApplyDistance(9).Count == 0 && Math.Abs(gear.Get(GearSlot.Hat).RemainingDistance - 1) < 1e-8, "partial distance wear");
-            Check(gear.ApplyDistance(1).Count == 5 && gear.MaxHearts == 3 && gear.Pockets == 0 && gear.Hooks == 0 && gear.BackpackWidth == 6 && Math.Abs(gear.SpeedCap - 0.8) < 1e-8, "simultaneous expiration restores defaults");
+            Check(gear.ApplyDistance(1).Count == 5 && gear.MaxHearts == 3 && gear.Pockets == 0 && gear.Hooks == 0 && gear.BackpackWidth == 6 && Math.Abs(gear.SpeedCap - 1.0) < 1e-8, "simultaneous expiration restores defaults");
             gear.Equip(new WornGear("infinite", GearSlot.Hat, 1, 1, 0, true));
             Check(gear.ApplyDistance(100000).Count == 0 && gear.MaxHearts == 4, "infinite gear does not expire");
             int[] hearts = { 3, 4, 6, 9, 12 }, slots = { 0, 2, 4, 7, 10 }, widths = { 6, 8, 10, 12, 14 };
@@ -28,7 +28,7 @@ namespace TheTrailWalker.Domain.Equipment
             {
                 var ranked = new EquipmentState();
                 foreach (GearSlot slot in Enum.GetValues(typeof(GearSlot))) ranked.Equip(new WornGear("rank" + rank + slot, slot, rank, 1, 100));
-                Check(ranked.MaxHearts == hearts[rank] && ranked.Pockets == slots[rank] && ranked.Hooks == slots[rank] && ranked.BackpackWidth == widths[rank] && Math.Abs(ranked.SpeedCap - (0.8 + rank * 0.3)) < 1e-8, "rank " + rank + " capabilities");
+                Check(ranked.MaxHearts == hearts[rank] && ranked.Pockets == slots[rank] && ranked.Hooks == slots[rank] && ranked.BackpackWidth == widths[rank] && Math.Abs(ranked.SpeedCap - (1.0 + rank * 0.5)) < 1e-8, "rank " + rank + " capabilities");
             }
             Check(Math.Abs(WornGear.CreateTestGear("q1", GearSlot.Boots, 1, 1, 100).RemainingDistance - 100) < 1e-8 && Math.Abs(WornGear.CreateTestGear("q5", GearSlot.Boots, 1, 5, 100).RemainingDistance - 180) < 1e-8, "finished quality affects test durability");
             bool rejected = false; try { gear.Equip(new WornGear("second", GearSlot.Hat, 1, 1, 1)); } catch (InvalidOperationException) { rejected = true; }

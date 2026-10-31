@@ -33,7 +33,7 @@ These species pairings were reserved in Part 1. Sections 7–12 now propose regi
 
 ## 4. Discovery and persistence requirements
 
-Require normal discovery of a recipe's authored tier and **every exact regional ingredient source** before offering/unlocking it. Follow refined inputs to raw sources and require known conversions or accessible exact shops as applicable. High mastery, gold, gifted inputs, bought food or domestic goat products never prove discovery of future regions/wild species.
+Require normal discovery of a recipe's authored tier and **each exact ingredient, with at least one discovered and reachable authored source per ingredient** before offering/unlocking it. Follow refined inputs to raw sources and require known conversions or accessible exact shops as applicable. High mastery, gold, gifted inputs, bought food or domestic goat products never prove discovery of future regions/wild species.
 
 Validate at offer generation and again before payment/unlock, including after reload/migration. Locked previews show unmet sources without granting knowledge. Persist discovery, recipe IDs/mastery, stock, quotes, visit IDs and transactions; never infer discovery from owned items, reroll paid rewards or charge twice. Existing tier-1–4 rules continue to apply.
 
@@ -94,7 +94,7 @@ The debug/testing policy continues: 1,000-unit generated pickups and debug tools
 
 
 
-Only branches and hide/fur overlap loose gathering and interactions. Logs, meat, antlers/horns/claws and fish are interaction outputs, never extra loose icons. Singular/plural ingredient labels below resolve to the exact resource ID above, not separate variants. Goat down is a shed-fiber gathering resource in region 35, not a second hunted pelt drop. Silk cocoons gather in region 34; Mulberry leaves have an authored craft sink without adding silkworm farming or a pet. These sources and tier-6 silk/cashmere placement are explicit new proposals.
+Branches and hide/fur are baseline overlaps; the tree-food IDs in section 8 are explicit additional LooseGathering/TreeHarvest overlaps. Logs, meat, antlers/horns/claws and fish are interaction outputs, never extra loose icons. Singular/plural ingredient labels below resolve to the exact resource ID above, not separate variants. Goat down is a shed-fiber gathering resource in region 35, not a second hunted pelt drop. Silk cocoons gather in region 34; Mulberry leaves have an authored craft sink without adding silkworm farming or a pet. These sources and tier-6 silk/cashmere placement are explicit new proposals.
 
 
 ## 8. Processing, hunting and regional recipes
@@ -159,13 +159,13 @@ Material recipes are unlevelled with fixed timers; Food/Misc retain Part 1 maste
 
 | Tier | Definition ID | Source | Output catalog (drop quantities use existing harvest service) |
 | --- | --- | --- | --- |
-| 5 | `tree.maple` | Maple | Maple branches + Maple logs; logs are interaction-only |
+| 5 | `tree.maple` | Maple | Maple branches + Maple logs + Maple sap (`resource.maple_sap`); food ingredient required |
 | 5 | `hunt.deer` | deer | Deer hide + Raw deer meat + Deer antler; one hide/fur type per animal |
-| 6 | `tree.cedar` | Cedar | Cedar branches + Cedar logs; logs are interaction-only |
+| 6 | `tree.cedar` | Cedar | Cedar branches + Cedar logs + Apricots (`resource.apricots`); food ingredient required |
 | 6 | `hunt.mountain_goat` | mountain goat | Mountain goat hide + Raw mountain goat meat + Mountain goat horn; one hide/fur type per animal |
-| 7 | `tree.redwood` | Redwood | Redwood branches + Redwood logs; logs are interaction-only |
+| 7 | `tree.redwood` | Redwood | Redwood branches + Redwood logs + Peaches (`resource.peaches`); food ingredient required |
 | 7 | `hunt.buffalo` | buffalo | Buffalo hide + Raw buffalo meat + Buffalo horn; one hide/fur type per animal |
-| 8 | `tree.ebony` | Ebony | Ebony branches + Ebony logs; logs are interaction-only |
+| 8 | `tree.ebony` | Ebony | Ebony branches + Ebony logs + Mangoes (`resource.mangoes`); food ingredient required |
 | 8 | `hunt.bear` | bear | Bear fur + Raw bear meat + Bear claw; one hide/fur type per animal |
 
 
@@ -196,6 +196,12 @@ Each wood also has fixed Material recipe `recipe.material.<wood>_log_from_branch
 
 **Explicit Food pantry extension:** exact Wheat flour/dairy/Honey/Sugar remain available as older inputs; add Maple syrup (tier 5), Sesame oil (7) and Black sesame oil (8) for these and later Food recipes after their sources are discovered. No pantry exception applies to Material/Misc. Main produce, meat, fish, regional spices and fuel remain own/previous tier. No oil or dairy substitution. Food timers remain below one hour; x1/x100/x1000 scale exact costs/yields without 1,000 visual objects.
 
+
+**Required food drops and alternative-source gates (correction):** Part 1 section 7.1.1 applies to every expansion tree, including massive trees: branches + logs + one required food ingredient, with at most a second authored ingredient. Maple gives Maple sap, Cedar gives Apricots, Redwood gives Peaches, and Ebony gives Mangoes. These are the existing exact loose-resource IDs, not new fruit variants; loose sources remain in regions 30/31/37/43 respectively. Do not add a fourth featured loose resource or count the same ID twice. Sap and fruit are raw cooking ingredients, not prepared food for automatic eating. Their existing syrup, regional-meal, box and bakery recipes provide useful sinks.
+
+Discovering and having eligible harvesting access to any tree node in 25–30 / 31–36 / 37–42 / 43–48 respectively makes its ingredient source reachable; merely owning a gifted ingredient does not. For each ingredient, use OR across valid discovered sources, AND across distinct ingredients. Therefore a Maple tree in region 25 can supply sap for the pear tart without region 30, and a Cedar tree in discovered region 33 can supply apricots without separately requiring loose region 31. Refinement knowledge, other ingredient discovery and exact dairy/flour access still apply. For old saved locked offers, revalidate source eligibility against this revised table without rerolling or charging twice.
+
+Use Part 1's Normal 2–4 ingredient bundles, Elite 4–6, 1,000 units per bundle and massive x50 on food as well as wood. Persist aggregate manifests before exposing drops. P2.1–P2.4 check all four tree IDs for mandatory food, at-most-two ingredients, Normal/Elite/massive quantities and exact-once claim/reload. Include both positive alternative-source tests (tree discovered, loose source undiscovered; loose discovered with valid access, tree unavailable) and negative tests (neither source accessible). This corrects the former branches/logs-only output table and the old requirement to discover every possible source of an ingredient.
 
 ## 9. Fish and fishery
 
@@ -281,10 +287,23 @@ Eight additions, two per tier 5–8. Combined bakery catalog: **15**, distribute
 
 ## 12. Exact gates, dependencies and acceptance
 
-Each recipe must author `RequiredRegionIds`, exact shop/interaction source IDs and conversion prerequisites. Resolve these from the region table and recursively through each refined input: Maple syrup needs region 30 plus its conversion, and Maple branches need 25. Merely entering tier 5 is insufficient. Part 1 ingredients retain their exact sources: Wheat 6, Honey 11, Sugar cane 17 and accessible exact dairy. Source access, not currently holding ingredients, gates the roll. Fish eligibility is the union of discovered regional pairs, not the entire tier catalog.
+**Tree-ingredient recipe coverage review:** each required expansion tree ingredient already has at least one exact input recipe, and every refinement has a finished-food use. Retain these definitions rather than creating duplicate unlocks.
 
-Required negative cases: block maple pear tart without 25 or 30 (plus Wheat 6/dairy); plum brioche without 27 or 28; apricot cake without 31 or 33; blackcurrant pastry without 33 or 36; peach galette without 37 or 39; raspberry cake without 39 or 42; mango tart without 43 or 45; dragon fruit cake without 46 or 47. Scallop/Mussel/Octopus/Oyster require region 25/31/37/43 and reachable fishery; each dish additionally requires its cereal/herb/dairy sources. Trophy crafts require discovered exact hunting sources, eligible tools and accessible refinements.
+| Canonical harvested ingredient ID | Exact input recipe / useful chain | Other existing food uses |
+| --- | --- | --- |
+| `resource.maple_sap` | `recipe.material.maple_syrup`: 3 Maple sap + 1 Maple branch -> 1 Maple syrup; then `recipe.food.chicory_maple_drink`: 2 Chicory root + 1 Maple syrup + 1 Cow milk -> 1 | `recipe.food.maple_pear_tart`; `recipe.food.venison_pear_pot` use the syrup |
+| `resource.apricots` | `recipe.food.apricot_buckwheat_pot`: 2 Apricots + 2 Buckwheat + 1 Cow milk -> 1 | `recipe.food.apricot_hazelnut_cake`; `recipe.food.goat_apricot_pot` |
+| `resource.peaches` | `recipe.food.peach_millet_pot`: 2 Peaches + 2 Millet + 1 Cow milk -> 1 | `recipe.food.peach_pecan_galette` |
+| `resource.mangoes` | `recipe.food.mango_sorghum_pot`: 2 Mangoes + 2 Sorghum + 1 Cow milk -> 1 | `recipe.food.mango_passionfruit_tart` |
+
+Tree and loose outputs use these same canonical IDs. Every listed recipe accepts either source and valid mixtures of same-ID stacks; do not author a separate “tree apricot” or provenance-specific recipe. Raw harvested ingredients are ready for crafting, but not prepared food for automatic consumption. Pending craft products remain unavailable until ready. Apply ordinary exact quantities, reservation, quality/profile and output-quality rules. Maple sap must be converted to `item.maple_syrup` where syrup is required; Birch sap is a different ID and cannot substitute. Source eligibility remains OR across authorized sources for each ingredient and AND across different required ingredients.
+
+**Recipe acceptance checks:** for each row, craft with tree-sourced ingredients, loose-sourced ingredients and a valid mixture; output/yield must agree for the same craft profile. For the four Part 1 tree-only ingredients, use their TreeHarvest source and exact conversion chain. Reject wrong sap/fruit/flour IDs, missing quantities, reserved inputs and pending refinements without spending anything. Check raw-to-refined-to-Food chains, x1/x100/x1000 costs, wood fuel and exact-once consumption/save recovery. Harvested Q5 ingredients must not force crafted Q5. Confirm every configured tree ingredient has an authored input recipe and a reachable finished Food use; apply that content check whenever a second bonus ingredient is added. This review adds no recipe IDs and leaves bakery/box counts unchanged.
+
+Each recipe must author `RequiredRegionIds`, exact shop/interaction source IDs and conversion prerequisites. Resolve these from the region table and recursively through each refined input: Maple syrup needs its conversion plus access to Maple sap and Maple branches. Sap is available from discovered Maple trees in 25–30 or loose in 30; branches come from those trees or loose in 25. One valid source per ingredient suffices. Merely entering tier 5 is insufficient. Part 1 ingredients retain their exact sources: Wheat 6, Honey 11, Sugar cane 17 and accessible exact dairy. Source access, not currently holding ingredients, gates the roll. Fish eligibility is the union of discovered regional pairs, not the entire tier catalog.
+
+Required negative cases: block maple pear tart without Pears 25, an accessible Maple sap source (tree 25–30 or loose 30), its conversion and Wheat 6/dairy; plum brioche without 27 or 28; apricot cake without Hazelnuts 33 and Apricots (Cedar tree in 31–36 or loose 31); blackcurrant pastry without 33 or 36; peach galette without Pecans 39 and Peaches (Redwood tree in 37–42 or loose 37); raspberry cake without 39 or 42; mango tart without Passion fruit 45 and Mangoes (Ebony tree in 43–48 or loose 43); dragon fruit cake without 46 or 47. Scallop/Mussel/Octopus/Oyster require region 25/31/37/43 and reachable fishery; each dish additionally requires its cereal/herb/dairy sources. Trophy crafts require discovered exact hunting sources, eligible tools and accessible refinements.
 
 Check gates at generation and before payment/unlock/claim. Gifts, mastery, quality, gold, purchased refined goods, previews and prepared food never grant discovery. Persist IDs/catalog version, offers/quotes, visits, reservations, paid manifests and recipe knowledge. Reject invalid unlocks without charging/consuming the reward; preserve paid manifests until a valid claim without rerolling. Activate tiers/catalog versions explicitly; disabled expansion data stays outside current catalogs.
 
-P2.1–P2.4 incorporate these tables incrementally: resources/refinements/source gates first; then route/tools/hunting/fishing; then missions and shop/box/bakery integration; finally migration/regressions. Exact tools/tasks still need authoring; none of these tables claims implementation completion. Before activation, check 24 regions/72 distinct resources/18 per tier, six unique pairs per tier and 16 fish; 16 new box and eight new bakery IDs with no collisions; every missing ingredient source individually. Check ×10/−10% prices, mastery-one knowledge, crafted quality independent of Q5 inputs, exact bulk/fuel costs and no reload duplication. Combined two-source collection: **57 optional recipes = 48 Food + 9 Misc** (42 box + 15 bakery); the truffle mission and ordinary regional recipes are additional and excluded from that count.
+P2.1–P2.4 incorporate these tables incrementally: resources/refinements/source gates first; then route/tools/hunting/fishing; then missions and shop/box/bakery integration; finally migration/regressions. Exact tools/tasks still need authoring; none of these tables claims implementation completion. Before activation, check 24 regions/72 distinct resources/18 per tier, six unique pairs per tier and 16 fish; 16 new box and eight new bakery IDs with no collisions; each ingredient with all its alternative sources unavailable, and each alternative source independently available. Check ×10/−10% prices, mastery-one knowledge, crafted quality independent of Q5 inputs, exact bulk/fuel costs and no reload duplication. Combined two-source collection: **57 optional recipes = 48 Food + 9 Misc** (42 box + 15 bakery); the truffle mission and ordinary regional recipes are additional and excluded from that count.

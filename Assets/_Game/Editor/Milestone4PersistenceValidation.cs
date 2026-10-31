@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using TheTrailWalker.Domain.Inventory;
 using TheTrailWalker.Domain.Items;
@@ -28,7 +29,7 @@ namespace TheTrailWalker.Editor
             byte[] original = File.ReadAllBytes(oldStore.MainPath);
             SessionSnapshot upgraded = SessionSaveStore.MigrateV1(old, 158);
             Check(upgraded.version == 2 && upgraded.survival.maximum == 3 && upgraded.survival.hearts == 3, "old profile migrates to starter stamina");
-            Check(Math.Abs(upgraded.speedCap - 0.8f) < 0.0001 && Math.Abs(upgraded.requestedSpeed - 0.8f) < 0.0001 && Math.Abs(upgraded.inventoryResume - 0.8f) < 0.0001, "migration clamps speed to starter equipment");
+            Check(Math.Abs(upgraded.speedCap - 1f) < 0.0001 && Math.Abs(upgraded.requestedSpeed - 1f) < 0.0001 && Math.Abs(upgraded.inventoryResume - 1f) < 0.0001, "migration clamps speed to starter equipment");
             Check(upgraded.inventoryOpen && upgraded.yaw == old.yaw && upgraded.distance == old.distance && upgraded.items[0].id == "stone" && upgraded.items[0].quantity == 1000, "migration preserves position, pause, yaw and ownership");
             var newStore = new SessionSaveStore(directory, new Clock(), 2);
             newStore.Save(upgraded);
@@ -76,6 +77,31 @@ namespace TheTrailWalker.Editor
             SessionSaveStore.Validate(reloaded, 158, out SpatialInventory droppedInventory);
             ItemEntry droppedEntry = null; foreach (ItemEntry entry in droppedInventory.Entries) if (entry.Id == "dropped-log") droppedEntry = entry;
             Check(droppedLog != null && droppedLog.dropped && droppedEntry != null && droppedEntry.Dropped && droppedEntry.Quantity == 640 && droppedEntry.Quality == 4 && droppedEntry.Owner == ItemOwner.World, "dropped stack keeps provenance, quantity and quality through reload");
+            // Retest flag for section 7.1.1: every tree raw/refined/prepared item survives a save with exact identity.
+            int catalogStart = restored.items.Count; var trees = new List<ItemDefinition>(PrototypeItems.TreeIngredients); trees.AddRange(PrototypeItems.TreeRefinements); trees.AddRange(PrototypeItems.TreeDishes);
+            for (int i = 0; i < trees.Count; i++)
+                restored.items.Add(new SavedItem { id = "tree-" + i, definitionId = trees[i].Id, owner = i % 2 == 0 ? "Overflow" : "World", quantity = (i * 97 + 3) % 1000 + 1, quality = i % 5 + 1, ready = i != trees.Count - 1, unitValue = 100 + i, dropped = i % 2 == 1, trailDistance = i });
+            newStore.Save(restored);
+            Check(newStore.Load(158, out var treeLoad, out _) == LoadStatus.Loaded, "tree food catalog save reloads");
+            SessionSaveStore.Validate(treeLoad, 158, out SpatialInventory treeInventory);
+            bool treeExact = true;
+            for (int i = 0; i < trees.Count; i++)
+            {
+                ItemEntry entry = null; foreach (ItemEntry candidate in treeInventory.Entries) if (candidate.Id == "tree-" + i) entry = candidate;
+                treeExact &= entry != null && entry.Definition == trees[i] && entry.Quantity == (i * 97 + 3) % 1000 + 1 && entry.Quality == i % 5 + 1 && entry.Profile.UnitValue == 100 + i && entry.Ready == (i != trees.Count - 1) && entry.Dropped == (i % 2 == 1);
+            }
+            Check(treeExact, "raw, refined and prepared tree items keep ID, quantity, quality, profile, readiness and dropped marker through reload");
+            // A mixed-quality stack restores its whole pile, lowest quality first.
+            restored.items[catalogStart].quality = 1;
+            restored.items[catalogStart].pile = new List<SavedPortion> { new SavedPortion { quality = 4, quantity = 3, unitValue = 100 }, new SavedPortion { quality = 1, quantity = 1, unitValue = 100 } };
+            newStore.Save(restored);
+            Check(newStore.Load(158, out var pileLoad, out _) == LoadStatus.Loaded, "mixed-quality pile save reloads");
+            SessionSaveStore.Validate(pileLoad, 158, out SpatialInventory pileInventory);
+            ItemEntry pileEntry = null; foreach (ItemEntry candidate in pileInventory.Entries) if (candidate.Id == "tree-0") pileEntry = candidate;
+            Check(pileEntry != null && pileEntry.Quantity == 4 && pileEntry.Pile.Count == 2 && pileEntry.Pile[0].Quality == 1 && pileEntry.Pile[1].Quality == 4 && pileEntry.Pile[1].Quantity == 3, "a mixed-quality stack keeps its pile through reload");
+            restored.items[catalogStart].pile[0].quantity = 9; Check(Invalid(restored), "a pile that disagrees with the stack quantity is rejected");
+            restored.items[catalogStart].pile = null;
+            restored.items.RemoveRange(catalogStart, trees.Count);
             restored.items[restored.items.Count - 1].owner = "Overflow"; Check(Invalid(restored), "only trail items can carry the dropped marker");
             restored.items.RemoveAt(restored.items.Count - 1); restored.survival.pendingFood = 0;
             Directory.CreateDirectory("Builds/Validation"); File.WriteAllText("Builds/Validation/Milestone4-persistence-checks.txt", "PASS " + checks + "\n");

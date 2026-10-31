@@ -53,4 +53,30 @@ namespace TheTrailWalker.Movement
             if (tangent.sqrMagnitude < 0.5f) tangent = Vector3.forward;
         }
     }
+
+    // A path moved and turned into place, e.g. the next leg continuing from the end of the current road.
+    public sealed class PlacedTrailPath : ITrailPath
+    {
+        private readonly ITrailPath inner; private readonly Quaternion rotation; private readonly Vector3 offset;
+        public PlacedTrailPath(ITrailPath path, Quaternion turn, Vector3 origin) { inner = path; rotation = turn; offset = origin; }
+        public float Length => inner.Length;
+        public void Evaluate(float distance, out Vector3 position, out Vector3 tangent)
+        {
+            inner.Evaluate(distance, out position, out tangent);
+            position = offset + rotation * position; tangent = rotation * tangent;
+        }
+    }
+
+    // Two paths end to end (the second starts where the first ends); used for terrain that spans both legs.
+    public sealed class JoinedTrailPath : ITrailPath
+    {
+        private readonly ITrailPath first, second;
+        public JoinedTrailPath(ITrailPath a, ITrailPath b) { first = a; second = b; }
+        public float Length => first.Length + second.Length;
+        public void Evaluate(float distance, out Vector3 position, out Vector3 tangent)
+        {
+            if (distance <= first.Length) first.Evaluate(distance, out position, out tangent);
+            else second.Evaluate(distance - first.Length, out position, out tangent);
+        }
+    }
 }

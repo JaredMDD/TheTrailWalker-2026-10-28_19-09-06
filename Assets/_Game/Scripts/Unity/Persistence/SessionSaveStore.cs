@@ -7,6 +7,7 @@ using TheTrailWalker.Domain;
 using TheTrailWalker.Domain.Inventory;
 using TheTrailWalker.Domain.Items;
 using TheTrailWalker.Domain.Equipment;
+using TheTrailWalker.Domain.Travel;
 using UnityEngine;
 
 namespace TheTrailWalker.Persistence
@@ -29,7 +30,23 @@ namespace TheTrailWalker.Persistence
         public bool inventoryOpen, postHarvest, camp;
         public List<SavedItem> items = new List<SavedItem>();
         public SavedSurvival survival;
+        // Schema 3: camp, discovery, toll and drop-cycle progress (Milestone 5).
+        public SavedTravel travel;
+        // Milestone 6 (optional, older saves load without it): interactables harvested in their segment's current drop
+        // cycle, as "segmentId|cycle|anchorId". Entries from older cycles are ignored and dropped on the next save.
+        public List<string> harvested = new List<string>();
     }
+    [Serializable] public sealed class SavedTravel
+    {
+        public string campId, lastTrailCampId;
+        public bool seated;
+        public int visitNumber;
+        public long cash; public long gold; // debug gold wallet (absent in older schema 3 files: 0)
+        public bool farBank; // walking the ferry landing leg
+        public List<string> visited = new List<string>(), discovered = new List<string>(), paidTolls = new List<string>();
+        public List<SavedCycle> cycles = new List<SavedCycle>();
+    }
+    [Serializable] public sealed class SavedCycle { public string segmentId; public int cycle; }
     [Serializable] public sealed class SavedSurvival
     {
         public double hearts = 3, maximum = 3, pendingFood, faintElapsed;
@@ -56,6 +73,16 @@ namespace TheTrailWalker.Persistence
         public bool hasWear;
         public double wearRemaining;
         public float trailDistance, worldX, worldY, worldZ;
+        // Quality/profile portions of the stack; absent in older saves, which restore as one portion from the fields above.
+        public List<SavedPortion> pile;
+        // Schema 3: the trail segment a world item lies on.
+        public string segmentId;
+    }
+    [Serializable] public sealed class SavedPortion
+    {
+        public int quality, quantity, maxDurability, durability;
+        public long unitValue;
+        public string variant;
     }
     [Serializable] internal sealed class SaveEnvelope { public int version = 1; public string payload, sha256; }
     public enum LoadStatus { Fresh, Loaded, Recovered, Invalid, Unsupported }
@@ -65,16 +92,17 @@ namespace TheTrailWalker.Persistence
         private readonly string path, backup, temporary;
         private readonly IClock clock;
         private readonly int latestSchema;
-        private bool recovered;
+        private volatile bool recovered;
         public SessionSaveStore(string directory, IClock time, int schemaVersion = 1)
         {
-            if (schemaVersion != 1 && schemaVersion != 2) throw new ArgumentOutOfRangeException(nameof(schemaVersion));
+            if (schemaVersion < 1 || schemaVersion > 3) throw new ArgumentOutOfRangeException(nameof(schemaVersion));
             latestSchema = schemaVersion; path = Path.Combine(directory, "session-v" + schemaVersion + ".json"); backup = path + ".bak"; temporary = path + ".tmp"; clock = time ?? throw new ArgumentNullException(nameof(time));
         }
         public string MainPath => path;
         public string BackupPath => backup;
         public void ArchiveForReset()
         {
+            FlushBackgroundSaves();
             string suffix = ".reset-" + clock.UtcNow.ToString("yyyyMMddHHmmss") + "-" + Guid.NewGuid().ToString("N");
             if (File.Exists(path)) File.Move(path, path + suffix);
             if (File.Exists(backup)) File.Move(backup, backup + suffix);
@@ -85,22 +113,101 @@ namespace TheTrailWalker.Persistence
         {
             using (var sha = SHA256.Create()) return BitConverter.ToString(sha.ComputeHash(Encoding.UTF8.GetBytes(value))).Replace("-", "").ToLowerInvariant();
         }
-        public void Save(SessionSnapshot snapshot)
+        // Background writer (October 31, 2026): the walking autosave cost 18-31 ms of main-thread time on the test phone,
+        // mostly validation, hashing and the flushed write. SaveInBackground hands a finished snapshot to one writer
+        // thread shared by every store (it survives scene reloads); saves are written strictly in order, and while one
+        // is being written only the newest waiting snapshot is kept. Load, ArchiveForReset and Save wait for pending
+        // writes first, so a reload always reads the latest save and a synchronous save is never overtaken.
+        private static readonly object queueGate = new object(), ioGate = new object();
+        private static SessionSaveStore pendingStore;
+        private static SessionSnapshot pendingSnapshot;
+        private static float pendingPathLength;
+        private static bool writerRunning;
+        private static Exception writerFailure;
+
+        // snapshot must not be modified after this call. A failure is reported through TakeBackgroundFailure.
+        public void SaveInBackground(SessionSnapshot snapshot, float pathLength = float.MaxValue)
+        {
+            if (snapshot == null) throw new ArgumentNullException(nameof(snapshot));
+            lock (queueGate)
+            {
+                pendingStore = this; pendingSnapshot = snapshot; pendingPathLength = pathLength;
+                if (writerRunning) return;
+                writerRunning = true;
+            }
+            System.Threading.ThreadPool.QueueUserWorkItem(_ => DrainWriter());
+        }
+
+        private static void DrainWriter()
+        {
+            while (true)
+            {
+                SessionSaveStore store; SessionSnapshot snapshot; float length;
+                lock (queueGate)
+                {
+                    if (pendingSnapshot == null) { writerRunning = false; System.Threading.Monitor.PulseAll(queueGate); return; }
+                    store = pendingStore; snapshot = pendingSnapshot; length = pendingPathLength; pendingSnapshot = null; pendingStore = null;
+                }
+                try { store.WriteSnapshot(snapshot, length); }
+                catch (Exception error)
+                {
+                    // Keep the first failure; drop anything queued behind it (the caller blocks further saves).
+                    lock (queueGate) { if (writerFailure == null) writerFailure = error; pendingSnapshot = null; pendingStore = null; }
+                }
+            }
+        }
+
+        // Blocks until every queued background save has been written (or has failed).
+        public static void FlushBackgroundSaves()
+        {
+            lock (queueGate) while (writerRunning) System.Threading.Monitor.Wait(queueGate);
+        }
+
+        // Returns (and clears) the first background save failure since the last call, or null.
+        public static Exception TakeBackgroundFailure()
+        {
+            lock (queueGate) { Exception failure = writerFailure; writerFailure = null; return failure; }
+        }
+
+        // Milliseconds spent in each stage of the last write (validate, serialize, hash, write+flush, replace); diagnostics only.
+        public static readonly double[] LastStageMs = new double[5];
+        // Synchronous save (pause/quit, validation suites): waits for queued background saves, then writes this one.
+        public void Save(SessionSnapshot snapshot, float pathLength = float.MaxValue)
+        {
+            FlushBackgroundSaves();
+            WriteSnapshot(snapshot, pathLength);
+        }
+
+        private void WriteSnapshot(SessionSnapshot snapshot, float pathLength)
+        {
+            lock (ioGate) WriteSnapshotLocked(snapshot, pathLength);
+        }
+
+        private void WriteSnapshotLocked(SessionSnapshot snapshot, float pathLength)
         {
             if (snapshot == null || snapshot.version != latestSchema) throw new InvalidDataException("Unexpected save schema for this store");
-            Validate(snapshot, float.MaxValue, out _);
+            var clockwatch = System.Diagnostics.Stopwatch.StartNew();
+            double Lap() { double ms = clockwatch.Elapsed.TotalMilliseconds; clockwatch.Restart(); return ms; }
+            Validate(snapshot, pathLength, out _);
+            LastStageMs[0] = Lap();
             snapshot.savedUtc = clock.UtcNow.ToString("O");
             string payload = JsonUtility.ToJson(snapshot);
-            string json = JsonUtility.ToJson(new SaveEnvelope { payload = payload, sha256 = Hash(payload) });
+            LastStageMs[1] = Lap();
+            string hash = Hash(payload);
+            LastStageMs[2] = Lap();
+            string json = JsonUtility.ToJson(new SaveEnvelope { payload = payload, sha256 = hash });
             Directory.CreateDirectory(Path.GetDirectoryName(path));
             byte[] bytes = Encoding.UTF8.GetBytes(json);
             using (var stream = new FileStream(temporary, FileMode.Create, FileAccess.Write, FileShare.None)) { stream.Write(bytes, 0, bytes.Length); stream.Flush(true); }
+            LastStageMs[3] = Lap();
             if (File.Exists(path)) File.Replace(temporary, path, recovered ? null : backup);
             else File.Move(temporary, path);
+            LastStageMs[4] = Lap();
             recovered = false;
         }
         public LoadStatus Load(float pathLength, out SessionSnapshot snapshot, out string message)
         {
+            FlushBackgroundSaves();
             snapshot = null; message = "";
             if (!File.Exists(path) && !File.Exists(backup)) return LoadStatus.Fresh;
             LoadStatus main = Read(path, pathLength, out snapshot, out message);
@@ -132,11 +239,19 @@ namespace TheTrailWalker.Persistence
         }
         public static void Validate(SessionSnapshot data, float pathLength, out SpatialInventory inventory)
         {
-            if (data == null || (data.version != 1 && data.version != 2) || data.segmentId != "prototype.trail.1" || data.items == null || data.items.Count > 1024 || float.IsNaN(data.yaw) || float.IsInfinity(data.yaw) || data.distance > pathLength) throw new InvalidDataException("Invalid session header");
+            if (data == null || data.version < 1 || data.version > 3 || (data.version < 3 && data.segmentId != "prototype.trail.1") || data.items == null || data.items.Count > 1024 || (data.harvested != null && (data.harvested.Count > 512 || data.harvested.Exists(h => string.IsNullOrEmpty(h) || h.Split('|').Length != 3))) || float.IsNaN(data.yaw) || float.IsInfinity(data.yaw) || data.distance > pathLength) throw new InvalidDataException("Invalid session header");
             var movement = new MovementState(); movement.Restore(data.distance, data.requestedSpeed, data.speedCap, data.inventoryResume, data.inventoryOpen, data.postHarvest, data.camp);
             if (data.camp != (data.distance >= pathLength) && pathLength != float.MaxValue) throw new InvalidDataException("Invalid camp position");
+            TravelCatalog catalog = TravelCatalog.Prototype();
+            if (data.version == 3)
+            {
+                TravelState travel = RestoreTravel(data, catalog);
+                if (data.segmentId != travel.CurrentSegment.Id) throw new InvalidDataException("Saved segment does not match the current camp");
+                // Seated at a camp: at the start of its outgoing segment with no walking intent.
+                if (travel.Seated && (data.distance != 0 || data.requestedSpeed != 0 || data.inventoryResume != 0 || data.camp)) throw new InvalidDataException("Seated state has walking progress");
+            }
             var gear = new EquipmentState(); var wornIds = new HashSet<string>(); var wornRecords = new Dictionary<string, SavedGear>(); var wornItems = new HashSet<string>();
-            if (data.version == 2)
+            if (data.version >= 2)
             {
                 SavedSurvival survival = data.survival;
                 if (survival == null || survival.gear == null || survival.loss == null || survival.gear.Count > 5 || survival.loss.Count > 4) throw new InvalidDataException("Invalid survival data");
@@ -155,10 +270,10 @@ namespace TheTrailWalker.Persistence
                 foreach (SavedItem remaining in data.items) if (remaining != null && lossIds.Contains(remaining.id)) throw new InvalidDataException("Faint loss still owned");
             }
             inventory = data.version == 1 ? new SpatialInventory() : new SpatialInventory(gear.BackpackWidth * 1000, gear.BackpackHeight * 1000);
-            if (data.version == 2 && !inventory.Reconfigure(gear.BackpackWidth * 1000, gear.BackpackHeight * 1000, gear.Pockets, gear.Hooks, out _)) throw new InvalidDataException("Invalid storage capabilities");
+            if (data.version >= 2 && !inventory.Reconfigure(gear.BackpackWidth * 1000, gear.BackpackHeight * 1000, gear.Pockets, gear.Hooks, out _)) throw new InvalidDataException("Invalid storage capabilities");
             foreach (SavedItem item in data.items)
             {
-                if (item == null || !Enum.TryParse(item.owner, false, out ItemOwner owner) || (owner != ItemOwner.World && owner != ItemOwner.Backpack && (data.version == 1 || (owner != ItemOwner.Pocket && owner != ItemOwner.Hook && owner != ItemOwner.Overflow && owner != ItemOwner.Worn))) || (wornIds.Contains(item.id) && owner != ItemOwner.Worn) || float.IsNaN(item.trailDistance) || float.IsInfinity(item.trailDistance) || item.trailDistance < 0 || item.trailDistance > pathLength || float.IsNaN(item.worldX) || float.IsInfinity(item.worldX) || float.IsNaN(item.worldY) || float.IsInfinity(item.worldY) || float.IsNaN(item.worldZ) || float.IsInfinity(item.worldZ)) throw new InvalidDataException("Invalid item record");
+                if (item == null || !Enum.TryParse(item.owner, false, out ItemOwner owner) || (owner != ItemOwner.World && owner != ItemOwner.Backpack && (data.version == 1 || (owner != ItemOwner.Pocket && owner != ItemOwner.Hook && owner != ItemOwner.Overflow && owner != ItemOwner.Worn))) || (wornIds.Contains(item.id) && owner != ItemOwner.Worn) || float.IsNaN(item.trailDistance) || float.IsInfinity(item.trailDistance) || item.trailDistance < 0 || item.trailDistance > (data.version == 3 ? 10000f : pathLength) || float.IsNaN(item.worldX) || float.IsInfinity(item.worldX) || float.IsNaN(item.worldY) || float.IsInfinity(item.worldY) || float.IsNaN(item.worldZ) || float.IsInfinity(item.worldZ)) throw new InvalidDataException("Invalid item record");
                 ItemDefinition def = Array.Find(PrototypeItems.All, d => d.Id == item.definitionId);
                 if (def == null) throw new InvalidDataException("Unknown item definition: " + item.definitionId);
                 if (owner == ItemOwner.Worn)
@@ -169,11 +284,59 @@ namespace TheTrailWalker.Persistence
                 }
                 var entry = inventory.AddWorld(item.id, def, item.quantity, item.quality, new ItemProfile(item.unitValue, item.maxDurability, item.durability, item.variant), item.ready, item.trailDistance);
                 if (!inventory.RestoreWear(entry, item.hasWear, item.wearRemaining)) throw new InvalidDataException("Invalid spare wear state");
-                if (owner != ItemOwner.World && !inventory.RestoreStored(entry, owner, item.x, item.y)) throw new InvalidDataException("Invalid or overlapping item placement");
+                if (item.pile != null && item.pile.Count > 0)
+                {
+                    var portions = new List<PilePortion>(item.pile.Count);
+                    foreach (SavedPortion saved in item.pile)
+                    {
+                        if (saved == null) throw new InvalidDataException("Invalid stack pile");
+                        portions.Add(new PilePortion(saved.quality, new ItemProfile(saved.unitValue, saved.maxDurability, saved.durability, saved.variant), saved.quantity));
+                    }
+                    if (!inventory.RestorePile(entry, portions)) throw new InvalidDataException("Stack pile does not match its quantity");
+                }
+                if (owner != ItemOwner.World && !inventory.RestoreStored(entry, owner, item.x, item.y)
+                    // Footprint migration (October 31, 2026, larger tools): a backpack item that no longer fits its old spot
+                    // goes to overflow (CLAIM OVERFLOW returns it) instead of invalidating the save.
+                    && !(owner == ItemOwner.Backpack && inventory.RestoreStored(entry, ItemOwner.Overflow, 0, 0))) throw new InvalidDataException("Invalid or overlapping item placement");
                 if (item.dropped && !inventory.RestoreDropped(entry)) throw new InvalidDataException("Only trail items can be marked as dropped");
+                if (data.version == 3)
+                {
+                    bool onTrail = owner == ItemOwner.World;
+                    if (onTrail != !string.IsNullOrEmpty(item.segmentId) || (onTrail && (catalog.Segment(item.segmentId) == null || !inventory.AssignSegment(entry, item.segmentId)))) throw new InvalidDataException("Trail items need a known segment; carried items have none");
+                }
             }
             foreach (var record in wornRecords)
                 if (!record.Key.StartsWith("debug-", StringComparison.Ordinal) && !wornItems.Contains(record.Key)) throw new InvalidDataException("Worn item is missing from inventory ledger");
+        }
+
+        public static TravelState RestoreTravel(SessionSnapshot data, TravelCatalog catalog)
+        {
+            SavedTravel saved = data?.travel;
+            if (saved == null || saved.visited == null || saved.discovered == null || saved.paidTolls == null || saved.cycles == null) throw new InvalidDataException("Missing travel state");
+            var cycles = new List<KeyValuePair<string, int>>();
+            foreach (SavedCycle cycle in saved.cycles) { if (cycle == null) throw new InvalidDataException("Invalid drop cycle"); cycles.Add(new KeyValuePair<string, int>(cycle.segmentId, cycle.cycle)); }
+            try { return TravelState.Restore(catalog, saved.campId, saved.seated, saved.lastTrailCampId, saved.visitNumber, saved.cash, saved.visited, saved.discovered, saved.paidTolls, cycles, saved.gold, saved.farBank); }
+            catch (ArgumentException error) { throw new InvalidDataException(error.Message); }
+        }
+        public static SavedTravel SaveTravel(TravelState travel)
+        {
+            var saved = new SavedTravel { campId = travel.CurrentCampId, lastTrailCampId = travel.LastTrailCampId, seated = travel.Seated, visitNumber = travel.VisitNumber, cash = travel.Cash, gold = travel.Gold, farBank = travel.OnFarBank,
+                visited = new List<string>(travel.VisitedCamps), discovered = new List<string>(travel.DiscoveredRegions), paidTolls = new List<string>(travel.PaidTolls) };
+            foreach (var cycle in travel.DropCycles) saved.cycles.Add(new SavedCycle { segmentId = cycle.Key, cycle = cycle.Value });
+            return saved;
+        }
+
+        // Copies a Milestone 4 profile into the camp-based schema: seated at the first camp, carried items, gear and
+        // stamina preserved. Items left on the old single prototype trail have no segment and are not carried over.
+        public static SessionSnapshot MigrateV2(SessionSnapshot source)
+        {
+            if (source == null || source.version != 2) throw new InvalidDataException("Expected a version 2 snapshot");
+            Validate(source, float.MaxValue, out _);
+            TravelState travel = TravelState.Start(TravelCatalog.Prototype());
+            var migrated = new SessionSnapshot { version = 3, segmentId = travel.CurrentSegment.Id, distance = 0, requestedSpeed = 0, speedCap = source.speedCap, inventoryResume = 0,
+                yaw = source.yaw, inventoryOpen = false, postHarvest = source.survival.fainted, camp = false, survival = source.survival, travel = SaveTravel(travel) };
+            foreach (SavedItem item in source.items) if (item.owner != nameof(ItemOwner.World)) migrated.items.Add(item);
+            Validate(migrated, float.MaxValue, out _); return migrated;
         }
 
         public static SessionSnapshot MigrateV1(SessionSnapshot source, float pathLength)
@@ -181,7 +344,7 @@ namespace TheTrailWalker.Persistence
             if (source == null || source.version != 1) throw new InvalidDataException("Expected a version 1 snapshot");
             Validate(source, pathLength, out _);
             var migrated = new SessionSnapshot { version = 2, segmentId = source.segmentId, distance = source.distance,
-                requestedSpeed = Math.Min(source.requestedSpeed, 0.8f), speedCap = 0.8f, inventoryResume = Math.Min(source.inventoryResume, 0.8f),
+                requestedSpeed = Math.Min(source.requestedSpeed, MovementState.StarterSpeedCap), speedCap = MovementState.StarterSpeedCap, inventoryResume = Math.Min(source.inventoryResume, MovementState.StarterSpeedCap),
                 yaw = source.yaw, inventoryOpen = source.inventoryOpen, postHarvest = source.postHarvest, camp = source.camp,
                 items = new List<SavedItem>(source.items), survival = new SavedSurvival() };
             Validate(migrated, pathLength, out _); return migrated;

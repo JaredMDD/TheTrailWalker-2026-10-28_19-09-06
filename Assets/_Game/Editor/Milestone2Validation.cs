@@ -14,6 +14,64 @@ namespace TheTrailWalker.Editor
         private static readonly List<string> passed = new List<string>();
         private static void Check(bool value, string name) { if (!value) throw new Exception("Milestone 2: " + name); passed.Add(name); }
         private static bool Rejects(Action action) { try { action(); return false; } catch (ArgumentException) { return true; } }
+        // Retest flag for section 7.1.1: new tree raw/refined/prepared definitions follow the existing item rules.
+        private static void TreeFoodCatalogChecks()
+        {
+            var ids = new HashSet<string>(); bool unique = true;
+            foreach (ItemDefinition definition in PrototypeItems.All) unique &= ids.Add(definition.Id);
+            Check(unique, "Catalog item IDs are unique, including tree food items");
+            bool rawOk = true;
+            foreach (ItemDefinition raw in PrototypeItems.TreeIngredients) rawOk &= raw.Category == ItemCategory.RawIngredient && raw.Stackable && raw.FoodHearts == 0 && !raw.PreparedFood;
+            Check(rawOk, "Tree drops are raw recipe ingredients, not food");
+            bool refinedOk = true;
+            foreach (ItemDefinition refined in PrototypeItems.TreeRefinements) refinedOk &= refined.Category == ItemCategory.RefinedIngredient && refined.FoodHearts == 0 && !refined.PreparedFood;
+            Check(refinedOk, "Mesquite flour and roasted acorn meal are refined ingredients, not food");
+            int[] hearts = { 2, 3, 4, 5 }; bool dishesOk = true;
+            for (int i = 0; i < hearts.Length; i++) dishesOk &= PrototypeItems.TreeDishes[i].Category == ItemCategory.PreparedFood && PrototypeItems.TreeDishes[i].PreparedFood && PrototypeItems.TreeDishes[i].FoodHearts == hearts[i];
+            Check(dishesOk, "Tree dishes are prepared food worth 2/3/4/5 hearts per serving");
+            Check(PrototypeItems.MesquitePods.Id != PrototypeItems.MesquiteFlour.Id && PrototypeItems.Acorns.Id != PrototypeItems.RoastedAcornMeal.Id && PrototypeItems.PineNuts.Id != PrototypeItems.ToastedPineNuts.Id && PrototypeItems.BirchSap.Id != PrototypeItems.BirchSapMilkDrink.Id,
+                "Raw, refined and cooked forms keep distinct IDs (no substitution)");
+            Check(Rejects(() => new ItemDefinition("bad.category", "Bad", 800, 800, foodHearts: 2, preparedFood: true, category: ItemCategory.RawIngredient)), "A definition cannot claim a category that contradicts its food data");
+            var bag = new SpatialInventory();
+            ItemEntry nuts = bag.AddWorld("tf-nuts", PrototypeItems.PineNuts, 400, 1); ItemEntry trailNuts = bag.AddWorld("tf-trail-nuts", PrototypeItems.PineNuts, 1000, 1);
+            ItemEntry otherQuality = bag.AddWorld("tf-nuts-q2", PrototypeItems.PineNuts, 1, 2); ItemEntry acorns = bag.AddWorld("tf-acorns", PrototypeItems.Acorns, 1, 1);
+            ItemEntry dish = bag.AddWorld("tf-dish", PrototypeItems.AcornBiscuits, 999, 5); ItemEntry pending = bag.AddWorld("tf-dish-pending", PrototypeItems.AcornBiscuits, 1, 5, null, false);
+            Check(Rejects(() => bag.AddWorld("tf-over", PrototypeItems.MesquiteFlour, 1001)) && bag.AddWorld("tf-full", PrototypeItems.MesquiteFlour, 1000).Quantity == 1000, "Tree food stacks accept 1 to 1,000 units only");
+            Check(nuts.CanMerge(trailNuts) && nuts.CanMerge(otherQuality) && !nuts.CanMerge(acorns) && !dish.CanMerge(pending), "Stacks combine by item ID regardless of quality; a different ID or readiness stays separate");
+            Put(bag, nuts, 0, 0); bag.Reserve(trailNuts, 8);
+            Check(bag.TryQuickStore(trailNuts, 8, out _) && nuts.Quantity == 1000 && trailNuts.Quantity == 400 && trailNuts.Owner == ItemOwner.Backpack, "Topping up a partial ingredient stack stores the exact remainder as a new stack");
+            bag.Release(trailNuts, 8);
+            Put(bag, dish, 2000, 0); Put(bag, pending, 4000, 0);
+            bag.Reserve(nuts, 9); Check(!bag.TryConsumeOne(nuts, 9, out _) && nuts.Quantity == 1000, "Raw ingredients cannot be eaten"); bag.Release(nuts, 9);
+            bag.Reserve(pending, 9); Check(!bag.TryConsumeOne(pending, 9, out _), "A pending dish cannot be eaten"); bag.Release(pending, 9);
+            bag.Reserve(dish, 9); Check(bag.TryConsumeOne(dish, 9, out _) && dish.Quantity == 998, "A ready dish is eaten one serving at a time"); bag.Release(dish, 9);
+            // Piles: one stack per item ID tracks quantity by quality and is eaten from the lowest quality.
+            var piles = new SpatialInventory();
+            ItemEntry biscuits = piles.AddWorld("pile-q5", PrototypeItems.AcornBiscuits, 3, 5); Put(piles, biscuits, 0, 0);
+            ItemEntry cheaper = piles.AddWorld("pile-q2", PrototypeItems.AcornBiscuits, 2, 2); ItemEntry middle = piles.AddWorld("pile-q3", PrototypeItems.AcornBiscuits, 1, 3);
+            piles.Reserve(cheaper, 10); piles.TryQuickStore(cheaper, 10, out _); piles.Release(cheaper, 10);
+            piles.Reserve(middle, 10); piles.TryQuickStore(middle, 10, out _); piles.Release(middle, 10);
+            Check(biscuits.Quantity == 6 && biscuits.Pile.Count == 3 && biscuits.Pile[0].Quality == 2 && biscuits.Pile[0].Quantity == 2 && biscuits.Pile[2].Quality == 5 && biscuits.QualityLabel == "Q2-Q5" && cheaper.Owner == ItemOwner.Consumed,
+                "Different qualities join one stack as a pile ordered from lowest quality");
+            piles.Reserve(biscuits, 11);
+            piles.TryConsumeLowest(biscuits, 11, out PilePortion first, out _); piles.TryConsumeLowest(biscuits, 11, out PilePortion second, out _); piles.TryConsumeLowest(biscuits, 11, out PilePortion third, out _);
+            piles.Release(biscuits, 11);
+            Check(first.Quality == 2 && second.Quality == 2 && third.Quality == 3 && biscuits.Quantity == 3 && biscuits.Pile.Count == 1 && biscuits.Quality == 5, "Edibles are eaten lowest quality first");
+            ItemEntry topped = piles.AddWorld("pile-top", PrototypeItems.PineNuts, 900, 1); Put(piles, topped, 2000, 0);
+            ItemEntry bigPickup = piles.AddWorld("pile-pickup", PrototypeItems.PineNuts, 1000, 4); piles.Reserve(bigPickup, 12);
+            Check(piles.TryQuickStore(bigPickup, 12, out _) && topped.Quantity == 1000 && bigPickup.Quantity == 900 && bigPickup.Owner == ItemOwner.Backpack && topped.HighestQuality == 4 && bigPickup.Quality == 4,
+                "A pickup gives all its units: top-up first, remainder as a new stack, with qualities tracked");
+            piles.Release(bigPickup, 12);
+            // Device case: a small Q3 stack wedged against a neighbour must still be filled by a Q1 pickup.
+            var wedged = new SpatialInventory();
+            ItemEntry milk = wedged.AddWorld("milk-q3", PrototypeItems.BirchSapMilkDrink, 3, 3); Put(wedged, milk, 1300, 0);
+            ItemEntry neighbour = wedged.AddWorld("cakes", PrototypeItems.MesquitePodCakes, 5, 4); Put(wedged, neighbour, 2150, 0);
+            ItemEntry milkPickup = wedged.AddWorld("milk-q1", PrototypeItems.BirchSapMilkDrink, 1000, 1); wedged.Reserve(milkPickup, 13);
+            Check(wedged.TryQuickStore(milkPickup, 13, out _) && milk.Quantity == 1000 && milk.Pile[0].Quality == 1 && milk.HighestQuality == 3 && milkPickup.Quantity == 3 && milkPickup.Owner == ItemOwner.Backpack
+                && neighbour.X == 2150 && neighbour.Y == 0 && !SpatialInventory.Overlaps(milk.X, milk.Y, milk.Width, milk.Height, neighbour.X, neighbour.Y, neighbour.Width, neighbour.Height),
+                "A stack that cannot grow in place moves to free space and is filled; neighbours stay put");
+            wedged.Release(milkPickup, 13);
+        }
         private static void Put(SpatialInventory bag, ItemEntry item, int x, int y)
         { if (!bag.Reserve(item, 99) || !bag.TryPlace(item, 99, x, y, false, out _)) throw new Exception("Invalid validation fixture"); bag.Release(item, 99); }
         [MenuItem("The Trail Walker/Milestone 2/2 - Validate Inventory Rules")]
@@ -35,7 +93,8 @@ namespace TheTrailWalker.Editor
             var one = bag.AddWorld("one", PrototypeItems.Berries, 1);
             var almost = bag.AddWorld("almost", PrototypeItems.Berries, 999);
             var full = bag.AddWorld("full", PrototypeItems.Berries, 1000);
-            Check(one.Width == 800 && full.Width == 1200 && almost.Width <= 1200, "Quantities 1/999/1000 share bounded linear growth");
+            int berryWidth = PrototypeItems.Berries.Width;
+            Check(one.Width == berryWidth && full.Width == (int)Math.Ceiling(berryWidth * 1.5) && almost.Width <= full.Width, "Quantities 1/999/1000 share bounded linear growth");
             Check(Math.Abs(ItemEntry.Scale(1000) - 1.5) < 0.000001, "Full stack scale exactly 1.5, area at most 2.25");
             Check(Rejects(() => bag.AddWorld("one", PrototypeItems.Stone, 1)), "Duplicate identity rejected");
             Check(bag.Reserve(one, 1) && !bag.Reserve(one, 2), "Two fingers cannot reserve one item");
@@ -57,34 +116,36 @@ namespace TheTrailWalker.Editor
             Put(bag, almost, 1500, 0); bag.Reserve(one, 1);
             Check(bag.TryMerge(one, almost, 1, out _) && almost.Quantity == 1000 && one.Quantity == 0 && one.Owner == ItemOwner.Consumed, "1 plus 999 consumes source exactly once");
             Check(!bag.TryMerge(one, almost, 1, out _), "Consumed source cannot merge twice"); bag.Release(one, 1);
-            Check(!bag.Fits(full, 1000, -1, 0) && !bag.Fits(full, 1000, 5000, 0), "Bounds reject negative and protruding footprints");
+            Check(!bag.Fits(full, 1000, -1, 0) && !bag.Fits(full, 1000, bag.Width - full.Width + 1, 0), "Bounds reject negative and protruding footprints");
             Check(!bag.Fits(full, 1000, almost.X, almost.Y), "Overlap rejected");
             bag.Reserve(full, 3); Check(bag.TryQuickStore(full, 3, out _) && full.Owner == ItemOwner.Backpack, "Full compatible stack gets separate placement"); bag.Release(full, 3);
             var q2 = bag.AddWorld("q2", PrototypeItems.Berries, 1, 2);
             var priced = bag.AddWorld("priced", PrototypeItems.Berries, 1, 1, new ItemProfile(200));
             var pending = bag.AddWorld("pending", PrototypeItems.Berries, 1, ready: false);
-            Check(!q2.CanMerge(full) && !priced.CanMerge(full) && !pending.CanMerge(full), "Quality, functional price profile and readiness partition stacks");
+            Check(q2.CanMerge(full) && priced.CanMerge(full) && !pending.CanMerge(full), "Quality and price profile share one stack pile; readiness still separates stacks");
             var same = bag.AddWorld("equivalent", PrototypeItems.Berries, 1);
             Check(same.CanMerge(full), "Equivalent profiles with distinct identities can merge");
             var axe1 = bag.AddWorld("axe1", PrototypeItems.Tool, 1); var axe2 = bag.AddWorld("axe2", PrototypeItems.Tool, 1);
-            Check(!axe1.CanMerge(axe2) && axe1.Id != axe2.Id && axe1.Width == 1800, "Equipment remains unique with fixed footprint");
+            Check(!axe1.CanMerge(axe2) && axe1.Id != axe2.Id && axe1.Width == PrototypeItems.Tool.Width && axe1.Height == PrototypeItems.Tool.Height && axe2.Width == axe1.Width, "Equipment remains unique with fixed footprint");
             var partialBag = new SpatialInventory(); var target = partialBag.AddWorld("target", PrototypeItems.Berries, 999); Put(partialBag, target, 0, 0);
             var source = partialBag.AddWorld("source", PrototypeItems.Berries, 1000); partialBag.Reserve(source, 4);
-            Check(partialBag.TryQuickStore(source, 4, out _) && target.Quantity == 1000 && source.Quantity == 999 && source.Owner == ItemOwner.World, "Partial merge retains world remainder");
+            Check(partialBag.TryQuickStore(source, 4, out _) && target.Quantity == 1000 && source.Quantity == 999 && source.Owner == ItemOwner.Backpack, "A pickup tops up the partial stack and stores the rest as a new stack");
             partialBag.Release(source, 4);
-            var small = new SpatialInventory(1000, 1000); var smallTarget = small.AddWorld("tiny-target", PrototypeItems.Berries, 1); Put(small, smallTarget, 0, 0);
+            var small = new SpatialInventory(PrototypeItems.Berries.Width * 5 / 4, PrototypeItems.Berries.Height * 5 / 4); var smallTarget = small.AddWorld("tiny-target", PrototypeItems.Berries, 1); Put(small, smallTarget, 0, 0);
             var largeSource = small.AddWorld("large-source", PrototypeItems.Berries, 999); small.Reserve(largeSource, 1);
-            Check(!small.TryMerge(largeSource, smallTarget, 1, out _) && smallTarget.Quantity == 1 && largeSource.Quantity == 999, "Merge growth beyond boundary leaves both unchanged");
+            Check(small.TryMerge(largeSource, smallTarget, 1, out _) && smallTarget.Quantity > 1 && smallTarget.Quantity < 1000 && smallTarget.Quantity + largeSource.Quantity == 1000 && small.Fits(smallTarget, smallTarget.Quantity, smallTarget.X, smallTarget.Y),
+                "A stack with no room to grow is topped up only as far as it fits; quantities are conserved");
             var crowded = new SpatialInventory(); var grows = crowded.AddWorld("grows", PrototypeItems.Berries, 1); Put(crowded, grows, 0, 0);
             var neighbor = crowded.AddWorld("neighbor", PrototypeItems.Stone, 1); Put(crowded, neighbor, 800, 0);
             var growthSource = crowded.AddWorld("growth-source", PrototypeItems.Berries, 999); crowded.Reserve(growthSource, 1);
-            Check(!crowded.TryMerge(growthSource, grows, 1, out _) && grows.Quantity == 1 && growthSource.Quantity == 999, "Merge growth cannot overlap neighbor");
-            crowded.Release(growthSource, 1); crowded.Reserve(grows, 2);
-            Check(!crowded.TryPlace(grows, 2, 800, 0, false, out _) && grows.X == 0, "Rejected bag move retains original position");
+            Check(crowded.TryMerge(growthSource, grows, 1, out _) && grows.Quantity == 1000 && growthSource.Quantity == 0 && neighbor.X == 800 && neighbor.Y == 0 && !SpatialInventory.Overlaps(grows.X, grows.Y, grows.Width, grows.Height, neighbor.X, neighbor.Y, neighbor.Width, neighbor.Height),
+                "Merge growth never overlaps a neighbour: the grown stack moves to free space");
+            crowded.Release(growthSource, 1); crowded.Reserve(grows, 2); int grownX = grows.X, grownY = grows.Y;
+            Check(!crowded.TryPlace(grows, 2, 800, 0, false, out _) && grows.X == grownX && grows.Y == grownY, "Rejected bag move retains original position");
             Check(crowded.TryPlace(grows, 2, 1234, 2345, false, out _) && grows.X == 1234 && grows.Y == 2345, "Free placement supports fixed precision without slot snapping");
             var touchBag = new SpatialInventory(); var touchTarget = touchBag.AddWorld("touch-target", PrototypeItems.Berries, 1); Put(touchBag, touchTarget, 0, 0);
             var touchSource = touchBag.AddWorld("touch-source", PrototypeItems.Berries, 1); touchBag.Reserve(touchSource, 1);
-            Check(touchBag.TryPlace(touchSource, 1, 800, 0, true, out _) && touchTarget.Quantity == 2, "Touching compatible footprints merge");
+            Check(touchBag.TryPlace(touchSource, 1, touchTarget.Width, 0, true, out _) && touchTarget.Quantity == 2, "Touching compatible footprints merge");
             var fullBag = new SpatialInventory();
             for (int y = 0; y < 4; y++) for (int x = 0; x < 6; x++) Put(fullBag, fullBag.AddWorld(x + ":" + y, PrototypeItems.Stone, 1, 5), x * 1000, y * 1000);
             var refused = fullBag.AddWorld("refused", PrototypeItems.Branch, 1000); fullBag.Reserve(refused, 1);
@@ -117,6 +178,7 @@ namespace TheTrailWalker.Editor
                 if (sum != originalTotal) throw new Exception("Randomized quantity conservation failed");
             }
             Check(true, "1,000 seeded transfers/moves preserve quantities, unique ownership, bounds and nonoverlap");
+            TreeFoodCatalogChecks();
             Directory.CreateDirectory("Builds/Validation"); File.WriteAllLines("Builds/Validation/Milestone2-checks.txt", passed);
             Debug.Log($"[Milestone2] PASS: {passed.Count} inventory checks, including 1,000 randomized operations.");
         }

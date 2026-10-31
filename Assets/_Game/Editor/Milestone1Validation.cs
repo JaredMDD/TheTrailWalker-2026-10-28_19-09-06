@@ -21,8 +21,8 @@ namespace TheTrailWalker.Editor
         {
             passed.Clear();
             var state = new MovementState();
-            Check(Near(state.SpeedCap, 0.8f) && state.ActualSpeed == 0, "Starter cap and stopped intent");
-            state.SpeedGesture(10); Check(Near(state.RequestedSpeed, 0.8f), "Requested speed clamps to boots cap");
+            Check(Near(state.SpeedCap, MovementState.StarterSpeedCap) && state.ActualSpeed == 0, "Starter cap and stopped intent");
+            state.SpeedGesture(10); Check(Near(state.RequestedSpeed, MovementState.StarterSpeedCap), "Requested speed clamps to boots cap"); state.SetSpeedCap(0.8f); // the sequence below uses a fixed 0.8 m/s cap
             state.Advance(10, 150); Check(Near(state.Distance, 8), "Distance uses metres per second");
             state.SpeedGesture(-10); state.Advance(5, 150); Check(Near(state.Distance, 8) && state.ActualSpeed == 0, "Downward gesture cannot reverse");
             state.SpeedGesture(0.6f); state.OpenInventory(); state.OpenInventory();
