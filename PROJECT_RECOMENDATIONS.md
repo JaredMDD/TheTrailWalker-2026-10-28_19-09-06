@@ -3318,6 +3318,11 @@ Done today, beyond the Milestone 8 code:
      - **Regression fixed:** the balloon goods rebuild in the equipment commit had reset the tier-one special pieces and box to the plain tier material, dropping the merchant surfaces. They are restored, and `BalloonGoodsAssets.Build` now re-applies `Tier01MerchantItemDesignAssets.Build` at the end.
      - **Pond:** its stones and reeds gained stone and plant-fibre detail (environment scale 1).
      - Tier-two items keep their own palettes in the other tool's pipeline (not part of this pass).
+   - **Massive lumber-field trees (Claude, November 8, 2026; art approved for now by the user, revisit with the settlement mechanics):** new models replace the scaled trail trunk idea of section 13.4.
+     - **Set:** four woods x three trunk shapes (`Massive<Pine|Birch|Mesquite|Oak><A|B|C>`), so a row of six mixes shapes; layout can add yaw. Pine 11-16 m with a broken-crown shape, birch about 11.5 m with forked leaders, mesquite about 6.6 m low and 13-14 m wide, oak 11 m with a 16-17 m crown. Each is 1,450-3,050 triangles.
+     - **Rig:** the usual `Tier1PineRig`. `LowerTrunk` is the stump (buttress roots, sparse moss on the shaded side, knots, a sawn top with bark rim, annual ring and heartwood) and stays for the 72-hour regrowth; `FallPivot` sits at the cut and carries the bole and crown. `CutArea`, `AxeHintAnchor` and disabled selection bounds are wired like the trail trunk, plus a `MassiveTreeArt` component (species, shape, wood tier, cut height and radius, height, crown radius).
+     - **Files:** `Tools/Art/generate_massive_trees.py` -> `Assets/_Game/Art/Harvest/Massive/` (one 32-colour palette with bark, wood, needles, moss detail types); `MassiveTreeAssets.cs` (Build, Validate with 158 checks inside the Milestone 5 suite, Capture) -> `Resources/Settlement/LumberField/`. Reviews: `Docs/Art/Settlement/LumberField/`.
+     - **Left for Milestone 13:** placement in the two rows per section, the grass, shrubs and boulders around the bases, and the catalog switch away from the `PineTrunkMassive` placeholder.
 4. The item surface-detail plan (pickups and drops first).
 5. The new massive lumber-field trees.
 6. The equipment redesign (fitted hats, shirts, pants, boots and backpacks on the faceted bodies).

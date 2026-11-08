@@ -1,0 +1,449 @@
+{
+  "Palette": "MassiveTreesPalette.png",
+  "Trees": [
+    {
+      "Name": "MassivePineA",
+      "Species": "Pine",
+      "Variant": "A",
+      "WoodTier": 1,
+      "LowerMesh": "MassivePineALower",
+      "UpperMesh": "MassivePineAUpper",
+      "LowerTriangles": 588,
+      "UpperTriangles": 2452,
+      "CutHeight": 1.05,
+      "CutRadius": 0.738,
+      "BaseRadius": 1.05,
+      "Height": 14.35,
+      "CrownRadius": 4.29,
+      "CutArea": [
+        0,
+        1.17,
+        0.723
+      ],
+      "AxeHint": [
+        0,
+        2.95,
+        0.988
+      ],
+      "Selection": {
+        "Centre": [
+          0,
+          1.7,
+          0
+        ],
+        "Size": [
+          1.98,
+          3.4,
+          1.98
+        ]
+      }
+    },
+    {
+      "Name": "MassiveBirchA",
+      "Species": "Birch",
+      "Variant": "A",
+      "WoodTier": 2,
+      "LowerMesh": "MassiveBirchALower",
+      "UpperMesh": "MassiveBirchAUpper",
+      "LowerTriangles": 506,
+      "UpperTriangles": 1618,
+      "CutHeight": 1.0,
+      "CutRadius": 0.64,
+      "BaseRadius": 0.92,
+      "Height": 11.72,
+      "CrownRadius": 4.34,
+      "CutArea": [
+        0,
+        1.12,
+        0.627
+      ],
+      "AxeHint": [
+        0,
+        2.9,
+        0.89
+      ],
+      "Selection": {
+        "Centre": [
+          0,
+          1.7,
+          0
+        ],
+        "Size": [
+          1.78,
+          3.4,
+          1.78
+        ]
+      }
+    },
+    {
+      "Name": "MassiveMesquiteA",
+      "Species": "Mesquite",
+      "Variant": "A",
+      "WoodTier": 3,
+      "LowerMesh": "MassiveMesquiteALower",
+      "UpperMesh": "MassiveMesquiteAUpper",
+      "LowerTriangles": 562,
+      "UpperTriangles": 1074,
+      "CutHeight": 0.85,
+      "CutRadius": 0.72,
+      "BaseRadius": 1.0,
+      "Height": 6.6,
+      "CrownRadius": 6.3,
+      "CutArea": [
+        0,
+        0.97,
+        0.706
+      ],
+      "AxeHint": [
+        0,
+        2.75,
+        0.97
+      ],
+      "Selection": {
+        "Centre": [
+          0,
+          1.7,
+          0
+        ],
+        "Size": [
+          1.94,
+          3.4,
+          1.94
+        ]
+      }
+    },
+    {
+      "Name": "MassiveOakA",
+      "Species": "Oak",
+      "Variant": "A",
+      "WoodTier": 4,
+      "LowerMesh": "MassiveOakALower",
+      "UpperMesh": "MassiveOakAUpper",
+      "LowerTriangles": 670,
+      "UpperTriangles": 1636,
+      "CutHeight": 1.15,
+      "CutRadius": 1.06,
+      "BaseRadius": 1.4,
+      "Height": 11.0,
+      "CrownRadius": 8.23,
+      "CutArea": [
+        0,
+        1.27,
+        1.039
+      ],
+      "AxeHint": [
+        0,
+        3.05,
+        1.31
+      ],
+      "Selection": {
+        "Centre": [
+          0,
+          1.7,
+          0
+        ],
+        "Size": [
+          2.62,
+          3.4,
+          2.62
+        ]
+      }
+    },
+    {
+      "Name": "MassivePineB",
+      "Species": "Pine",
+      "Variant": "B",
+      "WoodTier": 1,
+      "LowerMesh": "MassivePineBLower",
+      "UpperMesh": "MassivePineBUpper",
+      "LowerTriangles": 588,
+      "UpperTriangles": 1742,
+      "CutHeight": 1.05,
+      "CutRadius": 0.738,
+      "BaseRadius": 1.05,
+      "Height": 10.9,
+      "CrownRadius": 4.24,
+      "CutArea": [
+        0,
+        1.17,
+        0.723
+      ],
+      "AxeHint": [
+        0,
+        2.95,
+        0.988
+      ],
+      "Selection": {
+        "Centre": [
+          0,
+          1.7,
+          0
+        ],
+        "Size": [
+          1.98,
+          3.4,
+          1.98
+        ]
+      }
+    },
+    {
+      "Name": "MassiveBirchB",
+      "Species": "Birch",
+      "Variant": "B",
+      "WoodTier": 2,
+      "LowerMesh": "MassiveBirchBLower",
+      "UpperMesh": "MassiveBirchBUpper",
+      "LowerTriangles": 506,
+      "UpperTriangles": 1354,
+      "CutHeight": 1.0,
+      "CutRadius": 0.64,
+      "BaseRadius": 0.92,
+      "Height": 11.39,
+      "CrownRadius": 4.72,
+      "CutArea": [
+        0,
+        1.12,
+        0.627
+      ],
+      "AxeHint": [
+        0,
+        2.9,
+        0.89
+      ],
+      "Selection": {
+        "Centre": [
+          0,
+          1.7,
+          0
+        ],
+        "Size": [
+          1.78,
+          3.4,
+          1.78
+        ]
+      }
+    },
+    {
+      "Name": "MassiveMesquiteB",
+      "Species": "Mesquite",
+      "Variant": "B",
+      "WoodTier": 3,
+      "LowerMesh": "MassiveMesquiteBLower",
+      "UpperMesh": "MassiveMesquiteBUpper",
+      "LowerTriangles": 562,
+      "UpperTriangles": 890,
+      "CutHeight": 0.85,
+      "CutRadius": 0.72,
+      "BaseRadius": 1.0,
+      "Height": 6.6,
+      "CrownRadius": 6.87,
+      "CutArea": [
+        0,
+        0.97,
+        0.706
+      ],
+      "AxeHint": [
+        0,
+        2.75,
+        0.97
+      ],
+      "Selection": {
+        "Centre": [
+          0,
+          1.7,
+          0
+        ],
+        "Size": [
+          1.94,
+          3.4,
+          1.94
+        ]
+      }
+    },
+    {
+      "Name": "MassiveOakB",
+      "Species": "Oak",
+      "Variant": "B",
+      "WoodTier": 4,
+      "LowerMesh": "MassiveOakBLower",
+      "UpperMesh": "MassiveOakBUpper",
+      "LowerTriangles": 670,
+      "UpperTriangles": 1306,
+      "CutHeight": 1.15,
+      "CutRadius": 1.06,
+      "BaseRadius": 1.4,
+      "Height": 11.0,
+      "CrownRadius": 8.06,
+      "CutArea": [
+        0,
+        1.27,
+        1.039
+      ],
+      "AxeHint": [
+        0,
+        3.05,
+        1.31
+      ],
+      "Selection": {
+        "Centre": [
+          0,
+          1.7,
+          0
+        ],
+        "Size": [
+          2.62,
+          3.4,
+          2.62
+        ]
+      }
+    },
+    {
+      "Name": "MassivePineC",
+      "Species": "Pine",
+      "Variant": "C",
+      "WoodTier": 1,
+      "LowerMesh": "MassivePineCLower",
+      "UpperMesh": "MassivePineCUpper",
+      "LowerTriangles": 588,
+      "UpperTriangles": 2452,
+      "CutHeight": 1.05,
+      "CutRadius": 0.738,
+      "BaseRadius": 1.05,
+      "Height": 15.55,
+      "CrownRadius": 4.32,
+      "CutArea": [
+        0,
+        1.17,
+        0.723
+      ],
+      "AxeHint": [
+        0,
+        2.95,
+        0.988
+      ],
+      "Selection": {
+        "Centre": [
+          0,
+          1.7,
+          0
+        ],
+        "Size": [
+          1.98,
+          3.4,
+          1.98
+        ]
+      }
+    },
+    {
+      "Name": "MassiveBirchC",
+      "Species": "Birch",
+      "Variant": "C",
+      "WoodTier": 2,
+      "LowerMesh": "MassiveBirchCLower",
+      "UpperMesh": "MassiveBirchCUpper",
+      "LowerTriangles": 506,
+      "UpperTriangles": 1618,
+      "CutHeight": 1.0,
+      "CutRadius": 0.64,
+      "BaseRadius": 0.92,
+      "Height": 11.6,
+      "CrownRadius": 4.3,
+      "CutArea": [
+        0,
+        1.12,
+        0.627
+      ],
+      "AxeHint": [
+        0,
+        2.9,
+        0.89
+      ],
+      "Selection": {
+        "Centre": [
+          0,
+          1.7,
+          0
+        ],
+        "Size": [
+          1.78,
+          3.4,
+          1.78
+        ]
+      }
+    },
+    {
+      "Name": "MassiveMesquiteC",
+      "Species": "Mesquite",
+      "Variant": "C",
+      "WoodTier": 3,
+      "LowerMesh": "MassiveMesquiteCLower",
+      "UpperMesh": "MassiveMesquiteCUpper",
+      "LowerTriangles": 562,
+      "UpperTriangles": 1258,
+      "CutHeight": 0.85,
+      "CutRadius": 0.72,
+      "BaseRadius": 1.0,
+      "Height": 6.62,
+      "CrownRadius": 6.96,
+      "CutArea": [
+        0,
+        0.97,
+        0.706
+      ],
+      "AxeHint": [
+        0,
+        2.75,
+        0.97
+      ],
+      "Selection": {
+        "Centre": [
+          0,
+          1.7,
+          0
+        ],
+        "Size": [
+          1.94,
+          3.4,
+          1.94
+        ]
+      }
+    },
+    {
+      "Name": "MassiveOakC",
+      "Species": "Oak",
+      "Variant": "C",
+      "WoodTier": 4,
+      "LowerMesh": "MassiveOakCLower",
+      "UpperMesh": "MassiveOakCUpper",
+      "LowerTriangles": 670,
+      "UpperTriangles": 1828,
+      "CutHeight": 1.15,
+      "CutRadius": 1.06,
+      "BaseRadius": 1.4,
+      "Height": 11.0,
+      "CrownRadius": 8.16,
+      "CutArea": [
+        0,
+        1.27,
+        1.039
+      ],
+      "AxeHint": [
+        0,
+        3.05,
+        1.31
+      ],
+      "Selection": {
+        "Centre": [
+          0,
+          1.7,
+          0
+        ],
+        "Size": [
+          2.62,
+          3.4,
+          2.62
+        ]
+      }
+    }
+  ]
+}

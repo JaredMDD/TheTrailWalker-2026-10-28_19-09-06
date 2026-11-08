@@ -61,6 +61,10 @@ PALETTES = {
     'Assets/_Game/Art/Items/BalloonGoods/MysteryBoxTier03Palette.png': slots({0: 'wood', R(2, 3): 'leather', R(6, 7): 'metal', 8: 'cloth', R(11, 12): 'wood'}),
     'Assets/_Game/Art/Items/BalloonGoods/BalloonGoodsTier04Palette.png': slots({R(0, 1): 'cloth', R(2, 3): 'leather', R(4, 5): 'cloth', R(6, 7): 'metal', 8: 'cloth', 9: 'leather', 10: 'ceramic', R(11, 12): 'wood', 13: 'fur'}),
     'Assets/_Game/Art/Items/BalloonGoods/MysteryBoxTier04Palette.png': slots({0: 'wood', R(2, 3): 'leather', R(6, 7): 'metal', 8: 'cloth', R(11, 12): 'wood'}),
+    # Massive lumber-field trees (November 8, 2026; generate_massive_trees.py slot contract): bark per wood, sawn wood,
+    # needles and leaves, moss, root soil, dead silver wood.
+    'Assets/_Game/Art/Harvest/Massive/MassiveTreesPalette.png': slots({R(0, 2): 'bark', R(3, 4): 'wood', R(5, 7): 'bark', 8: 'wood', 9: 'bark', R(10, 12): 'bark', R(13, 14): 'wood',
+                                                                      R(15, 17): 'bark', R(18, 19): 'wood', R(20, 28): 'needles', 29: 'grass', 30: 'soil', 31: 'wood'}),
     'Assets/_Game/Art/Environment/CampProps/CampPropsPalette.png': slots({R(0, 5): 'bark', R(6, 7): 'bark', R(9, 11): 'wood', R(12, 23): 'bark', R(24, 26): 'stone', R(27, 30): 'wood'}),
     # Environment kits (32-colour contract): bark 0-3, grasses 4-7, bushes 8-10, pine needles 12-14, stone 16-18,
     # ground 19-23, leaves 27-28.

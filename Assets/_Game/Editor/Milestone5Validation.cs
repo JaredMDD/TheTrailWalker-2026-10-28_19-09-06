@@ -324,6 +324,8 @@ namespace TheTrailWalker.Editor
             Check(accessories, "The tier-one hat and backpack have fitted worn meshes on both bodies, with hat-compatible hair for all four styles");
             // One wearable art map for every tier (equipment redesign, November 7, 2026): its own contract checks.
             foreach (string name in TheTrailWalker.Editor.WearableArtCatalogAssets.Validate()) passed.Add("Wearable art: " + name);
+            // Massive lumber-field trees (November 8, 2026): art contract only; the lumber field itself is Milestone 13.
+            foreach (string name in TheTrailWalker.Editor.MassiveTreeAssets.Validate()) passed.Add("Massive trees: " + name);
         }
 
         private static void Check(bool value, string name) { if (!value) throw new Exception("Milestone 5: " + name); passed.Add(name); }
