@@ -1,0 +1,174 @@
+{
+  "Region": 1,
+  "Models": [
+    {
+      "Name": "MeadowBushLow",
+      "Triangles": 272,
+      "BoundsMin": [
+        -0.78,
+        -0.02694983458595379,
+        -0.558
+      ],
+      "BoundsMax": [
+        0.75,
+        0.834,
+        0.514
+      ]
+    },
+    {
+      "Name": "MeadowBushTall",
+      "Triangles": 272,
+      "BoundsMin": [
+        -0.78,
+        -0.021202058116171103,
+        -0.558
+      ],
+      "BoundsMax": [
+        0.75,
+        1.1467999999999998,
+        0.514
+      ]
+    },
+    {
+      "Name": "DryShrub",
+      "Triangles": 272,
+      "BoundsMin": [
+        -0.78,
+        -0.02694983458595379,
+        -0.558
+      ],
+      "BoundsMax": [
+        0.75,
+        0.834,
+        0.514
+      ]
+    },
+    {
+      "Name": "MeadowPine",
+      "Triangles": 240,
+      "BoundsMin": [
+        -1.1705079097077407,
+        0.0,
+        -1.2538668417341825
+      ],
+      "BoundsMax": [
+        1.311547393758871,
+        5.8,
+        1.1793064530930575
+      ]
+    },
+    {
+      "Name": "YoungPine",
+      "Triangles": 240,
+      "BoundsMin": [
+        -0.6538515613445393,
+        0.0,
+        -0.6680549189239229
+      ],
+      "BoundsMax": [
+        0.6610298407915798,
+        3.2,
+        0.6419377175857008
+      ]
+    },
+    {
+      "Name": "WindPine",
+      "Triangles": 240,
+      "BoundsMin": [
+        -0.8806022873734932,
+        -0.029697228233854876,
+        -1.0889521323785285
+      ],
+      "BoundsMax": [
+        1.125537153161281,
+        4.8,
+        1.0977109847521704
+      ]
+    },
+    {
+      "Name": "GrassTuft",
+      "Triangles": 22,
+      "BoundsMin": [
+        -0.39284226045272214,
+        0,
+        -0.22603331843130667
+      ],
+      "BoundsMax": [
+        0.1373729312080714,
+        0.5169529440094899,
+        0.2653923903335586
+      ]
+    },
+    {
+      "Name": "WildflowerClump",
+      "Triangles": 510,
+      "BoundsMin": [
+        -0.4551550503452122,
+        0,
+        -0.22603331843130667
+      ],
+      "BoundsMax": [
+        0.12733958097051581,
+        0.5569529440094899,
+        0.3287809111554988
+      ]
+    },
+    {
+      "Name": "GroundMound",
+      "Triangles": 50,
+      "BoundsMin": [
+        -4.0,
+        -0.025405872558851173,
+        -2.66295824562643
+      ],
+      "BoundsMax": [
+        4.0,
+        0.55,
+        2.66295824562643
+      ]
+    },
+    {
+      "Name": "MeadowBoulder",
+      "Triangles": 50,
+      "BoundsMin": [
+        -0.95,
+        -0.041573246005392826,
+        -0.6181867355918499
+      ],
+      "BoundsMax": [
+        0.95,
+        0.9,
+        0.6181867355918499
+      ]
+    },
+    {
+      "Name": "MeadowGroundPatch",
+      "Triangles": 72,
+      "BoundsMin": [
+        -3.0,
+        -0.02499975516376759,
+        -3.0
+      ],
+      "BoundsMax": [
+        3.0,
+        0.02476518389237176,
+        3.0
+      ]
+    },
+    {
+      "Name": "TrailShoulder",
+      "Triangles": 72,
+      "BoundsMin": [
+        -3.0,
+        -0.02499975516376759,
+        -3.0
+      ],
+      "BoundsMax": [
+        3.0,
+        0.02476518389237176,
+        3.0
+      ]
+    }
+  ],
+  "Policy": "Decorative scenery only. No colliders, item definitions, harvest markers, rewards or resource spawn changes."
+}

@@ -33,6 +33,8 @@ namespace TheTrailWalker
         public static Vector3[] DefaultKnots() => new[] { Vector3.zero, new Vector3(8, 0, 25), new Vector3(-10, 0, 52), new Vector3(12, 0, 82), new Vector3(4, 0, 112), new Vector3(-5, 0, 140) };
         private MovementState state;
         private SampledTrailPath path;
+        // Height of the drawn terrain (camp world only; null in the scenes without a styled segment).
+        public TerrainHeightField Ground { get; private set; }
         private TrailMotor motor;
         private CameraOrbitController orbit;
         private GestureRouter gestures;
@@ -102,6 +104,8 @@ namespace TheTrailWalker
             if (dirt != null) foreach (Transform piece in GetComponentsInChildren<Transform>())
                 if (piece.name.StartsWith("Curved trail") || piece.name == "Clearing" || piece.name == "Footpath") piece.GetComponent<MeshRenderer>().sharedMaterial = dirt;
             if (terrain == null) return;
+            // Kept for the trail pickups, which are placed after this and rest on the drawn ground (no collider needed).
+            Ground = new TerrainHeightField(terrain.GetComponent<MeshFilter>());
             var ground = terrain.gameObject.AddComponent<MeshCollider>();
             ground.sharedMesh = terrain.GetComponent<MeshFilter>().sharedMesh;
             Func<Vector3, float> height = position =>
@@ -112,7 +116,12 @@ namespace TheTrailWalker
             {
                 var rig = visual.GetComponent<Harvest.Tier1RabbitRig>();
                 float feet = rig != null && rig.GroundAnchor != null ? rig.GroundAnchor.position.y : visual.transform.position.y;
-                visual.transform.position += Vector3.up * (height(visual.transform.position) - feet);
+                // Seat on the lowest ground under the footprint (user, November 2, 2026: on hill slopes the downhill side
+                // of a trunk base or a rabbit's feet hung in the air when only the centre touched the ground).
+                Vector3 at = visual.transform.position; float radius = rig != null ? 0.2f : 0.45f, lowest = height(at);
+                for (int a = 0; a < 8; a++)
+                    lowest = Mathf.Min(lowest, height(at + Quaternion.AngleAxis(a * 45f, Vector3.up) * Vector3.forward * radius));
+                visual.transform.position += Vector3.up * (lowest - feet);
             }
             // Roadside and field scenery along all shown legs, each from its own region's tier-one kit, clear of camps and interactables.
             var roads = new List<ITrailPath>(); var regions = new List<int>(); var anchorPoints = new List<Vector3>(); var campPoints = new List<Vector3>();
@@ -198,7 +207,17 @@ namespace TheTrailWalker
                     ground = new JoinedTrailPath(previousPath, ground);
                 }
                 Material palette = Region01Environment.GroundMaterial;
-                TravelScenery.BuildTerrain(transform, ground, palette != null ? palette : terrainMaterial, 70f, 3f, TravelScenery.Undulation(travelScene.Segment), palette != null);
+                // Level the ground under this leg's camp clearings (no clearing at a ferry landing or the river end).
+                var clearings = new List<Vector3>();
+                if (!travelScene.Segment.Landing) clearings.Add(TravelScenery.ClearingCentre(path, 0, travelScene.Catalog.Camp(travelScene.Segment.FromCampId)));
+                if (!travelScene.Segment.RiverApproach) clearings.Add(TravelScenery.ClearingCentre(path, path.Length, travelScene.Catalog.Camp(travelScene.Segment.ToCampId)));
+                // Level the ground under every shown leg's fishing ponds too (the same anchors BuildInteractables places below).
+                var ponds = new List<Vector3>();
+                TravelScenery.AddPonds(ponds, path, SegmentLayout.Build(travelScene.Catalog.RegionOf(travelScene.Segment), travelScene.Segment));
+                if (nextSegment != null) TravelScenery.AddPonds(ponds, nextPath, SegmentLayout.Build(travelScene.Catalog.RegionOf(nextSegment), nextSegment));
+                if (previousSegment != null) TravelScenery.AddPonds(ponds, previousPath, SegmentLayout.Build(travelScene.Catalog.RegionOf(previousSegment), previousSegment));
+                TravelScenery.BuildTerrain(transform, ground, palette != null ? palette : terrainMaterial, 70f, 3f, TravelScenery.Undulation(travelScene.Segment), palette != null,
+                    clearings.ToArray(), ponds.ToArray());
             }
             else Primitive("Ground", PrimitiveType.Cube, new Vector3(0, -0.3f, 70), new Vector3(110, 0.5f, 200), terrainMaterial);
             BuildRibbon("Curved trail", path);
@@ -219,7 +238,8 @@ namespace TheTrailWalker
                 TravelCatalog catalog = travelScene.Catalog;
                 RegionDefinition region = catalog.RegionOf(travelScene.Segment);
                 // Trader looks need learned wearable recipes, which arrive with Milestone 7; until then every set is tier 0.
-                var knownRecipes = new HashSet<string>();
+                // Learned wearable recipes decide which outfits traders can wear (from the saved crafting state).
+                HashSet<string> knownRecipes = CollectionPrototype.KnownRecipesFromSave();
                 string fromCamp = travelScene.Segment.FromCampId, toCamp = travelScene.Segment.ToCampId;
                 // A ferry landing starts on the far riverbank instead of at a camp.
                 if (travelScene.Segment.Landing) TravelScenery.BuildRiver(transform, path, terrainMaterial, trailMaterial, avatarMaterial, landing: true);
@@ -299,7 +319,7 @@ namespace TheTrailWalker
             Button(safe, "INVENTORY", 0.04f, 0.135f, 0.48f, 0.205f, OpenInventory);
             harvestLabel = Button(safe, "TEST HARVEST", 0.52f, 0.135f, 0.96f, 0.205f, Harvest);
             Button(safe, "RESTART TRAIL", 0.04f, 0.045f, 0.48f, 0.115f, Restart);
-            Button(safe, "CAP: 1.0 / 3.0", 0.52f, 0.045f, 0.96f, 0.115f, () => state.SetSpeedCap(state.SpeedCap < MovementState.MaximumSpeedCap ? MovementState.MaximumSpeedCap : MovementState.StarterSpeedCap));
+            Button(safe, $"CAP: {MovementState.StarterSpeedCap:F1} / {MovementState.MaximumSpeedCap:F1}", 0.52f, 0.045f, 0.96f, 0.115f, () => state.SetSpeedCap(state.SpeedCap < MovementState.MaximumSpeedCap ? MovementState.MaximumSpeedCap : MovementState.StarterSpeedCap));
             inventory = Rect("Inventory placeholder", safe, 0, 0, 1, 1).gameObject;
             inventory.AddComponent<Image>().color = new Color(0.06f, 0.11f, 0.13f, 0.98f);
             Label(inventory.transform, "BACKPACK\nMovement is paused", 0.07f, 0.66f, 0.93f, 0.85f, 36);

@@ -1,0 +1,82 @@
+{
+  "Revision": 1,
+  "Style": "faceted",
+  "TorsoPivot": 0.94,
+  "HeadUp": 0.49,
+  "CounterTop": 1.02,
+  "Keepers": [
+    {
+      "Name": "Baker",
+      "Shop": "Bakery",
+      "Body": "BakerBody",
+      "Head": "BakerHead",
+      "Female": true,
+      "Triangles": 1447,
+      "Notes": "Flour-white toque and bib apron over a cream shirt with rolled sleeves; warm, round-shouldered stance."
+    },
+    {
+      "Name": "Rancher",
+      "Shop": "Ranch",
+      "Body": "RancherBody",
+      "Head": "RancherHead",
+      "Female": false,
+      "Triangles": 2222,
+      "Notes": "Wide-brim tan hat, denim shirt, open leather vest and a red neckerchief; full beard."
+    },
+    {
+      "Name": "Farmer",
+      "Shop": "Farm",
+      "Body": "FarmerBody",
+      "Head": "FarmerHead",
+      "Female": true,
+      "Triangles": 1571,
+      "Notes": "Straw hat with a green band, olive blouse with rolled sleeves and dungarees with a bib and straps."
+    },
+    {
+      "Name": "Miner",
+      "Shop": "Mine",
+      "Body": "MinerBody",
+      "Head": "MinerHead",
+      "Female": false,
+      "Triangles": 1750,
+      "Notes": "Leather helmet with a brass lamp, dark work jacket with leather shoulder pads, red kerchief and soot on the face."
+    },
+    {
+      "Name": "Fisher",
+      "Shop": "Fishery",
+      "Body": "FisherBody",
+      "Head": "FisherHead",
+      "Female": false,
+      "Triangles": 1422,
+      "Notes": "Navy knit beanie, cream roll-neck sweater with cable bands and yellow oilskin bib overalls; gray beard."
+    },
+    {
+      "Name": "Tailor",
+      "Shop": "Tailor-material shop",
+      "Body": "TailorBody",
+      "Head": "TailorHead",
+      "Female": true,
+      "Triangles": 2243,
+      "Notes": "Plum waistcoat over a white shirt, measuring tape around the neck, wrist pincushion and spectacles."
+    },
+    {
+      "Name": "Trader",
+      "Shop": "Warehouse / trading house",
+      "Body": "TraderBody",
+      "Head": "TraderHead",
+      "Female": false,
+      "Triangles": 2151,
+      "Notes": "Green eyeshade visor, white shirt with red sleeve garters, brown waistcoat with a brass watch chain, bow tie and a pencil behind the ear."
+    },
+    {
+      "Name": "BalloonMerchant",
+      "Shop": "Balloon merchant",
+      "Body": "BalloonMerchantBody",
+      "Head": "BalloonMerchantHead",
+      "Female": false,
+      "Triangles": 1931,
+      "Notes": "Crimson lacquer coat, double-breasted with brass buttons and gold edging and epaulettes, cream silk scarf, brass balloon emblem pin, leather aviator cap with brass goggles pushed up, handlebar moustache."
+    }
+  ],
+  "Scope": "Art only: static waist-up shopkeepers per storefront. No shop logic, dialogue, stock or animation."
+}

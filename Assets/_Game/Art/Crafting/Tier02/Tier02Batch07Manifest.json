@@ -1,0 +1,83 @@
+{
+  "Revision": 1,
+  "Batch": 7,
+  "Scope": "Three passive Material output assets; no recipes/stats/sources/footprints changed.",
+  "BlenderVersion": "5.2.3 LTS",
+  "Items": [
+    {
+      "Name": "CopperIngot",
+      "Model": "CopperIngot",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/CopperIngot.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/CopperIngotPalette.png",
+      "PrefabPath": "Tier02/Materials/CopperIngot",
+      "Triangles": 200,
+      "BoundsMin": [
+        -0.47,
+        -0.18,
+        -0.085
+      ],
+      "BoundsMax": [
+        0.47,
+        0.18,
+        0.085
+      ],
+      "DisplayName": "Copper ingot",
+      "ItemId": "",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive Material art; canonical item/recipe IDs and live binding unresolved",
+      "MissionCode": "T2-L2",
+      "MissionRegion": 8,
+      "IngredientBrief": "3 Copper ore + 1 Pine charcoal -> 1"
+    },
+    {
+      "Name": "CopperFittings",
+      "Model": "CopperFittings",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/CopperFittings.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/CopperFittingsPalette.png",
+      "PrefabPath": "Tier02/Materials/CopperFittings",
+      "Triangles": 820,
+      "BoundsMin": [
+        -0.326797,
+        -0.235,
+        -0.052
+      ],
+      "BoundsMax": [
+        0.326797,
+        0.227254,
+        0.068
+      ],
+      "DisplayName": "Copper fittings",
+      "ItemId": "",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive Material art; canonical item/recipe IDs and live binding unresolved",
+      "MissionCode": "T2-L4",
+      "MissionRegion": 8,
+      "IngredientBrief": "1 Copper ingot -> 3"
+    },
+    {
+      "Name": "TinIngot",
+      "Model": "TinIngot",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/TinIngot.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/TinIngotPalette.png",
+      "PrefabPath": "Tier02/Materials/TinIngot",
+      "Triangles": 240,
+      "BoundsMin": [
+        -0.4,
+        -0.215,
+        -0.085
+      ],
+      "BoundsMax": [
+        0.4,
+        0.215,
+        0.085
+      ],
+      "DisplayName": "Tin ingot",
+      "ItemId": "",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive Material art; canonical item/recipe IDs and live binding unresolved",
+      "MissionCode": "T2-L14",
+      "MissionRegion": 12,
+      "IngredientBrief": "3 Tin ore + 1 Pine charcoal -> 1"
+    }
+  ]
+}

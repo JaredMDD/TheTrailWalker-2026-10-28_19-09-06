@@ -1,0 +1,184 @@
+{
+  "Revision": 1,
+  "Batch": 16,
+  "Scope": "6 passive Wearable art outputs; no gameplay value or shared shader changes.",
+  "BlenderVersion": "5.2.3 LTS",
+  "Items": [
+    {
+      "Name": "TaigaFurHat",
+      "Model": "TaigaFurHat",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/TaigaFurHat.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/TaigaFurHatPalette.png",
+      "PrefabPath": "Tier02/Wearables/TaigaFurHat",
+      "Triangles": 904,
+      "BoundsMin": [
+        -0.348,
+        -0.472927,
+        -0.41086
+      ],
+      "BoundsMax": [
+        0.348,
+        0.472927,
+        0.41086
+      ],
+      "DisplayName": "Taiga fur hat",
+      "ItemId": "item.taiga_fur_hat",
+      "RecipeId": "recipe.wearable.taiga_fur_hat",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-G20",
+      "MissionRegion": 12,
+      "IngredientBrief": "1 Fine beaver pelt + 1 Fine flax cloth + 1 Cattail cord -> 1",
+      "Role": "Wearable",
+      "Representation": "display",
+      "BindingStatus": "Passive art; live binding, weights and dynamic validation pending"
+    },
+    {
+      "Name": "TaigaBoots",
+      "Model": "TaigaBoots",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/TaigaBoots.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/TaigaBootsPalette.png",
+      "PrefabPath": "Tier02/Wearables/TaigaBoots",
+      "Triangles": 1506,
+      "BoundsMin": [
+        -0.4214,
+        -0.45031,
+        -0.2072
+      ],
+      "BoundsMax": [
+        0.4214,
+        0.45031,
+        0.2072
+      ],
+      "DisplayName": "Taiga boots",
+      "ItemId": "item.taiga_boots",
+      "RecipeId": "recipe.wearable.taiga_boots",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-L15",
+      "MissionRegion": 12,
+      "IngredientBrief": "2 Fine beaver leather + 1 Tin ingot -> 1",
+      "Role": "Wearable",
+      "Representation": "display",
+      "BindingStatus": "Passive art; live binding, weights and dynamic validation pending"
+    },
+    {
+      "Name": "MaleWearTaigaFurHat",
+      "Model": "MaleWearTaigaFurHat",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/MaleWearTaigaFurHat.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/MaleWearTaigaFurHatPalette.png",
+      "PrefabPath": "Tier02/Wearables/MaleWearTaigaFurHat",
+      "Triangles": 904,
+      "BoundsMin": [
+        -0.116,
+        0.019715,
+        -0.144
+      ],
+      "BoundsMax": [
+        0.116,
+        0.335,
+        0.129907
+      ],
+      "DisplayName": "Taiga fur hat (Male fitted)",
+      "ItemId": "item.taiga_fur_hat",
+      "RecipeId": "recipe.wearable.taiga_fur_hat",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-G20",
+      "MissionRegion": 12,
+      "IngredientBrief": "1 Fine beaver pelt + 1 Fine flax cloth + 1 Cattail cord -> 1",
+      "Role": "Wearable",
+      "Representation": "worn",
+      "Body": "Male",
+      "Anchor": "HeadAnchor local; (0,1.43,0)",
+      "BindingStatus": "Passive art; live binding, weights and dynamic validation pending"
+    },
+    {
+      "Name": "MaleWearTaigaBoots",
+      "Model": "MaleWearTaigaBoots",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/MaleWearTaigaBoots.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/MaleWearTaigaBootsPalette.png",
+      "PrefabPath": "Tier02/Wearables/MaleWearTaigaBoots",
+      "Triangles": 3012,
+      "BoundsMin": [
+        -0.174,
+        0.0,
+        -0.083
+      ],
+      "BoundsMax": [
+        0.174,
+        0.32165,
+        0.218
+      ],
+      "DisplayName": "Taiga boots (Male fitted)",
+      "ItemId": "item.taiga_boots",
+      "RecipeId": "recipe.wearable.taiga_boots",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-L15",
+      "MissionRegion": 12,
+      "IngredientBrief": "2 Fine beaver leather + 1 Tin ingot -> 1",
+      "Role": "Wearable",
+      "Representation": "worn",
+      "Body": "Male",
+      "Anchor": "BodyRoot; split ankle/foot ownership during integration",
+      "BindingStatus": "Passive art; live binding, weights and dynamic validation pending"
+    },
+    {
+      "Name": "FemaleWearTaigaFurHat",
+      "Model": "FemaleWearTaigaFurHat",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/FemaleWearTaigaFurHat.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/FemaleWearTaigaFurHatPalette.png",
+      "PrefabPath": "Tier02/Wearables/FemaleWearTaigaFurHat",
+      "Triangles": 904,
+      "BoundsMin": [
+        -0.116,
+        0.019114,
+        -0.144
+      ],
+      "BoundsMax": [
+        0.116,
+        0.325074,
+        0.129904
+      ],
+      "DisplayName": "Taiga fur hat (Female fitted)",
+      "ItemId": "item.taiga_fur_hat",
+      "RecipeId": "recipe.wearable.taiga_fur_hat",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-G20",
+      "MissionRegion": 12,
+      "IngredientBrief": "1 Fine beaver pelt + 1 Fine flax cloth + 1 Cattail cord -> 1",
+      "Role": "Wearable",
+      "Representation": "worn",
+      "Body": "Female",
+      "Anchor": "HeadAnchor local; (0,1.43,0)",
+      "BindingStatus": "Passive art; live binding, weights and dynamic validation pending"
+    },
+    {
+      "Name": "FemaleWearTaigaBoots",
+      "Model": "FemaleWearTaigaBoots",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/FemaleWearTaigaBoots.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/FemaleWearTaigaBootsPalette.png",
+      "PrefabPath": "Tier02/Wearables/FemaleWearTaigaBoots",
+      "Triangles": 3012,
+      "BoundsMin": [
+        -0.174,
+        0.0,
+        -0.083
+      ],
+      "BoundsMax": [
+        0.174,
+        0.32165,
+        0.218
+      ],
+      "DisplayName": "Taiga boots (Female fitted)",
+      "ItemId": "item.taiga_boots",
+      "RecipeId": "recipe.wearable.taiga_boots",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-L15",
+      "MissionRegion": 12,
+      "IngredientBrief": "2 Fine beaver leather + 1 Tin ingot -> 1",
+      "Role": "Wearable",
+      "Representation": "worn",
+      "Body": "Female",
+      "Anchor": "BodyRoot; split ankle/foot ownership during integration",
+      "BindingStatus": "Passive art; live binding, weights and dynamic validation pending"
+    }
+  ]
+}

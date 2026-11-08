@@ -1,0 +1,360 @@
+{
+  "Revision": 2,
+  "Style": "faceted",
+  "CounterTop": 1.02,
+  "Shops": [
+    {
+      "Name": "Warehouse",
+      "Front": "WarehouseFront",
+      "Counter": "WarehouseCounter",
+      "Keeper": "ShopkeeperTrader",
+      "Width": 8.6,
+      "OfferAnchors": [
+        [
+          -1.15,
+          1.02,
+          0.48
+        ],
+        [
+          0.85,
+          1.02,
+          0.48
+        ],
+        [
+          1.4,
+          1.02,
+          0.48
+        ]
+      ],
+      "OfferAnchorsFlat": [
+        -1.15,
+        1.02,
+        0.48,
+        0.85,
+        1.02,
+        0.48,
+        1.4,
+        1.02,
+        0.48
+      ],
+      "OfferKinds": [
+        "Deposit box",
+        "Deposit box",
+        "Gold scale"
+      ]
+    },
+    {
+      "Name": "Bakery",
+      "Front": "BakeryFront",
+      "Counter": "BakeryCounter",
+      "Keeper": "ShopkeeperBaker",
+      "Width": 6.4,
+      "OfferAnchors": [
+        [
+          -1.15,
+          1.02,
+          0.48
+        ],
+        [
+          0.85,
+          1.02,
+          0.48
+        ],
+        [
+          1.4,
+          1.02,
+          0.48
+        ]
+      ],
+      "OfferAnchorsFlat": [
+        -1.15,
+        1.02,
+        0.48,
+        0.85,
+        1.02,
+        0.48,
+        1.4,
+        1.02,
+        0.48
+      ],
+      "OfferKinds": [
+        "Common cash",
+        "Premium gold",
+        "Premium gold"
+      ]
+    },
+    {
+      "Name": "Ranch",
+      "Front": "RanchFront",
+      "Counter": "RanchCounter",
+      "Keeper": "ShopkeeperRancher",
+      "Width": 6.6,
+      "OfferAnchors": [
+        [
+          -1.15,
+          1.02,
+          0.48
+        ],
+        [
+          0.85,
+          1.02,
+          0.48
+        ],
+        [
+          1.4,
+          1.02,
+          0.48
+        ]
+      ],
+      "OfferAnchorsFlat": [
+        -1.15,
+        1.02,
+        0.48,
+        0.85,
+        1.02,
+        0.48,
+        1.4,
+        1.02,
+        0.48
+      ],
+      "OfferKinds": [
+        "Cash offer",
+        "Cash offer",
+        "Cash offer"
+      ]
+    },
+    {
+      "Name": "Farm",
+      "Front": "FarmFront",
+      "Counter": "FarmCounter",
+      "Keeper": "ShopkeeperFarmer",
+      "Width": 7.2,
+      "OfferAnchors": [
+        [
+          -1.15,
+          1.02,
+          0.48
+        ],
+        [
+          0.85,
+          1.02,
+          0.48
+        ],
+        [
+          1.4,
+          1.02,
+          0.48
+        ]
+      ],
+      "OfferAnchorsFlat": [
+        -1.15,
+        1.02,
+        0.48,
+        0.85,
+        1.02,
+        0.48,
+        1.4,
+        1.02,
+        0.48
+      ],
+      "OfferKinds": [
+        "Cash offer",
+        "Cash offer",
+        "Cash offer"
+      ]
+    },
+    {
+      "Name": "Fishery",
+      "Front": "FisheryFront",
+      "Counter": "FisheryCounter",
+      "Keeper": "ShopkeeperFisher",
+      "Width": 6.0,
+      "OfferAnchors": [
+        [
+          -1.15,
+          1.02,
+          0.48
+        ],
+        [
+          0.85,
+          1.02,
+          0.48
+        ],
+        [
+          1.4,
+          1.02,
+          0.48
+        ]
+      ],
+      "OfferAnchorsFlat": [
+        -1.15,
+        1.02,
+        0.48,
+        0.85,
+        1.02,
+        0.48,
+        1.4,
+        1.02,
+        0.48
+      ],
+      "OfferKinds": [
+        "Fish",
+        "Fish",
+        "Exclusive seafood"
+      ]
+    },
+    {
+      "Name": "Mine",
+      "Front": "MineFront",
+      "Counter": "MineCounter",
+      "Keeper": "ShopkeeperMiner",
+      "Width": 8.2,
+      "OfferAnchors": [
+        [
+          -1.15,
+          1.02,
+          0.48
+        ],
+        [
+          0.85,
+          1.02,
+          0.48
+        ],
+        [
+          1.4,
+          1.02,
+          0.48
+        ]
+      ],
+      "OfferAnchorsFlat": [
+        -1.15,
+        1.02,
+        0.48,
+        0.85,
+        1.02,
+        0.48,
+        1.4,
+        1.02,
+        0.48
+      ],
+      "OfferKinds": [
+        "Cash offer",
+        "Cash offer",
+        "Cash offer"
+      ]
+    },
+    {
+      "Name": "Tailor",
+      "Front": "TailorFront",
+      "Counter": "TailorCounter",
+      "Keeper": "ShopkeeperTailor",
+      "Width": 5.4,
+      "OfferAnchors": [
+        [
+          -1.15,
+          1.02,
+          0.48
+        ],
+        [
+          0.85,
+          1.02,
+          0.48
+        ],
+        [
+          1.4,
+          1.02,
+          0.48
+        ]
+      ],
+      "OfferAnchorsFlat": [
+        -1.15,
+        1.02,
+        0.48,
+        0.85,
+        1.02,
+        0.48,
+        1.4,
+        1.02,
+        0.48
+      ],
+      "OfferKinds": [
+        "Cash offer",
+        "Cash offer",
+        "Cash offer"
+      ]
+    }
+  ],
+  "Parts": [
+    {
+      "name": "WarehouseFront",
+      "vertices": 1116,
+      "triangles": 1680
+    },
+    {
+      "name": "WarehouseCounter",
+      "vertices": 1206,
+      "triangles": 1792
+    },
+    {
+      "name": "BakeryFront",
+      "vertices": 3285,
+      "triangles": 5313
+    },
+    {
+      "name": "BakeryCounter",
+      "vertices": 2461,
+      "triangles": 4128
+    },
+    {
+      "name": "RanchFront",
+      "vertices": 916,
+      "triangles": 1404
+    },
+    {
+      "name": "RanchCounter",
+      "vertices": 790,
+      "triangles": 1272
+    },
+    {
+      "name": "FarmFront",
+      "vertices": 2412,
+      "triangles": 4176
+    },
+    {
+      "name": "FarmCounter",
+      "vertices": 3283,
+      "triangles": 5796
+    },
+    {
+      "name": "FisheryFront",
+      "vertices": 1170,
+      "triangles": 1840
+    },
+    {
+      "name": "FisheryCounter",
+      "vertices": 930,
+      "triangles": 1440
+    },
+    {
+      "name": "MineFront",
+      "vertices": 1082,
+      "triangles": 1784
+    },
+    {
+      "name": "MineCounter",
+      "vertices": 1552,
+      "triangles": 2692
+    },
+    {
+      "name": "TailorFront",
+      "vertices": 1052,
+      "triangles": 1664
+    },
+    {
+      "name": "TailorCounter",
+      "vertices": 1142,
+      "triangles": 1888
+    }
+  ],
+  "Scope": "Art only: street front and counter view per shop. No shop logic, stock, prices or selection."
+}

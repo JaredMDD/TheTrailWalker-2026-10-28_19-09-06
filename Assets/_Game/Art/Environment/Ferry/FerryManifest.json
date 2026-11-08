@@ -1,0 +1,23 @@
+{
+  "Revision": 1,
+  "Style": "faceted",
+  "Parts": [
+    {
+      "name": "FerryDock",
+      "vertices": 624,
+      "triangles": 904
+    },
+    {
+      "name": "FerryRaft",
+      "vertices": 702,
+      "triangles": 1084
+    },
+    {
+      "name": "FerryCable",
+      "vertices": 206,
+      "triangles": 280
+    }
+  ],
+  "RaftOffset": 5.0,
+  "Scope": "Art only: dock, raft and cable for the river crossing. No crossing animation or toll logic."
+}

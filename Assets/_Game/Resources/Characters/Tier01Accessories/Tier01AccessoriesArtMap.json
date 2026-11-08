@@ -1,0 +1,87 @@
+{
+  "scope": "Passive art handoff data only. No loader, catalog registration, equip binding or live item replacement.",
+  "prefabStatus": "Parent must execute Tier01FittedAccessoriesAssets.Build before these paths exist.",
+  "sourceManifest": "Assets/_Game/Art/Characters/Tier01Accessories/Tier01AccessoriesManifest.json",
+  "items": [
+    {
+      "itemId": "item.rabbit_hat",
+      "liveFootprint": [
+        900,
+        723
+      ],
+      "existingDisplayResource": "Tier01/Crafted/RabbitHat",
+      "displayStudy": "Characters/Tier01Accessories/Parts/DisplayRabbitHat",
+      "worn": {
+        "Male": "Characters/Tier01Accessories/Parts/MaleWearRabbitHat",
+        "Female": "Characters/Tier01Accessories/Parts/FemaleWearRabbitHat"
+      },
+      "anchor": "HeadAnchor/HatAnchor",
+      "localPosition": [
+        0,
+        0,
+        0
+      ],
+      "localEuler": [
+        0,
+        0,
+        0
+      ],
+      "localScale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "itemId": "item.starter_backpack",
+      "liveFootprint": [
+        939,
+        1350
+      ],
+      "existingDisplayResource": "Tier01/Crafted/StarterBackpack",
+      "displayStudy": "Characters/Tier01Accessories/Parts/DisplayStarterBackpack",
+      "worn": {
+        "Male": "Characters/Tier01Accessories/Parts/MaleWearStarterBackpack",
+        "Female": "Characters/Tier01Accessories/Parts/FemaleWearStarterBackpack"
+      },
+      "anchor": "BackpackAnchor",
+      "localPosition": [
+        0,
+        0,
+        0
+      ],
+      "localEuler": [
+        0,
+        0,
+        0
+      ],
+      "localScale": [
+        1,
+        1,
+        1
+      ]
+    }
+  ],
+  "compatibleHair": {
+    "Male": {
+      "Crop": "Characters/Tier01Accessories/Parts/MaleHatHairCrop",
+      "Sweep": "Characters/Tier01Accessories/Parts/MaleHatHairSweep",
+      "Bob": "Characters/Tier01Accessories/Parts/MaleHatHairBob",
+      "Tied": "Characters/Tier01Accessories/Parts/MaleHatHairTied"
+    },
+    "Female": {
+      "Crop": "Characters/Tier01Accessories/Parts/FemaleHatHairCrop",
+      "Sweep": "Characters/Tier01Accessories/Parts/FemaleHatHairSweep",
+      "Bob": "Characters/Tier01Accessories/Parts/FemaleHatHairBob",
+      "Tied": "Characters/Tier01Accessories/Parts/FemaleHatHairTied"
+    }
+  },
+  "hairMaterialPaths": [
+    "Assets/_Game/Art/Characters/PlayerDefault/Unity/Materials/Hair01.mat",
+    "Assets/_Game/Art/Characters/PlayerDefault/Unity/Materials/Hair02.mat",
+    "Assets/_Game/Art/Characters/PlayerDefault/Unity/Materials/Hair03.mat",
+    "Assets/_Game/Art/Characters/PlayerDefault/Unity/Materials/Hair04.mat",
+    "Assets/_Game/Art/Characters/PlayerDefault/Unity/Materials/Hair05.mat"
+  ],
+  "integration": "Keep saved hairstyle; substitute compatible geometry while hat is shown, restore original on removal. Preserve face, brows and independent beard attachments."
+}

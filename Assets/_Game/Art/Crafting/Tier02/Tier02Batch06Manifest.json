@@ -1,0 +1,133 @@
+{
+  "Revision": 1,
+  "Batch": 6,
+  "Scope": "Five passive Material output assets; no recipes/stats/sources/footprints changed.",
+  "BlenderVersion": "5.2.3 LTS",
+  "Items": [
+    {
+      "Name": "FlaxCloth",
+      "Model": "FlaxCloth",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/FlaxCloth.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/FlaxClothPalette.png",
+      "PrefabPath": "Tier02/Materials/FlaxCloth",
+      "Triangles": 2208,
+      "BoundsMin": [
+        -0.38,
+        -0.225,
+        -0.14
+      ],
+      "BoundsMax": [
+        0.38,
+        0.265,
+        0.007791
+      ],
+      "DisplayName": "Flax cloth",
+      "ItemId": "",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive Material art; canonical item/recipe IDs and live binding unresolved",
+      "MissionCode": "T2-E1",
+      "MissionRegion": 8,
+      "IngredientBrief": "4 Flax fiber -> 2"
+    },
+    {
+      "Name": "FlaxCord",
+      "Model": "FlaxCord",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/FlaxCord.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/FlaxCordPalette.png",
+      "PrefabPath": "Tier02/Materials/FlaxCord",
+      "Triangles": 8928,
+      "BoundsMin": [
+        -0.305277,
+        -0.229713,
+        -0.047851
+      ],
+      "BoundsMax": [
+        0.423855,
+        0.25703,
+        0.04266
+      ],
+      "DisplayName": "Flax cord",
+      "ItemId": "",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive Material art; canonical item/recipe IDs and live binding unresolved",
+      "MissionCode": "T2-E2",
+      "MissionRegion": 8,
+      "IngredientBrief": "3 Flax fiber -> 2"
+    },
+    {
+      "Name": "FlaxStuffing",
+      "Model": "FlaxStuffing",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/FlaxStuffing.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/FlaxStuffingPalette.png",
+      "PrefabPath": "Tier02/Materials/FlaxStuffing",
+      "Triangles": 2570,
+      "BoundsMin": [
+        -0.257038,
+        -0.168799,
+        -0.068899
+      ],
+      "BoundsMax": [
+        0.257504,
+        0.169287,
+        0.030703
+      ],
+      "DisplayName": "Flax stuffing",
+      "ItemId": "",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive Material art; canonical item/recipe IDs and live binding unresolved",
+      "MissionCode": "T2-E4",
+      "MissionRegion": 8,
+      "IngredientBrief": "3 Flax fiber -> 2"
+    },
+    {
+      "Name": "FineFlaxCloth",
+      "Model": "FineFlaxCloth",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/FineFlaxCloth.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/FineFlaxClothPalette.png",
+      "PrefabPath": "Tier02/Materials/FineFlaxCloth",
+      "Triangles": 3228,
+      "BoundsMin": [
+        -0.38,
+        -0.225,
+        -0.141116
+      ],
+      "BoundsMax": [
+        0.38,
+        0.265,
+        0.007791
+      ],
+      "DisplayName": "Fine flax cloth",
+      "ItemId": "",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive Material art; canonical item/recipe IDs and live binding unresolved",
+      "MissionCode": "T2-E10",
+      "MissionRegion": 10,
+      "IngredientBrief": "3 Flax cloth + 1 Hemp thread -> 1"
+    },
+    {
+      "Name": "CattailCord",
+      "Model": "CattailCord",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/CattailCord.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/CattailCordPalette.png",
+      "PrefabPath": "Tier02/Materials/CattailCord",
+      "Triangles": 8928,
+      "BoundsMin": [
+        -0.306608,
+        -0.233661,
+        -0.04105
+      ],
+      "BoundsMax": [
+        0.423855,
+        0.260006,
+        0.037291
+      ],
+      "DisplayName": "Cattail cord",
+      "ItemId": "",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive Material art; canonical item/recipe IDs and live binding unresolved",
+      "MissionCode": "T2-E14",
+      "MissionRegion": 12,
+      "IngredientBrief": "3 Cattail fiber -> 1"
+    }
+  ]
+}

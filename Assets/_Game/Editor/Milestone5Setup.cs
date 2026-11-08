@@ -1,0 +1,71 @@
+using System;
+using System.IO;
+using TheTrailWalker.SceneLoading;
+using UnityEditor;
+using UnityEditor.Build.Reporting;
+using UnityEditor.SceneManagement;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+namespace TheTrailWalker.Editor
+{
+    public static class Milestone5Setup
+    {
+        public const string BootstrapPath = "Assets/_Game/Scenes/TravelBootstrap.unity";
+        public const string TrailPath = "Assets/_Game/Scenes/Prototypes/TravelTrail.unity";
+
+        // Reruns every earlier milestone's checks, then the travel rules, before preparing the camp-travel scenes.
+        [MenuItem("The Trail Walker/Milestone 5/Prepare and Validate")]
+        public static void Prepare()
+        {
+            Milestone4Setup.Prepare(); Milestone4EquipmentValidation.Run(); Milestone5Validation.Run(); Milestone6Validation.Run(); Milestone7Validation.Run(); Milestone8Validation.Run();
+            Create(BootstrapPath, () => new GameObject("Session", typeof(GameBootstrapper)).GetComponent<GameBootstrapper>().Configure("TravelTrail"));
+            Create(TrailPath, () =>
+            {
+                var prototype = new GameObject("Travel prototype", typeof(MovementPrototype)).GetComponent<MovementPrototype>();
+                prototype.Configure(AssetDatabase.LoadAssetAtPath<Material>("Assets/_Game/Materials/MovementTerrain.mat"), AssetDatabase.LoadAssetAtPath<Material>("Assets/_Game/Materials/MovementTrail.mat"), AssetDatabase.LoadAssetAtPath<Material>("Assets/_Game/Materials/MovementAvatar.mat"));
+                prototype.EnableMilestone5();
+            });
+            EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(BootstrapPath, true), new EditorBuildSettingsScene(TrailPath, true) };
+            AssetDatabase.SaveAssets();
+        }
+        private static void Create(string path, Action create)
+        {
+            if (File.Exists(path)) return;
+            Scene previous = SceneManager.GetActiveScene(); Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Additive); SceneManager.SetActiveScene(scene);
+            try { create(); if (!EditorSceneManager.SaveScene(scene, path)) throw new IOException(path); }
+            finally { if (previous.IsValid() && previous.isLoaded) SceneManager.SetActiveScene(previous); EditorSceneManager.CloseScene(scene, true); }
+        }
+        [MenuItem("The Trail Walker/Milestone 5/Build Travel Development APK")]
+        public static void Build()
+        {
+            if (EditorUserBuildSettings.activeBuildTarget != BuildTarget.Android) throw new InvalidOperationException("Activate Android first.");
+            Prepare(); Directory.CreateDirectory("Builds/Android");
+            BuildReport result = BuildPipeline.BuildPlayer(new BuildPlayerOptions { scenes = new[] { BootstrapPath, TrailPath }, target = BuildTarget.Android, targetGroup = BuildTargetGroup.Android, locationPathName = "Builds/Android/TheTrailWalker-Milestone5-Development.apk", options = BuildOptions.Development });
+            if (result.summary.result != BuildResult.Succeeded) throw new Exception("Milestone 5 build failed: " + result.summary.result);
+        }
+    }
+    [InitializeOnLoad] internal static class Milestone5Request
+    {
+        static Milestone5Request() { EditorApplication.update += Poll; }
+        private static void Poll()
+        {
+            const string request = "Temp/Milestone5.request";
+            if (!File.Exists(request) || EditorApplication.isCompiling || EditorApplication.isUpdating || EditorApplication.isPlayingOrWillChangePlaymode || BuildPipeline.isBuildingPlayer) return;
+            // Pick up script edits made outside the Editor first; otherwise validation runs the previous assemblies.
+            // The request stays on disk across the recompile and domain reload, and runs on a later poll.
+            AssetDatabase.Refresh();
+            if (EditorApplication.isCompiling || EditorApplication.isUpdating) return;
+            string command = File.ReadAllText(request).Trim(); File.Delete(request);
+            // Never validate or build the previous assemblies when the current scripts do not compile.
+            if (EditorUtility.scriptCompilationFailed) { File.WriteAllText("Temp/Milestone5.result", "FAILED script compilation errors (see the Console)"); return; }
+            try
+            {
+                File.WriteAllText("Temp/Milestone5.result", "RUNNING " + command);
+                if (command == "build") Milestone5Setup.Build(); else if (command == "prepare") Milestone5Setup.Prepare(); else throw new ArgumentException(command);
+                File.WriteAllText("Temp/Milestone5.result", "PASS " + DateTime.UtcNow.ToString("O"));
+            }
+            catch (Exception error) { Debug.LogException(error); File.WriteAllText("Temp/Milestone5.result", "FAILED " + error); }
+        }
+    }
+}

@@ -1,0 +1,59 @@
+{
+  "Region": 9,
+  "Models": [
+    {
+      "Name": "Barley",
+      "Triangles": 552,
+      "BoundsMin": [
+        -0.27,
+        -0.4614,
+        -0.02
+      ],
+      "BoundsMax": [
+        0.241,
+        0.6201,
+        0.0325
+      ],
+      "ProposedFootprint": [
+        425,
+        900
+      ]
+    },
+    {
+      "Name": "Quartz",
+      "Triangles": 122,
+      "BoundsMin": [
+        -0.3901,
+        -0.36,
+        -0.2078
+      ],
+      "BoundsMax": [
+        0.3936,
+        0.494,
+        0.2078
+      ],
+      "ProposedFootprint": [
+        440,
+        480
+      ]
+    },
+    {
+      "Name": "Blueberries",
+      "Triangles": 1240,
+      "BoundsMin": [
+        -0.341,
+        -0.1764,
+        -0.0761
+      ],
+      "BoundsMax": [
+        0.365,
+        0.52,
+        0.1061
+      ],
+      "ProposedFootprint": [
+        700,
+        691
+      ]
+    }
+  ]
+}

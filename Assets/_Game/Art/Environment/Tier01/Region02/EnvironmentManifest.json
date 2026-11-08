@@ -1,0 +1,452 @@
+{
+  "Number": 2,
+  "Name": "Windward Hills",
+  "PaletteSize": 32,
+  "TrailColorRGB": [
+    151,
+    123,
+    79
+  ],
+  "Models": [
+    {
+      "Id": "env.tier01.region02.WindBentPine",
+      "Name": "WindBentPine",
+      "Category": "Tree",
+      "Triangles": 184,
+      "BoundsMin": [
+        -0.9900691061665077,
+        -0.03938423854048251,
+        -1.2440409745197794
+      ],
+      "BoundsMax": [
+        1.5872116350291483,
+        5.8,
+        1.313222781704744
+      ],
+      "FootprintRadius": 1.815,
+      "CastsShadows": true,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 9.82,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region02/WindBentPine"
+    },
+    {
+      "Id": "env.tier01.region02.HillPineYoung",
+      "Name": "HillPineYoung",
+      "Category": "Tree",
+      "Triangles": 184,
+      "BoundsMin": [
+        -0.5002234163228575,
+        -0.016853925196242802,
+        -0.6029569719034501
+      ],
+      "BoundsMax": [
+        0.6234340330013296,
+        3.3,
+        0.5152087091325077
+      ],
+      "FootprintRadius": 0.793,
+      "CastsShadows": true,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 8.79,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region02/HillPineYoung"
+    },
+    {
+      "Id": "env.tier01.region02.RidgePine",
+      "Name": "RidgePine",
+      "Category": "Tree",
+      "Triangles": 184,
+      "BoundsMin": [
+        -0.6605311999447359,
+        -0.023175222055183388,
+        -0.8563345361951121
+      ],
+      "BoundsMax": [
+        1.0301387887311384,
+        4.6,
+        0.7843431881227781
+      ],
+      "FootprintRadius": 1.178,
+      "CastsShadows": true,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 9.18,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region02/RidgePine"
+    },
+    {
+      "Id": "env.tier01.region02.WindScrubLow",
+      "Name": "WindScrubLow",
+      "Category": "Shrub",
+      "Triangles": 340,
+      "BoundsMin": [
+        -0.7388551195468267,
+        -0.0289965974842296,
+        -0.8381590122412035
+      ],
+      "BoundsMax": [
+        0.6000000000000001,
+        0.492,
+        0.5869556286651867
+      ],
+      "FootprintRadius": 0.978,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.98,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region02/WindScrubLow"
+    },
+    {
+      "Id": "env.tier01.region02.WindScrubWide",
+      "Name": "WindScrubWide",
+      "Category": "Shrub",
+      "Triangles": 340,
+      "BoundsMin": [
+        -1.2314251992447112,
+        -0.03080632803194062,
+        -1.3969316870686725
+      ],
+      "BoundsMax": [
+        1.0,
+        0.656,
+        0.9782593811086445
+      ],
+      "FootprintRadius": 1.629,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 4.63,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region02/WindScrubWide"
+    },
+    {
+      "Id": "env.tier01.region02.HillDryShrub",
+      "Name": "HillDryShrub",
+      "Category": "Shrub",
+      "Triangles": 340,
+      "BoundsMin": [
+        -0.6772838595845911,
+        -0.026545553253032643,
+        -0.76831242788777
+      ],
+      "BoundsMax": [
+        0.55,
+        0.574,
+        0.5380426596097545
+      ],
+      "FootprintRadius": 0.896,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.9,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region02/HillDryShrub"
+    },
+    {
+      "Id": "env.tier01.region02.HillGrass",
+      "Name": "HillGrass",
+      "Category": "GroundCover",
+      "Triangles": 24,
+      "BoundsMin": [
+        -0.41508173013418526,
+        0,
+        -0.38950490072022426
+      ],
+      "BoundsMax": [
+        0.41428776022763814,
+        0.5600939784349732,
+        0.4276880696282222
+      ],
+      "FootprintRadius": 0.582,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.58,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region02/HillGrass"
+    },
+    {
+      "Id": "env.tier01.region02.DryHillGrass",
+      "Name": "DryHillGrass",
+      "Category": "GroundCover",
+      "Triangles": 24,
+      "BoundsMin": [
+        -0.3936659660936841,
+        0,
+        -0.3525174122181605
+      ],
+      "BoundsMax": [
+        0.36112075562024293,
+        0.6657652943186122,
+        0.3953375247749467
+      ],
+      "FootprintRadius": 0.531,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.53,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region02/DryHillGrass"
+    },
+    {
+      "Id": "env.tier01.region02.HillFlowerClump",
+      "Name": "HillFlowerClump",
+      "Category": "GroundCover",
+      "Triangles": 504,
+      "BoundsMin": [
+        -0.29794182594326357,
+        0,
+        -0.37487319578354816
+      ],
+      "BoundsMax": [
+        0.37950705772419835,
+        0.3388289252438094,
+        0.50132658019279
+      ],
+      "FootprintRadius": 0.554,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.55,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region02/HillFlowerClump"
+    },
+    {
+      "Id": "env.tier01.region02.HillBoulder",
+      "Name": "HillBoulder",
+      "Category": "Rock",
+      "Triangles": 56,
+      "BoundsMin": [
+        -1.190391328897012,
+        0,
+        -0.9301787638596684
+      ],
+      "BoundsMax": [
+        1.0881854907477637,
+        1.1330000000000002,
+        0.8956340463421149
+      ],
+      "FootprintRadius": 1.46,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 4.46,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region02/HillBoulder"
+    },
+    {
+      "Id": "env.tier01.region02.SplitRockCluster",
+      "Name": "SplitRockCluster",
+      "Category": "Rock",
+      "Triangles": 280,
+      "BoundsMin": [
+        -1.4876102297097493,
+        0,
+        -1.109540256860442
+      ],
+      "BoundsMax": [
+        1.4432085703970583,
+        1.2666956726326886,
+        1.0663127687562306
+      ],
+      "FootprintRadius": 1.825,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 4.83,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region02/SplitRockCluster"
+    },
+    {
+      "Id": "env.tier01.region02.HillRockLedge",
+      "Name": "HillRockLedge",
+      "Category": "Rock",
+      "Triangles": 56,
+      "BoundsMin": [
+        -2.309569799381077,
+        0,
+        -1.2657288466233618
+      ],
+      "BoundsMax": [
+        2.180692786399669,
+        0.6695000000000001,
+        1.2156293439577528
+      ],
+      "FootprintRadius": 2.565,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 5.57,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region02/HillRockLedge"
+    },
+    {
+      "Id": "env.tier01.region02.RoundedHill",
+      "Name": "RoundedHill",
+      "Category": "Terrain",
+      "Triangles": 160,
+      "BoundsMin": [
+        -7.0,
+        0.0,
+        -6.0
+      ],
+      "BoundsMax": [
+        7.0,
+        2.8,
+        6.0
+      ],
+      "FootprintRadius": 9.22,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 12.22,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier01/Region02/RoundedHill"
+    },
+    {
+      "Id": "env.tier01.region02.WindwardSlope",
+      "Name": "WindwardSlope",
+      "Category": "Terrain",
+      "Triangles": 160,
+      "BoundsMin": [
+        -5.0,
+        0.0,
+        -6.0
+      ],
+      "BoundsMax": [
+        5.0,
+        3.0,
+        6.0
+      ],
+      "FootprintRadius": 7.81,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 10.81,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier01/Region02/WindwardSlope"
+    },
+    {
+      "Id": "env.tier01.region02.SaddleBank",
+      "Name": "SaddleBank",
+      "Category": "Terrain",
+      "Triangles": 160,
+      "BoundsMin": [
+        -5.0,
+        0.0,
+        -4.0
+      ],
+      "BoundsMax": [
+        5.0,
+        1.02,
+        4.0
+      ],
+      "FootprintRadius": 6.403,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 9.4,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier01/Region02/SaddleBank"
+    },
+    {
+      "Id": "env.tier01.region02.DistantHillRidge",
+      "Name": "DistantHillRidge",
+      "Category": "Terrain",
+      "Triangles": 160,
+      "BoundsMin": [
+        -12.0,
+        0.0,
+        -14.0
+      ],
+      "BoundsMax": [
+        12.0,
+        6.0,
+        14.0
+      ],
+      "FootprintRadius": 18.439,
+      "CastsShadows": false,
+      "DistantOnly": true,
+      "RecommendedRoadClearance": 21.44,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier01/Region02/DistantHillRidge"
+    },
+    {
+      "Id": "env.tier01.region02.HillGroundPatch",
+      "Name": "HillGroundPatch",
+      "Category": "Terrain",
+      "Triangles": 72,
+      "BoundsMin": [
+        -3.0,
+        0,
+        -3.0
+      ],
+      "BoundsMax": [
+        3.0,
+        0,
+        3.0
+      ],
+      "FootprintRadius": 4.243,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 7.24,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier01/Region02/HillGroundPatch"
+    },
+    {
+      "Id": "env.tier01.region02.GravelShoulder",
+      "Name": "GravelShoulder",
+      "Category": "Terrain",
+      "Triangles": 72,
+      "BoundsMin": [
+        -3.0,
+        0,
+        -3.0
+      ],
+      "BoundsMax": [
+        3.0,
+        0,
+        3.0
+      ],
+      "FootprintRadius": 4.243,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 7.24,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier01/Region02/GravelShoulder"
+    },
+    {
+      "Id": "env.tier01.region02.HillClearingPatch",
+      "Name": "HillClearingPatch",
+      "Category": "Terrain",
+      "Triangles": 72,
+      "BoundsMin": [
+        -4.0,
+        0,
+        -4.0
+      ],
+      "BoundsMax": [
+        4.0,
+        0,
+        4.0
+      ],
+      "FootprintRadius": 5.657,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 8.66,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier01/Region02/HillClearingPatch"
+    },
+    {
+      "Id": "env.tier01.region02.PebbledEarthPatch",
+      "Name": "PebbledEarthPatch",
+      "Category": "Terrain",
+      "Triangles": 352,
+      "BoundsMin": [
+        -3.0,
+        0,
+        -3.0
+      ],
+      "BoundsMax": [
+        3.0,
+        0.05803033933495971,
+        3.0
+      ],
+      "FootprintRadius": 4.243,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 7.24,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier01/Region02/PebbledEarthPatch"
+    }
+  ]
+}

@@ -1,0 +1,128 @@
+{
+  "Revision": 1,
+  "Batch": 23,
+  "Scope": "4 passive Misc art outputs; no gameplay value or shared shader changes.",
+  "BlenderVersion": "5.2.3 LTS",
+  "Items": [
+    {
+      "Name": "CopperPendant",
+      "Model": "CopperPendant",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/CopperPendant.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/CopperPendantPalette.png",
+      "PrefabPath": "Tier02/Misc/CopperPendant",
+      "Triangles": 1548,
+      "BoundsMin": [
+        -0.213656,
+        -0.397,
+        -0.088
+      ],
+      "BoundsMax": [
+        0.213656,
+        0.633194,
+        0.088
+      ],
+      "DisplayName": "Copper pendant",
+      "ItemId": "",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-L8",
+      "MissionRegion": 9,
+      "IngredientBrief": "1 Copper ingot + 1 Quartz + 1 Hemp cord -> 1",
+      "Role": "Misc",
+      "Representation": "display",
+      "BindingStatus": "Passive sale Misc art; canonical IDs/live bindings unresolved",
+      "GameplayRole": "Sale Misc, never functional furniture or equipment; no companion behavior",
+      "IngredientPolicy": "Quartz remains recipe input; Cut quartz is mission request, not a substitution; no equipment stat/buff"
+    },
+    {
+      "Name": "BirchBeaverSculpture",
+      "Model": "BirchBeaverSculpture",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/BirchBeaverSculpture.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/BirchBeaverSculpturePalette.png",
+      "PrefabPath": "Tier02/Misc/BirchBeaverSculpture",
+      "Triangles": 2564,
+      "BoundsMin": [
+        -0.243983,
+        -0.304698,
+        -0.278547
+      ],
+      "BoundsMax": [
+        0.520773,
+        0.452945,
+        0.248259
+      ],
+      "DisplayName": "Birch beaver sculpture",
+      "ItemId": "",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-L12",
+      "MissionRegion": 11,
+      "IngredientBrief": "2 Birch planks + 1 Beeswax -> 1",
+      "Role": "Misc",
+      "Representation": "display",
+      "BindingStatus": "Passive sale Misc art; canonical IDs/live bindings unresolved",
+      "GameplayRole": "Sale Misc, never functional furniture or equipment; no companion behavior",
+      "SourcePolicy": "Beeswax from T2-G12 / region 11 Honey; sale sculpture, no furniture buff"
+    },
+    {
+      "Name": "BeaverToy",
+      "Model": "BeaverToy",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/BeaverToy.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/BeaverToyPalette.png",
+      "PrefabPath": "Tier02/Misc/BeaverToy",
+      "Triangles": 2132,
+      "BoundsMin": [
+        -0.527006,
+        -0.306,
+        -0.279602
+      ],
+      "BoundsMax": [
+        0.245106,
+        0.455,
+        0.228193
+      ],
+      "DisplayName": "Beaver toy",
+      "ItemId": "",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-H9",
+      "MissionRegion": 9,
+      "IngredientBrief": "2 Fine beaver pelts + 1 Plant stuffing + 1 Hemp thread -> 1",
+      "Role": "Misc",
+      "Representation": "display",
+      "BindingStatus": "Passive sale Misc art; canonical IDs/live bindings unresolved",
+      "GameplayRole": "Sale Misc, never functional furniture or equipment; no companion behavior",
+      "RecipeRevision": "November 7 reversal: exact Plant stuffing (H8), not Flax stuffing; Hemp thread E9; no buttons/glass eyes"
+    },
+    {
+      "Name": "LavenderPouch",
+      "Model": "LavenderPouch",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/LavenderPouch.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/LavenderPouchPalette.png",
+      "PrefabPath": "Tier02/Misc/LavenderPouch",
+      "Triangles": 2320,
+      "BoundsMin": [
+        -0.248625,
+        -0.334,
+        -0.162717
+      ],
+      "BoundsMax": [
+        0.261375,
+        0.363,
+        0.159401
+      ],
+      "DisplayName": "Lavender pouch",
+      "ItemId": "",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-G21",
+      "MissionRegion": 10,
+      "IngredientBrief": "2 Lavender + 1 Hemp cloth -> 1",
+      "Role": "Misc",
+      "Representation": "display",
+      "BindingStatus": "Passive sale Misc art; canonical IDs/live bindings unresolved",
+      "GameplayRole": "Sale Misc, never functional furniture or equipment; no companion behavior",
+      "SourcePolicy": "Farm Lavender unlocked by region 10 discovery; appended G21 opens in region 10; integral cloth self-tie, no added cord ingredient"
+    }
+  ]
+}

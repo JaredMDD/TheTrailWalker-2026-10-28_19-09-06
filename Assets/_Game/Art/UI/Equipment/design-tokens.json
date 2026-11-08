@@ -1,0 +1,37 @@
+{
+  "status": "design-only",
+  "referenceCanvas": {"width": 1024, "height": 1536},
+  "colors": {
+    "panel": "#162A2C", "slot": "#19272A", "border": "#96744E",
+    "text": "#F1D5AA", "selection": "#F0CE94", "badge": "#101C1E",
+    "durabilityHealthy": "#86ED69", "durabilityWarning": "#FF9C3D",
+    "durabilityCritical": "#FF5555", "durabilityTrack": "#41483E"
+  },
+  "slotOrder": {"left": ["Hat", "Boots", "Shirt"], "right": ["Pants", "Backpack"]},
+  "durabilityBands": [
+    {"condition": "remaining / maximum > 0.50", "color": "durabilityHealthy"},
+    {"condition": "0.10 <= remaining / maximum <= 0.50", "color": "durabilityWarning"},
+    {"condition": "remaining / maximum < 0.10", "color": "durabilityCritical"}
+  ],
+  "equipmentExampleValues": [
+    {"slot": "Hat", "remainingKm": 50, "maximumKm": 60},
+    {"slot": "Boots", "remainingKm": 18, "maximumKm": 60},
+    {"slot": "Shirt", "remainingKm": 4, "maximumKm": 60},
+    {"slot": "Pants", "remainingKm": 32, "maximumKm": 60},
+    {"slot": "Backpack", "remainingKm": 25, "maximumKm": 60}
+  ],
+  "toolExampleValues": [
+    {"item": "Axe", "remainingUses": 80, "maximumUses": 100},
+    {"item": "Slingshot", "remainingUses": 3, "maximumUses": 40}
+  ],
+  "badgeLayout": {
+    "anchor": "lower edge of item model, inside its slot",
+    "equipmentReferenceSize": [176, 76], "toolReferenceSize": [88, 62],
+    "equipmentTextSize": 30, "toolTextSize": 26,
+    "equipmentFillRect": [14, 57, 148, 9], "toolFillRect": [11, 46, 66, 7],
+    "fillWidth": "trackWidth * clamp(remaining / maximum, 0, 1)",
+    "minimumTouchTargetAtReferenceWidth": 64
+  },
+  "actions": ["R4 TEST GEAR", "EXPIRE SLOT", "EXPIRE ALL", "TAKE OFF", "CLOSE"],
+  "avatar": {"id": "player-avatar-01", "variantsAuthored": 1, "assetType": "equipped concept PNG, not a rigged modular model"}
+}

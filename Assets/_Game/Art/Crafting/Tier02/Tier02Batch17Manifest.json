@@ -1,0 +1,178 @@
+{
+  "Revision": 1,
+  "Batch": 17,
+  "Scope": "6 passive Wearable art outputs; no gameplay value or shared shader changes.",
+  "BlenderVersion": "5.2.3 LTS",
+  "Items": [
+    {
+      "Name": "TaigaWaxedShirt",
+      "Model": "TaigaWaxedShirt",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/TaigaWaxedShirt.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/TaigaWaxedShirtPalette.png",
+      "PrefabPath": "Tier02/Wearables/TaigaWaxedShirt",
+      "Triangles": 5064,
+      "BoundsMin": [
+        -0.443002,
+        -0.400634,
+        -0.186041
+      ],
+      "BoundsMax": [
+        0.443002,
+        0.400634,
+        0.186041
+      ],
+      "DisplayName": "Taiga waxed shirt",
+      "ItemId": "item.taiga_waxed_shirt",
+      "RecipeId": "recipe.wearable.taiga_waxed_shirt",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-H12",
+      "MissionRegion": 11,
+      "IngredientBrief": "3 Fine flax cloth + 1 Fine beaver leather -> 1",
+      "Role": "Wearable",
+      "Representation": "display"
+    },
+    {
+      "Name": "TaigaTrousers",
+      "Model": "TaigaTrousers",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/TaigaTrousers.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/TaigaTrousersPalette.png",
+      "PrefabPath": "Tier02/Wearables/TaigaTrousers",
+      "Triangles": 3492,
+      "BoundsMin": [
+        -0.201827,
+        -0.44436,
+        -0.10994
+      ],
+      "BoundsMax": [
+        0.201827,
+        0.44436,
+        0.10994
+      ],
+      "DisplayName": "Taiga trousers",
+      "ItemId": "item.taiga_trousers",
+      "RecipeId": "recipe.wearable.taiga_trousers",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-E15",
+      "MissionRegion": 12,
+      "IngredientBrief": "3 Fine flax cloth + 1 Cattail cord + 1 Copper fittings -> 1",
+      "Role": "Wearable",
+      "Representation": "display"
+    },
+    {
+      "Name": "MaleWearTaigaWaxedShirt",
+      "Model": "MaleWearTaigaWaxedShirt",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/MaleWearTaigaWaxedShirt.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/MaleWearTaigaWaxedShirtPalette.png",
+      "PrefabPath": "Tier02/Wearables/MaleWearTaigaWaxedShirt",
+      "Triangles": 5064,
+      "BoundsMin": [
+        -0.32815,
+        0.823342,
+        -0.131
+      ],
+      "BoundsMax": [
+        0.32815,
+        1.416874,
+        0.144616
+      ],
+      "DisplayName": "Taiga waxed shirt (Male fitted)",
+      "ItemId": "item.taiga_waxed_shirt",
+      "RecipeId": "recipe.wearable.taiga_waxed_shirt",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-H12",
+      "MissionRegion": 11,
+      "IngredientBrief": "3 Fine flax cloth + 1 Fine beaver leather -> 1",
+      "Role": "Wearable",
+      "Representation": "worn",
+      "Body": "Male",
+      "Anchor": "BodyRoot metre coordinates; runtime weights/binding pending"
+    },
+    {
+      "Name": "MaleWearTaigaTrousers",
+      "Model": "MaleWearTaigaTrousers",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/MaleWearTaigaTrousers.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/MaleWearTaigaTrousersPalette.png",
+      "PrefabPath": "Tier02/Wearables/MaleWearTaigaTrousers",
+      "Triangles": 3492,
+      "BoundsMin": [
+        -0.194661,
+        0.084,
+        -0.124
+      ],
+      "BoundsMax": [
+        0.244095,
+        1.05,
+        0.115
+      ],
+      "DisplayName": "Taiga trousers (Male fitted)",
+      "ItemId": "item.taiga_trousers",
+      "RecipeId": "recipe.wearable.taiga_trousers",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-E15",
+      "MissionRegion": 12,
+      "IngredientBrief": "3 Fine flax cloth + 1 Cattail cord + 1 Copper fittings -> 1",
+      "Role": "Wearable",
+      "Representation": "worn",
+      "Body": "Male",
+      "Anchor": "BodyRoot metre coordinates; runtime weights/binding pending"
+    },
+    {
+      "Name": "FemaleWearTaigaWaxedShirt",
+      "Model": "FemaleWearTaigaWaxedShirt",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/FemaleWearTaigaWaxedShirt.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/FemaleWearTaigaWaxedShirtPalette.png",
+      "PrefabPath": "Tier02/Wearables/FemaleWearTaigaWaxedShirt",
+      "Triangles": 5160,
+      "BoundsMin": [
+        -0.31115,
+        0.808342,
+        -0.141
+      ],
+      "BoundsMax": [
+        0.31115,
+        1.405,
+        0.1487
+      ],
+      "DisplayName": "Taiga waxed shirt (Female fitted)",
+      "ItemId": "item.taiga_waxed_shirt",
+      "RecipeId": "recipe.wearable.taiga_waxed_shirt",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-H12",
+      "MissionRegion": 11,
+      "IngredientBrief": "3 Fine flax cloth + 1 Fine beaver leather -> 1",
+      "Role": "Wearable",
+      "Representation": "worn",
+      "Body": "Female",
+      "Anchor": "BodyRoot metre coordinates; runtime weights/binding pending"
+    },
+    {
+      "Name": "FemaleWearTaigaTrousers",
+      "Model": "FemaleWearTaigaTrousers",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/FemaleWearTaigaTrousers.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/FemaleWearTaigaTrousersPalette.png",
+      "PrefabPath": "Tier02/Wearables/FemaleWearTaigaTrousers",
+      "Triangles": 3516,
+      "BoundsMin": [
+        -0.197385,
+        0.084,
+        -0.129
+      ],
+      "BoundsMax": [
+        0.252095,
+        1.045,
+        0.119
+      ],
+      "DisplayName": "Taiga trousers (Female fitted)",
+      "ItemId": "item.taiga_trousers",
+      "RecipeId": "recipe.wearable.taiga_trousers",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-E15",
+      "MissionRegion": 12,
+      "IngredientBrief": "3 Fine flax cloth + 1 Cattail cord + 1 Copper fittings -> 1",
+      "Role": "Wearable",
+      "Representation": "worn",
+      "Body": "Female",
+      "Anchor": "BodyRoot metre coordinates; runtime weights/binding pending"
+    }
+  ]
+}

@@ -1,0 +1,452 @@
+{
+  "Number": 1,
+  "Name": "Dawn Plains",
+  "PaletteSize": 32,
+  "TrailColorRGB": [
+    151,
+    123,
+    79
+  ],
+  "Models": [
+    {
+      "Id": "env.tier01.region01.MeadowBushLow",
+      "Name": "MeadowBushLow",
+      "Category": "Shrub",
+      "Triangles": 272,
+      "BoundsMin": [
+        -0.78,
+        -0.02695,
+        -0.558
+      ],
+      "BoundsMax": [
+        0.75,
+        0.834,
+        0.514
+      ],
+      "FootprintRadius": 0.934,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.93,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region01/MeadowBushLow"
+    },
+    {
+      "Id": "env.tier01.region01.MeadowBushTall",
+      "Name": "MeadowBushTall",
+      "Category": "Shrub",
+      "Triangles": 272,
+      "BoundsMin": [
+        -0.78,
+        -0.021202,
+        -0.558
+      ],
+      "BoundsMax": [
+        0.75,
+        1.1468,
+        0.514
+      ],
+      "FootprintRadius": 0.934,
+      "CastsShadows": true,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.93,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region01/MeadowBushTall"
+    },
+    {
+      "Id": "env.tier01.region01.DryShrub",
+      "Name": "DryShrub",
+      "Category": "Shrub",
+      "Triangles": 272,
+      "BoundsMin": [
+        -0.78,
+        -0.02695,
+        -0.558
+      ],
+      "BoundsMax": [
+        0.75,
+        0.834,
+        0.514
+      ],
+      "FootprintRadius": 0.934,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.93,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region01/DryShrub"
+    },
+    {
+      "Id": "env.tier01.region01.MeadowPine",
+      "Name": "MeadowPine",
+      "Category": "Tree",
+      "Triangles": 240,
+      "BoundsMin": [
+        -1.170508,
+        0.0,
+        -1.253867
+      ],
+      "BoundsMax": [
+        1.311547,
+        5.8,
+        1.179306
+      ],
+      "FootprintRadius": 1.738,
+      "CastsShadows": true,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 9.74,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region01/MeadowPine"
+    },
+    {
+      "Id": "env.tier01.region01.YoungPine",
+      "Name": "YoungPine",
+      "Category": "Tree",
+      "Triangles": 240,
+      "BoundsMin": [
+        -0.653852,
+        0.0,
+        -0.668055
+      ],
+      "BoundsMax": [
+        0.66103,
+        3.2,
+        0.641938
+      ],
+      "FootprintRadius": 0.928,
+      "CastsShadows": true,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 8.93,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region01/YoungPine"
+    },
+    {
+      "Id": "env.tier01.region01.WindPine",
+      "Name": "WindPine",
+      "Category": "Tree",
+      "Triangles": 240,
+      "BoundsMin": [
+        -0.880602,
+        -0.029697,
+        -1.088952
+      ],
+      "BoundsMax": [
+        1.125537,
+        4.8,
+        1.097711
+      ],
+      "FootprintRadius": 1.484,
+      "CastsShadows": true,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 9.48,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region01/WindPine"
+    },
+    {
+      "Id": "env.tier01.region01.GrassTuft",
+      "Name": "GrassTuft",
+      "Category": "GroundCover",
+      "Triangles": 22,
+      "BoundsMin": [
+        -0.392842,
+        0.0,
+        -0.226033
+      ],
+      "BoundsMax": [
+        0.137373,
+        0.516953,
+        0.265392
+      ],
+      "FootprintRadius": 0.361,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.36,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region01/GrassTuft"
+    },
+    {
+      "Id": "env.tier01.region01.WildflowerClump",
+      "Name": "WildflowerClump",
+      "Category": "GroundCover",
+      "Triangles": 510,
+      "BoundsMin": [
+        -0.455155,
+        0.0,
+        -0.226033
+      ],
+      "BoundsMax": [
+        0.12734,
+        0.556953,
+        0.328781
+      ],
+      "FootprintRadius": 0.402,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.4,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region01/WildflowerClump"
+    },
+    {
+      "Id": "env.tier01.region01.GroundMound",
+      "Name": "GroundMound",
+      "Category": "Terrain",
+      "Triangles": 50,
+      "BoundsMin": [
+        -4.0,
+        -0.025406,
+        -2.662958
+      ],
+      "BoundsMax": [
+        4.0,
+        0.55,
+        2.662958
+      ],
+      "FootprintRadius": 4.805,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 7.81,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier01/Region01/GroundMound"
+    },
+    {
+      "Id": "env.tier01.region01.MeadowBoulder",
+      "Name": "MeadowBoulder",
+      "Category": "Rock",
+      "Triangles": 50,
+      "BoundsMin": [
+        -0.95,
+        -0.041573,
+        -0.618187
+      ],
+      "BoundsMax": [
+        0.95,
+        0.9,
+        0.618187
+      ],
+      "FootprintRadius": 1.133,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 4.13,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region01/MeadowBoulder"
+    },
+    {
+      "Id": "env.tier01.region01.MeadowGroundPatch",
+      "Name": "MeadowGroundPatch",
+      "Category": "Terrain",
+      "Triangles": 72,
+      "BoundsMin": [
+        -3.0,
+        0,
+        -3.0
+      ],
+      "BoundsMax": [
+        3.0,
+        0,
+        3.0
+      ],
+      "FootprintRadius": 4.243,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 7.24,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier01/Region01/MeadowGroundPatch"
+    },
+    {
+      "Id": "env.tier01.region01.TrailShoulder",
+      "Name": "TrailShoulder",
+      "Category": "Terrain",
+      "Triangles": 72,
+      "BoundsMin": [
+        -3.0,
+        0,
+        -3.0
+      ],
+      "BoundsMax": [
+        3.0,
+        0,
+        3.0
+      ],
+      "FootprintRadius": 4.243,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 7.24,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier01/Region01/TrailShoulder"
+    },
+    {
+      "Id": "env.tier01.region01.MeadowBushWide",
+      "Name": "MeadowBushWide",
+      "Category": "Shrub",
+      "Triangles": 340,
+      "BoundsMin": [
+        -1.1082826793202403,
+        -0.031003515648971,
+        -1.2572385183618056
+      ],
+      "BoundsMax": [
+        0.9000000000000001,
+        0.574,
+        0.8804334429977803
+      ],
+      "FootprintRadius": 1.467,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 4.47,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region01/MeadowBushWide"
+    },
+    {
+      "Id": "env.tier01.region01.MeadowPineBroad",
+      "Name": "MeadowPineBroad",
+      "Category": "Tree",
+      "Triangles": 184,
+      "BoundsMin": [
+        -1.6058607750779508,
+        -0.016853925196242802,
+        -1.5361252757777992
+      ],
+      "BoundsMax": [
+        1.6811388447202906,
+        6,
+        1.7832625493932512
+      ],
+      "FootprintRadius": 2.336,
+      "CastsShadows": true,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 10.34,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region01/MeadowPineBroad"
+    },
+    {
+      "Id": "env.tier01.region01.PineSapling",
+      "Name": "PineSapling",
+      "Category": "Tree",
+      "Triangles": 184,
+      "BoundsMin": [
+        -0.4063202219485911,
+        -0.016853925196242802,
+        -0.4060108882686392
+      ],
+      "BoundsMax": [
+        0.40511316696463173,
+        1.8,
+        0.4060108882686392
+      ],
+      "FootprintRadius": 0.574,
+      "CastsShadows": true,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 8.57,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region01/PineSapling"
+    },
+    {
+      "Id": "env.tier01.region01.MeadowFlowerPatch",
+      "Name": "MeadowFlowerPatch",
+      "Category": "GroundCover",
+      "Triangles": 504,
+      "BoundsMin": [
+        -0.8733514524990246,
+        0,
+        -0.6751392494158015
+      ],
+      "BoundsMax": [
+        0.9069546788762031,
+        0.40631706619757585,
+        0.882061159931339
+      ],
+      "FootprintRadius": 1.183,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 4.18,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region01/MeadowFlowerPatch"
+    },
+    {
+      "Id": "env.tier01.region01.MeadowStoneCluster",
+      "Name": "MeadowStoneCluster",
+      "Category": "Rock",
+      "Triangles": 280,
+      "BoundsMin": [
+        -1.0885286809067618,
+        0,
+        -0.7736046807935539
+      ],
+      "BoundsMax": [
+        1.0529276485505734,
+        0.6043907201732653,
+        0.7461011653714298
+      ],
+      "FootprintRadius": 1.313,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 4.31,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region01/MeadowStoneCluster"
+    },
+    {
+      "Id": "env.tier01.region01.MeadowBank",
+      "Name": "MeadowBank",
+      "Category": "Terrain",
+      "Triangles": 160,
+      "BoundsMin": [
+        -4.0,
+        0.0,
+        -3.0
+      ],
+      "BoundsMax": [
+        4.0,
+        0.54,
+        3.0
+      ],
+      "FootprintRadius": 5.0,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 8.0,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier01/Region01/MeadowBank"
+    },
+    {
+      "Id": "env.tier01.region01.DistantMeadowRise",
+      "Name": "DistantMeadowRise",
+      "Category": "Terrain",
+      "Triangles": 160,
+      "BoundsMin": [
+        -12.0,
+        0.0,
+        -9.0
+      ],
+      "BoundsMax": [
+        12.0,
+        3.0,
+        9.0
+      ],
+      "FootprintRadius": 15.0,
+      "CastsShadows": false,
+      "DistantOnly": true,
+      "RecommendedRoadClearance": 18.0,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier01/Region01/DistantMeadowRise"
+    },
+    {
+      "Id": "env.tier01.region01.MeadowClearingPatch",
+      "Name": "MeadowClearingPatch",
+      "Category": "Terrain",
+      "Triangles": 72,
+      "BoundsMin": [
+        -4.0,
+        0,
+        -4.0
+      ],
+      "BoundsMax": [
+        4.0,
+        0,
+        4.0
+      ],
+      "FootprintRadius": 5.657,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 8.66,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier01/Region01/MeadowClearingPatch"
+    }
+  ]
+}

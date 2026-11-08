@@ -1,0 +1,2718 @@
+{
+  "Revision": 1,
+  "Regions": [
+    {
+      "Number": 7,
+      "Name": "Whispering Marsh",
+      "PaletteSize": 32,
+      "TrailColorRGB": [
+        88,
+        72,
+        50
+      ],
+      "Models": [
+        {
+          "Id": "env.tier02.region07.MarshBirch",
+          "Name": "MarshBirch",
+          "Category": "Tree",
+          "Triangles": 616,
+          "BoundsMin": [
+            -1.3247984077688857,
+            0.0,
+            -1.1381726759208595
+          ],
+          "BoundsMax": [
+            1.2054934715352754,
+            5.9399999999999995,
+            1.1330024988137724
+          ],
+          "FootprintRadius": 1.7,
+          "CastsShadows": true,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 9.7,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region07/MarshBirch"
+        },
+        {
+          "Id": "env.tier02.region07.MarshBirchSapling",
+          "Name": "MarshBirchSapling",
+          "Category": "Tree",
+          "Triangles": 616,
+          "BoundsMin": [
+            -0.3987207004827755,
+            0.0,
+            -0.41574352106158585
+          ],
+          "BoundsMax": [
+            0.5535256141382404,
+            2.3760000000000003,
+            0.4854850558548267
+          ],
+          "FootprintRadius": 0.656,
+          "CastsShadows": true,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 8.66,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region07/MarshBirchSapling"
+        },
+        {
+          "Id": "env.tier02.region07.LeaningMarshBirch",
+          "Name": "LeaningMarshBirch",
+          "Category": "Tree",
+          "Triangles": 616,
+          "BoundsMin": [
+            -0.44567991764900594,
+            -0.024160343095991785,
+            -0.9499386048843832
+          ],
+          "BoundsMax": [
+            1.5345771733930835,
+            5.148,
+            0.7875563086483222
+          ],
+          "FootprintRadius": 1.317,
+          "CastsShadows": true,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 9.32,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region07/LeaningMarshBirch"
+        },
+        {
+          "Id": "env.tier02.region07.MarshWillowShrub",
+          "Name": "MarshWillowShrub",
+          "Category": "Shrub",
+          "Triangles": 340,
+          "BoundsMin": [
+            -0.9851401593957689,
+            -0.023612308883457563,
+            -1.1175453496549381
+          ],
+          "BoundsMax": [
+            0.8,
+            1.066,
+            0.7826075048869157
+          ],
+          "FootprintRadius": 1.304,
+          "CastsShadows": true,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 4.3,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region07/MarshWillowShrub"
+        },
+        {
+          "Id": "env.tier02.region07.LowBogShrub",
+          "Name": "LowBogShrub",
+          "Category": "Shrub",
+          "Triangles": 340,
+          "BoundsMin": [
+            -0.6772838595845911,
+            -0.0289965974842296,
+            -0.76831242788777
+          ],
+          "BoundsMax": [
+            0.55,
+            0.45100000000000007,
+            0.5380426596097545
+          ],
+          "FootprintRadius": 0.896,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 3.9,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region07/LowBogShrub"
+        },
+        {
+          "Id": "env.tier02.region07.CattailClump",
+          "Name": "CattailClump",
+          "Category": "GroundCover",
+          "Triangles": 384,
+          "BoundsMin": [
+            -0.09996668173437519,
+            -0.0005354230527113768,
+            -0.4000268450246031
+          ],
+          "BoundsMax": [
+            0.6079536300128345,
+            1.6858538975377684,
+            0.2769716840576271
+          ],
+          "FootprintRadius": 0.49,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 3.49,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region07/CattailClump"
+        },
+        {
+          "Id": "env.tier02.region07.BentCattailClump",
+          "Name": "BentCattailClump",
+          "Category": "GroundCover",
+          "Triangles": 384,
+          "BoundsMin": [
+            -0.42148772808892815,
+            -0.003987348196239437,
+            -0.24755220424487423
+          ],
+          "BoundsMax": [
+            0.4483353435377594,
+            1.1821835957663733,
+            0.3717007367229525
+          ],
+          "FootprintRadius": 0.534,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 3.53,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region07/BentCattailClump"
+        },
+        {
+          "Id": "env.tier02.region07.MarshSedge",
+          "Name": "MarshSedge",
+          "Category": "GroundCover",
+          "Triangles": 24,
+          "BoundsMin": [
+            -0.35964818814302446,
+            0,
+            -0.3486353549777755
+          ],
+          "BoundsMax": [
+            0.31788740938731674,
+            0.942710093851391,
+            0.3438861870321747
+          ],
+          "FootprintRadius": 0.484,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 3.48,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region07/MarshSedge"
+        },
+        {
+          "Id": "env.tier02.region07.BogMossCarpet",
+          "Name": "BogMossCarpet",
+          "Category": "GroundCover",
+          "Triangles": 224,
+          "BoundsMin": [
+            -0.41165762407692824,
+            -0.035,
+            -0.40886246776159674
+          ],
+          "BoundsMax": [
+            0.4305255888325765,
+            0.10500000000000001,
+            0.40886246776159674
+          ],
+          "FootprintRadius": 0.587,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 3.59,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region07/BogMossCarpet"
+        },
+        {
+          "Id": "env.tier02.region07.MarshStoneCluster",
+          "Name": "MarshStoneCluster",
+          "Category": "Rock",
+          "Triangles": 280,
+          "BoundsMin": [
+            -1.092646134578493,
+            0,
+            -0.7801511411749289
+          ],
+          "BoundsMax": [
+            1.0291562368012752,
+            0.29974537206288854,
+            0.7857790279575207
+          ],
+          "FootprintRadius": 1.319,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 4.32,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region07/MarshStoneCluster"
+        },
+        {
+          "Id": "env.tier02.region07.BeaverLodge",
+          "Name": "BeaverLodge",
+          "Category": "Structure",
+          "Triangles": 496,
+          "BoundsMin": [
+            -1.1412678195541843,
+            -0.22000000000000008,
+            -1.001461149608378
+          ],
+          "BoundsMax": [
+            1.1412678195541843,
+            1.1393946504320303,
+            0.9768691769624718
+          ],
+          "FootprintRadius": 1.51,
+          "CastsShadows": true,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 5.51,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region07/BeaverLodge"
+        },
+        {
+          "Id": "env.tier02.region07.SunkenBirchLog",
+          "Name": "SunkenBirchLog",
+          "Category": "Deadwood",
+          "Triangles": 56,
+          "BoundsMin": [
+            -1.3,
+            0.0,
+            -0.15756924048195328
+          ],
+          "BoundsMax": [
+            1.3,
+            0.41202989511734334,
+            0.35767796114028955
+          ],
+          "FootprintRadius": 1.325,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 4.33,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region07/SunkenBirchLog"
+        },
+        {
+          "Id": "env.tier02.region07.BoardwalkSection",
+          "Name": "BoardwalkSection",
+          "Category": "Structure",
+          "Triangles": 384,
+          "BoundsMin": [
+            -2.0,
+            -0.25,
+            -0.5686338578450016
+          ],
+          "BoundsMax": [
+            2.0,
+            0.445,
+            0.5703808330110378
+          ],
+          "FootprintRadius": 2.08,
+          "CastsShadows": true,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 6.08,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region07/BoardwalkSection"
+        },
+        {
+          "Id": "env.tier02.region07.MarshMudBank",
+          "Name": "MarshMudBank",
+          "Category": "Terrain",
+          "Triangles": 160,
+          "BoundsMin": [
+            -4.0,
+            0.0,
+            -4.0
+          ],
+          "BoundsMax": [
+            4.0,
+            0.36,
+            4.0
+          ],
+          "FootprintRadius": 5.657,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 8.66,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region07/MarshMudBank"
+        },
+        {
+          "Id": "env.tier02.region07.LowMarshIsland",
+          "Name": "LowMarshIsland",
+          "Category": "Terrain",
+          "Triangles": 160,
+          "BoundsMin": [
+            -5.0,
+            0.0,
+            -4.0
+          ],
+          "BoundsMax": [
+            5.0,
+            0.4,
+            4.0
+          ],
+          "FootprintRadius": 6.403,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 9.4,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region07/LowMarshIsland"
+        },
+        {
+          "Id": "env.tier02.region07.MarshGroundPatch",
+          "Name": "MarshGroundPatch",
+          "Category": "Terrain",
+          "Triangles": 72,
+          "BoundsMin": [
+            -3.0,
+            0,
+            -3.0
+          ],
+          "BoundsMax": [
+            3.0,
+            0,
+            3.0
+          ],
+          "FootprintRadius": 4.243,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 7.24,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region07/MarshGroundPatch"
+        },
+        {
+          "Id": "env.tier02.region07.BogWaterTile",
+          "Name": "BogWaterTile",
+          "Category": "Water",
+          "Triangles": 72,
+          "BoundsMin": [
+            -4.0,
+            0,
+            -4.0
+          ],
+          "BoundsMax": [
+            4.0,
+            0,
+            4.0
+          ],
+          "FootprintRadius": 5.657,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 8.66,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region07/BogWaterTile"
+        },
+        {
+          "Id": "env.tier02.region07.LilyPadWaterTile",
+          "Name": "LilyPadWaterTile",
+          "Category": "Water",
+          "Triangles": 252,
+          "BoundsMin": [
+            -4.0,
+            0,
+            -4.0
+          ],
+          "BoundsMax": [
+            4.0,
+            0.085,
+            4.0
+          ],
+          "FootprintRadius": 5.657,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 8.66,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region07/LilyPadWaterTile"
+        },
+        {
+          "Id": "env.tier02.region07.BoardwalkTrailShoulder",
+          "Name": "BoardwalkTrailShoulder",
+          "Category": "Terrain",
+          "Triangles": 72,
+          "BoundsMin": [
+            -3.0,
+            0,
+            -3.0
+          ],
+          "BoundsMax": [
+            3.0,
+            0,
+            3.0
+          ],
+          "FootprintRadius": 4.243,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 7.24,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region07/BoardwalkTrailShoulder"
+        },
+        {
+          "Id": "env.tier02.region07.MarshClearingPatch",
+          "Name": "MarshClearingPatch",
+          "Category": "Terrain",
+          "Triangles": 72,
+          "BoundsMin": [
+            -4.0,
+            0,
+            -4.0
+          ],
+          "BoundsMax": [
+            4.0,
+            0,
+            4.0
+          ],
+          "FootprintRadius": 5.657,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 8.66,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region07/MarshClearingPatch"
+        }
+      ]
+    },
+    {
+      "Number": 8,
+      "Name": "Amber Riverbanks",
+      "PaletteSize": 32,
+      "TrailColorRGB": [
+        150,
+        110,
+        70
+      ],
+      "Models": [
+        {
+          "Id": "env.tier02.region08.RiverbankBirch",
+          "Name": "RiverbankBirch",
+          "Category": "Tree",
+          "Triangles": 616,
+          "BoundsMin": [
+            -1.523604264283827,
+            0.0,
+            -1.2967985721996986
+          ],
+          "BoundsMax": [
+            1.3939340844116637,
+            6.336,
+            1.2526854718980254
+          ],
+          "FootprintRadius": 1.937,
+          "CastsShadows": true,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 9.94,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region08/RiverbankBirch"
+        },
+        {
+          "Id": "env.tier02.region08.AmberBirch",
+          "Name": "AmberBirch",
+          "Category": "Tree",
+          "Triangles": 616,
+          "BoundsMin": [
+            -1.182720418232136,
+            -0.009505789896235847,
+            -1.2387450554934376
+          ],
+          "BoundsMax": [
+            1.4905662697471076,
+            4.949999999999999,
+            1.052578621440443
+          ],
+          "FootprintRadius": 1.76,
+          "CastsShadows": true,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 9.76,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region08/AmberBirch"
+        },
+        {
+          "Id": "env.tier02.region08.RiverbankBirchSapling",
+          "Name": "RiverbankBirchSapling",
+          "Category": "Tree",
+          "Triangles": 616,
+          "BoundsMin": [
+            -0.41208840994507057,
+            0.0,
+            -0.4583007026283013
+          ],
+          "BoundsMax": [
+            0.5592667343516442,
+            2.1780000000000004,
+            0.4768783257941746
+          ],
+          "FootprintRadius": 0.674,
+          "CastsShadows": true,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 8.67,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region08/RiverbankBirchSapling"
+        },
+        {
+          "Id": "env.tier02.region08.AmberWillowShrub",
+          "Name": "AmberWillowShrub",
+          "Category": "Shrub",
+          "Triangles": 340,
+          "BoundsMin": [
+            -1.2314251992447112,
+            -0.027188928620469628,
+            -1.3969316870686725
+          ],
+          "BoundsMax": [
+            1.0,
+            0.984,
+            0.9782593811086445
+          ],
+          "FootprintRadius": 1.629,
+          "CastsShadows": true,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 4.63,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region08/AmberWillowShrub"
+        },
+        {
+          "Id": "env.tier02.region08.RiverScrub",
+          "Name": "RiverScrub",
+          "Category": "Shrub",
+          "Triangles": 340,
+          "BoundsMin": [
+            -0.8004263795090623,
+            -0.02829689094695217,
+            -0.9080055965946372
+          ],
+          "BoundsMax": [
+            0.6500000000000001,
+            0.574,
+            0.635868597720619
+          ],
+          "FootprintRadius": 1.059,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 4.06,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region08/RiverScrub"
+        },
+        {
+          "Id": "env.tier02.region08.AmberGrass",
+          "Name": "AmberGrass",
+          "Category": "GroundCover",
+          "Triangles": 24,
+          "BoundsMin": [
+            -0.21689786476401426,
+            0,
+            -0.3990919481175511
+          ],
+          "BoundsMax": [
+            0.44261424422876305,
+            0.7998634080074846,
+            0.329730640985984
+          ],
+          "FootprintRadius": 0.491,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 3.49,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region08/AmberGrass"
+        },
+        {
+          "Id": "env.tier02.region08.RiverbankFlowers",
+          "Name": "RiverbankFlowers",
+          "Category": "GroundCover",
+          "Triangles": 504,
+          "BoundsMin": [
+            -0.37933531638312296,
+            0,
+            -0.39683601516937944
+          ],
+          "BoundsMax": [
+            0.4074785071991792,
+            0.3807090815606172,
+            0.28559895295947174
+          ],
+          "FootprintRadius": 0.521,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 3.52,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region08/RiverbankFlowers"
+        },
+        {
+          "Id": "env.tier02.region08.TerraceReeds",
+          "Name": "TerraceReeds",
+          "Category": "GroundCover",
+          "Triangles": 468,
+          "BoundsMin": [
+            -0.5566818965250587,
+            -0.0010542132368925108,
+            -0.35333921582878886
+          ],
+          "BoundsMax": [
+            0.6679233730714033,
+            1.5538920369643312,
+            0.3487091396673157
+          ],
+          "FootprintRadius": 0.706,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 3.71,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region08/TerraceReeds"
+        },
+        {
+          "Id": "env.tier02.region08.RiverPebbleCluster",
+          "Name": "RiverPebbleCluster",
+          "Category": "Rock",
+          "Triangles": 280,
+          "BoundsMin": [
+            -1.2294125998975518,
+            0,
+            -0.8742793571667146
+          ],
+          "BoundsMax": [
+            1.2138784604808368,
+            0.30590437306762064,
+            0.903047603901276
+          ],
+          "FootprintRadius": 1.511,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 4.51,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region08/RiverPebbleCluster"
+        },
+        {
+          "Id": "env.tier02.region08.SandstoneRiverRock",
+          "Name": "SandstoneRiverRock",
+          "Category": "Rock",
+          "Triangles": 56,
+          "BoundsMin": [
+            -1.427627431696304,
+            0,
+            -1.0476167624693205
+          ],
+          "BoundsMax": [
+            1.2076041243177937,
+            1.03,
+            1.092168681397206
+          ],
+          "FootprintRadius": 1.697,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 4.7,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region08/SandstoneRiverRock"
+        },
+        {
+          "Id": "env.tier02.region08.BeaverDam",
+          "Name": "BeaverDam",
+          "Category": "Structure",
+          "Triangles": 856,
+          "BoundsMin": [
+            -2.1504709513848965,
+            -0.22500000000000003,
+            -0.55
+          ],
+          "BoundsMax": [
+            2.2296696022420144,
+            1.031275802783748,
+            0.55
+          ],
+          "FootprintRadius": 2.258,
+          "CastsShadows": true,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 6.26,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region08/BeaverDam"
+        },
+        {
+          "Id": "env.tier02.region08.RiverDriftwood",
+          "Name": "RiverDriftwood",
+          "Category": "Deadwood",
+          "Triangles": 56,
+          "BoundsMin": [
+            -1.1,
+            0.0,
+            -0.12802500789158705
+          ],
+          "BoundsMax": [
+            1.1,
+            0.3820298951173433,
+            0.35767796114028955
+          ],
+          "FootprintRadius": 1.126,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 4.13,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region08/RiverDriftwood"
+        },
+        {
+          "Id": "env.tier02.region08.RiverTerraceStep",
+          "Name": "RiverTerraceStep",
+          "Category": "Terrain",
+          "Triangles": 192,
+          "BoundsMin": [
+            -5.0,
+            0.0,
+            -5.0
+          ],
+          "BoundsMax": [
+            5.0,
+            1.6,
+            5.0
+          ],
+          "FootprintRadius": 7.071,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 10.07,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region08/RiverTerraceStep"
+        },
+        {
+          "Id": "env.tier02.region08.RiverTerraceBank",
+          "Name": "RiverTerraceBank",
+          "Category": "Terrain",
+          "Triangles": 160,
+          "BoundsMin": [
+            -4.0,
+            0.0,
+            -4.0
+          ],
+          "BoundsMax": [
+            4.0,
+            0.72,
+            4.0
+          ],
+          "FootprintRadius": 5.657,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 8.66,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region08/RiverTerraceBank"
+        },
+        {
+          "Id": "env.tier02.region08.AmberBankCut",
+          "Name": "AmberBankCut",
+          "Category": "Terrain",
+          "Triangles": 160,
+          "BoundsMin": [
+            -3.0,
+            0.0,
+            -5.0
+          ],
+          "BoundsMax": [
+            3.0,
+            1.2999999940366638,
+            5.0
+          ],
+          "FootprintRadius": 5.831,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 8.83,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region08/AmberBankCut"
+        },
+        {
+          "Id": "env.tier02.region08.RiverbankGroundPatch",
+          "Name": "RiverbankGroundPatch",
+          "Category": "Terrain",
+          "Triangles": 72,
+          "BoundsMin": [
+            -3.0,
+            0,
+            -3.0
+          ],
+          "BoundsMax": [
+            3.0,
+            0,
+            3.0
+          ],
+          "FootprintRadius": 4.243,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 7.24,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region08/RiverbankGroundPatch"
+        },
+        {
+          "Id": "env.tier02.region08.RiverSandbar",
+          "Name": "RiverSandbar",
+          "Category": "Terrain",
+          "Triangles": 72,
+          "BoundsMin": [
+            -3.0,
+            0,
+            -3.0
+          ],
+          "BoundsMax": [
+            3.0,
+            0,
+            3.0
+          ],
+          "FootprintRadius": 4.243,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 7.24,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region08/RiverSandbar"
+        },
+        {
+          "Id": "env.tier02.region08.RiverWaterTile",
+          "Name": "RiverWaterTile",
+          "Category": "Water",
+          "Triangles": 72,
+          "BoundsMin": [
+            -4.0,
+            0,
+            -8.0
+          ],
+          "BoundsMax": [
+            4.0,
+            0,
+            8.0
+          ],
+          "FootprintRadius": 8.944,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 11.94,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region08/RiverWaterTile"
+        },
+        {
+          "Id": "env.tier02.region08.RiverbankTrailShoulder",
+          "Name": "RiverbankTrailShoulder",
+          "Category": "Terrain",
+          "Triangles": 72,
+          "BoundsMin": [
+            -3.0,
+            0,
+            -3.0
+          ],
+          "BoundsMax": [
+            3.0,
+            0,
+            3.0
+          ],
+          "FootprintRadius": 4.243,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 7.24,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region08/RiverbankTrailShoulder"
+        },
+        {
+          "Id": "env.tier02.region08.RiverbankClearingPatch",
+          "Name": "RiverbankClearingPatch",
+          "Category": "Terrain",
+          "Triangles": 72,
+          "BoundsMin": [
+            -4.0,
+            0,
+            -4.0
+          ],
+          "BoundsMax": [
+            4.0,
+            0,
+            4.0
+          ],
+          "FootprintRadius": 5.657,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 8.66,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region08/RiverbankClearingPatch"
+        }
+      ]
+    },
+    {
+      "Number": 9,
+      "Name": "Bluewater Basin",
+      "PaletteSize": 32,
+      "TrailColorRGB": [
+        151,
+        123,
+        79
+      ],
+      "Models": [
+        {
+          "Id": "env.tier02.region09.BasinBirch",
+          "Name": "BasinBirch",
+          "Category": "Tree",
+          "Triangles": 616,
+          "BoundsMin": [
+            -1.100992524024966,
+            0.0,
+            -1.1400638708109905
+          ],
+          "BoundsMax": [
+            1.170445212411116,
+            5.9399999999999995,
+            1.171848004946439
+          ],
+          "FootprintRadius": 1.621,
+          "CastsShadows": true,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 9.62,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region09/BasinBirch"
+        },
+        {
+          "Id": "env.tier02.region09.TwinBasinBirch",
+          "Name": "TwinBasinBirch",
+          "Category": "Tree",
+          "Triangles": 1232,
+          "BoundsMin": [
+            -1.6897111658979562,
+            -0.0030216683743185062,
+            -0.6654047345072903
+          ],
+          "BoundsMax": [
+            1.7681112075799754,
+            4.7484566332816,
+            1.6074723653600282
+          ],
+          "FootprintRadius": 2.069,
+          "CastsShadows": true,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 10.07,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region09/TwinBasinBirch"
+        },
+        {
+          "Id": "env.tier02.region09.BasinBirchSapling",
+          "Name": "BasinBirchSapling",
+          "Category": "Tree",
+          "Triangles": 616,
+          "BoundsMin": [
+            -0.40677582186122957,
+            0.0,
+            -0.4732584602083587
+          ],
+          "BoundsMax": [
+            0.5365832509264977,
+            2.4749999999999996,
+            0.45953989913040116
+          ],
+          "FootprintRadius": 0.663,
+          "CastsShadows": true,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 8.66,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region09/BasinBirchSapling"
+        },
+        {
+          "Id": "env.tier02.region09.PondsideShrub",
+          "Name": "PondsideShrub",
+          "Category": "Shrub",
+          "Triangles": 340,
+          "BoundsMin": [
+            -0.9235688994335334,
+            -0.02488856378225743,
+            -1.0476987653015044
+          ],
+          "BoundsMax": [
+            0.75,
+            0.9020000000000001,
+            0.7336945358314834
+          ],
+          "FootprintRadius": 1.222,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 4.22,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region09/PondsideShrub"
+        },
+        {
+          "Id": "env.tier02.region09.LowBasinShrub",
+          "Name": "LowBasinShrub",
+          "Category": "Shrub",
+          "Triangles": 340,
+          "BoundsMin": [
+            -0.7388551195468267,
+            -0.03050834853979492,
+            -0.8381590122412035
+          ],
+          "BoundsMax": [
+            0.6000000000000001,
+            0.41000000000000003,
+            0.5869556286651867
+          ],
+          "FootprintRadius": 0.978,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 3.98,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region09/LowBasinShrub"
+        },
+        {
+          "Id": "env.tier02.region09.PondReeds",
+          "Name": "PondReeds",
+          "Category": "GroundCover",
+          "Triangles": 468,
+          "BoundsMin": [
+            -0.4581458112317266,
+            -0.0010558199285636816,
+            -0.4011839490775636
+          ],
+          "BoundsMax": [
+            0.6820063318028263,
+            1.6279509804647483,
+            0.4265999945913886
+          ],
+          "FootprintRadius": 0.704,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 3.7,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region09/PondReeds"
+        },
+        {
+          "Id": "env.tier02.region09.PondSedge",
+          "Name": "PondSedge",
+          "Category": "GroundCover",
+          "Triangles": 24,
+          "BoundsMin": [
+            -0.4354774902864734,
+            0,
+            -0.2731964030254754
+          ],
+          "BoundsMax": [
+            0.3139801056476982,
+            0.8720949633180488,
+            0.3465659078291402
+          ],
+          "FootprintRadius": 0.486,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 3.49,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region09/PondSedge"
+        },
+        {
+          "Id": "env.tier02.region09.BasinGrass",
+          "Name": "BasinGrass",
+          "Category": "GroundCover",
+          "Triangles": 24,
+          "BoundsMin": [
+            -0.416508164074206,
+            0,
+            -0.35698379335326846
+          ],
+          "BoundsMax": [
+            0.47129546601721606,
+            0.5585575554559127,
+            0.41819695086903524
+          ],
+          "FootprintRadius": 0.589,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 3.59,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region09/BasinGrass"
+        },
+        {
+          "Id": "env.tier02.region09.BasinWildflowers",
+          "Name": "BasinWildflowers",
+          "Category": "GroundCover",
+          "Triangles": 504,
+          "BoundsMin": [
+            -0.32493780122342275,
+            0,
+            -0.3745299411695049
+          ],
+          "BoundsMax": [
+            0.5126053641570293,
+            0.32422418287959054,
+            0.4820830810552968
+          ],
+          "FootprintRadius": 0.599,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 3.6,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region09/BasinWildflowers"
+        },
+        {
+          "Id": "env.tier02.region09.BlueStoneCluster",
+          "Name": "BlueStoneCluster",
+          "Category": "Rock",
+          "Triangles": 280,
+          "BoundsMin": [
+            -1.3598290991945454,
+            0,
+            -0.9536252179226681
+          ],
+          "BoundsMax": [
+            1.3009528996603068,
+            0.5018262858096104,
+            0.9760345972696449
+          ],
+          "FootprintRadius": 1.643,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 4.64,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region09/BlueStoneCluster"
+        },
+        {
+          "Id": "env.tier02.region09.PondEdgeBoulder",
+          "Name": "PondEdgeBoulder",
+          "Category": "Rock",
+          "Triangles": 56,
+          "BoundsMin": [
+            -1.1658687679224646,
+            0,
+            -0.9621031195768809
+          ],
+          "BoundsMax": [
+            1.3077507439225435,
+            1.03,
+            0.8803260514708289
+          ],
+          "FootprintRadius": 1.542,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 4.54,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region09/PondEdgeBoulder"
+        },
+        {
+          "Id": "env.tier02.region09.BasinRootLog",
+          "Name": "BasinRootLog",
+          "Category": "Deadwood",
+          "Triangles": 136,
+          "BoundsMin": [
+            -1.5095885992840934,
+            -0.010879034161213351,
+            -0.5337839018448859
+          ],
+          "BoundsMax": [
+            1.0,
+            0.3913209920472754,
+            0.657146253576982
+          ],
+          "FootprintRadius": 1.389,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 4.39,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region09/BasinRootLog"
+        },
+        {
+          "Id": "env.tier02.region09.PondBasin",
+          "Name": "PondBasin",
+          "Category": "Terrain",
+          "Triangles": 160,
+          "BoundsMin": [
+            -5.0,
+            -0.9,
+            -5.0
+          ],
+          "BoundsMax": [
+            5.0,
+            0.0,
+            5.0
+          ],
+          "FootprintRadius": 7.071,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 10.07,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region09/PondBasin"
+        },
+        {
+          "Id": "env.tier02.region09.BasinBank",
+          "Name": "BasinBank",
+          "Category": "Terrain",
+          "Triangles": 160,
+          "BoundsMin": [
+            -4.0,
+            0.0,
+            -3.0
+          ],
+          "BoundsMax": [
+            4.0,
+            0.6,
+            3.0
+          ],
+          "FootprintRadius": 5.0,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 8.0,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region09/BasinBank"
+        },
+        {
+          "Id": "env.tier02.region09.BasinRise",
+          "Name": "BasinRise",
+          "Category": "Terrain",
+          "Triangles": 160,
+          "BoundsMin": [
+            -6.0,
+            0.0,
+            -5.0
+          ],
+          "BoundsMax": [
+            6.0,
+            1.6,
+            5.0
+          ],
+          "FootprintRadius": 7.81,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 10.81,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region09/BasinRise"
+        },
+        {
+          "Id": "env.tier02.region09.PondWaterTile",
+          "Name": "PondWaterTile",
+          "Category": "Water",
+          "Triangles": 72,
+          "BoundsMin": [
+            -4.0,
+            0,
+            -4.0
+          ],
+          "BoundsMax": [
+            4.0,
+            0,
+            4.0
+          ],
+          "FootprintRadius": 5.657,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 8.66,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region09/PondWaterTile"
+        },
+        {
+          "Id": "env.tier02.region09.LilyPondTile",
+          "Name": "LilyPondTile",
+          "Category": "Water",
+          "Triangles": 252,
+          "BoundsMin": [
+            -4.0,
+            0,
+            -4.0
+          ],
+          "BoundsMax": [
+            4.0,
+            0.085,
+            4.0
+          ],
+          "FootprintRadius": 5.657,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 8.66,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region09/LilyPondTile"
+        },
+        {
+          "Id": "env.tier02.region09.BasinGroundPatch",
+          "Name": "BasinGroundPatch",
+          "Category": "Terrain",
+          "Triangles": 72,
+          "BoundsMin": [
+            -3.0,
+            0,
+            -3.0
+          ],
+          "BoundsMax": [
+            3.0,
+            0,
+            3.0
+          ],
+          "FootprintRadius": 4.243,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 7.24,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region09/BasinGroundPatch"
+        },
+        {
+          "Id": "env.tier02.region09.BasinTrailShoulder",
+          "Name": "BasinTrailShoulder",
+          "Category": "Terrain",
+          "Triangles": 72,
+          "BoundsMin": [
+            -3.0,
+            0,
+            -3.0
+          ],
+          "BoundsMax": [
+            3.0,
+            0,
+            3.0
+          ],
+          "FootprintRadius": 4.243,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 7.24,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region09/BasinTrailShoulder"
+        },
+        {
+          "Id": "env.tier02.region09.BasinClearingPatch",
+          "Name": "BasinClearingPatch",
+          "Category": "Terrain",
+          "Triangles": 72,
+          "BoundsMin": [
+            -4.0,
+            0,
+            -4.0
+          ],
+          "BoundsMax": [
+            4.0,
+            0,
+            4.0
+          ],
+          "FootprintRadius": 5.657,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 8.66,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region09/BasinClearingPatch"
+        }
+      ]
+    },
+    {
+      "Number": 10,
+      "Name": "Sunlit Uplands",
+      "PaletteSize": 32,
+      "TrailColorRGB": [
+        144,
+        116,
+        76
+      ],
+      "Models": [
+        {
+          "Id": "env.tier02.region10.UplandBirch",
+          "Name": "UplandBirch",
+          "Category": "Tree",
+          "Triangles": 616,
+          "BoundsMin": [
+            -1.2168204661783948,
+            0.0,
+            -1.34834267305751
+          ],
+          "BoundsMax": [
+            1.1619274259558172,
+            6.4350000000000005,
+            1.3189963747506948
+          ],
+          "FootprintRadius": 1.787,
+          "CastsShadows": true,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 9.79,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region10/UplandBirch"
+        },
+        {
+          "Id": "env.tier02.region10.BirchGroveClump",
+          "Name": "BirchGroveClump",
+          "Category": "Tree",
+          "Triangles": 1848,
+          "BoundsMin": [
+            -1.4016398515863426,
+            -0.006543535321966777,
+            -1.7948683531357634
+          ],
+          "BoundsMax": [
+            1.7140491689379318,
+            5.385079356162612,
+            1.7192734422019589
+          ],
+          "FootprintRadius": 2.348,
+          "CastsShadows": true,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 10.35,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region10/BirchGroveClump"
+        },
+        {
+          "Id": "env.tier02.region10.SunlitBirchSapling",
+          "Name": "SunlitBirchSapling",
+          "Category": "Tree",
+          "Triangles": 616,
+          "BoundsMin": [
+            -0.4786478007014502,
+            0.0,
+            -0.4689615022538223
+          ],
+          "BoundsMax": [
+            0.5594555721288171,
+            2.2769999999999997,
+            0.49773264272187706
+          ],
+          "FootprintRadius": 0.709,
+          "CastsShadows": true,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 8.71,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region10/SunlitBirchSapling"
+        },
+        {
+          "Id": "env.tier02.region10.UplandHeathShrub",
+          "Name": "UplandHeathShrub",
+          "Category": "Shrub",
+          "Triangles": 340,
+          "BoundsMin": [
+            -0.8004263795090623,
+            -0.029697009352530935,
+            -0.9080055965946372
+          ],
+          "BoundsMax": [
+            0.6500000000000001,
+            0.492,
+            0.635868597720619
+          ],
+          "FootprintRadius": 1.059,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 4.06,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region10/UplandHeathShrub"
+        },
+        {
+          "Id": "env.tier02.region10.HollowShrub",
+          "Name": "HollowShrub",
+          "Category": "Shrub",
+          "Triangles": 340,
+          "BoundsMin": [
+            -0.8619976394712978,
+            -0.022926143286784394,
+            -0.9778521809480707
+          ],
+          "BoundsMax": [
+            0.7,
+            0.984,
+            0.6847815667760512
+          ],
+          "FootprintRadius": 1.141,
+          "CastsShadows": true,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 4.14,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region10/HollowShrub"
+        },
+        {
+          "Id": "env.tier02.region10.UplandGrass",
+          "Name": "UplandGrass",
+          "Category": "GroundCover",
+          "Triangles": 24,
+          "BoundsMin": [
+            -0.26935539961877686,
+            0,
+            -0.30178399158170893
+          ],
+          "BoundsMax": [
+            0.43105153694014225,
+            0.5452351359276812,
+            0.44561907828112163
+          ],
+          "FootprintRadius": 0.512,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 3.51,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region10/UplandGrass"
+        },
+        {
+          "Id": "env.tier02.region10.SunlitWildflowers",
+          "Name": "SunlitWildflowers",
+          "Category": "GroundCover",
+          "Triangles": 504,
+          "BoundsMin": [
+            -0.22953995655948076,
+            0,
+            -0.3994436337582036
+          ],
+          "BoundsMax": [
+            0.5822981502773479,
+            0.3476905318075233,
+            0.4411260481831782
+          ],
+          "FootprintRadius": 0.584,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 3.58,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region10/SunlitWildflowers"
+        },
+        {
+          "Id": "env.tier02.region10.HollowFern",
+          "Name": "HollowFern",
+          "Category": "GroundCover",
+          "Triangles": 784,
+          "BoundsMin": [
+            -0.5878885301561694,
+            0.024429495032674057,
+            -0.6359059597088106
+          ],
+          "BoundsMax": [
+            0.6521532144200626,
+            0.7020889393627472,
+            0.6359059597088106
+          ],
+          "FootprintRadius": 0.888,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 3.89,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region10/HollowFern"
+        },
+        {
+          "Id": "env.tier02.region10.SandstoneOutcrop",
+          "Name": "SandstoneOutcrop",
+          "Category": "Rock",
+          "Triangles": 56,
+          "BoundsMin": [
+            -1.9230732507514015,
+            0,
+            -1.0477435720494488
+          ],
+          "BoundsMax": [
+            1.7639207219558504,
+            1.6480000000000001,
+            0.8812150090728125
+          ],
+          "FootprintRadius": 2.081,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 5.08,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region10/SandstoneOutcrop"
+        },
+        {
+          "Id": "env.tier02.region10.SandstoneLedge",
+          "Name": "SandstoneLedge",
+          "Category": "Rock",
+          "Triangles": 56,
+          "BoundsMin": [
+            -2.7338422800213085,
+            0,
+            -1.3239633483810196
+          ],
+          "BoundsMax": [
+            2.4260802918414854,
+            0.721,
+            1.3897815623836132
+          ],
+          "FootprintRadius": 2.915,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 5.92,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region10/SandstoneLedge"
+        },
+        {
+          "Id": "env.tier02.region10.UplandStoneCluster",
+          "Name": "UplandStoneCluster",
+          "Category": "Rock",
+          "Triangles": 280,
+          "BoundsMin": [
+            -1.4388826130839156,
+            0,
+            -1.0432217157410841
+          ],
+          "BoundsMax": [
+            1.4463845194149063,
+            0.6097476996509197,
+            0.9822302473372462
+          ],
+          "FootprintRadius": 1.763,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 4.76,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region10/UplandStoneCluster"
+        },
+        {
+          "Id": "env.tier02.region10.FallenBirchTrunk",
+          "Name": "FallenBirchTrunk",
+          "Category": "Deadwood",
+          "Triangles": 56,
+          "BoundsMin": [
+            -1.4,
+            0.0,
+            -0.17726539554219745
+          ],
+          "BoundsMax": [
+            1.4,
+            0.43202989511734335,
+            0.35767796114028955
+          ],
+          "FootprintRadius": 1.425,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 4.43,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region10/FallenBirchTrunk"
+        },
+        {
+          "Id": "env.tier02.region10.WoodedHollow",
+          "Name": "WoodedHollow",
+          "Category": "Terrain",
+          "Triangles": 160,
+          "BoundsMin": [
+            -5.0,
+            -1.2,
+            -5.0
+          ],
+          "BoundsMax": [
+            5.0,
+            0.0,
+            5.0
+          ],
+          "FootprintRadius": 7.071,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 10.07,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region10/WoodedHollow"
+        },
+        {
+          "Id": "env.tier02.region10.UplandSlope",
+          "Name": "UplandSlope",
+          "Category": "Terrain",
+          "Triangles": 160,
+          "BoundsMin": [
+            -5.0,
+            0.0,
+            -6.0
+          ],
+          "BoundsMax": [
+            5.0,
+            2.6,
+            6.0
+          ],
+          "FootprintRadius": 7.81,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 10.81,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region10/UplandSlope"
+        },
+        {
+          "Id": "env.tier02.region10.UplandKnoll",
+          "Name": "UplandKnoll",
+          "Category": "Terrain",
+          "Triangles": 160,
+          "BoundsMin": [
+            -6.0,
+            0.0,
+            -5.0
+          ],
+          "BoundsMax": [
+            6.0,
+            2.4,
+            5.0
+          ],
+          "FootprintRadius": 7.81,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 10.81,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region10/UplandKnoll"
+        },
+        {
+          "Id": "env.tier02.region10.DistantUplandRidge",
+          "Name": "DistantUplandRidge",
+          "Category": "Terrain",
+          "Triangles": 160,
+          "BoundsMin": [
+            -14.0,
+            0.0,
+            -14.0
+          ],
+          "BoundsMax": [
+            14.0,
+            6.0,
+            14.0
+          ],
+          "FootprintRadius": 19.799,
+          "CastsShadows": false,
+          "DistantOnly": true,
+          "RecommendedRoadClearance": 22.8,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region10/DistantUplandRidge"
+        },
+        {
+          "Id": "env.tier02.region10.UplandGroundPatch",
+          "Name": "UplandGroundPatch",
+          "Category": "Terrain",
+          "Triangles": 72,
+          "BoundsMin": [
+            -3.0,
+            0,
+            -3.0
+          ],
+          "BoundsMax": [
+            3.0,
+            0,
+            3.0
+          ],
+          "FootprintRadius": 4.243,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 7.24,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region10/UplandGroundPatch"
+        },
+        {
+          "Id": "env.tier02.region10.HollowLeafLitter",
+          "Name": "HollowLeafLitter",
+          "Category": "Terrain",
+          "Triangles": 216,
+          "BoundsMin": [
+            -3.0,
+            -0.036,
+            -3.0
+          ],
+          "BoundsMax": [
+            3.0,
+            0.054,
+            3.0
+          ],
+          "FootprintRadius": 4.243,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 7.24,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region10/HollowLeafLitter"
+        },
+        {
+          "Id": "env.tier02.region10.UplandTrailShoulder",
+          "Name": "UplandTrailShoulder",
+          "Category": "Terrain",
+          "Triangles": 72,
+          "BoundsMin": [
+            -3.0,
+            0,
+            -3.0
+          ],
+          "BoundsMax": [
+            3.0,
+            0,
+            3.0
+          ],
+          "FootprintRadius": 4.243,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 7.24,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region10/UplandTrailShoulder"
+        },
+        {
+          "Id": "env.tier02.region10.UplandClearingPatch",
+          "Name": "UplandClearingPatch",
+          "Category": "Terrain",
+          "Triangles": 72,
+          "BoundsMin": [
+            -4.0,
+            0,
+            -4.0
+          ],
+          "BoundsMax": [
+            4.0,
+            0,
+            4.0
+          ],
+          "FootprintRadius": 5.657,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 8.66,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region10/UplandClearingPatch"
+        }
+      ]
+    },
+    {
+      "Number": 11,
+      "Name": "Mirror Lakes",
+      "PaletteSize": 32,
+      "TrailColorRGB": [
+        151,
+        123,
+        79
+      ],
+      "Models": [
+        {
+          "Id": "env.tier02.region11.LakeshoreBirch",
+          "Name": "LakeshoreBirch",
+          "Category": "Tree",
+          "Triangles": 616,
+          "BoundsMin": [
+            -1.0782553005141482,
+            0.0,
+            -1.3083972876512533
+          ],
+          "BoundsMax": [
+            1.097834632680908,
+            6.138,
+            1.29059240441575
+          ],
+          "FootprintRadius": 1.695,
+          "CastsShadows": true,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 9.69,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region11/LakeshoreBirch"
+        },
+        {
+          "Id": "env.tier02.region11.IslandBirch",
+          "Name": "IslandBirch",
+          "Category": "Tree",
+          "Triangles": 616,
+          "BoundsMin": [
+            -0.3195537094874286,
+            -0.01619165817821462,
+            -0.7225555866997315
+          ],
+          "BoundsMax": [
+            1.1802853739463155,
+            4.356000000000001,
+            0.8054908774846774
+          ],
+          "FootprintRadius": 1.071,
+          "CastsShadows": true,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 9.07,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region11/IslandBirch"
+        },
+        {
+          "Id": "env.tier02.region11.LakeBirchSapling",
+          "Name": "LakeBirchSapling",
+          "Category": "Tree",
+          "Triangles": 616,
+          "BoundsMin": [
+            -0.532860014143198,
+            0.0,
+            -0.5168538161651144
+          ],
+          "BoundsMax": [
+            0.554302962180561,
+            2.3760000000000003,
+            0.533697003076575
+          ],
+          "FootprintRadius": 0.756,
+          "CastsShadows": true,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 8.76,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region11/LakeBirchSapling"
+        },
+        {
+          "Id": "env.tier02.region11.ShoreShrub",
+          "Name": "ShoreShrub",
+          "Category": "Shrub",
+          "Triangles": 340,
+          "BoundsMin": [
+            -0.9235688994335334,
+            -0.0260178110496567,
+            -1.0476987653015044
+          ],
+          "BoundsMax": [
+            0.75,
+            0.8200000000000001,
+            0.7336945358314834
+          ],
+          "FootprintRadius": 1.222,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 4.22,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region11/ShoreShrub"
+        },
+        {
+          "Id": "env.tier02.region11.LowShoreBush",
+          "Name": "LowShoreBush",
+          "Category": "Shrub",
+          "Triangles": 340,
+          "BoundsMin": [
+            -0.6772838595845911,
+            -0.029824058372994417,
+            -0.76831242788777
+          ],
+          "BoundsMax": [
+            0.55,
+            0.41000000000000003,
+            0.5380426596097545
+          ],
+          "FootprintRadius": 0.896,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 3.9,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region11/LowShoreBush"
+        },
+        {
+          "Id": "env.tier02.region11.LakeReeds",
+          "Name": "LakeReeds",
+          "Category": "GroundCover",
+          "Triangles": 468,
+          "BoundsMin": [
+            -0.6402356326683414,
+            -0.0010579499537965661,
+            -0.3631638940278376
+          ],
+          "BoundsMax": [
+            0.5262206714435124,
+            1.5674920260742262,
+            0.07285129455221188
+          ],
+          "FootprintRadius": 0.623,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 3.62,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region11/LakeReeds"
+        },
+        {
+          "Id": "env.tier02.region11.ShoreSedge",
+          "Name": "ShoreSedge",
+          "Category": "GroundCover",
+          "Triangles": 24,
+          "BoundsMin": [
+            -0.29018365122277945,
+            0,
+            -0.2836430777223394
+          ],
+          "BoundsMax": [
+            0.30021205941388607,
+            0.7973693959965725,
+            0.3287004992112801
+          ],
+          "FootprintRadius": 0.425,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 3.43,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region11/ShoreSedge"
+        },
+        {
+          "Id": "env.tier02.region11.LakeshoreGrass",
+          "Name": "LakeshoreGrass",
+          "Category": "GroundCover",
+          "Triangles": 24,
+          "BoundsMin": [
+            -0.348171842780175,
+            0,
+            -0.3595256405960191
+          ],
+          "BoundsMax": [
+            0.3831079568042527,
+            0.5285701197295257,
+            0.37208356506078905
+          ],
+          "FootprintRadius": 0.517,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 3.52,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region11/LakeshoreGrass"
+        },
+        {
+          "Id": "env.tier02.region11.ShoreFlowers",
+          "Name": "ShoreFlowers",
+          "Category": "GroundCover",
+          "Triangles": 504,
+          "BoundsMin": [
+            -0.4447351125697756,
+            0,
+            -0.36961733931611085
+          ],
+          "BoundsMax": [
+            0.40792162485993766,
+            0.32847351527410057,
+            0.3301841178375005
+          ],
+          "FootprintRadius": 0.552,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 3.55,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region11/ShoreFlowers"
+        },
+        {
+          "Id": "env.tier02.region11.ShorePebbleCluster",
+          "Name": "ShorePebbleCluster",
+          "Category": "Rock",
+          "Triangles": 280,
+          "BoundsMin": [
+            -1.2769754962931072,
+            0,
+            -0.8902277957823297
+          ],
+          "BoundsMax": [
+            1.2569893993513896,
+            0.2395138419743592,
+            0.8532309914919562
+          ],
+          "FootprintRadius": 1.538,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 4.54,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region11/ShorePebbleCluster"
+        },
+        {
+          "Id": "env.tier02.region11.LakeBoulder",
+          "Name": "LakeBoulder",
+          "Category": "Rock",
+          "Triangles": 56,
+          "BoundsMin": [
+            -1.4324375404018355,
+            0,
+            -1.074738731173679
+          ],
+          "BoundsMax": [
+            1.4537835560889514,
+            1.236,
+            0.998819739795663
+          ],
+          "FootprintRadius": 1.777,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 4.78,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region11/LakeBoulder"
+        },
+        {
+          "Id": "env.tier02.region11.LakeDriftwood",
+          "Name": "LakeDriftwood",
+          "Category": "Deadwood",
+          "Triangles": 56,
+          "BoundsMin": [
+            -1.2,
+            0.0,
+            -0.12802500789158705
+          ],
+          "BoundsMax": [
+            1.2,
+            0.3820298951173433,
+            0.35767796114028955
+          ],
+          "FootprintRadius": 1.224,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 4.22,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region11/LakeDriftwood"
+        },
+        {
+          "Id": "env.tier02.region11.IslandMound",
+          "Name": "IslandMound",
+          "Category": "Terrain",
+          "Triangles": 160,
+          "BoundsMin": [
+            -5.0,
+            0.0,
+            -4.0
+          ],
+          "BoundsMax": [
+            5.0,
+            1.3,
+            4.0
+          ],
+          "FootprintRadius": 6.403,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 9.4,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region11/IslandMound"
+        },
+        {
+          "Id": "env.tier02.region11.LakeshoreBank",
+          "Name": "LakeshoreBank",
+          "Category": "Terrain",
+          "Triangles": 160,
+          "BoundsMin": [
+            -4.0,
+            0.0,
+            -4.0
+          ],
+          "BoundsMax": [
+            4.0,
+            0.48,
+            4.0
+          ],
+          "FootprintRadius": 5.657,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 8.66,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region11/LakeshoreBank"
+        },
+        {
+          "Id": "env.tier02.region11.DistantLakeIsland",
+          "Name": "DistantLakeIsland",
+          "Category": "Terrain",
+          "Triangles": 160,
+          "BoundsMin": [
+            -14.0,
+            0.0,
+            -10.0
+          ],
+          "BoundsMax": [
+            14.0,
+            4.0,
+            10.0
+          ],
+          "FootprintRadius": 17.205,
+          "CastsShadows": false,
+          "DistantOnly": true,
+          "RecommendedRoadClearance": 20.2,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region11/DistantLakeIsland"
+        },
+        {
+          "Id": "env.tier02.region11.MirrorLakeTile",
+          "Name": "MirrorLakeTile",
+          "Category": "Water",
+          "Triangles": 72,
+          "BoundsMin": [
+            -4.0,
+            0,
+            -8.0
+          ],
+          "BoundsMax": [
+            4.0,
+            0,
+            8.0
+          ],
+          "FootprintRadius": 8.944,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 11.94,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region11/MirrorLakeTile"
+        },
+        {
+          "Id": "env.tier02.region11.CalmWaterTile",
+          "Name": "CalmWaterTile",
+          "Category": "Water",
+          "Triangles": 72,
+          "BoundsMin": [
+            -4.0,
+            0,
+            -4.0
+          ],
+          "BoundsMax": [
+            4.0,
+            0,
+            4.0
+          ],
+          "FootprintRadius": 5.657,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 8.66,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region11/CalmWaterTile"
+        },
+        {
+          "Id": "env.tier02.region11.LakeshoreSandPatch",
+          "Name": "LakeshoreSandPatch",
+          "Category": "Terrain",
+          "Triangles": 72,
+          "BoundsMin": [
+            -3.0,
+            0,
+            -3.0
+          ],
+          "BoundsMax": [
+            3.0,
+            0,
+            3.0
+          ],
+          "FootprintRadius": 4.243,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 7.24,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region11/LakeshoreSandPatch"
+        },
+        {
+          "Id": "env.tier02.region11.LakeshoreTrailShoulder",
+          "Name": "LakeshoreTrailShoulder",
+          "Category": "Terrain",
+          "Triangles": 72,
+          "BoundsMin": [
+            -3.0,
+            0,
+            -3.0
+          ],
+          "BoundsMax": [
+            3.0,
+            0,
+            3.0
+          ],
+          "FootprintRadius": 4.243,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 7.24,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region11/LakeshoreTrailShoulder"
+        },
+        {
+          "Id": "env.tier02.region11.LakeshoreClearingPatch",
+          "Name": "LakeshoreClearingPatch",
+          "Category": "Terrain",
+          "Triangles": 72,
+          "BoundsMin": [
+            -4.0,
+            0,
+            -4.0
+          ],
+          "BoundsMax": [
+            4.0,
+            0,
+            4.0
+          ],
+          "FootprintRadius": 5.657,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 8.66,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region11/LakeshoreClearingPatch"
+        }
+      ]
+    },
+    {
+      "Number": 12,
+      "Name": "Frostveil Taiga",
+      "PaletteSize": 32,
+      "TrailColorRGB": [
+        110,
+        96,
+        78
+      ],
+      "Models": [
+        {
+          "Id": "env.tier02.region12.FrostBirch",
+          "Name": "FrostBirch",
+          "Category": "Tree",
+          "Triangles": 616,
+          "BoundsMin": [
+            -1.2461167393409194,
+            0.0,
+            -1.2164415159184312
+          ],
+          "BoundsMax": [
+            1.0808823713970646,
+            5.9399999999999995,
+            1.1213965310801741
+          ],
+          "FootprintRadius": 1.649,
+          "CastsShadows": true,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 9.65,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region12/FrostBirch"
+        },
+        {
+          "Id": "env.tier02.region12.SnowCappedBirch",
+          "Name": "SnowCappedBirch",
+          "Category": "Tree",
+          "Triangles": 812,
+          "BoundsMin": [
+            -1.191697044529124,
+            0.0,
+            -0.9955698635228281
+          ],
+          "BoundsMax": [
+            0.9958495229042065,
+            5.3999999999999995,
+            1.014694976176707
+          ],
+          "FootprintRadius": 1.485,
+          "CastsShadows": true,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 9.49,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region12/SnowCappedBirch"
+        },
+        {
+          "Id": "env.tier02.region12.TaigaBirchSapling",
+          "Name": "TaigaBirchSapling",
+          "Category": "Tree",
+          "Triangles": 616,
+          "BoundsMin": [
+            -0.3801601576582626,
+            0.0,
+            -0.5374052499754809
+          ],
+          "BoundsMax": [
+            0.5559939895350255,
+            2.1780000000000004,
+            0.4900843440272544
+          ],
+          "FootprintRadius": 0.695,
+          "CastsShadows": true,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 8.7,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region12/TaigaBirchSapling"
+        },
+        {
+          "Id": "env.tier02.region12.FrostShrub",
+          "Name": "FrostShrub",
+          "Category": "Shrub",
+          "Triangles": 340,
+          "BoundsMin": [
+            -0.8619976394712978,
+            -0.026431779276026964,
+            -0.9778521809480707
+          ],
+          "BoundsMax": [
+            0.7,
+            0.738,
+            0.6847815667760512
+          ],
+          "FootprintRadius": 1.141,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 4.14,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region12/FrostShrub"
+        },
+        {
+          "Id": "env.tier02.region12.LowTaigaShrub",
+          "Name": "LowTaigaShrub",
+          "Category": "Shrub",
+          "Triangles": 340,
+          "BoundsMin": [
+            -0.6772838595845911,
+            -0.0306440907617588,
+            -0.76831242788777
+          ],
+          "BoundsMax": [
+            0.55,
+            0.369,
+            0.5380426596097545
+          ],
+          "FootprintRadius": 0.896,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 3.9,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region12/LowTaigaShrub"
+        },
+        {
+          "Id": "env.tier02.region12.FrostGrass",
+          "Name": "FrostGrass",
+          "Category": "GroundCover",
+          "Triangles": 24,
+          "BoundsMin": [
+            -0.4350310508837058,
+            0,
+            -0.37059410119664415
+          ],
+          "BoundsMax": [
+            0.36141110545299904,
+            0.5104229427318404,
+            0.2590993509195842
+          ],
+          "FootprintRadius": 0.508,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 3.51,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region12/FrostGrass"
+        },
+        {
+          "Id": "env.tier02.region12.ThawSedge",
+          "Name": "ThawSedge",
+          "Category": "GroundCover",
+          "Triangles": 24,
+          "BoundsMin": [
+            -0.34022003184304256,
+            0,
+            -0.2055311537778859
+          ],
+          "BoundsMax": [
+            0.3793674861536297,
+            0.7148242336532964,
+            0.31240181163293324
+          ],
+          "FootprintRadius": 0.443,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 3.44,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region12/ThawSedge"
+        },
+        {
+          "Id": "env.tier02.region12.ThawCattails",
+          "Name": "ThawCattails",
+          "Category": "GroundCover",
+          "Triangles": 384,
+          "BoundsMin": [
+            -0.4208722758946581,
+            -0.0007537589585570531,
+            -0.3843782822484458
+          ],
+          "BoundsMax": [
+            0.6051214642248319,
+            1.276565946958658,
+            0.3598297089318671
+          ],
+          "FootprintRadius": 0.634,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 3.63,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region12/ThawCattails"
+        },
+        {
+          "Id": "env.tier02.region12.SnowCappedBoulder",
+          "Name": "SnowCappedBoulder",
+          "Category": "Rock",
+          "Triangles": 88,
+          "BoundsMin": [
+            -1.3914802022308757,
+            0,
+            -1.0926417310062233
+          ],
+          "BoundsMax": [
+            1.114214823855837,
+            1.296,
+            1.083309931073409
+          ],
+          "FootprintRadius": 1.659,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 4.66,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region12/SnowCappedBoulder"
+        },
+        {
+          "Id": "env.tier02.region12.FrostRockCluster",
+          "Name": "FrostRockCluster",
+          "Category": "Rock",
+          "Triangles": 280,
+          "BoundsMin": [
+            -1.4418217509043278,
+            0,
+            -1.0257882639087876
+          ],
+          "BoundsMax": [
+            1.410355280086974,
+            0.48397197507689055,
+            1.0091665876196805
+          ],
+          "FootprintRadius": 1.752,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 4.75,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region12/FrostRockCluster"
+        },
+        {
+          "Id": "env.tier02.region12.SnowCoveredLog",
+          "Name": "SnowCoveredLog",
+          "Category": "Deadwood",
+          "Triangles": 92,
+          "BoundsMin": [
+            -1.2,
+            0.0,
+            -0.17726539554219745
+          ],
+          "BoundsMax": [
+            1.2,
+            0.43202989511734335,
+            0.35767796114028955
+          ],
+          "FootprintRadius": 1.229,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 4.23,
+          "TerrainReplacement": false,
+          "ResourcePath": "Environment/Tier02/Region12/SnowCoveredLog"
+        },
+        {
+          "Id": "env.tier02.region12.TaigaSnowBank",
+          "Name": "TaigaSnowBank",
+          "Category": "Terrain",
+          "Triangles": 160,
+          "BoundsMin": [
+            -4.0,
+            0.0,
+            -4.0
+          ],
+          "BoundsMax": [
+            4.0,
+            0.6,
+            4.0
+          ],
+          "FootprintRadius": 5.657,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 8.66,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region12/TaigaSnowBank"
+        },
+        {
+          "Id": "env.tier02.region12.TaigaSnowMound",
+          "Name": "TaigaSnowMound",
+          "Category": "Terrain",
+          "Triangles": 160,
+          "BoundsMin": [
+            -6.0,
+            0.0,
+            -5.0
+          ],
+          "BoundsMax": [
+            6.0,
+            1.5,
+            5.0
+          ],
+          "FootprintRadius": 7.81,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 10.81,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region12/TaigaSnowMound"
+        },
+        {
+          "Id": "env.tier02.region12.DistantTaigaRidge",
+          "Name": "DistantTaigaRidge",
+          "Category": "Terrain",
+          "Triangles": 160,
+          "BoundsMin": [
+            -16.0,
+            0.0,
+            -14.0
+          ],
+          "BoundsMax": [
+            16.0,
+            7.0,
+            14.0
+          ],
+          "FootprintRadius": 21.26,
+          "CastsShadows": false,
+          "DistantOnly": true,
+          "RecommendedRoadClearance": 24.26,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region12/DistantTaigaRidge"
+        },
+        {
+          "Id": "env.tier02.region12.TaigaSnowPatch",
+          "Name": "TaigaSnowPatch",
+          "Category": "Terrain",
+          "Triangles": 72,
+          "BoundsMin": [
+            -3.0,
+            0,
+            -3.0
+          ],
+          "BoundsMax": [
+            3.0,
+            0,
+            3.0
+          ],
+          "FootprintRadius": 4.243,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 7.24,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region12/TaigaSnowPatch"
+        },
+        {
+          "Id": "env.tier02.region12.ThawedMudPatch",
+          "Name": "ThawedMudPatch",
+          "Category": "Terrain",
+          "Triangles": 72,
+          "BoundsMin": [
+            -3.0,
+            0,
+            -3.0
+          ],
+          "BoundsMax": [
+            3.0,
+            0,
+            3.0
+          ],
+          "FootprintRadius": 4.243,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 7.24,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region12/ThawedMudPatch"
+        },
+        {
+          "Id": "env.tier02.region12.ThawWaterTile",
+          "Name": "ThawWaterTile",
+          "Category": "Water",
+          "Triangles": 72,
+          "BoundsMin": [
+            -4.0,
+            0,
+            -4.0
+          ],
+          "BoundsMax": [
+            4.0,
+            0,
+            4.0
+          ],
+          "FootprintRadius": 5.657,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 8.66,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region12/ThawWaterTile"
+        },
+        {
+          "Id": "env.tier02.region12.IceEdgeWaterTile",
+          "Name": "IceEdgeWaterTile",
+          "Category": "Water",
+          "Triangles": 72,
+          "BoundsMin": [
+            -4.0,
+            0,
+            -4.0
+          ],
+          "BoundsMax": [
+            4.0,
+            0,
+            4.0
+          ],
+          "FootprintRadius": 5.657,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 8.66,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region12/IceEdgeWaterTile"
+        },
+        {
+          "Id": "env.tier02.region12.TaigaTrailShoulder",
+          "Name": "TaigaTrailShoulder",
+          "Category": "Terrain",
+          "Triangles": 72,
+          "BoundsMin": [
+            -3.0,
+            0,
+            -3.0
+          ],
+          "BoundsMax": [
+            3.0,
+            0,
+            3.0
+          ],
+          "FootprintRadius": 4.243,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 7.24,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region12/TaigaTrailShoulder"
+        },
+        {
+          "Id": "env.tier02.region12.TaigaClearingPatch",
+          "Name": "TaigaClearingPatch",
+          "Category": "Terrain",
+          "Triangles": 72,
+          "BoundsMin": [
+            -4.0,
+            0,
+            -4.0
+          ],
+          "BoundsMax": [
+            4.0,
+            0,
+            4.0
+          ],
+          "FootprintRadius": 5.657,
+          "CastsShadows": false,
+          "DistantOnly": false,
+          "RecommendedRoadClearance": 8.66,
+          "TerrainReplacement": true,
+          "ResourcePath": "Environment/Tier02/Region12/TaigaClearingPatch"
+        }
+      ]
+    }
+  ],
+  "Policy": "Reusable decorative art library for tier two (regions 7-12). Same contract as tier one: readable meshes, one opaque 32-colour palette material per region, separate shadow groups, no camp/route/reward/collider/save/scatter changes. Structure pieces (boardwalk, beaver lodge, beaver dam) are placed by route authoring only, never scattered and never on the road."
+}

@@ -1,0 +1,162 @@
+{
+  "Revision": 1,
+  "Batch": 22,
+  "Scope": "5 passive Food art outputs; no gameplay value or shared shader changes.",
+  "BlenderVersion": "5.2.3 LTS",
+  "Items": [
+    {
+      "Name": "PikeBarleyCakes",
+      "Model": "PikeBarleyCakes",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/PikeBarleyCakes.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/PikeBarleyCakesPalette.png",
+      "PrefabPath": "Tier02/Food/PikeBarleyCakes",
+      "Triangles": 1988,
+      "BoundsMin": [
+        -0.365,
+        -0.13,
+        -0.365
+      ],
+      "BoundsMax": [
+        0.365,
+        0.078492,
+        0.365
+      ],
+      "DisplayName": "Pike barley cakes",
+      "ItemId": "",
+      "RecipeId": "recipe.food.pike_barley_cakes",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-E7",
+      "MissionRegion": 9,
+      "IngredientBrief": "1 Northern pike + 1 Barley flour + 1 Egg -> 2",
+      "Role": "Food",
+      "Representation": "display",
+      "DepictedPortions": 1,
+      "VesselPolicy": "Illustrative ceramic serving dish, not a recipe input",
+      "BindingStatus": "Passive Food art; canonical output IDs/live bindings unresolved",
+      "SourcePolicy": "Mission T2-E7; Barley flour conversion and exact Egg source gates; one cake per inventory portion"
+    },
+    {
+      "Name": "WalleyeBarleySoup",
+      "Model": "WalleyeBarleySoup",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/WalleyeBarleySoup.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/WalleyeBarleySoupPalette.png",
+      "PrefabPath": "Tier02/Food/WalleyeBarleySoup",
+      "Triangles": 3508,
+      "BoundsMin": [
+        -0.365,
+        -0.2,
+        -0.365
+      ],
+      "BoundsMax": [
+        0.365,
+        0.138,
+        0.365
+      ],
+      "DisplayName": "Walleye-barley soup",
+      "ItemId": "",
+      "RecipeId": "recipe.food.walleye_barley_soup",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-E9",
+      "MissionRegion": 10,
+      "IngredientBrief": "1 Walleye + 2 Barley + 1 Carrot -> 1",
+      "Role": "Food",
+      "Representation": "display",
+      "DepictedPortions": 1,
+      "VesselPolicy": "Illustrative ceramic serving dish, not a recipe input",
+      "BindingStatus": "Passive Food art; canonical output IDs/live bindings unresolved"
+    },
+    {
+      "Name": "CarpRiceBowl",
+      "Model": "CarpRiceBowl",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/CarpRiceBowl.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/CarpRiceBowlPalette.png",
+      "PrefabPath": "Tier02/Food/CarpRiceBowl",
+      "Triangles": 3612,
+      "BoundsMin": [
+        -0.365,
+        -0.2,
+        -0.365
+      ],
+      "BoundsMax": [
+        0.365,
+        0.178976,
+        0.365
+      ],
+      "DisplayName": "Carp rice bowl",
+      "ItemId": "",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-E11",
+      "MissionRegion": 11,
+      "IngredientBrief": "2 Rice + 2 Common carp + 1 Rock salt -> 2",
+      "Role": "Food",
+      "Representation": "display",
+      "DepictedPortions": 1,
+      "VesselPolicy": "Illustrative ceramic serving dish, not a recipe input",
+      "BindingStatus": "Passive Food art; canonical output IDs/live bindings unresolved",
+      "SaltPolicy": "Plan Salt is exact Rock salt per section 6 source identity clarification; no substitution"
+    },
+    {
+      "Name": "PikeRiceBowl",
+      "Model": "PikeRiceBowl",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/PikeRiceBowl.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/PikeRiceBowlPalette.png",
+      "PrefabPath": "Tier02/Food/PikeRiceBowl",
+      "Triangles": 3612,
+      "BoundsMin": [
+        -0.365,
+        -0.2,
+        -0.365
+      ],
+      "BoundsMax": [
+        0.365,
+        0.184927,
+        0.365
+      ],
+      "DisplayName": "Pike rice bowl",
+      "ItemId": "",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-E12",
+      "MissionRegion": 11,
+      "IngredientBrief": "2 Rice + 2 Northern pike + 1 Rock salt -> 2",
+      "Role": "Food",
+      "Representation": "display",
+      "DepictedPortions": 1,
+      "VesselPolicy": "Illustrative ceramic serving dish, not a recipe input",
+      "BindingStatus": "Passive Food art; canonical output IDs/live bindings unresolved",
+      "SaltPolicy": "Plan Salt is exact Rock salt per section 6 source identity clarification; no substitution",
+      "IdentityPolicy": "Independent recipe/output from Carp rice bowl; no shared output binding inferred"
+    },
+    {
+      "Name": "CatfishTomatoStew",
+      "Model": "CatfishTomatoStew",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/CatfishTomatoStew.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/CatfishTomatoStewPalette.png",
+      "PrefabPath": "Tier02/Food/CatfishTomatoStew",
+      "Triangles": 2500,
+      "BoundsMin": [
+        -0.365,
+        -0.2,
+        -0.365
+      ],
+      "BoundsMax": [
+        0.365,
+        0.138,
+        0.365
+      ],
+      "DisplayName": "Catfish-tomato stew",
+      "ItemId": "",
+      "RecipeId": "recipe.food.catfish_tomato_stew",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-E13",
+      "MissionRegion": 11,
+      "IngredientBrief": "1 Channel catfish + 2 Tomatoes + 1 Rice -> 1",
+      "Role": "Food",
+      "Representation": "display",
+      "DepictedPortions": 1,
+      "VesselPolicy": "Illustrative ceramic serving dish, not a recipe input",
+      "BindingStatus": "Passive Food art; canonical output IDs/live bindings unresolved"
+    }
+  ]
+}

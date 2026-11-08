@@ -1,0 +1,1474 @@
+{
+  "Revision": 2,
+  "Growth": "depth: one storey; rows are added toward the back of the house",
+  "Style": "faceted",
+  "Scope": "Art only. Furnishing studies are optional previews, never owned items.",
+  "Coordinates": "+Y up; +Z street-facing; +X is screen-left from the street camera; interior rows run toward -Z.",
+  "Palette": "HousePalette.png",
+  "Houses": [
+    {
+      "Level": 1,
+      "Name": "Small shed",
+      "Tier": 1,
+      "GridWidth": 8,
+      "GridDepth": 5,
+      "Width": 4.6,
+      "Depth": 3.8,
+      "Height": 2.9,
+      "Eaves": 2.15,
+      "WallHeight": 2.1,
+      "Wood": "Pine",
+      "Wall": "Pine",
+      "Roof": "RoofClay",
+      "Chimneys": 0,
+      "Front": "HouseL01Front",
+      "Interior": "HouseL01Interior",
+      "GridGuides": "HouseL01GridGuides",
+      "FurnitureStudy": "HouseL01FurnitureStudy",
+      "GridMetres": 0.5,
+      "PlotWidth": 11.2,
+      "PlotDepth": 10.6,
+      "GridOrigin": [
+        0,
+        0,
+        0
+      ],
+      "GridAxisX": [
+        -0.5,
+        0,
+        0
+      ],
+      "GridAxisDepth": [
+        0,
+        0,
+        -0.5
+      ],
+      "DoorAnchor": [
+        0,
+        0.34,
+        0.15
+      ],
+      "SelectAnchor": [
+        0,
+        1.4,
+        0.2
+      ],
+      "GroundAnchor": [
+        0,
+        0,
+        0
+      ],
+      "PetHomeAnchor": [
+        4.45,
+        0,
+        0.25
+      ],
+      "CollectionAnchor": [
+        -4.4,
+        0,
+        0.25
+      ],
+      "HomeCameraAnchor": [
+        0,
+        2.4,
+        13
+      ],
+      "PetsUnlocked": false,
+      "FurnitureSamples": [
+        {
+          "Name": "Worktable",
+          "GridX": 0.25,
+          "GridZ": 0.25,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        },
+        {
+          "Name": "Bedroll",
+          "GridX": 2.8,
+          "GridZ": 0.25,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        },
+        {
+          "Name": "Market sign",
+          "GridX": 5.35,
+          "GridZ": 0.25,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        },
+        {
+          "Name": "Boot bench",
+          "GridX": 0.25,
+          "GridZ": 2.75,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        },
+        {
+          "Name": "Sewing basket",
+          "GridX": 2.8,
+          "GridZ": 2.75,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        },
+        {
+          "Name": "Hat peg",
+          "GridX": 5.35,
+          "GridZ": 2.75,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        }
+      ]
+    },
+    {
+      "Level": 2,
+      "Name": "Extended shed",
+      "Tier": 1,
+      "GridWidth": 10,
+      "GridDepth": 6,
+      "Width": 5.6,
+      "Depth": 4.3,
+      "Height": 3.4,
+      "Eaves": 2.45,
+      "WallHeight": 2.3,
+      "Wood": "Pine",
+      "Wall": "PineLight",
+      "Roof": "RoofClay",
+      "Chimneys": 0,
+      "Front": "HouseL02Front",
+      "Interior": "HouseL02Interior",
+      "GridGuides": "HouseL02GridGuides",
+      "FurnitureStudy": "HouseL02FurnitureStudy",
+      "GridMetres": 0.5,
+      "PlotWidth": 11.2,
+      "PlotDepth": 10.6,
+      "GridOrigin": [
+        0,
+        0,
+        0
+      ],
+      "GridAxisX": [
+        -0.5,
+        0,
+        0
+      ],
+      "GridAxisDepth": [
+        0,
+        0,
+        -0.5
+      ],
+      "DoorAnchor": [
+        0,
+        0.34,
+        0.15
+      ],
+      "SelectAnchor": [
+        0,
+        1.4,
+        0.2
+      ],
+      "GroundAnchor": [
+        0,
+        0,
+        0
+      ],
+      "PetHomeAnchor": [
+        4.45,
+        0,
+        0.25
+      ],
+      "CollectionAnchor": [
+        -4.4,
+        0,
+        0.25
+      ],
+      "HomeCameraAnchor": [
+        0,
+        2.4,
+        13
+      ],
+      "PetsUnlocked": false,
+      "FurnitureSamples": [
+        {
+          "Name": "Trouser rack",
+          "GridX": 0.25,
+          "GridZ": 0.25,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        },
+        {
+          "Name": "Chopping block",
+          "GridX": 2.8,
+          "GridZ": 0.25,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        },
+        {
+          "Name": "Sling stand",
+          "GridX": 5.35,
+          "GridZ": 0.25,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        },
+        {
+          "Name": "Rod rack",
+          "GridX": 0.25,
+          "GridZ": 2.75,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        },
+        {
+          "Name": "Bag frame",
+          "GridX": 2.8,
+          "GridZ": 2.75,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        },
+        {
+          "Name": "Pine chest",
+          "GridX": 5.35,
+          "GridZ": 2.75,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        }
+      ]
+    },
+    {
+      "Level": 3,
+      "Name": "Proper wooden home",
+      "Tier": 2,
+      "GridWidth": 12,
+      "GridDepth": 7,
+      "Width": 6.8,
+      "Depth": 4.8,
+      "Height": 4.4,
+      "Eaves": 2.95,
+      "WallHeight": 2.6,
+      "Wood": "Birch",
+      "Wall": "Plaster",
+      "Roof": "RoofEarth",
+      "Chimneys": 1,
+      "Front": "HouseL03Front",
+      "Interior": "HouseL03Interior",
+      "GridGuides": "HouseL03GridGuides",
+      "FurnitureStudy": "HouseL03FurnitureStudy",
+      "GridMetres": 0.5,
+      "PlotWidth": 11.2,
+      "PlotDepth": 10.6,
+      "GridOrigin": [
+        0,
+        0,
+        0
+      ],
+      "GridAxisX": [
+        -0.5,
+        0,
+        0
+      ],
+      "GridAxisDepth": [
+        0,
+        0,
+        -0.5
+      ],
+      "DoorAnchor": [
+        0,
+        0.34,
+        0.15
+      ],
+      "SelectAnchor": [
+        0,
+        1.4,
+        0.2
+      ],
+      "GroundAnchor": [
+        0,
+        0,
+        0
+      ],
+      "PetHomeAnchor": [
+        4.45,
+        0,
+        0.25
+      ],
+      "CollectionAnchor": [
+        -4.4,
+        0,
+        0.25
+      ],
+      "HomeCameraAnchor": [
+        0,
+        2.4,
+        13
+      ],
+      "PetsUnlocked": true,
+      "FurnitureSamples": [
+        {
+          "Name": "Loom",
+          "GridX": 0.25,
+          "GridZ": 0.25,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        },
+        {
+          "Name": "Clay cookstove",
+          "GridX": 2.8,
+          "GridZ": 0.25,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        },
+        {
+          "Name": "Display counter",
+          "GridX": 5.35,
+          "GridZ": 0.25,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        },
+        {
+          "Name": "Sofa",
+          "GridX": 0.25,
+          "GridZ": 2.75,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        },
+        {
+          "Name": "Sewing desk",
+          "GridX": 2.8,
+          "GridZ": 2.75,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        },
+        {
+          "Name": "Hat cabinet",
+          "GridX": 5.35,
+          "GridZ": 2.75,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        }
+      ]
+    },
+    {
+      "Level": 4,
+      "Name": "Back room",
+      "Tier": 2,
+      "GridWidth": 12,
+      "GridDepth": 9,
+      "Width": 6.8,
+      "Depth": 5.8,
+      "Height": 4.5,
+      "Eaves": 3.0,
+      "WallHeight": 2.6,
+      "Wood": "Birch",
+      "Wall": "Plaster",
+      "Roof": "RoofEarth",
+      "Chimneys": 1,
+      "Front": "HouseL04Front",
+      "Interior": "HouseL04Interior",
+      "GridGuides": "HouseL04GridGuides",
+      "FurnitureStudy": "HouseL04FurnitureStudy",
+      "GridMetres": 0.5,
+      "PlotWidth": 11.2,
+      "PlotDepth": 10.6,
+      "GridOrigin": [
+        0,
+        0,
+        0
+      ],
+      "GridAxisX": [
+        -0.5,
+        0,
+        0
+      ],
+      "GridAxisDepth": [
+        0,
+        0,
+        -0.5
+      ],
+      "DoorAnchor": [
+        0,
+        0.34,
+        0.15
+      ],
+      "SelectAnchor": [
+        0,
+        1.4,
+        0.2
+      ],
+      "GroundAnchor": [
+        0,
+        0,
+        0
+      ],
+      "PetHomeAnchor": [
+        4.45,
+        0,
+        0.25
+      ],
+      "CollectionAnchor": [
+        -4.4,
+        0,
+        0.25
+      ],
+      "HomeCameraAnchor": [
+        0,
+        2.4,
+        13
+      ],
+      "PetsUnlocked": true,
+      "FurnitureSamples": [
+        {
+          "Name": "Tailor stool",
+          "GridX": 0.25,
+          "GridZ": 0.25,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        },
+        {
+          "Name": "Whetstone stand",
+          "GridX": 2.8,
+          "GridZ": 0.25,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        },
+        {
+          "Name": "Bow workbench",
+          "GridX": 5.35,
+          "GridZ": 0.25,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        },
+        {
+          "Name": "Tackle desk",
+          "GridX": 0.25,
+          "GridZ": 2.75,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        },
+        {
+          "Name": "Leather table",
+          "GridX": 2.8,
+          "GridZ": 2.75,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        },
+        {
+          "Name": "Birch chest",
+          "GridX": 5.35,
+          "GridZ": 2.75,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        }
+      ]
+    },
+    {
+      "Level": 5,
+      "Name": "Long hall",
+      "Tier": 3,
+      "GridWidth": 12,
+      "GridDepth": 11,
+      "Width": 6.8,
+      "Depth": 6.8,
+      "Height": 4.6,
+      "Eaves": 3.05,
+      "WallHeight": 2.7,
+      "Wood": "Mesquite",
+      "Wall": "SandPlaster",
+      "Roof": "RoofEarth",
+      "Chimneys": 1,
+      "Front": "HouseL05Front",
+      "Interior": "HouseL05Interior",
+      "GridGuides": "HouseL05GridGuides",
+      "FurnitureStudy": "HouseL05FurnitureStudy",
+      "GridMetres": 0.5,
+      "PlotWidth": 11.2,
+      "PlotDepth": 10.6,
+      "GridOrigin": [
+        0,
+        0,
+        0
+      ],
+      "GridAxisX": [
+        -0.5,
+        0,
+        0
+      ],
+      "GridAxisDepth": [
+        0,
+        0,
+        -0.5
+      ],
+      "DoorAnchor": [
+        0,
+        0.34,
+        0.15
+      ],
+      "SelectAnchor": [
+        0,
+        1.4,
+        0.2
+      ],
+      "GroundAnchor": [
+        0,
+        0,
+        0
+      ],
+      "PetHomeAnchor": [
+        4.45,
+        0,
+        0.25
+      ],
+      "CollectionAnchor": [
+        -4.4,
+        0,
+        0.25
+      ],
+      "HomeCameraAnchor": [
+        0,
+        2.4,
+        13
+      ],
+      "PetsUnlocked": true,
+      "FurnitureSamples": [
+        {
+          "Name": "Artisan bench",
+          "GridX": 0.25,
+          "GridZ": 0.25,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        },
+        {
+          "Name": "Pantry dresser",
+          "GridX": 2.8,
+          "GridZ": 0.25,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        },
+        {
+          "Name": "Trophy cabinet",
+          "GridX": 5.35,
+          "GridZ": 0.25,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        },
+        {
+          "Name": "Boot cabinet",
+          "GridX": 0.25,
+          "GridZ": 2.75,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        },
+        {
+          "Name": "Cloth press",
+          "GridX": 2.8,
+          "GridZ": 2.75,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        },
+        {
+          "Name": "Hat display",
+          "GridX": 5.35,
+          "GridZ": 2.75,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        }
+      ]
+    },
+    {
+      "Level": 6,
+      "Name": "Extended hall",
+      "Tier": 3,
+      "GridWidth": 12,
+      "GridDepth": 13,
+      "Width": 6.8,
+      "Depth": 7.8,
+      "Height": 4.7,
+      "Eaves": 3.1,
+      "WallHeight": 2.7,
+      "Wood": "Mesquite",
+      "Wall": "SandPlaster",
+      "Roof": "Slate",
+      "Chimneys": 2,
+      "Front": "HouseL06Front",
+      "Interior": "HouseL06Interior",
+      "GridGuides": "HouseL06GridGuides",
+      "FurnitureStudy": "HouseL06FurnitureStudy",
+      "GridMetres": 0.5,
+      "PlotWidth": 11.2,
+      "PlotDepth": 10.6,
+      "GridOrigin": [
+        0,
+        0,
+        0
+      ],
+      "GridAxisX": [
+        -0.5,
+        0,
+        0
+      ],
+      "GridAxisDepth": [
+        0,
+        0,
+        -0.5
+      ],
+      "DoorAnchor": [
+        0,
+        0.34,
+        0.15
+      ],
+      "SelectAnchor": [
+        0,
+        1.4,
+        0.2
+      ],
+      "GroundAnchor": [
+        0,
+        0,
+        0
+      ],
+      "PetHomeAnchor": [
+        4.45,
+        0,
+        0.25
+      ],
+      "CollectionAnchor": [
+        -4.4,
+        0,
+        0.25
+      ],
+      "HomeCameraAnchor": [
+        0,
+        2.4,
+        13
+      ],
+      "PetsUnlocked": true,
+      "FurnitureSamples": [
+        {
+          "Name": "Clothing armoire",
+          "GridX": 0.25,
+          "GridZ": 0.25,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        },
+        {
+          "Name": "Tool forge",
+          "GridX": 2.8,
+          "GridZ": 0.25,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        },
+        {
+          "Name": "Bow cabinet",
+          "GridX": 5.35,
+          "GridZ": 0.25,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        },
+        {
+          "Name": "Reel workshop",
+          "GridX": 0.25,
+          "GridZ": 2.75,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        },
+        {
+          "Name": "Pack-maker bench",
+          "GridX": 2.8,
+          "GridZ": 2.75,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        },
+        {
+          "Name": "Mesquite chest",
+          "GridX": 5.35,
+          "GridZ": 2.75,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        }
+      ]
+    },
+    {
+      "Level": 7,
+      "Name": "Frontier manor",
+      "Tier": 4,
+      "GridWidth": 12,
+      "GridDepth": 15,
+      "Width": 6.8,
+      "Depth": 8.8,
+      "Height": 4.8,
+      "Eaves": 3.15,
+      "WallHeight": 2.8,
+      "Wood": "Oak",
+      "Wall": "Plaster",
+      "Roof": "Slate",
+      "Chimneys": 2,
+      "Front": "HouseL07Front",
+      "Interior": "HouseL07Interior",
+      "GridGuides": "HouseL07GridGuides",
+      "FurnitureStudy": "HouseL07FurnitureStudy",
+      "GridMetres": 0.5,
+      "PlotWidth": 11.2,
+      "PlotDepth": 10.6,
+      "GridOrigin": [
+        0,
+        0,
+        0
+      ],
+      "GridAxisX": [
+        -0.5,
+        0,
+        0
+      ],
+      "GridAxisDepth": [
+        0,
+        0,
+        -0.5
+      ],
+      "DoorAnchor": [
+        0,
+        0.34,
+        0.15
+      ],
+      "SelectAnchor": [
+        0,
+        1.4,
+        0.2
+      ],
+      "GroundAnchor": [
+        0,
+        0,
+        0
+      ],
+      "PetHomeAnchor": [
+        4.45,
+        0,
+        0.25
+      ],
+      "CollectionAnchor": [
+        -4.4,
+        0,
+        0.25
+      ],
+      "HomeCameraAnchor": [
+        0,
+        2.4,
+        13
+      ],
+      "PetsUnlocked": true,
+      "FurnitureSamples": [
+        {
+          "Name": "Master loom",
+          "GridX": 0.25,
+          "GridZ": 0.25,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        },
+        {
+          "Name": "Dining table",
+          "GridX": 2.8,
+          "GridZ": 0.25,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        },
+        {
+          "Name": "Gallery pedestal",
+          "GridX": 5.35,
+          "GridZ": 0.25,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        },
+        {
+          "Name": "Travel sofa",
+          "GridX": 0.25,
+          "GridZ": 2.75,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        },
+        {
+          "Name": "Fine-cloth workstation",
+          "GridX": 2.8,
+          "GridZ": 2.75,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        },
+        {
+          "Name": "Milliner bench",
+          "GridX": 5.35,
+          "GridZ": 2.75,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        }
+      ]
+    },
+    {
+      "Level": 8,
+      "Name": "Finished homestead",
+      "Tier": 4,
+      "GridWidth": 12,
+      "GridDepth": 17,
+      "Width": 6.8,
+      "Depth": 9.8,
+      "Height": 4.9,
+      "Eaves": 3.2,
+      "WallHeight": 2.8,
+      "Wood": "Oak",
+      "Wall": "FinePlaster",
+      "Roof": "Slate",
+      "Chimneys": 2,
+      "Front": "HouseL08Front",
+      "Interior": "HouseL08Interior",
+      "GridGuides": "HouseL08GridGuides",
+      "FurnitureStudy": "HouseL08FurnitureStudy",
+      "GridMetres": 0.5,
+      "PlotWidth": 11.2,
+      "PlotDepth": 10.6,
+      "GridOrigin": [
+        0,
+        0,
+        0
+      ],
+      "GridAxisX": [
+        -0.5,
+        0,
+        0
+      ],
+      "GridAxisDepth": [
+        0,
+        0,
+        -0.5
+      ],
+      "DoorAnchor": [
+        0,
+        0.34,
+        0.15
+      ],
+      "SelectAnchor": [
+        0,
+        1.4,
+        0.2
+      ],
+      "GroundAnchor": [
+        0,
+        0,
+        0
+      ],
+      "PetHomeAnchor": [
+        4.45,
+        0,
+        0.25
+      ],
+      "CollectionAnchor": [
+        -4.4,
+        0,
+        0.25
+      ],
+      "HomeCameraAnchor": [
+        0,
+        2.4,
+        13
+      ],
+      "PetsUnlocked": true,
+      "FurnitureSamples": [
+        {
+          "Name": "Frontier wardrobe",
+          "GridX": 0.25,
+          "GridZ": 0.25,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        },
+        {
+          "Name": "Master tool station",
+          "GridX": 2.8,
+          "GridZ": 0.25,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        },
+        {
+          "Name": "Hunter cabinet",
+          "GridX": 5.35,
+          "GridZ": 0.25,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        },
+        {
+          "Name": "Angler cabinet",
+          "GridX": 0.25,
+          "GridZ": 2.75,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        },
+        {
+          "Name": "Expedition workbench",
+          "GridX": 2.8,
+          "GridZ": 2.75,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        },
+        {
+          "Name": "Reinforced oak chest",
+          "GridX": 5.35,
+          "GridZ": 2.75,
+          "Width": 2,
+          "Depth": 2,
+          "PreviewOnly": true
+        }
+      ]
+    }
+  ],
+  "Models": [
+    {
+      "name": "HouseL01Front",
+      "vertices": 1628,
+      "triangles": 2440,
+      "BoundsMin": [
+        -2.36,
+        0.0,
+        -2.98
+      ],
+      "BoundsMax": [
+        2.36,
+        3.04,
+        0.78
+      ]
+    },
+    {
+      "name": "HouseL01Interior",
+      "vertices": 360,
+      "triangles": 540,
+      "BoundsMin": [
+        -4.2,
+        -0.16999999999999998,
+        -2.69
+      ],
+      "BoundsMax": [
+        0.20000000000000018,
+        2.32,
+        0.19
+      ]
+    },
+    {
+      "name": "HouseL01GridGuides",
+      "vertices": 120,
+      "triangles": 180,
+      "BoundsMin": [
+        -4.006,
+        0.002,
+        -2.506
+      ],
+      "BoundsMax": [
+        0.006,
+        0.01,
+        0.006
+      ]
+    },
+    {
+      "name": "HouseL01FurnitureStudy",
+      "vertices": 232,
+      "triangles": 348,
+      "BoundsMin": [
+        -3.625,
+        -0.0116,
+        -2.085
+      ],
+      "BoundsMax": [
+        -0.125,
+        0.88,
+        -0.41500000000000004
+      ]
+    },
+    {
+      "name": "HouseL02Front",
+      "vertices": 2228,
+      "triangles": 3340,
+      "BoundsMin": [
+        -2.885,
+        0.0,
+        -3.48
+      ],
+      "BoundsMax": [
+        2.885,
+        3.54,
+        0.95
+      ]
+    },
+    {
+      "name": "HouseL02Interior",
+      "vertices": 816,
+      "triangles": 1224,
+      "BoundsMin": [
+        -5.2,
+        -0.16999999999999998,
+        -3.19
+      ],
+      "BoundsMax": [
+        0.20000000000000018,
+        2.5199999999999996,
+        0.19
+      ]
+    },
+    {
+      "name": "HouseL02GridGuides",
+      "vertices": 144,
+      "triangles": 216,
+      "BoundsMin": [
+        -5.006,
+        0.002,
+        -3.006
+      ],
+      "BoundsMax": [
+        0.006,
+        0.01,
+        0.006
+      ]
+    },
+    {
+      "name": "HouseL02FurnitureStudy",
+      "vertices": 392,
+      "triangles": 588,
+      "BoundsMin": [
+        -3.625,
+        -0.0116,
+        -2.1225
+      ],
+      "BoundsMax": [
+        -0.175,
+        0.92,
+        -0.41500000000000004
+      ]
+    },
+    {
+      "name": "HouseL03Front",
+      "vertices": 2364,
+      "triangles": 3544,
+      "BoundsMin": [
+        -3.485,
+        0.0,
+        -3.98
+      ],
+      "BoundsMax": [
+        3.485,
+        4.540000000000001,
+        0.95
+      ]
+    },
+    {
+      "name": "HouseL03Interior",
+      "vertices": 856,
+      "triangles": 1284,
+      "BoundsMin": [
+        -6.2,
+        -0.16999999999999998,
+        -3.69
+      ],
+      "BoundsMax": [
+        0.20000000000000018,
+        2.82,
+        0.19
+      ]
+    },
+    {
+      "name": "HouseL03GridGuides",
+      "vertices": 168,
+      "triangles": 252,
+      "BoundsMin": [
+        -6.006,
+        0.002,
+        -3.506
+      ],
+      "BoundsMax": [
+        0.006,
+        0.01,
+        0.006
+      ]
+    },
+    {
+      "name": "HouseL03FurnitureStudy",
+      "vertices": 328,
+      "triangles": 492,
+      "BoundsMin": [
+        -3.625,
+        -0.0116,
+        -2.115
+      ],
+      "BoundsMax": [
+        -0.11999999999999998,
+        1.0050000000000001,
+        -0.3775
+      ]
+    },
+    {
+      "name": "HouseL04Front",
+      "vertices": 2828,
+      "triangles": 4240,
+      "BoundsMin": [
+        -3.485,
+        0.0,
+        -4.98
+      ],
+      "BoundsMax": [
+        3.485,
+        4.640000000000001,
+        0.95
+      ]
+    },
+    {
+      "name": "HouseL04Interior",
+      "vertices": 1160,
+      "triangles": 1740,
+      "BoundsMin": [
+        -6.2,
+        -0.16999999999999998,
+        -4.69
+      ],
+      "BoundsMax": [
+        0.20000000000000018,
+        2.82,
+        0.19
+      ]
+    },
+    {
+      "name": "HouseL04GridGuides",
+      "vertices": 184,
+      "triangles": 276,
+      "BoundsMin": [
+        -6.006,
+        0.002,
+        -4.506
+      ],
+      "BoundsMax": [
+        0.006,
+        0.01,
+        0.006
+      ]
+    },
+    {
+      "name": "HouseL04FurnitureStudy",
+      "vertices": 328,
+      "triangles": 492,
+      "BoundsMin": [
+        -3.675,
+        -0.0116,
+        -2.1225
+      ],
+      "BoundsMax": [
+        -0.125,
+        0.88,
+        -0.41500000000000004
+      ]
+    },
+    {
+      "name": "HouseL05Front",
+      "vertices": 3004,
+      "triangles": 4504,
+      "BoundsMin": [
+        -3.485,
+        0.0,
+        -5.98
+      ],
+      "BoundsMax": [
+        3.485,
+        4.74,
+        0.95
+      ]
+    },
+    {
+      "name": "HouseL05Interior",
+      "vertices": 1176,
+      "triangles": 1764,
+      "BoundsMin": [
+        -6.2,
+        -0.16999999999999998,
+        -5.69
+      ],
+      "BoundsMax": [
+        0.20000000000000018,
+        2.92,
+        0.19
+      ]
+    },
+    {
+      "name": "HouseL05GridGuides",
+      "vertices": 200,
+      "triangles": 300,
+      "BoundsMin": [
+        -6.006,
+        0.002,
+        -5.506
+      ],
+      "BoundsMax": [
+        0.006,
+        0.01,
+        0.006
+      ]
+    },
+    {
+      "name": "HouseL05FurnitureStudy",
+      "vertices": 336,
+      "triangles": 504,
+      "BoundsMin": [
+        -3.625,
+        -0.0116,
+        -2.05
+      ],
+      "BoundsMax": [
+        -0.125,
+        0.92,
+        -0.38
+      ]
+    },
+    {
+      "name": "HouseL06Front",
+      "vertices": 3572,
+      "triangles": 5356,
+      "BoundsMin": [
+        -3.485,
+        0.0,
+        -6.98
+      ],
+      "BoundsMax": [
+        3.485,
+        4.840000000000001,
+        0.95
+      ]
+    },
+    {
+      "name": "HouseL06Interior",
+      "vertices": 1480,
+      "triangles": 2220,
+      "BoundsMin": [
+        -6.2,
+        -0.16999999999999998,
+        -6.69
+      ],
+      "BoundsMax": [
+        0.20000000000000018,
+        2.92,
+        0.19
+      ]
+    },
+    {
+      "name": "HouseL06GridGuides",
+      "vertices": 216,
+      "triangles": 324,
+      "BoundsMin": [
+        -6.006,
+        0.002,
+        -6.506
+      ],
+      "BoundsMax": [
+        0.006,
+        0.01,
+        0.006
+      ]
+    },
+    {
+      "name": "HouseL06FurnitureStudy",
+      "vertices": 272,
+      "triangles": 408,
+      "BoundsMin": [
+        -3.5974999999999997,
+        -0.0116,
+        -2.1225
+      ],
+      "BoundsMax": [
+        -0.125,
+        1.0050000000000001,
+        -0.3775
+      ]
+    },
+    {
+      "name": "HouseL07Front",
+      "vertices": 4116,
+      "triangles": 6172,
+      "BoundsMin": [
+        -3.485,
+        0.0,
+        -7.9848
+      ],
+      "BoundsMax": [
+        3.485,
+        4.94,
+        0.95
+      ]
+    },
+    {
+      "name": "HouseL07Interior",
+      "vertices": 1784,
+      "triangles": 2676,
+      "BoundsMin": [
+        -6.2,
+        -0.16999999999999998,
+        -7.69
+      ],
+      "BoundsMax": [
+        0.20000000000000018,
+        3.0199999999999996,
+        0.19
+      ]
+    },
+    {
+      "name": "HouseL07GridGuides",
+      "vertices": 232,
+      "triangles": 348,
+      "BoundsMin": [
+        -6.006,
+        0.002,
+        -7.506
+      ],
+      "BoundsMax": [
+        0.006,
+        0.01,
+        0.006
+      ]
+    },
+    {
+      "name": "HouseL07FurnitureStudy",
+      "vertices": 360,
+      "triangles": 540,
+      "BoundsMin": [
+        -3.675,
+        -0.0116,
+        -2.115
+      ],
+      "BoundsMax": [
+        -0.11999999999999998,
+        0.92,
+        -0.41500000000000004
+      ]
+    },
+    {
+      "name": "HouseL08Front",
+      "vertices": 4308,
+      "triangles": 6460,
+      "BoundsMin": [
+        -3.485,
+        0.0,
+        -8.98
+      ],
+      "BoundsMax": [
+        3.485,
+        5.040000000000001,
+        0.95
+      ]
+    },
+    {
+      "name": "HouseL08Interior",
+      "vertices": 1800,
+      "triangles": 2700,
+      "BoundsMin": [
+        -6.2,
+        -0.16999999999999998,
+        -8.69
+      ],
+      "BoundsMax": [
+        0.20000000000000018,
+        3.0199999999999996,
+        0.19
+      ]
+    },
+    {
+      "name": "HouseL08GridGuides",
+      "vertices": 248,
+      "triangles": 372,
+      "BoundsMin": [
+        -6.006,
+        0.002,
+        -8.506
+      ],
+      "BoundsMax": [
+        0.006,
+        0.01,
+        0.006
+      ]
+    },
+    {
+      "name": "HouseL08FurnitureStudy",
+      "vertices": 280,
+      "triangles": 420,
+      "BoundsMin": [
+        -3.5974999999999997,
+        -0.0116,
+        -2.1225
+      ],
+      "BoundsMax": [
+        -0.21500000000000002,
+        0.86,
+        -0.38
+      ]
+    },
+    {
+      "name": "PlayerPetHome",
+      "vertices": 180,
+      "triangles": 268,
+      "BoundsMin": [
+        -0.8,
+        0.0,
+        -1.0725
+      ],
+      "BoundsMax": [
+        0.8,
+        1.48,
+        0.2425
+      ]
+    },
+    {
+      "name": "PetCollectionContainer",
+      "vertices": 80,
+      "triangles": 120,
+      "BoundsMin": [
+        -0.4625,
+        0.0,
+        -0.5825
+      ],
+      "BoundsMax": [
+        0.4625,
+        0.6674999999999999,
+        0.0675
+      ]
+    }
+  ]
+}

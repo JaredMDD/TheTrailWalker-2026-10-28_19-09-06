@@ -1,0 +1,59 @@
+{
+  "Region": 11,
+  "Models": [
+    {
+      "Name": "Rice",
+      "Triangles": 1088,
+      "BoundsMin": [
+        -0.3,
+        -0.4611,
+        -0.0222
+      ],
+      "BoundsMax": [
+        0.453,
+        0.329,
+        0.0422
+      ],
+      "ProposedFootprint": [
+        858,
+        900
+      ]
+    },
+    {
+      "Name": "Tomatoes",
+      "Triangles": 568,
+      "BoundsMin": [
+        -0.5565,
+        -0.31,
+        -0.3435
+      ],
+      "BoundsMax": [
+        0.5243,
+        0.3222,
+        0.3513
+      ],
+      "ProposedFootprint": [
+        800,
+        468
+      ]
+    },
+    {
+      "Name": "Honey",
+      "Triangles": 960,
+      "BoundsMin": [
+        -0.4068,
+        -0.34,
+        -0.053
+      ],
+      "BoundsMax": [
+        0.4142,
+        0.25,
+        0.053
+      ],
+      "ProposedFootprint": [
+        800,
+        575
+      ]
+    }
+  ]
+}

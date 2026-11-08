@@ -1,0 +1,2712 @@
+{
+  "Revision": 1,
+  "Recipes": [
+    {
+      "Id": "recipe.material.pine_log",
+      "Name": "Pine log",
+      "Category": "Material",
+      "OutputId": "material.pine_log",
+      "Yield": 1,
+      "BaseSeconds": 0,
+      "Hearts": 0,
+      "Style": "pine_log",
+      "Model": "PineLog",
+      "UnlockSource": "Gatherer G1; also gathered directly",
+      "Note": "",
+      "Inputs": [
+        {
+          "ItemId": "material.pine_branch",
+          "Quantity": 3
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Drops/PineLog",
+      "CraftingPathSourceIds": [
+        "material.pine_branch"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.material.pine_plank",
+      "Name": "Pine plank",
+      "Category": "Material",
+      "OutputId": "item.pine_plank",
+      "Yield": 1,
+      "BaseSeconds": 10,
+      "Hearts": 0,
+      "Style": "pine_plank",
+      "Model": "PinePlank",
+      "UnlockSource": "Gatherer G4",
+      "Note": "",
+      "Inputs": [
+        {
+          "ItemId": "material.pine_log",
+          "Quantity": 3
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/PinePlank",
+      "CraftingPathSourceIds": [
+        "material.pine_log"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.material.pine_charcoal",
+      "Name": "Pine charcoal",
+      "Category": "Material",
+      "OutputId": "item.pine_charcoal",
+      "Yield": 2,
+      "BaseSeconds": 10,
+      "Hearts": 0,
+      "Style": "pine_charcoal",
+      "Model": "PineCharcoal",
+      "UnlockSource": "Lumberjack L6",
+      "Note": "",
+      "Inputs": [
+        {
+          "ItemId": "material.pine_branch",
+          "Quantity": 3
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/PineCharcoal",
+      "CraftingPathSourceIds": [
+        "material.pine_branch"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.material.hemp_cord",
+      "Name": "Hemp cord",
+      "Category": "Material",
+      "OutputId": "item.hemp_cord",
+      "Yield": 2,
+      "BaseSeconds": 5,
+      "Hearts": 0,
+      "Style": "hemp_cord",
+      "Model": "HempCord",
+      "UnlockSource": "Explorer E4",
+      "Note": "",
+      "Inputs": [
+        {
+          "ItemId": "material.hemp",
+          "Quantity": 3
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/HempCord",
+      "CraftingPathSourceIds": [
+        "material.hemp"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.material.hemp_thread",
+      "Name": "Hemp thread",
+      "Category": "Material",
+      "OutputId": "item.hemp_thread",
+      "Yield": 3,
+      "BaseSeconds": 5,
+      "Hearts": 0,
+      "Style": "hemp_thread",
+      "Model": "HempThread",
+      "UnlockSource": "Explorer E9",
+      "Note": "",
+      "Inputs": [
+        {
+          "ItemId": "material.hemp",
+          "Quantity": 3
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/HempThread",
+      "CraftingPathSourceIds": [
+        "material.hemp"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.material.nettle_thread",
+      "Name": "Nettle thread",
+      "Category": "Material",
+      "OutputId": "item.nettle_thread",
+      "Yield": 3,
+      "BaseSeconds": 5,
+      "Hearts": 0,
+      "Style": "nettle_thread",
+      "Model": "NettleThread",
+      "UnlockSource": "Explorer E16",
+      "Note": "",
+      "Inputs": [
+        {
+          "ItemId": "material.nettle_fiber",
+          "Quantity": 3
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/NettleThread",
+      "CraftingPathSourceIds": [
+        "material.nettle_fiber"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.material.hemp_cloth",
+      "Name": "Hemp cloth",
+      "Category": "Material",
+      "OutputId": "item.hemp_cloth",
+      "Yield": 2,
+      "BaseSeconds": 10,
+      "Hearts": 0,
+      "Style": "hemp_cloth",
+      "Model": "HempCloth",
+      "UnlockSource": "Explorer E1",
+      "Note": "",
+      "Inputs": [
+        {
+          "ItemId": "material.hemp",
+          "Quantity": 4
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/HempCloth",
+      "CraftingPathSourceIds": [
+        "material.hemp"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.material.nettle_cloth",
+      "Name": "Nettle cloth",
+      "Category": "Material",
+      "OutputId": "item.nettle_cloth",
+      "Yield": 2,
+      "BaseSeconds": 10,
+      "Hearts": 0,
+      "Style": "nettle_cloth",
+      "Model": "NettleCloth",
+      "UnlockSource": "Explorer E15",
+      "Note": "",
+      "Inputs": [
+        {
+          "ItemId": "material.nettle_fiber",
+          "Quantity": 4
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/NettleCloth",
+      "CraftingPathSourceIds": [
+        "material.nettle_fiber"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.material.fine_hemp_cloth",
+      "Name": "Fine hemp cloth",
+      "Category": "Material",
+      "OutputId": "item.fine_hemp_cloth",
+      "Yield": 1,
+      "BaseSeconds": 20,
+      "Hearts": 0,
+      "Style": "fine_hemp_cloth",
+      "Model": "FineHempCloth",
+      "UnlockSource": "Explorer E10",
+      "Note": "",
+      "Inputs": [
+        {
+          "ItemId": "item.hemp_cloth",
+          "Quantity": 3
+        },
+        {
+          "ItemId": "item.hemp_thread",
+          "Quantity": 1
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/FineHempCloth",
+      "CraftingPathSourceIds": [
+        "material.hemp"
+      ],
+      "ConversionRecipeIds": [
+        "recipe.material.hemp_cloth",
+        "recipe.material.hemp_thread"
+      ],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.material.cured_rabbit_pelt",
+      "Name": "Cured rabbit pelt",
+      "Category": "Material",
+      "OutputId": "item.cured_rabbit_pelt",
+      "Yield": 1,
+      "BaseSeconds": 15,
+      "Hearts": 0,
+      "Style": "cured_rabbit_pelt",
+      "Model": "CuredRabbitPelt",
+      "UnlockSource": "Hunter H5",
+      "Note": "Revised November 7, 2026: Animal fat replaces Rock salt (fat-softened fur).",
+      "Inputs": [
+        {
+          "ItemId": "animal.rabbit.pelt",
+          "Quantity": 2
+        },
+        {
+          "ItemId": "ingredient.animal_fat",
+          "Quantity": 1
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/CuredRabbitPelt",
+      "CraftingPathSourceIds": [
+        "animal.rabbit.pelt",
+        "ingredient.animal_fat"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.material.fine_rabbit_pelt",
+      "Name": "Fine rabbit pelt",
+      "Category": "Material",
+      "OutputId": "item.fine_rabbit_pelt",
+      "Yield": 1,
+      "BaseSeconds": 20,
+      "Hearts": 0,
+      "Style": "fine_rabbit_pelt",
+      "Model": "FineRabbitPelt",
+      "UnlockSource": "Hunter H6 after Explorer E9",
+      "Note": "",
+      "Inputs": [
+        {
+          "ItemId": "item.cured_rabbit_pelt",
+          "Quantity": 2
+        },
+        {
+          "ItemId": "item.hemp_thread",
+          "Quantity": 1
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/FineRabbitPelt",
+      "CraftingPathSourceIds": [
+        "animal.rabbit.pelt",
+        "ingredient.animal_fat",
+        "material.hemp"
+      ],
+      "ConversionRecipeIds": [
+        "recipe.material.cured_rabbit_pelt",
+        "recipe.material.hemp_thread"
+      ],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.material.rabbit_leather",
+      "Name": "Rabbit leather",
+      "Category": "Material",
+      "OutputId": "item.rabbit_leather",
+      "Yield": 1,
+      "BaseSeconds": 15,
+      "Hearts": 0,
+      "Style": "rabbit_leather",
+      "Model": "RabbitLeather",
+      "UnlockSource": "Hunter H4",
+      "Note": "",
+      "Inputs": [
+        {
+          "ItemId": "animal.rabbit.pelt",
+          "Quantity": 2
+        },
+        {
+          "ItemId": "ingredient.rock_salt",
+          "Quantity": 1
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/RabbitLeather",
+      "CraftingPathSourceIds": [
+        "animal.rabbit.pelt",
+        "ingredient.rock_salt"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.material.fine_rabbit_leather",
+      "Name": "Fine rabbit leather",
+      "Category": "Material",
+      "OutputId": "item.fine_rabbit_leather",
+      "Yield": 1,
+      "BaseSeconds": 20,
+      "Hearts": 0,
+      "Style": "fine_rabbit_leather",
+      "Model": "FineRabbitLeather",
+      "UnlockSource": "Hunter H7 after Explorer E16",
+      "Note": "Proposed fixed 20-second timer. Revised November 7, 2026: Nettle thread replaces Hemp thread.",
+      "Inputs": [
+        {
+          "ItemId": "item.rabbit_leather",
+          "Quantity": 2
+        },
+        {
+          "ItemId": "item.nettle_thread",
+          "Quantity": 1
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/FineRabbitLeather",
+      "CraftingPathSourceIds": [
+        "animal.rabbit.pelt",
+        "ingredient.rock_salt",
+        "material.nettle_fiber"
+      ],
+      "ConversionRecipeIds": [
+        "recipe.material.nettle_thread",
+        "recipe.material.rabbit_leather"
+      ],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.material.plant_stuffing",
+      "Name": "Plant stuffing",
+      "Category": "Material",
+      "OutputId": "item.plant_stuffing",
+      "Yield": 2,
+      "BaseSeconds": 10,
+      "Hearts": 0,
+      "Style": "plant_stuffing",
+      "Model": "PlantStuffing",
+      "UnlockSource": "Hunter H8",
+      "Note": "Proposed fixed 10-second timer where unspecified.",
+      "Inputs": [
+        {
+          "ItemId": "material.nettle_fiber",
+          "Quantity": 3
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/PlantStuffing",
+      "CraftingPathSourceIds": [
+        "material.nettle_fiber"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.material.pine_beam",
+      "Name": "Pine beam",
+      "Category": "Material",
+      "OutputId": "item.pine_beam",
+      "Yield": 1,
+      "BaseSeconds": 20,
+      "Hearts": 0,
+      "Style": "pine_beam",
+      "Model": "PineBeam",
+      "UnlockSource": "Lumberjack L4",
+      "Note": "",
+      "Inputs": [
+        {
+          "ItemId": "item.pine_plank",
+          "Quantity": 4
+        },
+        {
+          "ItemId": "item.hemp_cord",
+          "Quantity": 1
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/PineBeam",
+      "CraftingPathSourceIds": [
+        "material.hemp",
+        "material.pine_log"
+      ],
+      "ConversionRecipeIds": [
+        "recipe.material.hemp_cord",
+        "recipe.material.pine_plank"
+      ],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.material.pine_panel",
+      "Name": "Pine panel",
+      "Category": "Material",
+      "OutputId": "item.pine_panel",
+      "Yield": 1,
+      "BaseSeconds": 10,
+      "Hearts": 0,
+      "Style": "pine_panel",
+      "Model": "PinePanel",
+      "UnlockSource": "Lumberjack L11",
+      "Note": "Proposed fixed 10-second timer where unspecified.",
+      "Inputs": [
+        {
+          "ItemId": "item.pine_plank",
+          "Quantity": 3
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/PinePanel",
+      "CraftingPathSourceIds": [
+        "material.pine_log"
+      ],
+      "ConversionRecipeIds": [
+        "recipe.material.pine_plank"
+      ],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.material.limestone_tiles",
+      "Name": "Limestone tiles",
+      "Category": "Material",
+      "OutputId": "item.limestone_tiles",
+      "Yield": 2,
+      "BaseSeconds": 15,
+      "Hearts": 0,
+      "Style": "limestone_tiles",
+      "Model": "LimestoneTiles",
+      "UnlockSource": "Lumberjack L8",
+      "Note": "",
+      "Inputs": [
+        {
+          "ItemId": "material.limestone",
+          "Quantity": 3
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/LimestoneTiles",
+      "CraftingPathSourceIds": [
+        "material.limestone"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.material.polished_pebble",
+      "Name": "Polished pebble",
+      "Category": "Material",
+      "OutputId": "item.polished_pebble",
+      "Yield": 1,
+      "BaseSeconds": 10,
+      "Hearts": 0,
+      "Style": "polished_pebble",
+      "Model": "PolishedPebble",
+      "UnlockSource": "Lumberjack L9",
+      "Note": "Proposed fixed 10-second timer where unspecified.",
+      "Inputs": [
+        {
+          "ItemId": "material.pebbles",
+          "Quantity": 2
+        },
+        {
+          "ItemId": "material.flint",
+          "Quantity": 1
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/PolishedPebble",
+      "CraftingPathSourceIds": [
+        "material.flint",
+        "material.pebbles"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.material.fired_bricks",
+      "Name": "Fired bricks",
+      "Category": "Material",
+      "OutputId": "item.fired_bricks",
+      "Yield": 3,
+      "BaseSeconds": 10,
+      "Hearts": 0,
+      "Style": "fired_bricks",
+      "Model": "FiredBricks",
+      "UnlockSource": "Lumberjack L7",
+      "Note": "Proposed fixed 10-second timer where unspecified.",
+      "Inputs": [
+        {
+          "ItemId": "material.clay",
+          "Quantity": 3
+        },
+        {
+          "ItemId": "item.pine_charcoal",
+          "Quantity": 1
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/FiredBricks",
+      "CraftingPathSourceIds": [
+        "material.clay",
+        "material.pine_branch"
+      ],
+      "ConversionRecipeIds": [
+        "recipe.material.pine_charcoal"
+      ],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.material.clay_cup",
+      "Name": "Clay cup",
+      "Category": "Material",
+      "OutputId": "item.clay_cup",
+      "Yield": 1,
+      "BaseSeconds": 10,
+      "Hearts": 0,
+      "Style": "clay_cup",
+      "Model": "ClayCup",
+      "UnlockSource": "Gatherer T4-G9 (tier-four mission; not in the tier-one catalog yet)",
+      "Note": "Proposed fixed 10-second timer where unspecified.",
+      "Inputs": [
+        {
+          "ItemId": "material.clay",
+          "Quantity": 2
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/ClayCup",
+      "CraftingPathSourceIds": [
+        "material.clay"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.material.wheat_flour",
+      "Name": "Wheat flour",
+      "Category": "Material",
+      "OutputId": "ingredient.wheat_flour",
+      "Yield": 2,
+      "BaseSeconds": 5,
+      "Hearts": 0,
+      "Style": "wheat_flour",
+      "Model": "WheatFlour",
+      "UnlockSource": "Gatherer G6",
+      "Note": "",
+      "Inputs": [
+        {
+          "ItemId": "ingredient.wheat",
+          "Quantity": 3
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/WheatFlour",
+      "CraftingPathSourceIds": [
+        "ingredient.wheat"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.material.reed_braid",
+      "Name": "Reed braid",
+      "Category": "Material",
+      "OutputId": "item.reed_braid",
+      "Yield": 1,
+      "BaseSeconds": 10,
+      "Hearts": 0,
+      "Style": "reed_braid",
+      "Model": "ReedBraid",
+      "UnlockSource": "Gatherer G5",
+      "Note": "Proposed fixed 10-second timer where unspecified.",
+      "Inputs": [
+        {
+          "ItemId": "material.reeds",
+          "Quantity": 3
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/ReedBraid",
+      "CraftingPathSourceIds": [
+        "material.reeds"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.material.mortar",
+      "Name": "Mortar",
+      "Category": "Material",
+      "OutputId": "item.mortar",
+      "Yield": 1,
+      "BaseSeconds": 10,
+      "Hearts": 0,
+      "Style": "mortar",
+      "Model": "Mortar",
+      "UnlockSource": "Lumberjack L5",
+      "Note": "Proposed fixed 10-second timer where unspecified.",
+      "Inputs": [
+        {
+          "ItemId": "material.sand",
+          "Quantity": 2
+        },
+        {
+          "ItemId": "material.limestone",
+          "Quantity": 1
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/Mortar",
+      "CraftingPathSourceIds": [
+        "material.limestone",
+        "material.sand"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.tool.pine_axe_normal",
+      "Name": "Pine axe",
+      "Category": "Tool",
+      "OutputId": "tool.pine_axe.normal",
+      "Yield": 1,
+      "BaseSeconds": 5,
+      "Hearts": 0,
+      "Style": "pine_axe_normal",
+      "Model": "PineAxeNormal",
+      "UnlockSource": "Lumberjack L1",
+      "Note": "Normal only; base 10 uses.",
+      "Inputs": [
+        {
+          "ItemId": "material.pine_branch",
+          "Quantity": 2
+        },
+        {
+          "ItemId": "material.flint",
+          "Quantity": 2
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/PineAxeNormal",
+      "CraftingPathSourceIds": [
+        "material.flint",
+        "material.pine_branch"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.tool.pine_slingshot_normal",
+      "Name": "Pine slingshot",
+      "Category": "Tool",
+      "OutputId": "item.pine_slingshot_normal",
+      "Yield": 1,
+      "BaseSeconds": 5,
+      "Hearts": 0,
+      "Style": "pine_slingshot_normal",
+      "Model": "PineSlingshotNormal",
+      "UnlockSource": "Hunter H1",
+      "Note": "Normal only; base 6 uses.",
+      "Inputs": [
+        {
+          "ItemId": "material.pine_branch",
+          "Quantity": 2
+        },
+        {
+          "ItemId": "animal.rabbit.pelt",
+          "Quantity": 1
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/PineSlingshotNormal",
+      "CraftingPathSourceIds": [
+        "animal.rabbit.pelt",
+        "material.pine_branch"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.tool.pine_rod_normal",
+      "Name": "Pine rod",
+      "Category": "Tool",
+      "OutputId": "item.pine_rod_normal",
+      "Yield": 1,
+      "BaseSeconds": 5,
+      "Hearts": 0,
+      "Style": "pine_rod_normal",
+      "Model": "PineRodNormal",
+      "UnlockSource": "Explorer E5 (Bone) after E4",
+      "Note": "Normal only; base 10 uses; bone hook, no metal reel.",
+      "Inputs": [
+        {
+          "ItemId": "material.pine_branch",
+          "Quantity": 2
+        },
+        {
+          "ItemId": "item.hemp_cord",
+          "Quantity": 2
+        },
+        {
+          "ItemId": "material.bone",
+          "Quantity": 1
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/PineRodNormal",
+      "CraftingPathSourceIds": [
+        "material.bone",
+        "material.hemp",
+        "material.pine_branch"
+      ],
+      "ConversionRecipeIds": [
+        "recipe.material.hemp_cord"
+      ],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.wearable.rabbit_hat",
+      "Name": "Rabbit-pelt hat",
+      "Category": "Wearable",
+      "OutputId": "item.rabbit_hat",
+      "Yield": 1,
+      "BaseSeconds": 15,
+      "Hearts": 0,
+      "Style": "rabbit_hat",
+      "Model": "RabbitHat",
+      "UnlockSource": "Gatherer G3 after Lumberjack L2",
+      "Note": "Rank 1. Proposed base durability 4000 metres.",
+      "Inputs": [
+        {
+          "ItemId": "animal.rabbit.pelt",
+          "Quantity": 2
+        }
+      ],
+      "Tier": 1,
+      "Slot": "Hat",
+      "PrefabPath": "Tier01/Crafted/RabbitHat",
+      "CraftingPathSourceIds": [
+        "animal.rabbit.pelt"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.wearable.rabbit_boots",
+      "Name": "Rabbit-pelt boots",
+      "Category": "Wearable",
+      "OutputId": "item.rabbit_boots",
+      "Yield": 1,
+      "BaseSeconds": 15,
+      "Hearts": 0,
+      "Style": "rabbit_boots",
+      "Model": "RabbitBoots",
+      "UnlockSource": "Lumberjack L3",
+      "Note": "Rank 1. Proposed base durability 4000 metres.",
+      "Inputs": [
+        {
+          "ItemId": "animal.rabbit.pelt",
+          "Quantity": 2
+        },
+        {
+          "ItemId": "material.hemp",
+          "Quantity": 1
+        }
+      ],
+      "Tier": 1,
+      "Slot": "Boots",
+      "PrefabPath": "Tier01/Crafted/RabbitBoots",
+      "CraftingPathSourceIds": [
+        "animal.rabbit.pelt",
+        "material.hemp"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.wearable.hemp_shirt",
+      "Name": "Hemp shirt",
+      "Category": "Wearable",
+      "OutputId": "item.hemp_shirt",
+      "Yield": 1,
+      "BaseSeconds": 15,
+      "Hearts": 0,
+      "Style": "hemp_shirt",
+      "Model": "HempShirt",
+      "UnlockSource": "Hunter H3",
+      "Note": "Rank 1. Proposed base durability 4000 metres.",
+      "Inputs": [
+        {
+          "ItemId": "item.hemp_cloth",
+          "Quantity": 3
+        },
+        {
+          "ItemId": "animal.rabbit.pelt",
+          "Quantity": 1
+        }
+      ],
+      "Tier": 1,
+      "Slot": "Shirt",
+      "PrefabPath": "Tier01/Crafted/HempShirt",
+      "CraftingPathSourceIds": [
+        "animal.rabbit.pelt",
+        "material.hemp"
+      ],
+      "ConversionRecipeIds": [
+        "recipe.material.hemp_cloth"
+      ],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.wearable.hemp_pants",
+      "Name": "Hemp pants",
+      "Category": "Wearable",
+      "OutputId": "item.hemp_pants",
+      "Yield": 1,
+      "BaseSeconds": 15,
+      "Hearts": 0,
+      "Style": "hemp_pants",
+      "Model": "HempPants",
+      "UnlockSource": "Explorer E3",
+      "Note": "Rank 1. Proposed base durability 4000 metres.",
+      "Inputs": [
+        {
+          "ItemId": "item.hemp_cloth",
+          "Quantity": 3
+        },
+        {
+          "ItemId": "material.pine_branch",
+          "Quantity": 1
+        }
+      ],
+      "Tier": 1,
+      "Slot": "Pants",
+      "PrefabPath": "Tier01/Crafted/HempPants",
+      "CraftingPathSourceIds": [
+        "material.hemp",
+        "material.pine_branch"
+      ],
+      "ConversionRecipeIds": [
+        "recipe.material.hemp_cloth"
+      ],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.wearable.starter_backpack",
+      "Name": "Starter backpack",
+      "Category": "Wearable",
+      "OutputId": "item.starter_backpack",
+      "Yield": 1,
+      "BaseSeconds": 15,
+      "Hearts": 0,
+      "Style": "starter_backpack",
+      "Model": "StarterBackpack",
+      "UnlockSource": "Explorer E7 after Hunter H4",
+      "Note": "Rank 1. Proposed base durability 4000 metres.",
+      "Inputs": [
+        {
+          "ItemId": "item.hemp_cloth",
+          "Quantity": 3
+        },
+        {
+          "ItemId": "item.rabbit_leather",
+          "Quantity": 2
+        },
+        {
+          "ItemId": "material.pine_branch",
+          "Quantity": 2
+        }
+      ],
+      "Tier": 1,
+      "Slot": "Backpack",
+      "PrefabPath": "Tier01/Crafted/StarterBackpack",
+      "CraftingPathSourceIds": [
+        "animal.rabbit.pelt",
+        "ingredient.rock_salt",
+        "material.hemp",
+        "material.pine_branch"
+      ],
+      "ConversionRecipeIds": [
+        "recipe.material.hemp_cloth",
+        "recipe.material.rabbit_leather"
+      ],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.food.apple_juice",
+      "Name": "Apple juice",
+      "Category": "Food",
+      "OutputId": "item.apple_juice",
+      "Yield": 1,
+      "BaseSeconds": 3,
+      "Hearts": 1,
+      "Style": "apple_juice",
+      "Model": "AppleJuice",
+      "UnlockSource": "Gatherer G2",
+      "Note": "",
+      "Inputs": [
+        {
+          "ItemId": "food.apples",
+          "Quantity": 3
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/AppleJuice",
+      "CraftingPathSourceIds": [
+        "food.apples"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.food.roasted_mushrooms",
+      "Name": "Roasted mushrooms",
+      "Category": "Food",
+      "OutputId": "item.roasted_mushrooms",
+      "Yield": 1,
+      "BaseSeconds": 3,
+      "Hearts": 1,
+      "Style": "roasted_mushrooms",
+      "Model": "RoastedMushrooms",
+      "UnlockSource": "Explorer E6 after region 4 mushrooms",
+      "Note": "",
+      "Inputs": [
+        {
+          "ItemId": "ingredient.mushrooms",
+          "Quantity": 2
+        },
+        {
+          "ItemId": "material.pine_branch",
+          "Quantity": 1
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/RoastedMushrooms",
+      "CraftingPathSourceIds": [
+        "ingredient.mushrooms",
+        "material.pine_branch"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.food.berry_oat_cakes",
+      "Name": "Berry oat cakes",
+      "Category": "Food",
+      "OutputId": "item.berry_oat_cakes",
+      "Yield": 2,
+      "BaseSeconds": 3,
+      "Hearts": 1,
+      "Style": "berry_oat_cakes",
+      "Model": "BerryOatCakes",
+      "UnlockSource": "Gatherer G12",
+      "Note": "",
+      "Inputs": [
+        {
+          "ItemId": "ingredient.oats",
+          "Quantity": 2
+        },
+        {
+          "ItemId": "food.berries",
+          "Quantity": 2
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/BerryOatCakes",
+      "CraftingPathSourceIds": [
+        "food.berries",
+        "ingredient.oats"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.food.roasted_rabbit",
+      "Name": "Roasted rabbit",
+      "Category": "Food",
+      "OutputId": "item.roasted_rabbit",
+      "Yield": 1,
+      "BaseSeconds": 3,
+      "Hearts": 2,
+      "Style": "roasted_rabbit",
+      "Model": "RoastedRabbit",
+      "UnlockSource": "Explorer E2",
+      "Note": "",
+      "Inputs": [
+        {
+          "ItemId": "animal.rabbit.meat",
+          "Quantity": 1
+        },
+        {
+          "ItemId": "material.pine_branch",
+          "Quantity": 1
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/RoastedRabbit",
+      "CraftingPathSourceIds": [
+        "animal.rabbit.meat",
+        "material.pine_branch"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.food.herb_trout",
+      "Name": "Herb trout",
+      "Category": "Food",
+      "OutputId": "item.herb_trout",
+      "Yield": 1,
+      "BaseSeconds": 3,
+      "Hearts": 2,
+      "Style": "herb_trout",
+      "Model": "HerbTrout",
+      "UnlockSource": "Explorer E8 once farm Tea herbs are buyable",
+      "Note": "",
+      "Inputs": [
+        {
+          "ItemId": "fish.rainbow_trout",
+          "Quantity": 1
+        },
+        {
+          "ItemId": "ingredient.tea_herbs",
+          "Quantity": 1
+        },
+        {
+          "ItemId": "material.pine_branch",
+          "Quantity": 1
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/HerbTrout",
+      "CraftingPathSourceIds": [
+        "fish.rainbow_trout",
+        "ingredient.tea_herbs",
+        "material.pine_branch"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.food.roasted_rainbow_trout",
+      "Name": "Roasted rainbow trout",
+      "Category": "Food",
+      "OutputId": "item.roasted_rainbow_trout",
+      "Yield": 1,
+      "BaseSeconds": 3,
+      "Hearts": 2,
+      "Style": "roasted_rainbow_trout",
+      "Model": "RoastedRainbowTrout",
+      "UnlockSource": "Retired November 7, 2026: replaced by Trout mushroom skillet; kept for saves that know it",
+      "Note": "",
+      "Inputs": [
+        {
+          "ItemId": "fish.rainbow_trout",
+          "Quantity": 1
+        },
+        {
+          "ItemId": "material.pine_branch",
+          "Quantity": 1
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/RoastedRainbowTrout",
+      "CraftingPathSourceIds": [
+        "fish.rainbow_trout",
+        "material.pine_branch"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false,
+      "Retired": true
+    },
+    {
+      "Id": "recipe.food.trout_mushroom_skillet",
+      "Name": "Trout mushroom skillet",
+      "Category": "Food",
+      "OutputId": "item.trout_mushroom_skillet",
+      "Yield": 1,
+      "BaseSeconds": 3,
+      "Hearts": 2,
+      "Style": "trout_mushroom_skillet",
+      "Model": "RoastedRainbowTrout",
+      "UnlockSource": "Explorer E11",
+      "Note": "November 7, 2026 fish-variety dish. Stand-in art: the Roasted rainbow trout model until its own model exists.",
+      "Inputs": [
+        {
+          "ItemId": "fish.rainbow_trout",
+          "Quantity": 1
+        },
+        {
+          "ItemId": "ingredient.mushrooms",
+          "Quantity": 1
+        },
+        {
+          "ItemId": "material.pine_branch",
+          "Quantity": 1
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/RoastedRainbowTrout",
+      "CraftingPathSourceIds": [
+        "fish.rainbow_trout",
+        "ingredient.mushrooms",
+        "material.pine_branch"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.food.roasted_largemouth_bass",
+      "Name": "Roasted largemouth bass",
+      "Category": "Food",
+      "OutputId": "item.roasted_largemouth_bass",
+      "Yield": 1,
+      "BaseSeconds": 3,
+      "Hearts": 2,
+      "Style": "roasted_largemouth_bass",
+      "Model": "RoastedLargemouthBass",
+      "UnlockSource": "Retired November 7, 2026: replaced by Salt-baked bass; kept for saves that know it",
+      "Note": "",
+      "Inputs": [
+        {
+          "ItemId": "fish.largemouth_bass",
+          "Quantity": 1
+        },
+        {
+          "ItemId": "material.pine_branch",
+          "Quantity": 1
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/RoastedLargemouthBass",
+      "CraftingPathSourceIds": [
+        "fish.largemouth_bass",
+        "material.pine_branch"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false,
+      "Retired": true
+    },
+    {
+      "Id": "recipe.food.salt_baked_bass",
+      "Name": "Salt-baked bass",
+      "Category": "Food",
+      "OutputId": "item.salt_baked_bass",
+      "Yield": 1,
+      "BaseSeconds": 3,
+      "Hearts": 2,
+      "Style": "salt_baked_bass",
+      "Model": "RoastedLargemouthBass",
+      "UnlockSource": "Explorer E12",
+      "Note": "November 7, 2026 fish-variety dish. Stand-in art: the Roasted largemouth bass model until its own model exists.",
+      "Inputs": [
+        {
+          "ItemId": "fish.largemouth_bass",
+          "Quantity": 1
+        },
+        {
+          "ItemId": "ingredient.rock_salt",
+          "Quantity": 2
+        },
+        {
+          "ItemId": "material.pine_branch",
+          "Quantity": 1
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/RoastedLargemouthBass",
+      "CraftingPathSourceIds": [
+        "fish.largemouth_bass",
+        "ingredient.rock_salt",
+        "material.pine_branch"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.food.roasted_bluegill",
+      "Name": "Roasted bluegill",
+      "Category": "Food",
+      "OutputId": "item.roasted_bluegill",
+      "Yield": 1,
+      "BaseSeconds": 3,
+      "Hearts": 2,
+      "Style": "roasted_bluegill",
+      "Model": "RoastedBluegill",
+      "UnlockSource": "Retired November 7, 2026: replaced by Pine-nut bluegill; kept for saves that know it",
+      "Note": "",
+      "Inputs": [
+        {
+          "ItemId": "fish.bluegill",
+          "Quantity": 1
+        },
+        {
+          "ItemId": "material.pine_branch",
+          "Quantity": 1
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/RoastedBluegill",
+      "CraftingPathSourceIds": [
+        "fish.bluegill",
+        "material.pine_branch"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false,
+      "Retired": true
+    },
+    {
+      "Id": "recipe.food.pine_nut_bluegill",
+      "Name": "Pine-nut bluegill",
+      "Category": "Food",
+      "OutputId": "item.pine_nut_bluegill",
+      "Yield": 1,
+      "BaseSeconds": 3,
+      "Hearts": 2,
+      "Style": "pine_nut_bluegill",
+      "Model": "RoastedBluegill",
+      "UnlockSource": "Explorer E13",
+      "Note": "November 7, 2026 fish-variety dish. Stand-in art: the Roasted bluegill model until its own model exists.",
+      "Inputs": [
+        {
+          "ItemId": "fish.bluegill",
+          "Quantity": 1
+        },
+        {
+          "ItemId": "ingredient.pine_nuts",
+          "Quantity": 1
+        },
+        {
+          "ItemId": "material.pine_branch",
+          "Quantity": 1
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/RoastedBluegill",
+      "CraftingPathSourceIds": [
+        "fish.bluegill",
+        "ingredient.pine_nuts",
+        "material.pine_branch"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.food.roasted_yellow_perch",
+      "Name": "Roasted yellow perch",
+      "Category": "Food",
+      "OutputId": "item.roasted_yellow_perch",
+      "Yield": 1,
+      "BaseSeconds": 3,
+      "Hearts": 2,
+      "Style": "roasted_yellow_perch",
+      "Model": "RoastedYellowPerch",
+      "UnlockSource": "Retired November 7, 2026: replaced by Apple-stuffed perch; kept for saves that know it",
+      "Note": "",
+      "Inputs": [
+        {
+          "ItemId": "fish.yellow_perch",
+          "Quantity": 1
+        },
+        {
+          "ItemId": "material.pine_branch",
+          "Quantity": 1
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/RoastedYellowPerch",
+      "CraftingPathSourceIds": [
+        "fish.yellow_perch",
+        "material.pine_branch"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false,
+      "Retired": true
+    },
+    {
+      "Id": "recipe.food.apple_stuffed_perch",
+      "Name": "Apple-stuffed perch",
+      "Category": "Food",
+      "OutputId": "item.apple_stuffed_perch",
+      "Yield": 1,
+      "BaseSeconds": 3,
+      "Hearts": 2,
+      "Style": "apple_stuffed_perch",
+      "Model": "RoastedYellowPerch",
+      "UnlockSource": "Explorer E14",
+      "Note": "November 7, 2026 fish-variety dish. Stand-in art: the Roasted yellow perch model until its own model exists.",
+      "Inputs": [
+        {
+          "ItemId": "fish.yellow_perch",
+          "Quantity": 1
+        },
+        {
+          "ItemId": "food.apples",
+          "Quantity": 1
+        },
+        {
+          "ItemId": "material.pine_branch",
+          "Quantity": 1
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/RoastedYellowPerch",
+      "CraftingPathSourceIds": [
+        "fish.yellow_perch",
+        "food.apples",
+        "material.pine_branch"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.food.strawberry_cow_yogurt_drink",
+      "Name": "Strawberry cow-yogurt drink",
+      "Category": "Food",
+      "OutputId": "item.strawberry_cow_yogurt_drink",
+      "Yield": 1,
+      "BaseSeconds": 3,
+      "Hearts": 3,
+      "Style": "strawberry_cow_yogurt_drink",
+      "Model": "StrawberryCowYogurtDrink",
+      "UnlockSource": "Gatherer G11 after G10 (ranch milk, region 5)",
+      "Note": "",
+      "Inputs": [
+        {
+          "ItemId": "ingredient.cow_yogurt",
+          "Quantity": 1
+        },
+        {
+          "ItemId": "food.strawberries",
+          "Quantity": 2
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/StrawberryCowYogurtDrink",
+      "CraftingPathSourceIds": [
+        "food.milk.cow",
+        "food.strawberries"
+      ],
+      "ConversionRecipeIds": [
+        "recipe.food.cow_yogurt"
+      ],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.food.cow_cheese_tart",
+      "Name": "Cow-cheese tart",
+      "Category": "Food",
+      "OutputId": "item.cow_cheese_tart",
+      "Yield": 2,
+      "BaseSeconds": 3,
+      "Hearts": 5,
+      "Style": "cow_cheese_tart",
+      "Model": "CowCheeseTart",
+      "UnlockSource": "Gatherer G15 (ranch milk and eggs)",
+      "Note": "",
+      "Inputs": [
+        {
+          "ItemId": "ingredient.wheat_flour",
+          "Quantity": 2
+        },
+        {
+          "ItemId": "ingredient.cow_cheese",
+          "Quantity": 1
+        },
+        {
+          "ItemId": "ingredient.egg",
+          "Quantity": 1
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/CowCheeseTart",
+      "CraftingPathSourceIds": [
+        "food.milk.cow",
+        "ingredient.egg",
+        "ingredient.rock_salt",
+        "ingredient.wheat"
+      ],
+      "ConversionRecipeIds": [
+        "recipe.food.cow_cheese",
+        "recipe.material.wheat_flour"
+      ],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.food.cow_cream",
+      "Name": "Cow cream",
+      "Category": "Food",
+      "OutputId": "ingredient.cow_cream",
+      "Yield": 2,
+      "BaseSeconds": 10,
+      "Hearts": 0,
+      "Style": "cow_cream",
+      "Model": "CowCream",
+      "UnlockSource": "Gatherer G13 (ranch milk, region 5)",
+      "Note": "Food recipe/mastery, refined ingredient output; direct recovery not authored.",
+      "Inputs": [
+        {
+          "ItemId": "food.milk.cow",
+          "Quantity": 3
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/CowCream",
+      "CraftingPathSourceIds": [
+        "food.milk.cow"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.food.cow_butter",
+      "Name": "Cow butter",
+      "Category": "Food",
+      "OutputId": "ingredient.cow_butter",
+      "Yield": 1,
+      "BaseSeconds": 10,
+      "Hearts": 0,
+      "Style": "cow_butter",
+      "Model": "CowButter",
+      "UnlockSource": "Gatherer G14 (ranch milk, region 5)",
+      "Note": "Food recipe/mastery, refined ingredient output; direct recovery not authored.",
+      "Inputs": [
+        {
+          "ItemId": "ingredient.cow_cream",
+          "Quantity": 2
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/CowButter",
+      "CraftingPathSourceIds": [
+        "food.milk.cow"
+      ],
+      "ConversionRecipeIds": [
+        "recipe.food.cow_cream"
+      ],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.food.cow_cheese",
+      "Name": "Cow cheese",
+      "Category": "Food",
+      "OutputId": "ingredient.cow_cheese",
+      "Yield": 1,
+      "BaseSeconds": 300,
+      "Hearts": 0,
+      "Style": "cow_cheese",
+      "Model": "CowCheese",
+      "UnlockSource": "Gatherer G9 (ranch milk, region 5)",
+      "Note": "Food recipe/mastery, refined ingredient output; direct recovery not authored.",
+      "Inputs": [
+        {
+          "ItemId": "food.milk.cow",
+          "Quantity": 3
+        },
+        {
+          "ItemId": "ingredient.rock_salt",
+          "Quantity": 1
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/CowCheese",
+      "CraftingPathSourceIds": [
+        "food.milk.cow",
+        "ingredient.rock_salt"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.food.goat_cheese",
+      "Name": "Goat cheese",
+      "Category": "Food",
+      "OutputId": "ingredient.goat_cheese",
+      "Yield": 1,
+      "BaseSeconds": 300,
+      "Hearts": 0,
+      "Style": "goat_cheese",
+      "Model": "GoatCheese",
+      "UnlockSource": "No mission yet (open decision)",
+      "Note": "Food recipe/mastery, refined ingredient output; direct recovery not authored.",
+      "Inputs": [
+        {
+          "ItemId": "food.milk.goat",
+          "Quantity": 3
+        },
+        {
+          "ItemId": "ingredient.rock_salt",
+          "Quantity": 1
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/GoatCheese",
+      "CraftingPathSourceIds": [
+        "food.milk.goat",
+        "ingredient.rock_salt"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.food.mixed_milk_cheese",
+      "Name": "Mixed-milk cheese",
+      "Category": "Food",
+      "OutputId": "ingredient.mixed_milk_cheese",
+      "Yield": 1,
+      "BaseSeconds": 300,
+      "Hearts": 0,
+      "Style": "mixed_milk_cheese",
+      "Model": "MixedMilkCheese",
+      "UnlockSource": "No mission yet (open decision)",
+      "Note": "Food recipe/mastery, refined ingredient output; direct recovery not authored. Optional recipe proposal.",
+      "Inputs": [
+        {
+          "ItemId": "food.milk.cow",
+          "Quantity": 1
+        },
+        {
+          "ItemId": "food.milk.goat",
+          "Quantity": 1
+        },
+        {
+          "ItemId": "ingredient.rock_salt",
+          "Quantity": 1
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/MixedMilkCheese",
+      "CraftingPathSourceIds": [
+        "food.milk.cow",
+        "food.milk.goat",
+        "ingredient.rock_salt"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.food.cow_yogurt",
+      "Name": "Cow yogurt",
+      "Category": "Food",
+      "OutputId": "ingredient.cow_yogurt",
+      "Yield": 2,
+      "BaseSeconds": 60,
+      "Hearts": 0,
+      "Style": "cow_yogurt",
+      "Model": "CowYogurt",
+      "UnlockSource": "Gatherer G10 (ranch milk, region 5)",
+      "Note": "Food recipe/mastery, refined ingredient output; direct recovery not authored.",
+      "Inputs": [
+        {
+          "ItemId": "food.milk.cow",
+          "Quantity": 2
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/CowYogurt",
+      "CraftingPathSourceIds": [
+        "food.milk.cow"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.food.toasted_pine_nuts",
+      "Name": "Toasted pine nuts",
+      "Category": "Food",
+      "OutputId": "item.toasted_pine_nuts",
+      "Yield": 1,
+      "BaseSeconds": 20,
+      "Hearts": 2,
+      "Style": "toasted_pine_nuts",
+      "Model": "ToastedPineNuts",
+      "UnlockSource": "Gatherer G8",
+      "Note": "",
+      "Inputs": [
+        {
+          "ItemId": "ingredient.pine_nuts",
+          "Quantity": 2
+        },
+        {
+          "ItemId": "material.pine_branch",
+          "Quantity": 1
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/ToastedPineNuts",
+      "CraftingPathSourceIds": [
+        "ingredient.pine_nuts",
+        "material.pine_branch"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.food.roasted_shrimp",
+      "Name": "Roasted shrimp",
+      "Category": "Food",
+      "OutputId": "item.roasted_shrimp",
+      "Yield": 1,
+      "BaseSeconds": 3,
+      "Hearts": 8,
+      "Style": "roasted_shrimp",
+      "Model": "RoastedShrimp",
+      "UnlockSource": "Optional balloon recipe; exact ingredient sources must be discovered and accessible",
+      "Note": "",
+      "Inputs": [
+        {
+          "ItemId": "ingredient.shrimp",
+          "Quantity": 1
+        },
+        {
+          "ItemId": "material.pine_branch",
+          "Quantity": 1
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "BalloonExclusive/Items/RoastedShrimp",
+      "CraftingPathSourceIds": [
+        "ingredient.shrimp",
+        "material.pine_branch"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.food.shrimp_pie",
+      "Name": "Shrimp pie",
+      "Category": "Food",
+      "OutputId": "item.shrimp_pie",
+      "Yield": 1,
+      "BaseSeconds": 3,
+      "Hearts": 10,
+      "Style": "shrimp_pie",
+      "Model": "ShrimpPie",
+      "UnlockSource": "Optional balloon recipe; exact ingredient sources must be discovered and accessible",
+      "Note": "",
+      "Inputs": [
+        {
+          "ItemId": "ingredient.shrimp",
+          "Quantity": 1
+        },
+        {
+          "ItemId": "ingredient.wheat_flour",
+          "Quantity": 1
+        },
+        {
+          "ItemId": "ingredient.cow_butter",
+          "Quantity": 1
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "BalloonExclusive/Items/ShrimpPie",
+      "CraftingPathSourceIds": [
+        "food.milk.cow",
+        "ingredient.shrimp",
+        "ingredient.wheat"
+      ],
+      "ConversionRecipeIds": [
+        "recipe.food.cow_butter",
+        "recipe.food.cow_cream",
+        "recipe.material.wheat_flour"
+      ],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.food.apple_oat_compote",
+      "Name": "Apple-oat compote",
+      "Category": "Food",
+      "OutputId": "item.apple_oat_compote",
+      "Yield": 1,
+      "BaseSeconds": 3,
+      "Hearts": 10,
+      "Style": "apple_oat_compote",
+      "Model": "AppleOatCompote",
+      "UnlockSource": "Optional balloon recipe; exact ingredient sources must be discovered and accessible",
+      "Note": "",
+      "Inputs": [
+        {
+          "ItemId": "food.apples",
+          "Quantity": 3
+        },
+        {
+          "ItemId": "ingredient.oats",
+          "Quantity": 2
+        },
+        {
+          "ItemId": "food.milk.cow",
+          "Quantity": 1
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "BalloonExclusive/Items/AppleOatCompote",
+      "CraftingPathSourceIds": [
+        "food.apples",
+        "food.milk.cow",
+        "ingredient.oats"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.food.red_berry_oat_porridge",
+      "Name": "Red-berry oat porridge",
+      "Category": "Food",
+      "OutputId": "item.red_berry_oat_porridge",
+      "Yield": 1,
+      "BaseSeconds": 3,
+      "Hearts": 10,
+      "Style": "red_berry_oat_porridge",
+      "Model": "RedBerryOatPorridge",
+      "UnlockSource": "Optional balloon recipe; exact ingredient sources must be discovered and accessible",
+      "Note": "",
+      "Inputs": [
+        {
+          "ItemId": "food.berries",
+          "Quantity": 3
+        },
+        {
+          "ItemId": "ingredient.oats",
+          "Quantity": 2
+        },
+        {
+          "ItemId": "food.milk.cow",
+          "Quantity": 1
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "BalloonExclusive/Items/RedBerryOatPorridge",
+      "CraftingPathSourceIds": [
+        "food.berries",
+        "food.milk.cow",
+        "ingredient.oats"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.food.premium_apple_pie",
+      "Name": "Premium apple pie",
+      "Category": "Food",
+      "OutputId": "item.premium_apple_pie",
+      "Yield": 1,
+      "BaseSeconds": 3,
+      "Hearts": 12,
+      "Style": "premium_apple_pie",
+      "Model": "PremiumApplePie",
+      "UnlockSource": "Bakery replacement recipe offer: 1% proposal; exactly one knowledge unlock, never a stack",
+      "Note": "8 gold per serving; 7200 gold per 1000; recipe 80 gold. Source gates apply before random selection.",
+      "Inputs": [
+        {
+          "ItemId": "ingredient.wheat_flour",
+          "Quantity": 2
+        },
+        {
+          "ItemId": "food.apples",
+          "Quantity": 3
+        },
+        {
+          "ItemId": "ingredient.cow_butter",
+          "Quantity": 1
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/PremiumApplePie",
+      "CraftingPathSourceIds": [
+        "food.apples",
+        "food.milk.cow",
+        "ingredient.wheat"
+      ],
+      "ConversionRecipeIds": [
+        "recipe.food.cow_butter",
+        "recipe.food.cow_cream",
+        "recipe.material.wheat_flour"
+      ],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.misc.pine_bird",
+      "Name": "Pine bird sculpture",
+      "Category": "Misc",
+      "OutputId": "item.pine_bird",
+      "Yield": 1,
+      "BaseSeconds": 10,
+      "Hearts": 0,
+      "Style": "pine_bird",
+      "Model": "PineBird",
+      "UnlockSource": "Lumberjack L2",
+      "Note": "",
+      "Inputs": [
+        {
+          "ItemId": "material.pine_log",
+          "Quantity": 2
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/PineBird",
+      "CraftingPathSourceIds": [
+        "material.pine_log"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.misc.cord_charm",
+      "Name": "Cord charm",
+      "Category": "Misc",
+      "OutputId": "item.cord_charm",
+      "Yield": 1,
+      "BaseSeconds": 10,
+      "Hearts": 0,
+      "Style": "cord_charm",
+      "Model": "CordCharm",
+      "UnlockSource": "Lumberjack L10",
+      "Note": "",
+      "Inputs": [
+        {
+          "ItemId": "item.polished_pebble",
+          "Quantity": 1
+        },
+        {
+          "ItemId": "item.hemp_cord",
+          "Quantity": 1
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/CordCharm",
+      "CraftingPathSourceIds": [
+        "material.flint",
+        "material.hemp",
+        "material.pebbles"
+      ],
+      "ConversionRecipeIds": [
+        "recipe.material.hemp_cord",
+        "recipe.material.polished_pebble"
+      ],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.misc.rabbit_toy",
+      "Name": "Rabbit toy",
+      "Category": "Misc",
+      "OutputId": "item.rabbit_toy",
+      "Yield": 1,
+      "BaseSeconds": 10,
+      "Hearts": 0,
+      "Style": "rabbit_toy",
+      "Model": "RabbitToy",
+      "UnlockSource": "Hunter H2",
+      "Note": "",
+      "Inputs": [
+        {
+          "ItemId": "animal.rabbit.pelt",
+          "Quantity": 2
+        },
+        {
+          "ItemId": "material.hemp",
+          "Quantity": 1
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/RabbitToy",
+      "CraftingPathSourceIds": [
+        "animal.rabbit.pelt",
+        "material.hemp"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.misc.pinecone_ornament",
+      "Name": "Pine-cone ornament",
+      "Category": "Misc",
+      "OutputId": "item.pinecone_ornament",
+      "Yield": 1,
+      "BaseSeconds": 10,
+      "Hearts": 0,
+      "Style": "pinecone_ornament",
+      "Model": "PineconeOrnament",
+      "UnlockSource": "Gatherer G7",
+      "Note": "",
+      "Inputs": [
+        {
+          "ItemId": "material.pine_cone",
+          "Quantity": 2
+        },
+        {
+          "ItemId": "material.pine_branch",
+          "Quantity": 1
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "Tier01/Crafted/PineconeOrnament",
+      "CraftingPathSourceIds": [
+        "material.pine_branch",
+        "material.pine_cone"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false
+    },
+    {
+      "Id": "recipe.misc.pinecone_rabbit",
+      "Name": "Pine-cone rabbit ornament",
+      "Category": "Misc",
+      "OutputId": "item.pinecone_rabbit",
+      "Yield": 1,
+      "BaseSeconds": 10,
+      "Hearts": 0,
+      "Style": "pinecone_rabbit",
+      "Model": "PineconeRabbit",
+      "UnlockSource": "Optional balloon recipe; exact ingredient sources must be discovered and accessible",
+      "Note": "",
+      "Inputs": [
+        {
+          "ItemId": "material.pine_cone",
+          "Quantity": 1
+        },
+        {
+          "ItemId": "material.pine_log",
+          "Quantity": 1
+        },
+        {
+          "ItemId": "material.hemp",
+          "Quantity": 1
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "BalloonExclusive/Items/PineconeRabbit",
+      "CraftingPathSourceIds": [
+        "material.hemp",
+        "material.pine_cone",
+        "material.pine_log"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false
+    }
+  ],
+  "ExternalInputs": [
+    {
+      "Id": "food.milk.cow",
+      "Name": "Cow milk",
+      "Model": "CowMilk",
+      "Source": "Ranch; require discovered settlement and reachable exact listing",
+      "PrefabPath": "Tier01/Crafted/CowMilk"
+    },
+    {
+      "Id": "food.milk.goat",
+      "Name": "Goat milk",
+      "Model": "GoatMilk",
+      "Source": "Ranch; require discovered settlement and reachable exact listing",
+      "PrefabPath": "Tier01/Crafted/GoatMilk"
+    },
+    {
+      "Id": "ingredient.egg",
+      "Name": "Egg",
+      "Model": "Egg",
+      "Source": "Ranch; require discovered settlement and reachable exact listing",
+      "PrefabPath": "Tier01/Crafted/Egg"
+    },
+    {
+      "Id": "ingredient.mushrooms",
+      "Name": "Mushrooms",
+      "Model": "Mushrooms",
+      "Source": "Exact loose source discovery (region 4)",
+      "PrefabPath": "Tier01/Crafted/Mushrooms"
+    },
+    {
+      "Id": "ingredient.shrimp",
+      "Name": "Shrimp",
+      "Model": "Shrimp",
+      "Source": "Tier-one fishery cash listing only; never a region fishing drop",
+      "PrefabPath": "Tier01/Crafted/Shrimp"
+    }
+  ],
+  "Models": [
+    {
+      "Model": "PinePlank",
+      "Triangles": 36,
+      "Width": 900,
+      "Height": 300
+    },
+    {
+      "Model": "PineCharcoal",
+      "Triangles": 84,
+      "Width": 900,
+      "Height": 481
+    },
+    {
+      "Model": "HempCord",
+      "Triangles": 1776,
+      "Width": 900,
+      "Height": 655
+    },
+    {
+      "Model": "HempThread",
+      "Triangles": 3568,
+      "Width": 609,
+      "Height": 900
+    },
+    {
+      "Model": "NettleThread",
+      "Triangles": 3568,
+      "Width": 609,
+      "Height": 900
+    },
+    {
+      "Model": "HempCloth",
+      "Triangles": 132,
+      "Width": 900,
+      "Height": 357
+    },
+    {
+      "Model": "NettleCloth",
+      "Triangles": 132,
+      "Width": 900,
+      "Height": 357
+    },
+    {
+      "Model": "FineHempCloth",
+      "Triangles": 516,
+      "Width": 900,
+      "Height": 386
+    },
+    {
+      "Model": "CuredRabbitPelt",
+      "Triangles": 160,
+      "Width": 900,
+      "Height": 300
+    },
+    {
+      "Model": "FineRabbitPelt",
+      "Triangles": 244,
+      "Width": 900,
+      "Height": 300
+    },
+    {
+      "Model": "RabbitLeather",
+      "Triangles": 172,
+      "Width": 900,
+      "Height": 300
+    },
+    {
+      "Model": "FineRabbitLeather",
+      "Triangles": 256,
+      "Width": 900,
+      "Height": 300
+    },
+    {
+      "Model": "PlantStuffing",
+      "Triangles": 252,
+      "Width": 900,
+      "Height": 407
+    },
+    {
+      "Model": "PineBeam",
+      "Triangles": 204,
+      "Width": 900,
+      "Height": 300
+    },
+    {
+      "Model": "PinePanel",
+      "Triangles": 60,
+      "Width": 900,
+      "Height": 750
+    },
+    {
+      "Model": "LimestoneTiles",
+      "Triangles": 24,
+      "Width": 900,
+      "Height": 300
+    },
+    {
+      "Model": "PolishedPebble",
+      "Triangles": 96,
+      "Width": 900,
+      "Height": 744
+    },
+    {
+      "Model": "FiredBricks",
+      "Triangles": 36,
+      "Width": 900,
+      "Height": 450
+    },
+    {
+      "Model": "ClayCup",
+      "Triangles": 600,
+      "Width": 900,
+      "Height": 672
+    },
+    {
+      "Model": "WheatFlour",
+      "Triangles": 108,
+      "Width": 900,
+      "Height": 444
+    },
+    {
+      "Model": "ReedBraid",
+      "Triangles": 1440,
+      "Width": 300,
+      "Height": 900
+    },
+    {
+      "Model": "Mortar",
+      "Triangles": 108,
+      "Width": 900,
+      "Height": 444
+    },
+    {
+      "Model": "PineAxeNormal",
+      "Triangles": 164,
+      "Width": 477,
+      "Height": 900
+    },
+    {
+      "Model": "PineSlingshotNormal",
+      "Triangles": 132,
+      "Width": 622,
+      "Height": 900
+    },
+    {
+      "Model": "PineRodNormal",
+      "Triangles": 240,
+      "Width": 345,
+      "Height": 900
+    },
+    {
+      "Model": "RabbitHat",
+      "Triangles": 132,
+      "Width": 900,
+      "Height": 723
+    },
+    {
+      "Model": "RabbitBoots",
+      "Triangles": 592,
+      "Width": 900,
+      "Height": 660
+    },
+    {
+      "Model": "HempShirt",
+      "Triangles": 240,
+      "Width": 900,
+      "Height": 588
+    },
+    {
+      "Model": "HempPants",
+      "Triangles": 144,
+      "Width": 698,
+      "Height": 900
+    },
+    {
+      "Model": "StarterBackpack",
+      "Triangles": 540,
+      "Width": 626,
+      "Height": 900
+    },
+    {
+      "Model": "AppleJuice",
+      "Triangles": 168,
+      "Width": 839,
+      "Height": 900
+    },
+    {
+      "Model": "RoastedMushrooms",
+      "Triangles": 276,
+      "Width": 900,
+      "Height": 506
+    },
+    {
+      "Model": "BerryOatCakes",
+      "Triangles": 272,
+      "Width": 900,
+      "Height": 300
+    },
+    {
+      "Model": "RoastedRabbit",
+      "Triangles": 138,
+      "Width": 900,
+      "Height": 319
+    },
+    {
+      "Model": "HerbTrout",
+      "Triangles": 398,
+      "Width": 900,
+      "Height": 300
+    },
+    {
+      "Model": "RoastedRainbowTrout",
+      "Triangles": 326,
+      "Width": 900,
+      "Height": 300
+    },
+    {
+      "Model": "RoastedLargemouthBass",
+      "Triangles": 206,
+      "Width": 900,
+      "Height": 347
+    },
+    {
+      "Model": "RoastedBluegill",
+      "Triangles": 254,
+      "Width": 900,
+      "Height": 480
+    },
+    {
+      "Model": "RoastedYellowPerch",
+      "Triangles": 206,
+      "Width": 900,
+      "Height": 300
+    },
+    {
+      "Model": "StrawberryCowYogurtDrink",
+      "Triangles": 200,
+      "Width": 800,
+      "Height": 900
+    },
+    {
+      "Model": "CowCheeseTart",
+      "Triangles": 804,
+      "Width": 900,
+      "Height": 327
+    },
+    {
+      "Model": "CowCream",
+      "Triangles": 168,
+      "Width": 839,
+      "Height": 900
+    },
+    {
+      "Model": "CowButter",
+      "Triangles": 24,
+      "Width": 900,
+      "Height": 470
+    },
+    {
+      "Model": "CowCheese",
+      "Triangles": 132,
+      "Width": 900,
+      "Height": 366
+    },
+    {
+      "Model": "GoatCheese",
+      "Triangles": 132,
+      "Width": 900,
+      "Height": 366
+    },
+    {
+      "Model": "MixedMilkCheese",
+      "Triangles": 144,
+      "Width": 900,
+      "Height": 401
+    },
+    {
+      "Model": "CowYogurt",
+      "Triangles": 168,
+      "Width": 839,
+      "Height": 900
+    },
+    {
+      "Model": "ToastedPineNuts",
+      "Triangles": 432,
+      "Width": 900,
+      "Height": 494
+    },
+    {
+      "Model": "RoastedShrimp",
+      "Triangles": 508,
+      "Width": 900,
+      "Height": 507
+    },
+    {
+      "Model": "ShrimpPie",
+      "Triangles": 2196,
+      "Width": 900,
+      "Height": 452
+    },
+    {
+      "Model": "AppleOatCompote",
+      "Triangles": 636,
+      "Width": 900,
+      "Height": 456
+    },
+    {
+      "Model": "RedBerryOatPorridge",
+      "Triangles": 636,
+      "Width": 900,
+      "Height": 456
+    },
+    {
+      "Model": "PremiumApplePie",
+      "Triangles": 840,
+      "Width": 900,
+      "Height": 349
+    },
+    {
+      "Model": "PineBird",
+      "Triangles": 166,
+      "Width": 900,
+      "Height": 757
+    },
+    {
+      "Model": "CordCharm",
+      "Triangles": 828,
+      "Width": 505,
+      "Height": 900
+    },
+    {
+      "Model": "RabbitToy",
+      "Triangles": 380,
+      "Width": 497,
+      "Height": 900
+    },
+    {
+      "Model": "PineconeOrnament",
+      "Triangles": 1102,
+      "Width": 542,
+      "Height": 900
+    },
+    {
+      "Model": "PineconeRabbit",
+      "Triangles": 794,
+      "Width": 469,
+      "Height": 900
+    },
+    {
+      "Model": "CowMilk",
+      "Triangles": 780,
+      "Width": 892,
+      "Height": 900
+    },
+    {
+      "Model": "GoatMilk",
+      "Triangles": 792,
+      "Width": 892,
+      "Height": 900
+    },
+    {
+      "Model": "Egg",
+      "Triangles": 100,
+      "Width": 665,
+      "Height": 900
+    },
+    {
+      "Model": "Mushrooms",
+      "Triangles": 252,
+      "Width": 900,
+      "Height": 604
+    },
+    {
+      "Model": "Shrimp",
+      "Triangles": 484,
+      "Width": 900,
+      "Height": 507
+    }
+  ],
+  "Sources": [
+    {
+      "ItemId": "material.pine_branch",
+      "Regions": [
+        1
+      ],
+      "Source": "Exact loose source discovery",
+      "Blocked": false
+    },
+    {
+      "ItemId": "animal.rabbit.pelt",
+      "Regions": [
+        1
+      ],
+      "Source": "Exact loose source discovery",
+      "Blocked": false
+    },
+    {
+      "ItemId": "food.apples",
+      "Regions": [
+        1
+      ],
+      "Source": "Exact loose source discovery",
+      "Blocked": false
+    },
+    {
+      "ItemId": "material.hemp",
+      "Regions": [
+        2
+      ],
+      "Source": "Exact loose source discovery",
+      "Blocked": false
+    },
+    {
+      "ItemId": "material.flint",
+      "Regions": [
+        2
+      ],
+      "Source": "Exact loose source discovery",
+      "Blocked": false
+    },
+    {
+      "ItemId": "material.pine_cone",
+      "Regions": [
+        2
+      ],
+      "Source": "Exact loose source discovery",
+      "Blocked": false
+    },
+    {
+      "ItemId": "material.nettle_fiber",
+      "Regions": [
+        3
+      ],
+      "Source": "Exact loose source discovery",
+      "Blocked": false
+    },
+    {
+      "ItemId": "material.clay",
+      "Regions": [
+        3
+      ],
+      "Source": "Exact loose source discovery",
+      "Blocked": false
+    },
+    {
+      "ItemId": "ingredient.rock_salt",
+      "Regions": [
+        3
+      ],
+      "Source": "Exact loose source discovery",
+      "Blocked": false
+    },
+    {
+      "ItemId": "material.limestone",
+      "Regions": [
+        4
+      ],
+      "Source": "Exact loose source discovery",
+      "Blocked": false
+    },
+    {
+      "ItemId": "food.strawberries",
+      "Regions": [
+        4
+      ],
+      "Source": "Exact loose source discovery",
+      "Blocked": false
+    },
+    {
+      "ItemId": "ingredient.mushrooms",
+      "Regions": [
+        4
+      ],
+      "Source": "Exact loose source discovery",
+      "Blocked": false
+    },
+    {
+      "ItemId": "ingredient.oats",
+      "Regions": [
+        5
+      ],
+      "Source": "Exact loose source discovery",
+      "Blocked": false
+    },
+    {
+      "ItemId": "material.pebbles",
+      "Regions": [
+        5
+      ],
+      "Source": "Exact loose source discovery",
+      "Blocked": false
+    },
+    {
+      "ItemId": "food.berries",
+      "Regions": [
+        5
+      ],
+      "Source": "Exact loose source discovery",
+      "Blocked": false
+    },
+    {
+      "ItemId": "material.reeds",
+      "Regions": [
+        6
+      ],
+      "Source": "Exact loose source discovery",
+      "Blocked": false
+    },
+    {
+      "ItemId": "ingredient.wheat",
+      "Regions": [
+        6
+      ],
+      "Source": "Exact loose source discovery",
+      "Blocked": false
+    },
+    {
+      "ItemId": "material.sand",
+      "Regions": [
+        6
+      ],
+      "Source": "Exact loose source discovery",
+      "Blocked": false
+    },
+    {
+      "ItemId": "material.pine_branch",
+      "Regions": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "Source": "Pine chopping",
+      "Blocked": false
+    },
+    {
+      "ItemId": "material.pine_log",
+      "Regions": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "Source": "Pine chopping",
+      "Blocked": false
+    },
+    {
+      "ItemId": "ingredient.pine_nuts",
+      "Regions": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "Source": "Pine chopping",
+      "Blocked": false
+    },
+    {
+      "ItemId": "animal.rabbit.pelt",
+      "Regions": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "Source": "Rabbit hunting",
+      "Blocked": false
+    },
+    {
+      "ItemId": "animal.rabbit.meat",
+      "Regions": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "Source": "Rabbit hunting",
+      "Blocked": false
+    },
+    {
+      "ItemId": "material.bone",
+      "Regions": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "Source": "Rabbit hunting",
+      "Blocked": false
+    },
+    {
+      "ItemId": "ingredient.animal_fat",
+      "Regions": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "Source": "Rabbit hunting",
+      "Blocked": false
+    },
+    {
+      "ItemId": "fish.rainbow_trout",
+      "Regions": [
+        1,
+        3,
+        5
+      ],
+      "Source": "Exact local fishing pair",
+      "Blocked": false
+    },
+    {
+      "ItemId": "fish.largemouth_bass",
+      "Regions": [
+        2,
+        3,
+        6
+      ],
+      "Source": "Exact local fishing pair",
+      "Blocked": false
+    },
+    {
+      "ItemId": "fish.bluegill",
+      "Regions": [
+        1,
+        4,
+        6
+      ],
+      "Source": "Exact local fishing pair",
+      "Blocked": false
+    },
+    {
+      "ItemId": "fish.yellow_perch",
+      "Regions": [
+        2,
+        4,
+        5
+      ],
+      "Source": "Exact local fishing pair",
+      "Blocked": false
+    },
+    {
+      "ItemId": "food.milk.cow",
+      "Regions": [],
+      "Source": "Ranch; require discovered settlement and reachable exact listing",
+      "Blocked": false
+    },
+    {
+      "ItemId": "food.milk.goat",
+      "Regions": [],
+      "Source": "Ranch; require discovered settlement and reachable exact listing",
+      "Blocked": false
+    },
+    {
+      "ItemId": "ingredient.egg",
+      "Regions": [],
+      "Source": "Ranch; require discovered settlement and reachable exact listing",
+      "Blocked": false
+    },
+    {
+      "ItemId": "ingredient.tea_herbs",
+      "Regions": [
+        4
+      ],
+      "Source": "Farm; require region 4 discovered, settlement reached and exact listing",
+      "Blocked": false
+    },
+    {
+      "ItemId": "ingredient.shrimp",
+      "Regions": [],
+      "Source": "Tier-one fishery cash listing only; never a region fishing drop",
+      "Blocked": false
+    }
+  ],
+  "UnlockPolicy": "Require recipe acquisition AND discovered exact ingredient sources AND known intermediate conversions or accessible exact-item shops. Recursively check upstream sources; no future-tier pantry bypass. Never offer unassigned sources. Optional box/bakery recipes cannot block mandatory missions.",
+  "ArtPolicy": "Catalog is authoring data only. No auto-learning, crafting transaction, shop stock or region spawn changes. Serving vessels are illustrative unless explicitly listed as an ingredient. Recipes are knowledge, not inventory scroll stacks. CraftingPathSourceIds/ConversionRecipeIds describe the self-crafted supply path; an explicitly reachable exact-output shop may provide an alternate path, never a recipe grant. Source records for the same ID are alternatives; Regions lists are any eligible source region, not all regions required."
+}

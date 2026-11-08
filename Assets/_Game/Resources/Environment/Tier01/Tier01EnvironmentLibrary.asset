@@ -1,0 +1,1741 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e41ecf4c2390fa24f80c77dd5df8b99b, type: 3}
+  m_Name: Tier01EnvironmentLibrary
+  m_EditorClassIdentifier: Assembly-CSharp::TheTrailWalker.Tier01EnvironmentLibrary
+  Revision: 1
+  DrawingContract: Reusable decorative art library only. No camp, route, reward,
+    collider, save, graphics-profile or live scatter changes. Readable meshes, opaque
+    shared regional palettes, separate shadow groups. Legacy Region01 remains 24
+    colors; this kit uses 32 and must not be assigned to its hardcoded-24 terrain
+    UVs. Each regional material is a separate combine group; split tall shadow casters
+    from noncasting ground cover. Opaque geometry only. All terrain/water modules
+    require authored stitching/replacement and must not be layered coplanar with
+    the live terrain or ribbon. Use the current ground-height projection and road/camp/resource
+    clearance when placing. No live renderer/quality settings are changed.
+  Regions:
+  - Number: 1
+    PaletteSize: 32
+    Name: Dawn Plains
+    SharedMaterial: {fileID: 2100000, guid: fe459bff85c867d4180c89f5376797d8, type: 2}
+    TrailMaterial: {fileID: 2100000, guid: be1fe91409e30cc478d53f4b313eaaa8, type: 2}
+    Models:
+    - Id: env.tier01.region01.MeadowBushLow
+      Name: MeadowBushLow
+      Category: Shrub
+      ResourcePath: Environment/Tier01/Region01/MeadowBushLow
+      Prefab: {fileID: 5045063964829281285, guid: fc309db3bd7ab7345ba4f0bbae9de05e, type: 3}
+      Bounds:
+        m_Center: {x: 0.014999986, y: 0.403525, z: -0.022000015}
+        m_Extent: {x: 0.765, y: 0.430475, z: 0.536}
+      Triangles: 272
+      FootprintRadius: 0.934
+      RecommendedRoadClearance: 3.93
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region01.MeadowBushTall
+      Name: MeadowBushTall
+      Category: Shrub
+      ResourcePath: Environment/Tier01/Region01/MeadowBushTall
+      Prefab: {fileID: 8063414513838252397, guid: e524c64a4c0cb8745969b5a571974cb3, type: 3}
+      Bounds:
+        m_Center: {x: 0.014999986, y: 0.56279904, z: -0.022000015}
+        m_Extent: {x: 0.765, y: 0.584001, z: 0.536}
+      Triangles: 272
+      FootprintRadius: 0.934
+      RecommendedRoadClearance: 3.93
+      CastsShadows: 1
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region01.DryShrub
+      Name: DryShrub
+      Category: Shrub
+      ResourcePath: Environment/Tier01/Region01/DryShrub
+      Prefab: {fileID: 5107850774111001149, guid: 75e6d1487a53483458b0e6f34f9b6dc2, type: 3}
+      Bounds:
+        m_Center: {x: 0.014999986, y: 0.403525, z: -0.022000015}
+        m_Extent: {x: 0.765, y: 0.430475, z: 0.536}
+      Triangles: 272
+      FootprintRadius: 0.934
+      RecommendedRoadClearance: 3.93
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region01.MeadowPine
+      Name: MeadowPine
+      Category: Tree
+      ResourcePath: Environment/Tier01/Region01/MeadowPine
+      Prefab: {fileID: 1347014385903693553, guid: bd3f0028d3f01ea459237113dedf964f, type: 3}
+      Bounds:
+        m_Center: {x: -0.07051945, y: 2.9, z: -0.03728056}
+        m_Extent: {x: 1.2410276, y: 2.9, z: 1.2165866}
+      Triangles: 240
+      FootprintRadius: 1.738
+      RecommendedRoadClearance: 9.74
+      CastsShadows: 1
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region01.YoungPine
+      Name: YoungPine
+      Category: Tree
+      ResourcePath: Environment/Tier01/Region01/YoungPine
+      Prefab: {fileID: 7009420452049899311, guid: b45092484a034d7478df3b7bc600dc6e, type: 3}
+      Bounds:
+        m_Center: {x: -0.003589034, y: 1.6, z: -0.013058543}
+        m_Extent: {x: 0.657441, y: 1.6, z: 0.6549965}
+      Triangles: 240
+      FootprintRadius: 0.928
+      RecommendedRoadClearance: 8.93
+      CastsShadows: 1
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region01.WindPine
+      Name: WindPine
+      Category: Tree
+      ResourcePath: Environment/Tier01/Region01/WindPine
+      Prefab: {fileID: 7125363311295336204, guid: 6ba37c14b673ba74289f2758d2b98071, type: 3}
+      Bounds:
+        m_Center: {x: -0.12246752, y: 2.3851516, z: 0.004379511}
+        m_Extent: {x: 1.0030695, y: 2.4148486, z: 1.0933315}
+      Triangles: 240
+      FootprintRadius: 1.484
+      RecommendedRoadClearance: 9.48
+      CastsShadows: 1
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region01.GrassTuft
+      Name: GrassTuft
+      Category: GroundCover
+      ResourcePath: Environment/Tier01/Region01/GrassTuft
+      Prefab: {fileID: 3386007527363612624, guid: 370115c89a7484542bfe53dc7809cf71, type: 3}
+      Bounds:
+        m_Center: {x: 0.1277345, y: 0.2584765, z: 0.019679502}
+        m_Extent: {x: 0.2651075, y: 0.2584765, z: 0.2457125}
+      Triangles: 22
+      FootprintRadius: 0.361
+      RecommendedRoadClearance: 3.36
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region01.WildflowerClump
+      Name: WildflowerClump
+      Category: GroundCover
+      ResourcePath: Environment/Tier01/Region01/WildflowerClump
+      Prefab: {fileID: 7178142626133830006, guid: fb10bcd1b6f012145afff3f433d6e233, type: 3}
+      Bounds:
+        m_Center: {x: 0.1639075, y: 0.2784765, z: 0.051374003}
+        m_Extent: {x: 0.2912475, y: 0.2784765, z: 0.277407}
+      Triangles: 510
+      FootprintRadius: 0.402
+      RecommendedRoadClearance: 3.4
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region01.GroundMound
+      Name: GroundMound
+      Category: Terrain
+      ResourcePath: Environment/Tier01/Region01/GroundMound
+      Prefab: {fileID: 7019927166547804873, guid: 626706f9e6ebf2b439524cd142155ec5, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 0.262297, z: 0}
+        m_Extent: {x: 4, y: 0.287703, z: 2.662958}
+      Triangles: 50
+      FootprintRadius: 4.805
+      RecommendedRoadClearance: 7.81
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 1
+    - Id: env.tier01.region01.MeadowBoulder
+      Name: MeadowBoulder
+      Category: Rock
+      ResourcePath: Environment/Tier01/Region01/MeadowBoulder
+      Prefab: {fileID: 5739989381710736560, guid: e39b17b4f154471418d96d2faf054533, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 0.4292135, z: 0}
+        m_Extent: {x: 0.95, y: 0.47078648, z: 0.618187}
+      Triangles: 50
+      FootprintRadius: 1.133
+      RecommendedRoadClearance: 4.13
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region01.MeadowGroundPatch
+      Name: MeadowGroundPatch
+      Category: Terrain
+      ResourcePath: Environment/Tier01/Region01/MeadowGroundPatch
+      Prefab: {fileID: 5756080398063434208, guid: f6ec43e86eb05d74c97616b14f634b40, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 0, z: 0}
+        m_Extent: {x: 3, y: 0, z: 3}
+      Triangles: 72
+      FootprintRadius: 4.243
+      RecommendedRoadClearance: 7.24
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 1
+    - Id: env.tier01.region01.TrailShoulder
+      Name: TrailShoulder
+      Category: Terrain
+      ResourcePath: Environment/Tier01/Region01/TrailShoulder
+      Prefab: {fileID: 5195450965042674707, guid: cf85731b8dafc6748b66d71730737156, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 0, z: 0}
+        m_Extent: {x: 3, y: 0, z: 3}
+      Triangles: 72
+      FootprintRadius: 4.243
+      RecommendedRoadClearance: 7.24
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 1
+    - Id: env.tier01.region01.MeadowBushWide
+      Name: MeadowBushWide
+      Category: Shrub
+      ResourcePath: Environment/Tier01/Region01/MeadowBushWide
+      Prefab: {fileID: 5592596103048915836, guid: b93302513732d2949ae32530f82c6580, type: 3}
+      Bounds:
+        m_Center: {x: 0.10414153, y: 0.271498, z: -0.18840301}
+        m_Extent: {x: 1.0041416, y: 0.302502, z: 1.068836}
+      Triangles: 340
+      FootprintRadius: 1.467
+      RecommendedRoadClearance: 4.47
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region01.MeadowPineBroad
+      Name: MeadowPineBroad
+      Category: Tree
+      ResourcePath: Environment/Tier01/Region01/MeadowPineBroad
+      Prefab: {fileID: 6922489850033190777, guid: 9efe6b8c8a6bb984dac48dc91802b4ac, type: 3}
+      Bounds:
+        m_Center: {x: -0.037639022, y: 2.991573, z: 0.12356901}
+        m_Extent: {x: 1.6435, y: 3.008427, z: 1.659694}
+      Triangles: 184
+      FootprintRadius: 2.336
+      RecommendedRoadClearance: 10.34
+      CastsShadows: 1
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region01.PineSapling
+      Name: PineSapling
+      Category: Tree
+      ResourcePath: Environment/Tier01/Region01/PineSapling
+      Prefab: {fileID: 1860223940374947605, guid: 5e64703b5dce78a4c81e83b43714fab6, type: 3}
+      Bounds:
+        m_Center: {x: 0.000603497, y: 0.89157295, z: 0}
+        m_Extent: {x: 0.4057165, y: 0.908427, z: 0.406011}
+      Triangles: 184
+      FootprintRadius: 0.574
+      RecommendedRoadClearance: 8.57
+      CastsShadows: 1
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region01.MeadowFlowerPatch
+      Name: MeadowFlowerPatch
+      Category: GroundCover
+      ResourcePath: Environment/Tier01/Region01/MeadowFlowerPatch
+      Prefab: {fileID: 26465805821610713, guid: eab610ba9f11a5840b11749114160a9b, type: 3}
+      Bounds:
+        m_Center: {x: -0.016802013, y: 0.2031585, z: 0.10346103}
+        m_Extent: {x: 0.890153, y: 0.2031585, z: 0.7786}
+      Triangles: 504
+      FootprintRadius: 1.183
+      RecommendedRoadClearance: 4.18
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region01.MeadowStoneCluster
+      Name: MeadowStoneCluster
+      Category: Rock
+      ResourcePath: Environment/Tier01/Region01/MeadowStoneCluster
+      Prefab: {fileID: 1914384318471324764, guid: 333bc1892e14fa047b27bb945e2c33c8, type: 3}
+      Bounds:
+        m_Center: {x: 0.01780057, y: 0.3021955, z: -0.013751984}
+        m_Extent: {x: 1.0707285, y: 0.3021955, z: 0.759853}
+      Triangles: 280
+      FootprintRadius: 1.313
+      RecommendedRoadClearance: 4.31
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region01.MeadowBank
+      Name: MeadowBank
+      Category: Terrain
+      ResourcePath: Environment/Tier01/Region01/MeadowBank
+      Prefab: {fileID: 9097499152419610171, guid: 1d660185f0b34bb4da2d9cce70b3e4eb, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 0.27, z: 0}
+        m_Extent: {x: 4, y: 0.27, z: 3}
+      Triangles: 160
+      FootprintRadius: 5
+      RecommendedRoadClearance: 8
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 1
+    - Id: env.tier01.region01.DistantMeadowRise
+      Name: DistantMeadowRise
+      Category: Terrain
+      ResourcePath: Environment/Tier01/Region01/DistantMeadowRise
+      Prefab: {fileID: 3982627666349762235, guid: b426fec9baf8bd54190b1a413a25d20f, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 1.5, z: 0}
+        m_Extent: {x: 12, y: 1.5, z: 9}
+      Triangles: 160
+      FootprintRadius: 15
+      RecommendedRoadClearance: 18
+      CastsShadows: 0
+      DistantOnly: 1
+      TerrainReplacement: 1
+    - Id: env.tier01.region01.MeadowClearingPatch
+      Name: MeadowClearingPatch
+      Category: Terrain
+      ResourcePath: Environment/Tier01/Region01/MeadowClearingPatch
+      Prefab: {fileID: 5635325158381420257, guid: ce32ee4c724b1ce4d95158206ddf1864, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 0, z: 0}
+        m_Extent: {x: 4, y: 0, z: 4}
+      Triangles: 72
+      FootprintRadius: 5.657
+      RecommendedRoadClearance: 8.66
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 1
+  - Number: 2
+    PaletteSize: 32
+    Name: Windward Hills
+    SharedMaterial: {fileID: 2100000, guid: 8c77f339c93adc843b174a043cac4a7b, type: 2}
+    TrailMaterial: {fileID: 2100000, guid: 1a4df24a392809c439264a8399385ca2, type: 2}
+    Models:
+    - Id: env.tier01.region02.WindBentPine
+      Name: WindBentPine
+      Category: Tree
+      ResourcePath: Environment/Tier01/Region02/WindBentPine
+      Prefab: {fileID: 445233033466689065, guid: 4bc55481eebd20a4297edd6385afe32c, type: 3}
+      Bounds:
+        m_Center: {x: -0.29857147, y: 2.8803082, z: 0.03459096}
+        m_Extent: {x: 1.2886405, y: 2.919692, z: 1.2786319}
+      Triangles: 184
+      FootprintRadius: 1.815
+      RecommendedRoadClearance: 9.82
+      CastsShadows: 1
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region02.HillPineYoung
+      Name: HillPineYoung
+      Category: Tree
+      ResourcePath: Environment/Tier01/Region02/HillPineYoung
+      Prefab: {fileID: 4338959643410159806, guid: a834bf6e84415d64f85d20c3e60ad090, type: 3}
+      Bounds:
+        m_Center: {x: -0.061605513, y: 1.641573, z: -0.043874025}
+        m_Extent: {x: 0.5618285, y: 1.658427, z: 0.559083}
+      Triangles: 184
+      FootprintRadius: 0.793
+      RecommendedRoadClearance: 8.79
+      CastsShadows: 1
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region02.RidgePine
+      Name: RidgePine
+      Category: Tree
+      ResourcePath: Environment/Tier01/Region02/RidgePine
+      Prefab: {fileID: 7925382829120101377, guid: 6ae3add9d9635e541a09a48df0bacc9b, type: 3}
+      Bounds:
+        m_Center: {x: -0.18480396, y: 2.2884126, z: -0.03599596}
+        m_Extent: {x: 0.845335, y: 2.3115873, z: 0.82033896}
+      Triangles: 184
+      FootprintRadius: 1.178
+      RecommendedRoadClearance: 9.18
+      CastsShadows: 1
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region02.WindScrubLow
+      Name: WindScrubLow
+      Category: Shrub
+      ResourcePath: Environment/Tier01/Region02/WindScrubLow
+      Prefab: {fileID: 5984010980949223402, guid: 529da9a7df3ce4b4a89513f6966b0077, type: 3}
+      Bounds:
+        m_Center: {x: 0.06942749, y: 0.2315015, z: -0.12560153}
+        m_Extent: {x: 0.6694275, y: 0.2604985, z: 0.71255755}
+      Triangles: 340
+      FootprintRadius: 0.978
+      RecommendedRoadClearance: 3.98
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region02.WindScrubWide
+      Name: WindScrubWide
+      Category: Shrub
+      ResourcePath: Environment/Tier01/Region02/WindScrubWide
+      Prefab: {fileID: 6412447031855237565, guid: f1879626544272442a789f2b29de24af, type: 3}
+      Bounds:
+        m_Center: {x: 0.11571252, y: 0.312597, z: -0.20933652}
+        m_Extent: {x: 1.1157125, y: 0.343403, z: 1.1875955}
+      Triangles: 340
+      FootprintRadius: 1.629
+      RecommendedRoadClearance: 4.63
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region02.HillDryShrub
+      Name: HillDryShrub
+      Category: Shrub
+      ResourcePath: Environment/Tier01/Region02/HillDryShrub
+      Prefab: {fileID: 4474985856861723057, guid: 1f5d8f11392ae6941a7b664564429ef2, type: 3}
+      Bounds:
+        m_Center: {x: 0.063642025, y: 0.273727, z: -0.11513448}
+        m_Extent: {x: 0.613642, y: 0.300273, z: 0.6531775}
+      Triangles: 340
+      FootprintRadius: 0.896
+      RecommendedRoadClearance: 3.9
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region02.HillGrass
+      Name: HillGrass
+      Category: GroundCover
+      ResourcePath: Environment/Tier01/Region02/HillGrass
+      Prefab: {fileID: 9204462360844546887, guid: 5e1571c8ecae7f74c86bb81a50d46e7b, type: 3}
+      Bounds:
+        m_Center: {x: 0.00039699674, y: 0.280047, z: 0.019091487}
+        m_Extent: {x: 0.414685, y: 0.280047, z: 0.40859652}
+      Triangles: 24
+      FootprintRadius: 0.582
+      RecommendedRoadClearance: 3.58
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region02.DryHillGrass
+      Name: DryHillGrass
+      Category: GroundCover
+      ResourcePath: Environment/Tier01/Region02/DryHillGrass
+      Prefab: {fileID: 506405837683230411, guid: fe011dd0edd492f4ab7c0e66323bf592, type: 3}
+      Bounds:
+        m_Center: {x: 0.016272485, y: 0.3328825, z: 0.021410495}
+        m_Extent: {x: 0.37739348, y: 0.3328825, z: 0.3739275}
+      Triangles: 24
+      FootprintRadius: 0.531
+      RecommendedRoadClearance: 3.53
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region02.HillFlowerClump
+      Name: HillFlowerClump
+      Category: GroundCover
+      ResourcePath: Environment/Tier01/Region02/HillFlowerClump
+      Prefab: {fileID: 8315287245716527967, guid: 34b03b4f45955ec4ea15318ba2c52484, type: 3}
+      Bounds:
+        m_Center: {x: -0.04078251, y: 0.1694145, z: 0.063227}
+        m_Extent: {x: 0.3387245, y: 0.1694145, z: 0.43809998}
+      Triangles: 504
+      FootprintRadius: 0.554
+      RecommendedRoadClearance: 3.55
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region02.HillBoulder
+      Name: HillBoulder
+      Category: Rock
+      ResourcePath: Environment/Tier01/Region02/HillBoulder
+      Prefab: {fileID: 5721603119829178324, guid: 08fcffc7f6ad17f4c9dd1d9cc2752f22, type: 3}
+      Bounds:
+        m_Center: {x: 0.051102996, y: 0.5665, z: -0.017272472}
+        m_Extent: {x: 1.139288, y: 0.5665, z: 0.9129065}
+      Triangles: 56
+      FootprintRadius: 1.46
+      RecommendedRoadClearance: 4.46
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region02.SplitRockCluster
+      Name: SplitRockCluster
+      Category: Rock
+      ResourcePath: Environment/Tier01/Region02/SplitRockCluster
+      Prefab: {fileID: 3527109851278181808, guid: b8e2ea697a10cf5478162449567efedd, type: 3}
+      Bounds:
+        m_Center: {x: 0.022200465, y: 0.633348, z: -0.021613479}
+        m_Extent: {x: 1.4654095, y: 0.633348, z: 1.0879265}
+      Triangles: 280
+      FootprintRadius: 1.825
+      RecommendedRoadClearance: 4.83
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region02.HillRockLedge
+      Name: HillRockLedge
+      Category: Rock
+      ResourcePath: Environment/Tier01/Region02/HillRockLedge
+      Prefab: {fileID: 7278822995681096770, guid: 5ea2844a4b000c34ba9a17e16cc85a08, type: 3}
+      Bounds:
+        m_Center: {x: 0.06443858, y: 0.33475, z: -0.025049925}
+        m_Extent: {x: 2.2451315, y: 0.33475, z: 1.240679}
+      Triangles: 56
+      FootprintRadius: 2.565
+      RecommendedRoadClearance: 5.57
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region02.RoundedHill
+      Name: RoundedHill
+      Category: Terrain
+      ResourcePath: Environment/Tier01/Region02/RoundedHill
+      Prefab: {fileID: 3987455917760524001, guid: 7c6880afe8a7e5240a0e940eaa69b0cd, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 1.4, z: 0}
+        m_Extent: {x: 7, y: 1.4, z: 6}
+      Triangles: 160
+      FootprintRadius: 9.22
+      RecommendedRoadClearance: 12.22
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 1
+    - Id: env.tier01.region02.WindwardSlope
+      Name: WindwardSlope
+      Category: Terrain
+      ResourcePath: Environment/Tier01/Region02/WindwardSlope
+      Prefab: {fileID: 1873342157298603589, guid: 00b9f40403a250c4688fe2548fd34f10, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 1.5, z: 0}
+        m_Extent: {x: 5, y: 1.5, z: 6}
+      Triangles: 160
+      FootprintRadius: 7.81
+      RecommendedRoadClearance: 10.81
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 1
+    - Id: env.tier01.region02.SaddleBank
+      Name: SaddleBank
+      Category: Terrain
+      ResourcePath: Environment/Tier01/Region02/SaddleBank
+      Prefab: {fileID: 6655528988652776072, guid: 87f0d8131cd405e4ba6b1aac179c5ffc, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 0.51, z: 0}
+        m_Extent: {x: 5, y: 0.51, z: 4}
+      Triangles: 160
+      FootprintRadius: 6.403
+      RecommendedRoadClearance: 9.4
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 1
+    - Id: env.tier01.region02.DistantHillRidge
+      Name: DistantHillRidge
+      Category: Terrain
+      ResourcePath: Environment/Tier01/Region02/DistantHillRidge
+      Prefab: {fileID: 8533892282395730665, guid: 6043d8f3f9a45174d86c6b2837edf64e, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 3, z: 0}
+        m_Extent: {x: 12, y: 3, z: 14}
+      Triangles: 160
+      FootprintRadius: 18.439
+      RecommendedRoadClearance: 21.44
+      CastsShadows: 0
+      DistantOnly: 1
+      TerrainReplacement: 1
+    - Id: env.tier01.region02.HillGroundPatch
+      Name: HillGroundPatch
+      Category: Terrain
+      ResourcePath: Environment/Tier01/Region02/HillGroundPatch
+      Prefab: {fileID: 3721065673686468032, guid: 0219768d47fb048448cc35f0ccf2249c, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 0, z: 0}
+        m_Extent: {x: 3, y: 0, z: 3}
+      Triangles: 72
+      FootprintRadius: 4.243
+      RecommendedRoadClearance: 7.24
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 1
+    - Id: env.tier01.region02.GravelShoulder
+      Name: GravelShoulder
+      Category: Terrain
+      ResourcePath: Environment/Tier01/Region02/GravelShoulder
+      Prefab: {fileID: 6621646695477397354, guid: 8924acdb0eb35484d8a2dda166097519, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 0, z: 0}
+        m_Extent: {x: 3, y: 0, z: 3}
+      Triangles: 72
+      FootprintRadius: 4.243
+      RecommendedRoadClearance: 7.24
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 1
+    - Id: env.tier01.region02.HillClearingPatch
+      Name: HillClearingPatch
+      Category: Terrain
+      ResourcePath: Environment/Tier01/Region02/HillClearingPatch
+      Prefab: {fileID: 318940424538780644, guid: b89fc0216d54b5a4383bf00111e889ec, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 0, z: 0}
+        m_Extent: {x: 4, y: 0, z: 4}
+      Triangles: 72
+      FootprintRadius: 5.657
+      RecommendedRoadClearance: 8.66
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 1
+    - Id: env.tier01.region02.PebbledEarthPatch
+      Name: PebbledEarthPatch
+      Category: Terrain
+      ResourcePath: Environment/Tier01/Region02/PebbledEarthPatch
+      Prefab: {fileID: 1361958809091334389, guid: e6665f0825a59724eb045bf983474675, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 0.029015, z: 0}
+        m_Extent: {x: 3, y: 0.029015, z: 3}
+      Triangles: 352
+      FootprintRadius: 4.243
+      RecommendedRoadClearance: 7.24
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 1
+  - Number: 3
+    PaletteSize: 32
+    Name: Mistwood
+    SharedMaterial: {fileID: 2100000, guid: 61f6fe3e66bdf4148945e3a424634f88, type: 2}
+    TrailMaterial: {fileID: 2100000, guid: 1f5b6fa6d6bbfc04084860ddfad51562, type: 2}
+    Models:
+    - Id: env.tier01.region03.ForestPineTall
+      Name: ForestPineTall
+      Category: Tree
+      ResourcePath: Environment/Tier01/Region03/ForestPineTall
+      Prefab: {fileID: 3943149853502407765, guid: cf2cf19536cdf394fa85b2d9288fcd82, type: 3}
+      Bounds:
+        m_Center: {x: -0.014503956, y: 3.991573, z: -0.025561094}
+        m_Extent: {x: 1.604749, y: 4.008427, z: 1.42998}
+      Triangles: 184
+      FootprintRadius: 2.149
+      RecommendedRoadClearance: 10.15
+      CastsShadows: 1
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region03.ForestPineYoung
+      Name: ForestPineYoung
+      Category: Tree
+      ResourcePath: Environment/Tier01/Region03/ForestPineYoung
+      Prefab: {fileID: 4492594450089147441, guid: a254fd515a3fc1745bbc2af833ad2828, type: 3}
+      Bounds:
+        m_Center: {x: -0.002619028, y: 1.891573, z: -0.034194946}
+        m_Extent: {x: 0.694877, y: 1.908427, z: 0.734638}
+      Triangles: 184
+      FootprintRadius: 1.011
+      RecommendedRoadClearance: 9.01
+      CastsShadows: 1
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region03.CrookedForestPine
+      Name: CrookedForestPine
+      Category: Tree
+      ResourcePath: Environment/Tier01/Region03/CrookedForestPine
+      Prefab: {fileID: 4695917062670852840, guid: 162fec86f8b5d2f4ca953981d4b09a7a, type: 3}
+      Bounds:
+        m_Center: {x: -0.321231, y: 3.3391733, z: 0.007387042}
+        m_Extent: {x: 1.458878, y: 3.3608265, z: 1.46339}
+      Triangles: 184
+      FootprintRadius: 2.066
+      RecommendedRoadClearance: 10.07
+      CastsShadows: 1
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region03.ShadedBush
+      Name: ShadedBush
+      Category: Shrub
+      ResourcePath: Environment/Tier01/Region03/ShadedBush
+      Prefab: {fileID: 793869149593842835, guid: 6acc4ebf80df12643ae06a51f50671a9, type: 3}
+      Bounds:
+        m_Center: {x: 0.08099902, y: 0.5013025, z: -0.14653498}
+        m_Extent: {x: 0.780999, y: 0.5236975, z: 0.831317}
+      Triangles: 340
+      FootprintRadius: 1.141
+      RecommendedRoadClearance: 4.14
+      CastsShadows: 1
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region03.ForestLowShrub
+      Name: ForestLowShrub
+      Category: Shrub
+      ResourcePath: Environment/Tier01/Region03/ForestLowShrub
+      Prefab: {fileID: 3274615566600945747, guid: 629e383bdf9593d41845b637dde30117, type: 3}
+      Bounds:
+        m_Center: {x: 0.08099902, y: 0.2516765, z: -0.14653498}
+        m_Extent: {x: 0.780999, y: 0.2813235, z: 0.831317}
+      Triangles: 340
+      FootprintRadius: 1.141
+      RecommendedRoadClearance: 4.14
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region03.ForestFern
+      Name: ForestFern
+      Category: GroundCover
+      ResourcePath: Environment/Tier01/Region03/ForestFern
+      Prefab: {fileID: 3129827728444808389, guid: 90a047ff3beb5574895547a3c87af616, type: 3}
+      Bounds:
+        m_Center: {x: -0.032130003, y: 0.338191, z: 0}
+        m_Extent: {x: 0.619941, y: 0.31398, z: 0.635829}
+      Triangles: 784
+      FootprintRadius: 0.888
+      RecommendedRoadClearance: 3.89
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region03.BroadleafClump
+      Name: BroadleafClump
+      Category: GroundCover
+      ResourcePath: Environment/Tier01/Region03/BroadleafClump
+      Prefab: {fileID: 346394083043745695, guid: 00e9c8face0f5d74f8ea1d95da744fe2, type: 3}
+      Bounds:
+        m_Center: {x: -0.02247101, y: 0.21306051, z: 0}
+        m_Extent: {x: 0.43442202, y: 0.1892675, z: 0.445555}
+      Triangles: 784
+      FootprintRadius: 0.622
+      RecommendedRoadClearance: 3.62
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region03.ForestGrass
+      Name: ForestGrass
+      Category: GroundCover
+      ResourcePath: Environment/Tier01/Region03/ForestGrass
+      Prefab: {fileID: 425824918849430878, guid: 64a41367ef75a8a4d8ca5dec83587e1a, type: 3}
+      Bounds:
+        m_Center: {x: 0.046729982, y: 0.311305, z: 0.032846987}
+        m_Extent: {x: 0.362751, y: 0.311305, z: 0.417041}
+      Triangles: 24
+      FootprintRadius: 0.553
+      RecommendedRoadClearance: 3.55
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region03.MossCarpet
+      Name: MossCarpet
+      Category: GroundCover
+      ResourcePath: Environment/Tier01/Region03/MossCarpet
+      Prefab: {fileID: 7163340479289104613, guid: 15bd4a620fcd5e3499ed9c282199ae51, type: 3}
+      Bounds:
+        m_Center: {x: -0.009433985, y: 0.034999996, z: 0}
+        m_Extent: {x: 0.42109197, y: 0.07, z: 0.408862}
+      Triangles: 224
+      FootprintRadius: 0.587
+      RecommendedRoadClearance: 3.59
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region03.MossyBoulder
+      Name: MossyBoulder
+      Category: Rock
+      ResourcePath: Environment/Tier01/Region03/MossyBoulder
+      Prefab: {fileID: 5091834950377529390, guid: ec5b0851994df904a9aa1033134e1031, type: 3}
+      Bounds:
+        m_Center: {x: 0.020947456, y: 0.418745, z: -0.0077185035}
+        m_Extent: {x: 1.2547884, y: 0.418745, z: 0.8748525}
+      Triangles: 420
+      FootprintRadius: 1.53
+      RecommendedRoadClearance: 4.53
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region03.DarkRockCluster
+      Name: DarkRockCluster
+      Category: Rock
+      ResourcePath: Environment/Tier01/Region03/DarkRockCluster
+      Prefab: {fileID: 147133507453725495, guid: bbd3a69c81dfc4b459cb0b0bad9306cb, type: 3}
+      Bounds:
+        m_Center: {x: -0.008501053, y: 0.343195, z: 0.03862405}
+        m_Extent: {x: 1.5383611, y: 0.343195, z: 1.0665319}
+      Triangles: 280
+      FootprintRadius: 1.872
+      RecommendedRoadClearance: 4.87
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region03.RootFan
+      Name: RootFan
+      Category: Deadwood
+      ResourcePath: Environment/Tier01/Region03/RootFan
+      Prefab: {fileID: 8579482154041201520, guid: 2e3ce61162466844a8fb13ae04abcf71, type: 3}
+      Bounds:
+        m_Center: {x: 0.254793, y: 0.19024199, z: 0.061699986}
+        m_Extent: {x: 0.90479296, y: 0.201161, z: 0.595471}
+      Triangles: 136
+      FootprintRadius: 1.083
+      RecommendedRoadClearance: 4.08
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region03.FallenForestTrunk
+      Name: FallenForestTrunk
+      Category: Deadwood
+      ResourcePath: Environment/Tier01/Region03/FallenForestTrunk
+      Prefab: {fileID: 4274383294034138740, guid: 2dc8f6fe622306e44bac5b9d348e659c, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 0.226015, z: 0.080358}
+        m_Extent: {x: 1.4, y: 0.226015, z: 0.27732}
+      Triangles: 56
+      FootprintRadius: 1.427
+      RecommendedRoadClearance: 4.43
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region03.RaisedRootBank
+      Name: RaisedRootBank
+      Category: Terrain
+      ResourcePath: Environment/Tier01/Region03/RaisedRootBank
+      Prefab: {fileID: 2175316910096750519, guid: 2ee1d6550069b8f4bbd394149f1e5d7f, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 0.39, z: 0}
+        m_Extent: {x: 4, y: 0.39, z: 3}
+      Triangles: 160
+      FootprintRadius: 5
+      RecommendedRoadClearance: 8
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 1
+    - Id: env.tier01.region03.ForestSlope
+      Name: ForestSlope
+      Category: Terrain
+      ResourcePath: Environment/Tier01/Region03/ForestSlope
+      Prefab: {fileID: 6375506916913131335, guid: 8cc6b5e27a6ce9440a3e525356c9faf2, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 1.4, z: 0}
+        m_Extent: {x: 5, y: 1.4, z: 6}
+      Triangles: 160
+      FootprintRadius: 7.81
+      RecommendedRoadClearance: 10.81
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 1
+    - Id: env.tier01.region03.MistwoodRidge
+      Name: MistwoodRidge
+      Category: Terrain
+      ResourcePath: Environment/Tier01/Region03/MistwoodRidge
+      Prefab: {fileID: 3600689102964413908, guid: 22cb90fc8f70d614fa6849e3b0517e53, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 2.5, z: 0}
+        m_Extent: {x: 11, y: 2.5, z: 14}
+      Triangles: 160
+      FootprintRadius: 17.804
+      RecommendedRoadClearance: 20.8
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 1
+    - Id: env.tier01.region03.ForestFloorPatch
+      Name: ForestFloorPatch
+      Category: Terrain
+      ResourcePath: Environment/Tier01/Region03/ForestFloorPatch
+      Prefab: {fileID: 3861817400469008571, guid: e8fd19764f1c02a4780f41e5ba073415, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 0, z: 0}
+        m_Extent: {x: 3, y: 0, z: 3}
+      Triangles: 72
+      FootprintRadius: 4.243
+      RecommendedRoadClearance: 7.24
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 1
+    - Id: env.tier01.region03.LeafLitterPatch
+      Name: LeafLitterPatch
+      Category: Terrain
+      ResourcePath: Environment/Tier01/Region03/LeafLitterPatch
+      Prefab: {fileID: 1162487559913427786, guid: 5b9e7825ecf9a91478ee0f030133aed5, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 0.009000003, z: 0}
+        m_Extent: {x: 3, y: 0.045, z: 3}
+      Triangles: 216
+      FootprintRadius: 4.243
+      RecommendedRoadClearance: 7.24
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 1
+    - Id: env.tier01.region03.ForestTrailShoulder
+      Name: ForestTrailShoulder
+      Category: Terrain
+      ResourcePath: Environment/Tier01/Region03/ForestTrailShoulder
+      Prefab: {fileID: 8125987553619355636, guid: ad5140a1d2eabcb41a3942a52f8f9864, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 0, z: 0}
+        m_Extent: {x: 3, y: 0, z: 3}
+      Triangles: 72
+      FootprintRadius: 4.243
+      RecommendedRoadClearance: 7.24
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 1
+    - Id: env.tier01.region03.ForestClearingPatch
+      Name: ForestClearingPatch
+      Category: Terrain
+      ResourcePath: Environment/Tier01/Region03/ForestClearingPatch
+      Prefab: {fileID: 2458267292940780013, guid: ce465a6dac2488b45bf9beec040e194f, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 0, z: 0}
+        m_Extent: {x: 4, y: 0, z: 4}
+      Triangles: 72
+      FootprintRadius: 5.657
+      RecommendedRoadClearance: 8.66
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 1
+  - Number: 4
+    PaletteSize: 32
+    Name: Fern Hollow
+    SharedMaterial: {fileID: 2100000, guid: dbeff559ca996744a9f48e7c95367944, type: 2}
+    TrailMaterial: {fileID: 2100000, guid: 884945bd4055da340bf6ba46bb266aab, type: 2}
+    Models:
+    - Id: env.tier01.region04.OpenWoodlandPine
+      Name: OpenWoodlandPine
+      Category: Tree
+      ResourcePath: Environment/Tier01/Region04/OpenWoodlandPine
+      Prefab: {fileID: 257892897576071864, guid: c108a7774ab149d4099ffeec6664a0a8, type: 3}
+      Bounds:
+        m_Center: {x: 0.023682594, y: 2.991573, z: -0.005507469}
+        m_Extent: {x: 1.4218655, y: 3.008427, z: 1.5302185}
+      Triangles: 184
+      FootprintRadius: 2.089
+      RecommendedRoadClearance: 10.09
+      CastsShadows: 1
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region04.LeaningHollowPine
+      Name: LeaningHollowPine
+      Category: Tree
+      ResourcePath: Environment/Tier01/Region04/LeaningHollowPine
+      Prefab: {fileID: 481323963564392242, guid: c10e1490177cf6a458df379af182b1dd, type: 3}
+      Bounds:
+        m_Center: {x: -0.20199597, y: 2.5867598, z: 0.059437037}
+        m_Extent: {x: 1.144063, y: 2.61324, z: 1.1443701}
+      Triangles: 184
+      FootprintRadius: 1.618
+      RecommendedRoadClearance: 9.62
+      CastsShadows: 1
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region04.HollowPineSapling
+      Name: HollowPineSapling
+      Category: Tree
+      ResourcePath: Environment/Tier01/Region04/HollowPineSapling
+      Prefab: {fileID: 480617552799297340, guid: 40ea8dc684674564e828e6c55ecd096a, type: 3}
+      Bounds:
+        m_Center: {x: -0.030826986, y: 1.191573, z: -0.0021175146}
+        m_Extent: {x: 0.533139, y: 1.2084271, z: 0.5384145}
+      Triangles: 184
+      FootprintRadius: 0.758
+      RecommendedRoadClearance: 8.76
+      CastsShadows: 1
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region04.FernFan
+      Name: FernFan
+      Category: GroundCover
+      ResourcePath: Environment/Tier01/Region04/FernFan
+      Prefab: {fileID: 1058687383711350375, guid: 8755bdef213b39a46bd3bc169c1a31e6, type: 3}
+      Bounds:
+        m_Center: {x: -0.03535199, y: 0.4132985, z: 0}
+        m_Extent: {x: 0.681846, y: 0.3887425, z: 0.699318}
+      Triangles: 784
+      FootprintRadius: 0.977
+      RecommendedRoadClearance: 3.98
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region04.FernClump
+      Name: FernClump
+      Category: GroundCover
+      ResourcePath: Environment/Tier01/Region04/FernClump
+      Prefab: {fileID: 6881430158009387923, guid: 9ee50507f5e90a745a7fb0c09402aeb0, type: 3}
+      Bounds:
+        m_Center: {x: -0.04821801, y: 0.312842, z: 0}
+        m_Extent: {x: 0.92829597, y: 0.289748, z: 0.952175}
+      Triangles: 784
+      FootprintRadius: 1.33
+      RecommendedRoadClearance: 4.33
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region04.YoungFern
+      Name: YoungFern
+      Category: GroundCover
+      ResourcePath: Environment/Tier01/Region04/YoungFern
+      Prefab: {fileID: 6606214271676503883, guid: 9b1699efbd222f9448502de6368b1c8d, type: 3}
+      Bounds:
+        m_Center: {x: -0.016034007, y: 0.15740399, z: 0}
+        m_Extent: {x: 0.310883, y: 0.144904, z: 0.318836}
+      Triangles: 784
+      FootprintRadius: 0.445
+      RecommendedRoadClearance: 3.45
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region04.HollowBush
+      Name: HollowBush
+      Category: Shrub
+      ResourcePath: Environment/Tier01/Region04/HollowBush
+      Prefab: {fileID: 5731225387747160961, guid: 81b38ce420b160b4ab04084d1328cfba, type: 3}
+      Bounds:
+        m_Center: {x: 0.08099902, y: 0.48053703, z: -0.14653498}
+        m_Extent: {x: 0.780999, y: 0.50346303, z: 0.831317}
+      Triangles: 340
+      FootprintRadius: 1.141
+      RecommendedRoadClearance: 4.14
+      CastsShadows: 1
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region04.LowLeafBush
+      Name: LowLeafBush
+      Category: Shrub
+      ResourcePath: Environment/Tier01/Region04/LowLeafBush
+      Prefab: {fileID: 1462877579559729291, guid: 2d9df240c971afa469e249c134976498, type: 3}
+      Bounds:
+        m_Center: {x: 0.06942749, y: 0.2315015, z: -0.12560153}
+        m_Extent: {x: 0.6694275, y: 0.2604985, z: 0.71255755}
+      Triangles: 340
+      FootprintRadius: 0.978
+      RecommendedRoadClearance: 3.98
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region04.GroundIvy
+      Name: GroundIvy
+      Category: GroundCover
+      ResourcePath: Environment/Tier01/Region04/GroundIvy
+      Prefab: {fileID: 6359451915546823353, guid: a8c8ff6fc9cb32844bbb25e96fa14150, type: 3}
+      Bounds:
+        m_Center: {x: -0.025438488, y: 0.066942, z: 0}
+        m_Extent: {x: 0.4951825, y: 0.075992994, z: 0.50763}
+      Triangles: 784
+      FootprintRadius: 0.709
+      RecommendedRoadClearance: 3.71
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region04.HollowTallGrass
+      Name: HollowTallGrass
+      Category: GroundCover
+      ResourcePath: Environment/Tier01/Region04/HollowTallGrass
+      Prefab: {fileID: 3907820772765233821, guid: 2cb3ec05c055b2c419f03210a75111cc, type: 3}
+      Bounds:
+        m_Center: {x: -0.07763553, y: 0.39348, z: 0.020911992}
+        m_Extent: {x: 0.4077435, y: 0.39348, z: 0.34761602}
+      Triangles: 24
+      FootprintRadius: 0.536
+      RecommendedRoadClearance: 3.54
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region04.MossRockCluster
+      Name: MossRockCluster
+      Category: Rock
+      ResourcePath: Environment/Tier01/Region04/MossRockCluster
+      Prefab: {fileID: 4053405326879920230, guid: 9740a37767080ec4284179976df0348b, type: 3}
+      Bounds:
+        m_Center: {x: -0.0027155876, y: 0.35277, z: 0.0070800185}
+        m_Extent: {x: 1.1539736, y: 0.35277, z: 0.840034}
+      Triangles: 420
+      FootprintRadius: 1.427
+      RecommendedRoadClearance: 4.43
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region04.PaleRockOutcrop
+      Name: PaleRockOutcrop
+      Category: Rock
+      ResourcePath: Environment/Tier01/Region04/PaleRockOutcrop
+      Prefab: {fileID: 2688843956196893073, guid: e4609fd67e2c9b84fa61796d585837fc, type: 3}
+      Bounds:
+        m_Center: {x: 0.10583198, y: 0.721, z: 0.012724519}
+        m_Extent: {x: 1.840608, y: 0.721, z: 0.9745925}
+      Triangles: 56
+      FootprintRadius: 2.083
+      RecommendedRoadClearance: 5.08
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region04.RootedFallenLog
+      Name: RootedFallenLog
+      Category: Deadwood
+      ResourcePath: Environment/Tier01/Region04/RootedFallenLog
+      Prefab: {fileID: 497807031304688906, guid: d6643e5749e834540b5e1b4fdad645c8, type: 3}
+      Bounds:
+        m_Center: {x: 0.25478458, y: 0.1902885, z: 0.061737}
+        m_Extent: {x: 1.4047844, y: 0.2012725, z: 0.595487}
+      Triangles: 136
+      FootprintRadius: 1.526
+      RecommendedRoadClearance: 4.53
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region04.HollowRim
+      Name: HollowRim
+      Category: Terrain
+      ResourcePath: Environment/Tier01/Region04/HollowRim
+      Prefab: {fileID: 5329854959945331437, guid: 5a40f5aadefe9a140b7dbb6002583ee8, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 0.51, z: 0}
+        m_Extent: {x: 5, y: 0.51, z: 4}
+      Triangles: 160
+      FootprintRadius: 6.403
+      RecommendedRoadClearance: 9.4
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 1
+    - Id: env.tier01.region04.HollowBasin
+      Name: HollowBasin
+      Category: Terrain
+      ResourcePath: Environment/Tier01/Region04/HollowBasin
+      Prefab: {fileID: 7210005735624720469, guid: f93fc7cd91df5d741b53d3aeb48ab021, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: -0.5, z: 0}
+        m_Extent: {x: 5, y: 0.5, z: 5}
+      Triangles: 160
+      FootprintRadius: 7.071
+      RecommendedRoadClearance: 10.07
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 1
+    - Id: env.tier01.region04.WoodlandBank
+      Name: WoodlandBank
+      Category: Terrain
+      ResourcePath: Environment/Tier01/Region04/WoodlandBank
+      Prefab: {fileID: 6968155130538482745, guid: 112ddc44e1d3d4d468b4e29d1cca829b, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 0.33, z: 0}
+        m_Extent: {x: 4, y: 0.33, z: 3}
+      Triangles: 160
+      FootprintRadius: 5
+      RecommendedRoadClearance: 8
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 1
+    - Id: env.tier01.region04.LeafyGroundPatch
+      Name: LeafyGroundPatch
+      Category: Terrain
+      ResourcePath: Environment/Tier01/Region04/LeafyGroundPatch
+      Prefab: {fileID: 6229435547503527501, guid: eced890a0161d064f937490a2234c956, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 0, z: 0}
+        m_Extent: {x: 3, y: 0, z: 3}
+      Triangles: 72
+      FootprintRadius: 4.243
+      RecommendedRoadClearance: 7.24
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 1
+    - Id: env.tier01.region04.HollowLeafLitter
+      Name: HollowLeafLitter
+      Category: Terrain
+      ResourcePath: Environment/Tier01/Region04/HollowLeafLitter
+      Prefab: {fileID: 5764946983206256097, guid: 077dfd3dd735c8f4689b969beabd2938, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 0.009000003, z: 0}
+        m_Extent: {x: 3, y: 0.045, z: 3}
+      Triangles: 216
+      FootprintRadius: 4.243
+      RecommendedRoadClearance: 7.24
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 1
+    - Id: env.tier01.region04.FernTrailShoulder
+      Name: FernTrailShoulder
+      Category: Terrain
+      ResourcePath: Environment/Tier01/Region04/FernTrailShoulder
+      Prefab: {fileID: 410192768505463900, guid: 264bb1a8d45672b4790e8f3daaaff4ca, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 0, z: 0}
+        m_Extent: {x: 3, y: 0, z: 3}
+      Triangles: 72
+      FootprintRadius: 4.243
+      RecommendedRoadClearance: 7.24
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 1
+    - Id: env.tier01.region04.HollowClearingPatch
+      Name: HollowClearingPatch
+      Category: Terrain
+      ResourcePath: Environment/Tier01/Region04/HollowClearingPatch
+      Prefab: {fileID: 8375068100667465896, guid: 5693499127345a5498b6a99c711df8b7, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 0, z: 0}
+        m_Extent: {x: 4, y: 0, z: 4}
+      Triangles: 72
+      FootprintRadius: 5.657
+      RecommendedRoadClearance: 8.66
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 1
+  - Number: 5
+    PaletteSize: 32
+    Name: Cloudstep Mountains
+    SharedMaterial: {fileID: 2100000, guid: cc89aef7edd2cd24f9c83c44f31ed5b0, type: 2}
+    TrailMaterial: {fileID: 2100000, guid: 84cbb9b669a252345a1718f591ec6181, type: 2}
+    Models:
+    - Id: env.tier01.region05.AlpinePine
+      Name: AlpinePine
+      Category: Tree
+      ResourcePath: Environment/Tier01/Region05/AlpinePine
+      Prefab: {fileID: 4465282054772758038, guid: 5b6715cb06251ad40bc30318fdbbc81e, type: 3}
+      Bounds:
+        m_Center: {x: -0.097379506, y: 2.741573, z: 0.023298979}
+        m_Extent: {x: 0.9941935, y: 2.758427, z: 0.947429}
+      Triangles: 184
+      FootprintRadius: 1.373
+      RecommendedRoadClearance: 9.37
+      CastsShadows: 1
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region05.StuntedPine
+      Name: StuntedPine
+      Category: Tree
+      ResourcePath: Environment/Tier01/Region05/StuntedPine
+      Prefab: {fileID: 4590457667887608566, guid: 0a50129c13ff9ae4c935eb59d489c73c, type: 3}
+      Bounds:
+        m_Center: {x: -0.15982401, y: 1.241573, z: -0.0067549944}
+        m_Extent: {x: 0.588804, y: 1.258427, z: 0.572344}
+      Triangles: 184
+      FootprintRadius: 0.821
+      RecommendedRoadClearance: 8.82
+      CastsShadows: 1
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region05.MountainWindPine
+      Name: MountainWindPine
+      Category: Tree
+      ResourcePath: Environment/Tier01/Region05/MountainWindPine
+      Prefab: {fileID: 5449588703972692744, guid: bbc55b2e440694b4297c64243fac8743, type: 3}
+      Bounds:
+        m_Center: {x: -0.31397748, y: 2.083689, z: -0.03555}
+        m_Extent: {x: 0.7430055, y: 2.1163108, z: 0.698892}
+      Triangles: 184
+      FootprintRadius: 1.02
+      RecommendedRoadClearance: 9.02
+      CastsShadows: 1
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region05.AlpineShrub
+      Name: AlpineShrub
+      Category: Shrub
+      ResourcePath: Environment/Tier01/Region05/AlpineShrub
+      Prefab: {fileID: 1513346310457706044, guid: 48a358b310821714d9a7ba1e01c1d83c, type: 3}
+      Bounds:
+        m_Center: {x: 0.06942749, y: 0.2106225, z: -0.12560153}
+        m_Extent: {x: 0.6694275, y: 0.2403775, z: 0.71255755}
+      Triangles: 340
+      FootprintRadius: 0.978
+      RecommendedRoadClearance: 3.98
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region05.CushionPlant
+      Name: CushionPlant
+      Category: Shrub
+      ResourcePath: Environment/Tier01/Region05/CushionPlant
+      Prefab: {fileID: 5512108528249398019, guid: e16df8effd7615244aaa3d60bd3c8c91, type: 3}
+      Bounds:
+        m_Center: {x: 0.0578565, y: 0.0866715, z: -0.10466802}
+        m_Extent: {x: 0.5578565, y: 0.1183285, z: 0.593798}
+      Triangles: 340
+      FootprintRadius: 0.815
+      RecommendedRoadClearance: 3.81
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region05.MountainGrass
+      Name: MountainGrass
+      Category: GroundCover
+      ResourcePath: Environment/Tier01/Region05/MountainGrass
+      Prefab: {fileID: 6973091045455934365, guid: 1e248eafc9eb0954282cacf664fa372d, type: 3}
+      Bounds:
+        m_Center: {x: -0.1115545, y: 0.1742375, z: 0.036808014}
+        m_Extent: {x: 0.4170875, y: 0.1742375, z: 0.28864002}
+      Triangles: 24
+      FootprintRadius: 0.507
+      RecommendedRoadClearance: 3.51
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region05.AlpineDryGrass
+      Name: AlpineDryGrass
+      Category: GroundCover
+      ResourcePath: Environment/Tier01/Region05/AlpineDryGrass
+      Prefab: {fileID: 1233309877456179257, guid: 0780a42769109454a8b894df7d283b7b, type: 3}
+      Bounds:
+        m_Center: {x: -0.010291517, y: 0.2446815, z: -0.00880152}
+        m_Extent: {x: 0.4082415, y: 0.2446815, z: 0.29631352}
+      Triangles: 24
+      FootprintRadius: 0.504
+      RecommendedRoadClearance: 3.5
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region05.AlpineWildflowers
+      Name: AlpineWildflowers
+      Category: GroundCover
+      ResourcePath: Environment/Tier01/Region05/AlpineWildflowers
+      Prefab: {fileID: 3637664305536347001, guid: 48324ebdb84741b469c0a173e84c6a29, type: 3}
+      Bounds:
+        m_Center: {x: -0.062123, y: 0.1361285, z: -0.019111007}
+        m_Extent: {x: 0.38615, y: 0.1361285, z: 0.371598}
+      Triangles: 504
+      FootprintRadius: 0.536
+      RecommendedRoadClearance: 3.54
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region05.MountainBoulder
+      Name: MountainBoulder
+      Category: Rock
+      ResourcePath: Environment/Tier01/Region05/MountainBoulder
+      Prefab: {fileID: 3450129362409555807, guid: ff87d1728fe13044286405bc201ebcfe, type: 3}
+      Bounds:
+        m_Center: {x: 0.03635955, y: 0.7725, z: -0.045218468}
+        m_Extent: {x: 1.3665144, y: 0.7725, z: 1.0245395}
+      Triangles: 56
+      FootprintRadius: 1.708
+      RecommendedRoadClearance: 4.71
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region05.ScreeCluster
+      Name: ScreeCluster
+      Category: Rock
+      ResourcePath: Environment/Tier01/Region05/ScreeCluster
+      Prefab: {fileID: 6870447146877991927, guid: 36518f36172c0564090f69921729863f, type: 3}
+      Bounds:
+        m_Center: {x: 0.02529645, y: 0.2567455, z: 0.020135403}
+        m_Extent: {x: 1.7309655, y: 0.2567455, z: 1.2774785}
+      Triangles: 280
+      FootprintRadius: 2.151
+      RecommendedRoadClearance: 5.15
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region05.RockSpire
+      Name: RockSpire
+      Category: Rock
+      ResourcePath: Environment/Tier01/Region05/RockSpire
+      Prefab: {fileID: 2251533267525407037, guid: 12710b8c3c1612541a5d5294a67a7747, type: 3}
+      Bounds:
+        m_Center: {x: -0.006282568, y: 2.06, z: -0.043975472}
+        m_Extent: {x: 1.0148625, y: 2.06, z: 0.83234346}
+      Triangles: 56
+      FootprintRadius: 1.313
+      RecommendedRoadClearance: 4.31
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region05.LayeredRockLedge
+      Name: LayeredRockLedge
+      Category: Rock
+      ResourcePath: Environment/Tier01/Region05/LayeredRockLedge
+      Prefab: {fileID: 4084491821108208010, guid: 2dd8bac2c0527fb47a4e74b1159c61f2, type: 3}
+      Bounds:
+        m_Center: {x: 0.16947341, y: 0.618, z: -0.06005454}
+        m_Extent: {x: 2.8008225, y: 0.618, z: 1.8321675}
+      Triangles: 56
+      FootprintRadius: 3.347
+      RecommendedRoadClearance: 6.35
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region05.MountainCliffFace
+      Name: MountainCliffFace
+      Category: Terrain
+      ResourcePath: Environment/Tier01/Region05/MountainCliffFace
+      Prefab: {fileID: 8840024980872256401, guid: 7a012c09443a8eb41b235ed0d3a3f708, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 3.5, z: 0}
+        m_Extent: {x: 5, y: 3.5, z: 7}
+      Triangles: 160
+      FootprintRadius: 8.602
+      RecommendedRoadClearance: 11.6
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 1
+    - Id: env.tier01.region05.ScreeSlope
+      Name: ScreeSlope
+      Category: Terrain
+      ResourcePath: Environment/Tier01/Region05/ScreeSlope
+      Prefab: {fileID: 6717665113604215996, guid: 6d82416c0c4cebb41a3ce9e589d10625, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 2, z: 0}
+        m_Extent: {x: 5, y: 2, z: 6}
+      Triangles: 160
+      FootprintRadius: 7.81
+      RecommendedRoadClearance: 10.81
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 1
+    - Id: env.tier01.region05.MountainRidgePeak
+      Name: MountainRidgePeak
+      Category: Terrain
+      ResourcePath: Environment/Tier01/Region05/MountainRidgePeak
+      Prefab: {fileID: 7515415078349400467, guid: 8c54fa12fb3d20d459ec8665e2f87f59, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 6, z: 0}
+        m_Extent: {x: 9, y: 6, z: 12}
+      Triangles: 160
+      FootprintRadius: 15
+      RecommendedRoadClearance: 18
+      CastsShadows: 0
+      DistantOnly: 1
+      TerrainReplacement: 1
+    - Id: env.tier01.region05.DistantMountainRidge
+      Name: DistantMountainRidge
+      Category: Terrain
+      ResourcePath: Environment/Tier01/Region05/DistantMountainRidge
+      Prefab: {fileID: 4346789741856422011, guid: 01b7b5a937a01b34fa740951a922ef99, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 9, z: 0}
+        m_Extent: {x: 20, y: 9, z: 24}
+      Triangles: 160
+      FootprintRadius: 31.241
+      RecommendedRoadClearance: 34.24
+      CastsShadows: 0
+      DistantOnly: 1
+      TerrainReplacement: 1
+    - Id: env.tier01.region05.MountainGroundPatch
+      Name: MountainGroundPatch
+      Category: Terrain
+      ResourcePath: Environment/Tier01/Region05/MountainGroundPatch
+      Prefab: {fileID: 2038663904719012178, guid: 3e1c701a75d708c49bfdd564c496eb31, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 0, z: 0}
+        m_Extent: {x: 3, y: 0, z: 3}
+      Triangles: 72
+      FootprintRadius: 4.243
+      RecommendedRoadClearance: 7.24
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 1
+    - Id: env.tier01.region05.RockyTrailShoulder
+      Name: RockyTrailShoulder
+      Category: Terrain
+      ResourcePath: Environment/Tier01/Region05/RockyTrailShoulder
+      Prefab: {fileID: 8108646672771000785, guid: 7e8ea5cc69450ae48b5b724d47046eb7, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 0, z: 0}
+        m_Extent: {x: 3, y: 0, z: 3}
+      Triangles: 72
+      FootprintRadius: 4.243
+      RecommendedRoadClearance: 7.24
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 1
+    - Id: env.tier01.region05.SwitchbackBank
+      Name: SwitchbackBank
+      Category: Terrain
+      ResourcePath: Environment/Tier01/Region05/SwitchbackBank
+      Prefab: {fileID: 3186522331421484898, guid: 2a7f3d11c3831bf41b4bfb2ff3eb6c3c, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 0.75, z: 0}
+        m_Extent: {x: 4, y: 0.75, z: 4}
+      Triangles: 160
+      FootprintRadius: 5.657
+      RecommendedRoadClearance: 8.66
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 1
+    - Id: env.tier01.region05.MountainClearingPatch
+      Name: MountainClearingPatch
+      Category: Terrain
+      ResourcePath: Environment/Tier01/Region05/MountainClearingPatch
+      Prefab: {fileID: 8712931605568257092, guid: 2bb49ef748fa9ea4cb63eee538183fb6, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 0, z: 0}
+        m_Extent: {x: 4, y: 0, z: 4}
+      Triangles: 72
+      FootprintRadius: 5.657
+      RecommendedRoadClearance: 8.66
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 1
+  - Number: 6
+    PaletteSize: 32
+    Name: Reedwater Delta
+    SharedMaterial: {fileID: 2100000, guid: 8a6424426bc75ea48bdab55968e9cf0f, type: 2}
+    TrailMaterial: {fileID: 2100000, guid: ea1eef4b77deb99459ee17adad3a4e4a, type: 2}
+    Models:
+    - Id: env.tier01.region06.DeltaPine
+      Name: DeltaPine
+      Category: Tree
+      ResourcePath: Environment/Tier01/Region06/DeltaPine
+      Prefab: {fileID: 9136633760560547021, guid: b96e06638ef62df4588720e5b27ccf39, type: 3}
+      Bounds:
+        m_Center: {x: -0.04151392, y: 2.6415732, z: -0.058367968}
+        m_Extent: {x: 1.295896, y: 2.658427, z: 1.251881}
+      Triangles: 184
+      FootprintRadius: 1.802
+      RecommendedRoadClearance: 9.8
+      CastsShadows: 1
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region06.DeltaPineSapling
+      Name: DeltaPineSapling
+      Category: Tree
+      ResourcePath: Environment/Tier01/Region06/DeltaPineSapling
+      Prefab: {fileID: 6008021180644159328, guid: 8bcbd47ad95332c4a93a26c41496de22, type: 3}
+      Bounds:
+        m_Center: {x: 0.011767507, y: 1.141573, z: -0.004845977}
+        m_Extent: {x: 0.4871085, y: 1.158427, z: 0.52817404}
+      Triangles: 184
+      FootprintRadius: 0.719
+      RecommendedRoadClearance: 8.72
+      CastsShadows: 1
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region06.DeltaShrub
+      Name: DeltaShrub
+      Category: Shrub
+      ResourcePath: Environment/Tier01/Region06/DeltaShrub
+      Prefab: {fileID: 6211305183214389165, guid: 0e94c44890a1ac546a66fec1c4500993, type: 3}
+      Bounds:
+        m_Center: {x: 0.08678448, y: 0.35540548, z: -0.15700197}
+        m_Extent: {x: 0.8367845, y: 0.3825945, z: 0.890697}
+      Triangles: 340
+      FootprintRadius: 1.222
+      RecommendedRoadClearance: 4.22
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region06.LowMarshBush
+      Name: LowMarshBush
+      Category: Shrub
+      ResourcePath: Environment/Tier01/Region06/LowMarshBush
+      Prefab: {fileID: 5623916145667983216, guid: 85fc5b05a379b0745a3d22b0d1a2f86e, type: 3}
+      Bounds:
+        m_Center: {x: 0.06942749, y: 0.2106225, z: -0.12560153}
+        m_Extent: {x: 0.6694275, y: 0.2403775, z: 0.71255755}
+      Triangles: 340
+      FootprintRadius: 0.978
+      RecommendedRoadClearance: 3.98
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region06.TallReedClump
+      Name: TallReedClump
+      Category: GroundCover
+      ResourcePath: Environment/Tier01/Region06/TallReedClump
+      Prefab: {fileID: 6006485517933815443, guid: 36056cf14a1846e42bb30103e514865b, type: 3}
+      Bounds:
+        m_Center: {x: 0.059554458, y: 1.0188614, z: 0.026073009}
+        m_Extent: {x: 0.5617465, y: 1.0196575, z: 0.43285}
+      Triangles: 468
+      FootprintRadius: 0.709
+      RecommendedRoadClearance: 3.71
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region06.ShortReedClump
+      Name: ShortReedClump
+      Category: GroundCover
+      ResourcePath: Environment/Tier01/Region06/ShortReedClump
+      Prefab: {fileID: 2736442746189686722, guid: fd04c3855668ec345afdbe2dbdfb3622, type: 3}
+      Bounds:
+        m_Center: {x: 0.0897125, y: 0.615795, z: 0.031681}
+        m_Extent: {x: 0.5382215, y: 0.617221, z: 0.417104}
+      Triangles: 468
+      FootprintRadius: 0.681
+      RecommendedRoadClearance: 3.68
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region06.BentReedClump
+      Name: BentReedClump
+      Category: GroundCover
+      ResourcePath: Environment/Tier01/Region06/BentReedClump
+      Prefab: {fileID: 8382391781771405646, guid: d628cf446d6ee29469b68ae937e53195, type: 3}
+      Bounds:
+        m_Center: {x: -0.13609004, y: 0.847673, z: 0.0038844943}
+        m_Extent: {x: 0.71409404, y: 0.85209304, z: 0.39205152}
+      Triangles: 468
+      FootprintRadius: 0.815
+      RecommendedRoadClearance: 3.81
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region06.MarshGrass
+      Name: MarshGrass
+      Category: GroundCover
+      ResourcePath: Environment/Tier01/Region06/MarshGrass
+      Prefab: {fileID: 3254928412221526323, guid: 823a122e2db3a5241b7cb1561dcb6c5f, type: 3}
+      Bounds:
+        m_Center: {x: -0.138185, y: 0.399821, z: 0.06600553}
+        m_Extent: {x: 0.341006, y: 0.399821, z: 0.36665452}
+      Triangles: 24
+      FootprintRadius: 0.501
+      RecommendedRoadClearance: 3.5
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region06.SedgeTuft
+      Name: SedgeTuft
+      Category: GroundCover
+      ResourcePath: Environment/Tier01/Region06/SedgeTuft
+      Prefab: {fileID: 2609329352108585145, guid: 5ea0e439bfb08b043bd7466b9f56ef31, type: 3}
+      Bounds:
+        m_Center: {x: -0.052874, y: 0.52664, z: 0.023553997}
+        m_Extent: {x: 0.296435, y: 0.52664, z: 0.284022}
+      Triangles: 24
+      FootprintRadius: 0.411
+      RecommendedRoadClearance: 3.41
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region06.DeltaDriftwood
+      Name: DeltaDriftwood
+      Category: Deadwood
+      ResourcePath: Environment/Tier01/Region06/DeltaDriftwood
+      Prefab: {fileID: 4657182956291669320, guid: 96e7784549e338942b940b5599ed6bd1, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 0.191015, z: 0.1148265}
+        m_Extent: {x: 1, y: 0.191015, z: 0.2428515}
+      Triangles: 56
+      FootprintRadius: 1.029
+      RecommendedRoadClearance: 4.03
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region06.DeltaStoneCluster
+      Name: DeltaStoneCluster
+      Category: Rock
+      ResourcePath: Environment/Tier01/Region06/DeltaStoneCluster
+      Prefab: {fileID: 5026450823472387034, guid: 73abfdc062c14d2489fd983ebf3b5676, type: 3}
+      Bounds:
+        m_Center: {x: 0.018090963, y: 0.174605, z: 0.009271979}
+        m_Extent: {x: 1.152146, y: 0.174605, z: 0.824903}
+      Triangles: 280
+      FootprintRadius: 1.417
+      RecommendedRoadClearance: 4.42
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 0
+    - Id: env.tier01.region06.MudBank
+      Name: MudBank
+      Category: Terrain
+      ResourcePath: Environment/Tier01/Region06/MudBank
+      Prefab: {fileID: 970866177952749160, guid: 98d92267688c04f4c8b460a152df96f5, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 0.195, z: 0}
+        m_Extent: {x: 4, y: 0.195, z: 4}
+      Triangles: 160
+      FootprintRadius: 5.657
+      RecommendedRoadClearance: 8.66
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 1
+    - Id: env.tier01.region06.LowMudIsland
+      Name: LowMudIsland
+      Category: Terrain
+      ResourcePath: Environment/Tier01/Region06/LowMudIsland
+      Prefab: {fileID: 1476730141410418939, guid: a2ba9efa2764bed44a2cde0bce605b7d, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 0.225, z: 0}
+        m_Extent: {x: 5, y: 0.225, z: 4}
+      Triangles: 160
+      FootprintRadius: 6.403
+      RecommendedRoadClearance: 9.4
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 1
+    - Id: env.tier01.region06.RiverBankCut
+      Name: RiverBankCut
+      Category: Terrain
+      ResourcePath: Environment/Tier01/Region06/RiverBankCut
+      Prefab: {fileID: 3850399908899425494, guid: 71655f12e51b0754699c44085f0de5e9, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 0.55, z: 0}
+        m_Extent: {x: 3, y: 0.55, z: 5}
+      Triangles: 160
+      FootprintRadius: 5.831
+      RecommendedRoadClearance: 8.83
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 1
+    - Id: env.tier01.region06.DeltaGroundPatch
+      Name: DeltaGroundPatch
+      Category: Terrain
+      ResourcePath: Environment/Tier01/Region06/DeltaGroundPatch
+      Prefab: {fileID: 2038165304544704212, guid: 983542320dfd79c498be87a0cd8e835d, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 0, z: 0}
+        m_Extent: {x: 3, y: 0, z: 3}
+      Triangles: 72
+      FootprintRadius: 4.243
+      RecommendedRoadClearance: 7.24
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 1
+    - Id: env.tier01.region06.SandbankPatch
+      Name: SandbankPatch
+      Category: Terrain
+      ResourcePath: Environment/Tier01/Region06/SandbankPatch
+      Prefab: {fileID: 7804991317557389451, guid: 912d90961116fe046ba4a4310ffefa50, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 0, z: 0}
+        m_Extent: {x: 3, y: 0, z: 3}
+      Triangles: 72
+      FootprintRadius: 4.243
+      RecommendedRoadClearance: 7.24
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 1
+    - Id: env.tier01.region06.SandyTrailShoulder
+      Name: SandyTrailShoulder
+      Category: Terrain
+      ResourcePath: Environment/Tier01/Region06/SandyTrailShoulder
+      Prefab: {fileID: 974067951037427942, guid: df76d8e48716a9b4eb620c5aeb12595d, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 0, z: 0}
+        m_Extent: {x: 3, y: 0, z: 3}
+      Triangles: 72
+      FootprintRadius: 4.243
+      RecommendedRoadClearance: 7.24
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 1
+    - Id: env.tier01.region06.ShallowWaterTile
+      Name: ShallowWaterTile
+      Category: Water
+      ResourcePath: Environment/Tier01/Region06/ShallowWaterTile
+      Prefab: {fileID: 6718066132378540093, guid: 272adcab8531cba4bb94d9cf3b491242, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 0, z: 0}
+        m_Extent: {x: 4, y: 0, z: 4}
+      Triangles: 72
+      FootprintRadius: 5.657
+      RecommendedRoadClearance: 8.66
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 1
+    - Id: env.tier01.region06.RiverWaterTile
+      Name: RiverWaterTile
+      Category: Water
+      ResourcePath: Environment/Tier01/Region06/RiverWaterTile
+      Prefab: {fileID: 8359800100773937859, guid: 0111a5252af1b564e9ac5d6fee6fafb3, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 0, z: 0}
+        m_Extent: {x: 4, y: 0, z: 8}
+      Triangles: 72
+      FootprintRadius: 8.944
+      RecommendedRoadClearance: 11.94
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 1
+    - Id: env.tier01.region06.DeltaClearingPatch
+      Name: DeltaClearingPatch
+      Category: Terrain
+      ResourcePath: Environment/Tier01/Region06/DeltaClearingPatch
+      Prefab: {fileID: 272156421537641861, guid: 19cc379f9e0bf7540a2f7a8d0e42d3bf, type: 3}
+      Bounds:
+        m_Center: {x: 0, y: 0, z: 0}
+        m_Extent: {x: 4, y: 0, z: 4}
+      Triangles: 72
+      FootprintRadius: 5.657
+      RecommendedRoadClearance: 8.66
+      CastsShadows: 0
+      DistantOnly: 0
+      TerrainReplacement: 1

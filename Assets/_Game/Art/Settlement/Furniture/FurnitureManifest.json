@@ -1,0 +1,1093 @@
+{
+  "Revision": 4,
+  "Batch": "A-D complete (levels 1-8, 48 types)",
+  "Palette": "Assets/_Game/Art/Settlement/Houses/HousePalette.png",
+  "GridMetres": 0.5,
+  "Pivot": "front-left footprint corner; body in x [-width, 0], z [-depth, 0]",
+  "Furniture": [
+    {
+      "Id": "furniture.l1.worktable",
+      "Name": "Worktable",
+      "Asset": "FurnitureWorktable",
+      "Level": 1,
+      "Category": "CraftQuality",
+      "FootprintWidth": 2,
+      "FootprintDepth": 1,
+      "PriceCash": 3000,
+      "IsChest": false,
+      "Triangles": 264,
+      "BoundsMin": [
+        -0.97,
+        0.0,
+        -0.45999999999999996
+      ],
+      "BoundsMax": [
+        -0.030000000000000027,
+        0.925,
+        -0.015000000000000013
+      ]
+    },
+    {
+      "Id": "furniture.l1.bedroll",
+      "Name": "Bedroll",
+      "Asset": "FurnitureBedroll",
+      "Level": 1,
+      "Category": "FoodRecovery",
+      "FootprintWidth": 2,
+      "FootprintDepth": 1,
+      "PriceCash": 3000,
+      "IsChest": false,
+      "Triangles": 232,
+      "BoundsMin": [
+        -0.98,
+        0.0,
+        -0.475
+      ],
+      "BoundsMax": [
+        -0.020000000000000018,
+        0.27,
+        -0.024999999999999994
+      ]
+    },
+    {
+      "Id": "furniture.l1.market_sign",
+      "Name": "Market sign",
+      "Asset": "FurnitureMarketSign",
+      "Level": 1,
+      "Category": "SalePrice",
+      "FootprintWidth": 1,
+      "FootprintDepth": 1,
+      "PriceCash": 3000,
+      "IsChest": false,
+      "Triangles": 188,
+      "BoundsMin": [
+        -0.48,
+        0.008480224536594805,
+        -0.4022229876633906
+      ],
+      "BoundsMax": [
+        -0.01999999999999999,
+        1.028291410736022,
+        -0.0977770123366094
+      ]
+    },
+    {
+      "Id": "furniture.l1.boot_bench",
+      "Name": "Boot bench",
+      "Asset": "FurnitureBootBench",
+      "Level": 1,
+      "Category": "BootsLife",
+      "FootprintWidth": 2,
+      "FootprintDepth": 1,
+      "PriceCash": 3000,
+      "IsChest": false,
+      "Triangles": 236,
+      "BoundsMin": [
+        -0.97,
+        0.0,
+        -0.45
+      ],
+      "BoundsMax": [
+        -0.030000000000000027,
+        0.787,
+        -0.04999999999999999
+      ]
+    },
+    {
+      "Id": "furniture.l1.sewing_basket",
+      "Name": "Sewing basket",
+      "Asset": "FurnitureSewingBasket",
+      "Level": 1,
+      "Category": "ShirtLife",
+      "FootprintWidth": 1,
+      "FootprintDepth": 1,
+      "PriceCash": 3000,
+      "IsChest": false,
+      "Triangles": 456,
+      "BoundsMin": [
+        -0.4509437983212049,
+        0.0,
+        -0.45094379832120485
+      ],
+      "BoundsMax": [
+        -0.049056201678795125,
+        0.43998558243636476,
+        -0.049056201678795125
+      ]
+    },
+    {
+      "Id": "furniture.l1.hat_peg",
+      "Name": "Hat peg",
+      "Asset": "FurnitureHatPeg",
+      "Level": 1,
+      "Category": "HatLife",
+      "FootprintWidth": 1,
+      "FootprintDepth": 1,
+      "PriceCash": 3000,
+      "IsChest": false,
+      "Triangles": 356,
+      "BoundsMin": [
+        -0.4733101862871508,
+        0.010000000000000002,
+        -0.47126339945784235
+      ],
+      "BoundsMax": [
+        -0.021717204236007814,
+        1.6700000000000002,
+        -0.023845862538488583
+      ]
+    },
+    {
+      "Id": "furniture.l2.trouser_rack",
+      "Name": "Trouser rack",
+      "Asset": "FurnitureTrouserRack",
+      "Level": 2,
+      "Category": "PantsLife",
+      "FootprintWidth": 2,
+      "FootprintDepth": 1,
+      "PriceCash": 6000,
+      "IsChest": false,
+      "Triangles": 240,
+      "BoundsMin": [
+        -0.98,
+        0.0,
+        -0.47
+      ],
+      "BoundsMax": [
+        -0.019999999999999997,
+        1.15,
+        -0.03
+      ]
+    },
+    {
+      "Id": "furniture.l2.chopping_block",
+      "Name": "Chopping block",
+      "Asset": "FurnitureChoppingBlock",
+      "Level": 2,
+      "Category": "AxeLife",
+      "FootprintWidth": 1,
+      "FootprintDepth": 1,
+      "PriceCash": 6000,
+      "IsChest": false,
+      "Triangles": 220,
+      "BoundsMin": [
+        -0.4371134730723195,
+        0.0,
+        -0.44
+      ],
+      "BoundsMax": [
+        -0.0008740959706477758,
+        0.7894347042035113,
+        -0.07145840205067738
+      ]
+    },
+    {
+      "Id": "furniture.l2.sling_stand",
+      "Name": "Sling stand",
+      "Asset": "FurnitureSlingStand",
+      "Level": 2,
+      "Category": "HuntingToolLife",
+      "FootprintWidth": 1,
+      "FootprintDepth": 1,
+      "PriceCash": 6000,
+      "IsChest": false,
+      "Triangles": 264,
+      "BoundsMin": [
+        -0.42000000000000004,
+        0.0,
+        -0.42000000000000004
+      ],
+      "BoundsMax": [
+        -0.07999999999999999,
+        1.05,
+        -0.07999999999999999
+      ]
+    },
+    {
+      "Id": "furniture.l2.rod_rack",
+      "Name": "Rod rack",
+      "Asset": "FurnitureRodRack",
+      "Level": 2,
+      "Category": "RodLife",
+      "FootprintWidth": 2,
+      "FootprintDepth": 1,
+      "PriceCash": 6000,
+      "IsChest": false,
+      "Triangles": 312,
+      "BoundsMin": [
+        -0.96,
+        0.0,
+        -0.44500000000000006
+      ],
+      "BoundsMax": [
+        -0.03999999999999998,
+        1.750358639036674,
+        -0.040000000000000015
+      ]
+    },
+    {
+      "Id": "furniture.l2.bag_frame",
+      "Name": "Bag frame",
+      "Asset": "FurnitureBagFrame",
+      "Level": 2,
+      "Category": "BackpackLife",
+      "FootprintWidth": 1,
+      "FootprintDepth": 1,
+      "PriceCash": 6000,
+      "IsChest": false,
+      "Triangles": 156,
+      "BoundsMin": [
+        -0.44,
+        0.0,
+        -0.4
+      ],
+      "BoundsMax": [
+        -0.06,
+        1.2,
+        -0.1
+      ]
+    },
+    {
+      "Id": "furniture.l2.pine_chest",
+      "Name": "Pine chest",
+      "Asset": "FurniturePineChest",
+      "Level": 2,
+      "Category": "Storage",
+      "FootprintWidth": 2,
+      "FootprintDepth": 1,
+      "PriceCash": 6000,
+      "IsChest": true,
+      "Triangles": 276,
+      "BoundsMin": [
+        -0.98,
+        0.0,
+        -0.48
+      ],
+      "BoundsMax": [
+        -0.01999999999999998,
+        0.5700000000000001,
+        -0.01799999999999996
+      ],
+      "LidAsset": "FurniturePineChestLid",
+      "LidHinge": [
+        -0.5,
+        0.46,
+        -0.47
+      ],
+      "LidTriangles": 60
+    },
+    {
+      "Id": "furniture.l3.loom",
+      "Name": "Loom",
+      "Asset": "FurnitureLoom",
+      "Level": 3,
+      "Category": "CraftQuality",
+      "FootprintWidth": 2,
+      "FootprintDepth": 2,
+      "PriceCash": 20000,
+      "IsChest": false,
+      "Triangles": 444,
+      "BoundsMin": [
+        -0.9550000000000001,
+        0.0,
+        -0.95
+      ],
+      "BoundsMax": [
+        -0.04499999999999996,
+        1.45,
+        -0.04999999999999999
+      ]
+    },
+    {
+      "Id": "furniture.l3.clay_cookstove",
+      "Name": "Clay cookstove",
+      "Asset": "FurnitureClayCookstove",
+      "Level": 3,
+      "Category": "FoodRecovery",
+      "FootprintWidth": 2,
+      "FootprintDepth": 1,
+      "PriceCash": 20000,
+      "IsChest": false,
+      "Triangles": 252,
+      "BoundsMin": [
+        -0.98,
+        0.0,
+        -0.48
+      ],
+      "BoundsMax": [
+        -0.020000000000000018,
+        1.9,
+        -0.01999999999999999
+      ]
+    },
+    {
+      "Id": "furniture.l3.display_counter",
+      "Name": "Display counter",
+      "Asset": "FurnitureDisplayCounter",
+      "Level": 3,
+      "Category": "SalePrice",
+      "FootprintWidth": 3,
+      "FootprintDepth": 1,
+      "PriceCash": 20000,
+      "IsChest": false,
+      "Triangles": 332,
+      "BoundsMin": [
+        -1.48,
+        0.0,
+        -0.48
+      ],
+      "BoundsMax": [
+        -0.020000000000000018,
+        1.1500000000000001,
+        -0.01999999999999999
+      ]
+    },
+    {
+      "Id": "furniture.l3.sofa",
+      "Name": "Sofa",
+      "Asset": "FurnitureSofa",
+      "Level": 3,
+      "Category": "BootsLife",
+      "FootprintWidth": 3,
+      "FootprintDepth": 1,
+      "PriceCash": 20000,
+      "IsChest": false,
+      "Triangles": 228,
+      "BoundsMin": [
+        -1.4600000000000002,
+        0.0,
+        -0.48
+      ],
+      "BoundsMax": [
+        -0.050000000000000044,
+        0.8,
+        -0.03
+      ]
+    },
+    {
+      "Id": "furniture.l3.sewing_desk",
+      "Name": "Sewing desk",
+      "Asset": "FurnitureSewingDesk",
+      "Level": 3,
+      "Category": "ShirtLife",
+      "FootprintWidth": 2,
+      "FootprintDepth": 1,
+      "PriceCash": 20000,
+      "IsChest": false,
+      "Triangles": 396,
+      "BoundsMin": [
+        -0.97,
+        0.0,
+        -0.45999999999999996
+      ],
+      "BoundsMax": [
+        -0.030000000000000027,
+        0.96,
+        -0.027499999999999997
+      ]
+    },
+    {
+      "Id": "furniture.l3.hat_cabinet",
+      "Name": "Hat cabinet",
+      "Asset": "FurnitureHatCabinet",
+      "Level": 3,
+      "Category": "HatLife",
+      "FootprintWidth": 2,
+      "FootprintDepth": 1,
+      "PriceCash": 20000,
+      "IsChest": false,
+      "Triangles": 336,
+      "BoundsMin": [
+        -0.98,
+        0.0,
+        -0.47
+      ],
+      "BoundsMax": [
+        -0.020000000000000018,
+        1.42,
+        -0.011999999999999988
+      ]
+    },
+    {
+      "Id": "furniture.l4.tailors_stool",
+      "Name": "Tailor's stool",
+      "Asset": "FurnitureTailorsStool",
+      "Level": 4,
+      "Category": "PantsLife",
+      "FootprintWidth": 1,
+      "FootprintDepth": 1,
+      "PriceCash": 50000,
+      "IsChest": false,
+      "Triangles": 284,
+      "BoundsMin": [
+        -0.4190687222126065,
+        0.009832314961592863,
+        -0.41628509212474696
+      ],
+      "BoundsMax": [
+        -0.08093127778739354,
+        0.64,
+        -0.08371490787525301
+      ]
+    },
+    {
+      "Id": "furniture.l4.whetstone_stand",
+      "Name": "Whetstone stand",
+      "Asset": "FurnitureWhetstoneStand",
+      "Level": 4,
+      "Category": "AxeLife",
+      "FootprintWidth": 1,
+      "FootprintDepth": 1,
+      "PriceCash": 50000,
+      "IsChest": false,
+      "Triangles": 224,
+      "BoundsMin": [
+        -0.43089137100763314,
+        0.0,
+        -0.49
+      ],
+      "BoundsMax": [
+        -0.03,
+        0.77,
+        -0.01999999999999999
+      ]
+    },
+    {
+      "Id": "furniture.l4.bow_workbench",
+      "Name": "Bow workbench",
+      "Asset": "FurnitureBowWorkbench",
+      "Level": 4,
+      "Category": "HuntingToolLife",
+      "FootprintWidth": 3,
+      "FootprintDepth": 1,
+      "PriceCash": 50000,
+      "IsChest": false,
+      "Triangles": 428,
+      "BoundsMin": [
+        -1.47,
+        0.0,
+        -0.45999999999999996
+      ],
+      "BoundsMax": [
+        -0.030000000000000027,
+        1.0141212345486927,
+        -0.04000000000000001
+      ]
+    },
+    {
+      "Id": "furniture.l4.tackle_desk",
+      "Name": "Tackle desk",
+      "Asset": "FurnitureTackleDesk",
+      "Level": 4,
+      "Category": "RodLife",
+      "FootprintWidth": 2,
+      "FootprintDepth": 1,
+      "PriceCash": 50000,
+      "IsChest": false,
+      "Triangles": 540,
+      "BoundsMin": [
+        -0.98,
+        0.0,
+        -0.47
+      ],
+      "BoundsMax": [
+        -0.020000000000000018,
+        0.9386888560440283,
+        -0.02249999999999999
+      ]
+    },
+    {
+      "Id": "furniture.l4.leather_table",
+      "Name": "Leather table",
+      "Asset": "FurnitureLeatherTable",
+      "Level": 4,
+      "Category": "BackpackLife",
+      "FootprintWidth": 2,
+      "FootprintDepth": 2,
+      "PriceCash": 50000,
+      "IsChest": false,
+      "Triangles": 252,
+      "BoundsMin": [
+        -0.97,
+        0.0,
+        -0.97
+      ],
+      "BoundsMax": [
+        -0.030000000000000027,
+        1.085,
+        -0.030000000000000027
+      ]
+    },
+    {
+      "Id": "furniture.l4.birch_chest",
+      "Name": "Birch chest",
+      "Asset": "FurnitureBirchChest",
+      "Level": 4,
+      "Category": "Storage",
+      "FootprintWidth": 2,
+      "FootprintDepth": 1,
+      "PriceCash": 50000,
+      "IsChest": true,
+      "Triangles": 276,
+      "BoundsMin": [
+        -0.98,
+        0.0,
+        -0.48
+      ],
+      "BoundsMax": [
+        -0.01999999999999998,
+        0.5700000000000001,
+        -0.01799999999999996
+      ],
+      "LidAsset": "FurnitureBirchChestLid",
+      "LidHinge": [
+        -0.5,
+        0.46,
+        -0.47
+      ],
+      "LidTriangles": 60
+    },
+    {
+      "Id": "furniture.l5.artisan_bench",
+      "Name": "Artisan bench",
+      "Asset": "FurnitureArtisanBench",
+      "Level": 5,
+      "Category": "CraftQuality",
+      "FootprintWidth": 3,
+      "FootprintDepth": 1,
+      "PriceCash": 150000,
+      "IsChest": false,
+      "Triangles": 396,
+      "BoundsMin": [
+        -1.48,
+        0.0,
+        -0.49
+      ],
+      "BoundsMax": [
+        -0.020000000000000046,
+        1.55,
+        -0.04000000000000001
+      ]
+    },
+    {
+      "Id": "furniture.l5.pantry_dresser",
+      "Name": "Pantry dresser",
+      "Asset": "FurniturePantryDresser",
+      "Level": 5,
+      "Category": "FoodRecovery",
+      "FootprintWidth": 2,
+      "FootprintDepth": 1,
+      "PriceCash": 150000,
+      "IsChest": false,
+      "Triangles": 440,
+      "BoundsMin": [
+        -0.99,
+        0.0,
+        -0.47
+      ],
+      "BoundsMax": [
+        -0.010000000000000009,
+        1.8,
+        -0.008000000000000009
+      ]
+    },
+    {
+      "Id": "furniture.l5.trophy_cabinet",
+      "Name": "Trophy cabinet",
+      "Asset": "FurnitureTrophyCabinet",
+      "Level": 5,
+      "Category": "SalePrice",
+      "FootprintWidth": 2,
+      "FootprintDepth": 1,
+      "PriceCash": 150000,
+      "IsChest": false,
+      "Triangles": 592,
+      "BoundsMin": [
+        -1.0,
+        0.0,
+        -0.48
+      ],
+      "BoundsMax": [
+        0.0,
+        1.8,
+        -0.03
+      ]
+    },
+    {
+      "Id": "furniture.l5.boot_cabinet",
+      "Name": "Boot cabinet",
+      "Asset": "FurnitureBootCabinet",
+      "Level": 5,
+      "Category": "BootsLife",
+      "FootprintWidth": 2,
+      "FootprintDepth": 1,
+      "PriceCash": 150000,
+      "IsChest": false,
+      "Triangles": 492,
+      "BoundsMin": [
+        -0.975,
+        0.0,
+        -0.465
+      ],
+      "BoundsMax": [
+        -0.024999999999999988,
+        1.1900000000000002,
+        -0.04000000000000001
+      ]
+    },
+    {
+      "Id": "furniture.l5.cloth_press",
+      "Name": "Cloth press",
+      "Asset": "FurnitureClothPress",
+      "Level": 5,
+      "Category": "ShirtLife",
+      "FootprintWidth": 2,
+      "FootprintDepth": 2,
+      "PriceCash": 150000,
+      "IsChest": false,
+      "Triangles": 568,
+      "BoundsMin": [
+        -0.95,
+        0.0,
+        -0.85
+      ],
+      "BoundsMax": [
+        -0.05000000000000002,
+        1.7,
+        -0.15000000000000002
+      ]
+    },
+    {
+      "Id": "furniture.l5.hat_display",
+      "Name": "Hat display",
+      "Asset": "FurnitureHatDisplay",
+      "Level": 5,
+      "Category": "HatLife",
+      "FootprintWidth": 1,
+      "FootprintDepth": 1,
+      "PriceCash": 150000,
+      "IsChest": false,
+      "Triangles": 508,
+      "BoundsMin": [
+        -0.4633118895227836,
+        0.0,
+        -0.4658584873892775
+      ],
+      "BoundsMax": [
+        -0.05405292824390941,
+        1.66,
+        -0.05681483474218635
+      ]
+    },
+    {
+      "Id": "furniture.l6.clothing_armoire",
+      "Name": "Clothing armoire",
+      "Asset": "FurnitureClothingArmoire",
+      "Level": 6,
+      "Category": "PantsLife",
+      "FootprintWidth": 2,
+      "FootprintDepth": 1,
+      "PriceCash": 400000,
+      "IsChest": false,
+      "Triangles": 228,
+      "BoundsMin": [
+        -1.0,
+        0.0,
+        -0.48
+      ],
+      "BoundsMax": [
+        0.0,
+        1.95,
+        -0.03
+      ]
+    },
+    {
+      "Id": "furniture.l6.tool_forge",
+      "Name": "Tool forge",
+      "Asset": "FurnitureToolForge",
+      "Level": 6,
+      "Category": "AxeLife",
+      "FootprintWidth": 2,
+      "FootprintDepth": 2,
+      "PriceCash": 400000,
+      "IsChest": false,
+      "Triangles": 320,
+      "BoundsMin": [
+        -0.98,
+        0.0,
+        -0.94
+      ],
+      "BoundsMax": [
+        -0.10000000000000002,
+        1.95,
+        -0.12000000000000001
+      ]
+    },
+    {
+      "Id": "furniture.l6.bow_cabinet",
+      "Name": "Bow cabinet",
+      "Asset": "FurnitureBowCabinet",
+      "Level": 6,
+      "Category": "HuntingToolLife",
+      "FootprintWidth": 2,
+      "FootprintDepth": 1,
+      "PriceCash": 400000,
+      "IsChest": false,
+      "Triangles": 588,
+      "BoundsMin": [
+        -1.0,
+        0.0,
+        -0.48
+      ],
+      "BoundsMax": [
+        0.0,
+        1.88,
+        -0.03
+      ]
+    },
+    {
+      "Id": "furniture.l6.reel_workshop",
+      "Name": "Reel workshop",
+      "Asset": "FurnitureReelWorkshop",
+      "Level": 6,
+      "Category": "RodLife",
+      "FootprintWidth": 2,
+      "FootprintDepth": 2,
+      "PriceCash": 400000,
+      "IsChest": false,
+      "Triangles": 500,
+      "BoundsMin": [
+        -0.97,
+        0.0,
+        -0.97
+      ],
+      "BoundsMax": [
+        -0.030000000000000027,
+        1.25,
+        -0.030000000000000027
+      ]
+    },
+    {
+      "Id": "furniture.l6.pack_maker_bench",
+      "Name": "Pack-maker bench",
+      "Asset": "FurniturePackMakerBench",
+      "Level": 6,
+      "Category": "BackpackLife",
+      "FootprintWidth": 3,
+      "FootprintDepth": 1,
+      "PriceCash": 400000,
+      "IsChest": false,
+      "Triangles": 300,
+      "BoundsMin": [
+        -1.48,
+        0.0,
+        -0.49
+      ],
+      "BoundsMax": [
+        -0.020000000000000046,
+        1.28,
+        -0.04000000000000001
+      ]
+    },
+    {
+      "Id": "furniture.l6.mesquite_chest",
+      "Name": "Mesquite chest",
+      "Asset": "FurnitureMesquiteChest",
+      "Level": 6,
+      "Category": "Storage",
+      "FootprintWidth": 3,
+      "FootprintDepth": 1,
+      "PriceCash": 400000,
+      "IsChest": true,
+      "Triangles": 276,
+      "BoundsMin": [
+        -1.48,
+        0.0,
+        -0.48
+      ],
+      "BoundsMax": [
+        -0.020000000000000018,
+        0.5700000000000001,
+        -0.01799999999999996
+      ],
+      "LidAsset": "FurnitureMesquiteChestLid",
+      "LidHinge": [
+        -0.75,
+        0.46,
+        -0.47
+      ],
+      "LidTriangles": 60
+    },
+    {
+      "Id": "furniture.l7.master_loom",
+      "Name": "Master loom",
+      "Asset": "FurnitureMasterLoom",
+      "Level": 7,
+      "Category": "CraftQuality",
+      "FootprintWidth": 3,
+      "FootprintDepth": 2,
+      "PriceCash": 1000000,
+      "IsChest": false,
+      "Triangles": 576,
+      "BoundsMin": [
+        -1.46,
+        0.0,
+        -0.95
+      ],
+      "BoundsMax": [
+        -0.04499999999999996,
+        1.45,
+        -0.04999999999999999
+      ]
+    },
+    {
+      "Id": "furniture.l7.dining_table",
+      "Name": "Dining table",
+      "Asset": "FurnitureDiningTable",
+      "Level": 7,
+      "Category": "FoodRecovery",
+      "FootprintWidth": 3,
+      "FootprintDepth": 2,
+      "PriceCash": 1000000,
+      "IsChest": false,
+      "Triangles": 560,
+      "BoundsMin": [
+        -1.43,
+        0.0,
+        -0.98
+      ],
+      "BoundsMax": [
+        -0.07000000000000006,
+        0.9724999999999999,
+        -0.01999999999999999
+      ]
+    },
+    {
+      "Id": "furniture.l7.gallery_pedestal",
+      "Name": "Gallery pedestal",
+      "Asset": "FurnitureGalleryPedestal",
+      "Level": 7,
+      "Category": "SalePrice",
+      "FootprintWidth": 1,
+      "FootprintDepth": 1,
+      "PriceCash": 1000000,
+      "IsChest": false,
+      "Triangles": 180,
+      "BoundsMin": [
+        -0.45,
+        0.0,
+        -0.45
+      ],
+      "BoundsMax": [
+        -0.04999999999999999,
+        1.46,
+        -0.04999999999999999
+      ]
+    },
+    {
+      "Id": "furniture.l7.travel_sofa",
+      "Name": "Travel sofa",
+      "Asset": "FurnitureTravelSofa",
+      "Level": 7,
+      "Category": "BootsLife",
+      "FootprintWidth": 3,
+      "FootprintDepth": 1,
+      "PriceCash": 1000000,
+      "IsChest": false,
+      "Triangles": 276,
+      "BoundsMin": [
+        -1.4729737903384732,
+        0.0,
+        -0.48
+      ],
+      "BoundsMax": [
+        -0.050000000000000044,
+        0.9509969351106101,
+        -0.03
+      ]
+    },
+    {
+      "Id": "furniture.l7.fine_cloth_workstation",
+      "Name": "Fine-cloth workstation",
+      "Asset": "FurnitureFineClothWorkstation",
+      "Level": 7,
+      "Category": "ShirtLife",
+      "FootprintWidth": 3,
+      "FootprintDepth": 1,
+      "PriceCash": 1000000,
+      "IsChest": false,
+      "Triangles": 336,
+      "BoundsMin": [
+        -1.4700000000000002,
+        0.0,
+        -0.45999999999999996
+      ],
+      "BoundsMax": [
+        -0.024770384319530436,
+        1.56,
+        -0.04000000000000001
+      ]
+    },
+    {
+      "Id": "furniture.l7.milliner_bench",
+      "Name": "Milliner bench",
+      "Asset": "FurnitureMillinerBench",
+      "Level": 7,
+      "Category": "HatLife",
+      "FootprintWidth": 2,
+      "FootprintDepth": 1,
+      "PriceCash": 1000000,
+      "IsChest": false,
+      "Triangles": 452,
+      "BoundsMin": [
+        -1.0055708601453115,
+        0.0,
+        -0.45
+      ],
+      "BoundsMax": [
+        -0.030000000000000027,
+        1.02,
+        -0.04999999999999999
+      ]
+    },
+    {
+      "Id": "furniture.l8.frontier_wardrobe",
+      "Name": "Frontier wardrobe",
+      "Asset": "FurnitureFrontierWardrobe",
+      "Level": 8,
+      "Category": "PantsLife",
+      "FootprintWidth": 2,
+      "FootprintDepth": 1,
+      "PriceCash": 2000000,
+      "IsChest": false,
+      "Triangles": 228,
+      "BoundsMin": [
+        -1.0,
+        0.0,
+        -0.48
+      ],
+      "BoundsMax": [
+        0.0,
+        1.965,
+        -0.03
+      ]
+    },
+    {
+      "Id": "furniture.l8.master_tool_station",
+      "Name": "Master tool station",
+      "Asset": "FurnitureMasterToolStation",
+      "Level": 8,
+      "Category": "AxeLife",
+      "FootprintWidth": 3,
+      "FootprintDepth": 2,
+      "PriceCash": 2000000,
+      "IsChest": false,
+      "Triangles": 352,
+      "BoundsMin": [
+        -1.4849999999999999,
+        0.0,
+        -0.985
+      ],
+      "BoundsMax": [
+        -0.015000000000000041,
+        1.75,
+        -0.050000000000000044
+      ]
+    },
+    {
+      "Id": "furniture.l8.hunters_cabinet",
+      "Name": "Hunter's cabinet",
+      "Asset": "FurnitureHuntersCabinet",
+      "Level": 8,
+      "Category": "HuntingToolLife",
+      "FootprintWidth": 2,
+      "FootprintDepth": 1,
+      "PriceCash": 2000000,
+      "IsChest": false,
+      "Triangles": 564,
+      "BoundsMin": [
+        -1.0,
+        0.0,
+        -0.48
+      ],
+      "BoundsMax": [
+        0.0,
+        1.8657494651955437,
+        -0.03
+      ]
+    },
+    {
+      "Id": "furniture.l8.anglers_cabinet",
+      "Name": "Angler's cabinet",
+      "Asset": "FurnitureAnglersCabinet",
+      "Level": 8,
+      "Category": "RodLife",
+      "FootprintWidth": 2,
+      "FootprintDepth": 1,
+      "PriceCash": 2000000,
+      "IsChest": false,
+      "Triangles": 576,
+      "BoundsMin": [
+        -1.0,
+        0.0,
+        -0.48
+      ],
+      "BoundsMax": [
+        0.0,
+        1.8900000000000001,
+        -0.03
+      ]
+    },
+    {
+      "Id": "furniture.l8.expedition_workbench",
+      "Name": "Expedition workbench",
+      "Asset": "FurnitureExpeditionWorkbench",
+      "Level": 8,
+      "Category": "BackpackLife",
+      "FootprintWidth": 3,
+      "FootprintDepth": 2,
+      "PriceCash": 2000000,
+      "IsChest": false,
+      "Triangles": 308,
+      "BoundsMin": [
+        -1.47,
+        0.0,
+        -0.96
+      ],
+      "BoundsMax": [
+        -0.030000000000000027,
+        1.2900000000000003,
+        -0.03999999999999998
+      ]
+    },
+    {
+      "Id": "furniture.l8.reinforced_oak_chest",
+      "Name": "Reinforced oak chest",
+      "Asset": "FurnitureReinforcedOakChest",
+      "Level": 8,
+      "Category": "Storage",
+      "FootprintWidth": 3,
+      "FootprintDepth": 1,
+      "PriceCash": 2000000,
+      "IsChest": true,
+      "Triangles": 300,
+      "BoundsMin": [
+        -1.48,
+        0.0,
+        -0.48
+      ],
+      "BoundsMax": [
+        -0.020000000000000018,
+        0.5700000000000001,
+        -0.01799999999999996
+      ],
+      "LidAsset": "FurnitureReinforcedOakChestLid",
+      "LidHinge": [
+        -0.75,
+        0.46,
+        -0.47
+      ],
+      "LidTriangles": 60
+    }
+  ]
+}

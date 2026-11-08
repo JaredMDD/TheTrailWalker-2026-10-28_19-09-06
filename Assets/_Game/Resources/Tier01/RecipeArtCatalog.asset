@@ -1,0 +1,1873 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80d4a82738040c14881156c7c1fbf810, type: 3}
+  m_Name: RecipeArtCatalog
+  m_EditorClassIdentifier: Assembly-CSharp::TheTrailWalker.Tier1RecipeArtCatalog
+  Revision: 1
+  UnlockPolicy: Require recipe acquisition AND discovered exact ingredient sources
+    AND known intermediate conversions or accessible exact-item shops. Recursively
+    check upstream sources; no future-tier pantry bypass. Never offer unassigned
+    sources. Optional box/bakery recipes cannot block mandatory missions.
+  ArtPolicy: Catalog is authoring data only. No auto-learning, crafting transaction,
+    shop stock or region spawn changes. Serving vessels are illustrative unless explicitly
+    listed as an ingredient. Recipes are knowledge, not inventory scroll stacks.
+    CraftingPathSourceIds/ConversionRecipeIds describe the self-crafted supply path;
+    an explicitly reachable exact-output shop may provide an alternate path, never
+    a recipe grant. Source records for the same ID are alternatives; Regions lists
+    are any eligible source region, not all regions required.
+  Recipes:
+  - Id: recipe.material.pine_log
+    Name: Pine log
+    Category: Material
+    OutputId: material.pine_log
+    Model: PineLog
+    PrefabPath: Tier01/Drops/PineLog
+    UnlockSource: Gatherer G1; also gathered directly
+    Note: 
+    Slot: 
+    Tier: 1
+    Yield: 1
+    Hearts: 0
+    BaseSeconds: 0
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - material.pine_branch
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: material.pine_branch
+      Quantity: 3
+    Visual: {fileID: 4833560147716448907, guid: 30b580a3198d4c14ab51fe536f1239bb, type: 3}
+  - Id: recipe.material.pine_plank
+    Name: Pine plank
+    Category: Material
+    OutputId: item.pine_plank
+    Model: PinePlank
+    PrefabPath: Tier01/Crafted/PinePlank
+    UnlockSource: Normal mission; branch placement pending
+    Note: 
+    Slot: 
+    Tier: 1
+    Yield: 1
+    Hearts: 0
+    BaseSeconds: 10
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - material.pine_log
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: material.pine_log
+      Quantity: 3
+    Visual: {fileID: 2949634961265218532, guid: e619f8f6759b5f54e997f3fd593486db, type: 3}
+  - Id: recipe.material.pine_charcoal
+    Name: Pine charcoal
+    Category: Material
+    OutputId: item.pine_charcoal
+    Model: PineCharcoal
+    PrefabPath: Tier01/Crafted/PineCharcoal
+    UnlockSource: Normal mission; branch placement pending
+    Note: 
+    Slot: 
+    Tier: 1
+    Yield: 2
+    Hearts: 0
+    BaseSeconds: 10
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - material.pine_branch
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: material.pine_branch
+      Quantity: 3
+    Visual: {fileID: 7712623321460027551, guid: be02da9a4a143b547a7cfc3f9e99fb3c, type: 3}
+  - Id: recipe.material.hemp_cord
+    Name: Hemp cord
+    Category: Material
+    OutputId: item.hemp_cord
+    Model: HempCord
+    PrefabPath: Tier01/Crafted/HempCord
+    UnlockSource: Explorer E4
+    Note: 
+    Slot: 
+    Tier: 1
+    Yield: 2
+    Hearts: 0
+    BaseSeconds: 5
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - material.hemp
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: material.hemp
+      Quantity: 3
+    Visual: {fileID: 5203930677942324656, guid: 117b512c33cf10a44ba74e4daf330d7d, type: 3}
+  - Id: recipe.material.hemp_thread
+    Name: Hemp thread
+    Category: Material
+    OutputId: item.hemp_thread
+    Model: HempThread
+    PrefabPath: Tier01/Crafted/HempThread
+    UnlockSource: Normal mission; branch placement pending
+    Note: 
+    Slot: 
+    Tier: 1
+    Yield: 3
+    Hearts: 0
+    BaseSeconds: 5
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - material.hemp
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: material.hemp
+      Quantity: 3
+    Visual: {fileID: 5450719354553851512, guid: f95d0a322f89cf442b734acf7ad50ad4, type: 3}
+  - Id: recipe.material.nettle_thread
+    Name: Nettle thread
+    Category: Material
+    OutputId: item.nettle_thread
+    Model: NettleThread
+    PrefabPath: Tier01/Crafted/NettleThread
+    UnlockSource: Normal mission; branch placement pending
+    Note: 
+    Slot: 
+    Tier: 1
+    Yield: 3
+    Hearts: 0
+    BaseSeconds: 5
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - material.nettle_fiber
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: material.nettle_fiber
+      Quantity: 3
+    Visual: {fileID: 2178054028730170381, guid: 1811fd4c09347724bb0523fbf008fa60, type: 3}
+  - Id: recipe.material.hemp_cloth
+    Name: Hemp cloth
+    Category: Material
+    OutputId: item.hemp_cloth
+    Model: HempCloth
+    PrefabPath: Tier01/Crafted/HempCloth
+    UnlockSource: Normal mission; branch placement pending
+    Note: 
+    Slot: 
+    Tier: 1
+    Yield: 2
+    Hearts: 0
+    BaseSeconds: 10
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - material.hemp
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: material.hemp
+      Quantity: 4
+    Visual: {fileID: 9100952501425219536, guid: c405ab20bcd55dd44b42791f1322ebfb, type: 3}
+  - Id: recipe.material.nettle_cloth
+    Name: Nettle cloth
+    Category: Material
+    OutputId: item.nettle_cloth
+    Model: NettleCloth
+    PrefabPath: Tier01/Crafted/NettleCloth
+    UnlockSource: Normal mission; branch placement pending
+    Note: 
+    Slot: 
+    Tier: 1
+    Yield: 2
+    Hearts: 0
+    BaseSeconds: 10
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - material.nettle_fiber
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: material.nettle_fiber
+      Quantity: 4
+    Visual: {fileID: 1922211450803210254, guid: 9f1ef0aad1ba50c4aabe5384c807565f, type: 3}
+  - Id: recipe.material.fine_hemp_cloth
+    Name: Fine hemp cloth
+    Category: Material
+    OutputId: item.fine_hemp_cloth
+    Model: FineHempCloth
+    PrefabPath: Tier01/Crafted/FineHempCloth
+    UnlockSource: Normal mission; branch placement pending
+    Note: 
+    Slot: 
+    Tier: 1
+    Yield: 1
+    Hearts: 0
+    BaseSeconds: 20
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - material.hemp
+    ConversionRecipeIds:
+    - recipe.material.hemp_cloth
+    - recipe.material.hemp_thread
+    Inputs:
+    - ItemId: item.hemp_cloth
+      Quantity: 3
+    - ItemId: item.hemp_thread
+      Quantity: 1
+    Visual: {fileID: 343211619754746628, guid: b65ae8b2d4fa3aa4fadc6b23157a7854, type: 3}
+  - Id: recipe.material.cured_rabbit_pelt
+    Name: Cured rabbit pelt
+    Category: Material
+    OutputId: item.cured_rabbit_pelt
+    Model: CuredRabbitPelt
+    PrefabPath: Tier01/Crafted/CuredRabbitPelt
+    UnlockSource: Normal mission; branch placement pending
+    Note: 
+    Slot: 
+    Tier: 1
+    Yield: 1
+    Hearts: 0
+    BaseSeconds: 15
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - animal.rabbit.pelt
+    - ingredient.rock_salt
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: animal.rabbit.pelt
+      Quantity: 2
+    - ItemId: ingredient.rock_salt
+      Quantity: 1
+    Visual: {fileID: 8121103745111195061, guid: 940ac5e50ca98e74180daa0f7031c643, type: 3}
+  - Id: recipe.material.fine_rabbit_pelt
+    Name: Fine rabbit pelt
+    Category: Material
+    OutputId: item.fine_rabbit_pelt
+    Model: FineRabbitPelt
+    PrefabPath: Tier01/Crafted/FineRabbitPelt
+    UnlockSource: Normal mission; branch placement pending
+    Note: 
+    Slot: 
+    Tier: 1
+    Yield: 1
+    Hearts: 0
+    BaseSeconds: 20
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - animal.rabbit.pelt
+    - ingredient.rock_salt
+    - material.hemp
+    ConversionRecipeIds:
+    - recipe.material.cured_rabbit_pelt
+    - recipe.material.hemp_thread
+    Inputs:
+    - ItemId: item.cured_rabbit_pelt
+      Quantity: 2
+    - ItemId: item.hemp_thread
+      Quantity: 1
+    Visual: {fileID: 5773004557566953328, guid: d7a01e23e77ddc4409c1425a6072ce8d, type: 3}
+  - Id: recipe.material.rabbit_leather
+    Name: Rabbit leather
+    Category: Material
+    OutputId: item.rabbit_leather
+    Model: RabbitLeather
+    PrefabPath: Tier01/Crafted/RabbitLeather
+    UnlockSource: Hunter H4
+    Note: 
+    Slot: 
+    Tier: 1
+    Yield: 1
+    Hearts: 0
+    BaseSeconds: 15
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - animal.rabbit.pelt
+    - ingredient.rock_salt
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: animal.rabbit.pelt
+      Quantity: 2
+    - ItemId: ingredient.rock_salt
+      Quantity: 1
+    Visual: {fileID: 3819653835417393449, guid: af3c401fed73e204996084018b34a090, type: 3}
+  - Id: recipe.material.fine_rabbit_leather
+    Name: Fine rabbit leather
+    Category: Material
+    OutputId: item.fine_rabbit_leather
+    Model: FineRabbitLeather
+    PrefabPath: Tier01/Crafted/FineRabbitLeather
+    UnlockSource: Normal mission; branch placement pending
+    Note: Proposed fixed 20-second timer where unspecified.
+    Slot: 
+    Tier: 1
+    Yield: 1
+    Hearts: 0
+    BaseSeconds: 20
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - animal.rabbit.pelt
+    - ingredient.rock_salt
+    - material.hemp
+    ConversionRecipeIds:
+    - recipe.material.hemp_thread
+    - recipe.material.rabbit_leather
+    Inputs:
+    - ItemId: item.rabbit_leather
+      Quantity: 2
+    - ItemId: item.hemp_thread
+      Quantity: 1
+    Visual: {fileID: 3970441247552759102, guid: 3df778c95e744eb47ae5f9c13de1c285, type: 3}
+  - Id: recipe.material.plant_stuffing
+    Name: Plant stuffing
+    Category: Material
+    OutputId: item.plant_stuffing
+    Model: PlantStuffing
+    PrefabPath: Tier01/Crafted/PlantStuffing
+    UnlockSource: Normal mission; branch placement pending
+    Note: Proposed fixed 10-second timer where unspecified.
+    Slot: 
+    Tier: 1
+    Yield: 2
+    Hearts: 0
+    BaseSeconds: 10
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - material.nettle_fiber
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: material.nettle_fiber
+      Quantity: 3
+    Visual: {fileID: 2978613175292248859, guid: bcfda55b8ef862b4da2f1fe200179d73, type: 3}
+  - Id: recipe.material.pine_beam
+    Name: Pine beam
+    Category: Material
+    OutputId: item.pine_beam
+    Model: PineBeam
+    PrefabPath: Tier01/Crafted/PineBeam
+    UnlockSource: Normal mission; branch placement pending
+    Note: 
+    Slot: 
+    Tier: 1
+    Yield: 1
+    Hearts: 0
+    BaseSeconds: 20
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - material.hemp
+    - material.pine_log
+    ConversionRecipeIds:
+    - recipe.material.hemp_cord
+    - recipe.material.pine_plank
+    Inputs:
+    - ItemId: item.pine_plank
+      Quantity: 4
+    - ItemId: item.hemp_cord
+      Quantity: 1
+    Visual: {fileID: 7219476073611093473, guid: 16e2db32216bedc43a624f8aeb74d3ab, type: 3}
+  - Id: recipe.material.pine_panel
+    Name: Pine panel
+    Category: Material
+    OutputId: item.pine_panel
+    Model: PinePanel
+    PrefabPath: Tier01/Crafted/PinePanel
+    UnlockSource: Normal mission; branch placement pending
+    Note: Proposed fixed 10-second timer where unspecified.
+    Slot: 
+    Tier: 1
+    Yield: 1
+    Hearts: 0
+    BaseSeconds: 10
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - material.pine_log
+    ConversionRecipeIds:
+    - recipe.material.pine_plank
+    Inputs:
+    - ItemId: item.pine_plank
+      Quantity: 3
+    Visual: {fileID: 21585500505304767, guid: 440697395252b9f4b8325eaf8b3b6f1d, type: 3}
+  - Id: recipe.material.limestone_tiles
+    Name: Limestone tiles
+    Category: Material
+    OutputId: item.limestone_tiles
+    Model: LimestoneTiles
+    PrefabPath: Tier01/Crafted/LimestoneTiles
+    UnlockSource: Normal mission; branch placement pending
+    Note: 
+    Slot: 
+    Tier: 1
+    Yield: 2
+    Hearts: 0
+    BaseSeconds: 15
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - material.limestone
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: material.limestone
+      Quantity: 3
+    Visual: {fileID: 5062609842040547610, guid: c794fc7e0276116469a1ac12c7eb0e9d, type: 3}
+  - Id: recipe.material.polished_pebble
+    Name: Polished pebble
+    Category: Material
+    OutputId: item.polished_pebble
+    Model: PolishedPebble
+    PrefabPath: Tier01/Crafted/PolishedPebble
+    UnlockSource: Normal mission; branch placement pending
+    Note: Proposed fixed 10-second timer where unspecified.
+    Slot: 
+    Tier: 1
+    Yield: 1
+    Hearts: 0
+    BaseSeconds: 10
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - material.flint
+    - material.pebbles
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: material.pebbles
+      Quantity: 2
+    - ItemId: material.flint
+      Quantity: 1
+    Visual: {fileID: 3661583311047644815, guid: 7519c5bae336aa44791784e4d50829ee, type: 3}
+  - Id: recipe.material.fired_bricks
+    Name: Fired bricks
+    Category: Material
+    OutputId: item.fired_bricks
+    Model: FiredBricks
+    PrefabPath: Tier01/Crafted/FiredBricks
+    UnlockSource: Normal mission; branch placement pending
+    Note: Proposed fixed 10-second timer where unspecified.
+    Slot: 
+    Tier: 1
+    Yield: 3
+    Hearts: 0
+    BaseSeconds: 10
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - material.clay
+    - material.pine_branch
+    ConversionRecipeIds:
+    - recipe.material.pine_charcoal
+    Inputs:
+    - ItemId: material.clay
+      Quantity: 3
+    - ItemId: item.pine_charcoal
+      Quantity: 1
+    Visual: {fileID: 8750955746758547743, guid: fb6ede029fe2b5c41aeb8b542601819e, type: 3}
+  - Id: recipe.material.clay_cup
+    Name: Clay cup
+    Category: Material
+    OutputId: item.clay_cup
+    Model: ClayCup
+    PrefabPath: Tier01/Crafted/ClayCup
+    UnlockSource: Normal mission; branch placement pending
+    Note: Proposed fixed 10-second timer where unspecified.
+    Slot: 
+    Tier: 1
+    Yield: 1
+    Hearts: 0
+    BaseSeconds: 10
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - material.clay
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: material.clay
+      Quantity: 2
+    Visual: {fileID: 119300664424447130, guid: 0bf0aa1619a4fa047a53962b090ef454, type: 3}
+  - Id: recipe.material.wheat_flour
+    Name: Wheat flour
+    Category: Material
+    OutputId: ingredient.wheat_flour
+    Model: WheatFlour
+    PrefabPath: Tier01/Crafted/WheatFlour
+    UnlockSource: Normal mission; branch placement pending
+    Note: 
+    Slot: 
+    Tier: 1
+    Yield: 2
+    Hearts: 0
+    BaseSeconds: 5
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - ingredient.wheat
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: ingredient.wheat
+      Quantity: 3
+    Visual: {fileID: 3828808518637925689, guid: e423c5e359c824c43ba381ac82748968, type: 3}
+  - Id: recipe.material.reed_braid
+    Name: Reed braid
+    Category: Material
+    OutputId: item.reed_braid
+    Model: ReedBraid
+    PrefabPath: Tier01/Crafted/ReedBraid
+    UnlockSource: Normal mission; branch placement pending
+    Note: Proposed fixed 10-second timer where unspecified.
+    Slot: 
+    Tier: 1
+    Yield: 1
+    Hearts: 0
+    BaseSeconds: 10
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - material.reeds
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: material.reeds
+      Quantity: 3
+    Visual: {fileID: 1961356310939742589, guid: c845a9f1b11206e48ab0a3924f6f9499, type: 3}
+  - Id: recipe.material.mortar
+    Name: Mortar
+    Category: Material
+    OutputId: item.mortar
+    Model: Mortar
+    PrefabPath: Tier01/Crafted/Mortar
+    UnlockSource: Normal mission; branch placement pending
+    Note: Proposed fixed 10-second timer where unspecified.
+    Slot: 
+    Tier: 1
+    Yield: 1
+    Hearts: 0
+    BaseSeconds: 10
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - material.limestone
+    - material.sand
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: material.sand
+      Quantity: 2
+    - ItemId: material.limestone
+      Quantity: 1
+    Visual: {fileID: 8290812649451821694, guid: f16c14200b5219c4eb3b2d37dd837666, type: 3}
+  - Id: recipe.tool.pine_axe_normal
+    Name: Pine axe
+    Category: Tool
+    OutputId: tool.pine_axe.normal
+    Model: PineAxeNormal
+    PrefabPath: Tier01/Crafted/PineAxeNormal
+    UnlockSource: Lumberjack L1
+    Note: Normal only; base 10 uses.
+    Slot: 
+    Tier: 1
+    Yield: 1
+    Hearts: 0
+    BaseSeconds: 5
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - material.flint
+    - material.pine_branch
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: material.pine_branch
+      Quantity: 2
+    - ItemId: material.flint
+      Quantity: 2
+    Visual: {fileID: 4868660857463251178, guid: 39881ba0b31147f43a0e640f91d91318, type: 3}
+  - Id: recipe.tool.pine_slingshot_normal
+    Name: Pine slingshot
+    Category: Tool
+    OutputId: item.pine_slingshot_normal
+    Model: PineSlingshotNormal
+    PrefabPath: Tier01/Crafted/PineSlingshotNormal
+    UnlockSource: Hunter H1
+    Note: Normal only; base 6 uses.
+    Slot: 
+    Tier: 1
+    Yield: 1
+    Hearts: 0
+    BaseSeconds: 5
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - animal.rabbit.pelt
+    - material.pine_branch
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: material.pine_branch
+      Quantity: 2
+    - ItemId: animal.rabbit.pelt
+      Quantity: 1
+    Visual: {fileID: 2115841354101641043, guid: 0e5108c39c580aa40b0a8928b5582917, type: 3}
+  - Id: recipe.tool.pine_rod_normal
+    Name: Pine rod
+    Category: Tool
+    OutputId: item.pine_rod_normal
+    Model: PineRodNormal
+    PrefabPath: Tier01/Crafted/PineRodNormal
+    UnlockSource: Explorer E5 after E4 and Bone source
+    Note: Normal only; base 10 uses; bone hook, no metal reel.
+    Slot: 
+    Tier: 1
+    Yield: 1
+    Hearts: 0
+    BaseSeconds: 5
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - material.bone
+    - material.hemp
+    - material.pine_branch
+    ConversionRecipeIds:
+    - recipe.material.hemp_cord
+    Inputs:
+    - ItemId: material.pine_branch
+      Quantity: 2
+    - ItemId: item.hemp_cord
+      Quantity: 2
+    - ItemId: material.bone
+      Quantity: 1
+    Visual: {fileID: 1146372298860095181, guid: ef4cd4dc47e94ac4b880fada2dcc3c8e, type: 3}
+  - Id: recipe.wearable.rabbit_hat
+    Name: Rabbit-pelt hat
+    Category: Wearable
+    OutputId: item.rabbit_hat
+    Model: RabbitHat
+    PrefabPath: Tier01/Crafted/RabbitHat
+    UnlockSource: Gatherer G3 after Lumberjack L2
+    Note: Rank 1. Proposed base durability 4000 metres.
+    Slot: Hat
+    Tier: 1
+    Yield: 1
+    Hearts: 0
+    BaseSeconds: 15
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - animal.rabbit.pelt
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: animal.rabbit.pelt
+      Quantity: 2
+    Visual: {fileID: 7320590035659778761, guid: fadbd256c6f64ee41bb4286126b94bf6, type: 3}
+  - Id: recipe.wearable.rabbit_boots
+    Name: Rabbit-pelt boots
+    Category: Wearable
+    OutputId: item.rabbit_boots
+    Model: RabbitBoots
+    PrefabPath: Tier01/Crafted/RabbitBoots
+    UnlockSource: Lumberjack L3
+    Note: Rank 1. Proposed base durability 4000 metres.
+    Slot: Boots
+    Tier: 1
+    Yield: 1
+    Hearts: 0
+    BaseSeconds: 15
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - animal.rabbit.pelt
+    - material.hemp
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: animal.rabbit.pelt
+      Quantity: 2
+    - ItemId: material.hemp
+      Quantity: 1
+    Visual: {fileID: 1828883218759556078, guid: c44c49e7672f25f43acc41f28f031afe, type: 3}
+  - Id: recipe.wearable.hemp_shirt
+    Name: Hemp shirt
+    Category: Wearable
+    OutputId: item.hemp_shirt
+    Model: HempShirt
+    PrefabPath: Tier01/Crafted/HempShirt
+    UnlockSource: Hunter H3
+    Note: Rank 1. Proposed base durability 4000 metres.
+    Slot: Shirt
+    Tier: 1
+    Yield: 1
+    Hearts: 0
+    BaseSeconds: 15
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - animal.rabbit.pelt
+    - material.hemp
+    ConversionRecipeIds:
+    - recipe.material.hemp_cloth
+    Inputs:
+    - ItemId: item.hemp_cloth
+      Quantity: 3
+    - ItemId: animal.rabbit.pelt
+      Quantity: 1
+    Visual: {fileID: 2688250227953733085, guid: e2651de599608d0458ee059873a9c4da, type: 3}
+  - Id: recipe.wearable.hemp_pants
+    Name: Hemp pants
+    Category: Wearable
+    OutputId: item.hemp_pants
+    Model: HempPants
+    PrefabPath: Tier01/Crafted/HempPants
+    UnlockSource: Explorer E3
+    Note: Rank 1. Proposed base durability 4000 metres.
+    Slot: Pants
+    Tier: 1
+    Yield: 1
+    Hearts: 0
+    BaseSeconds: 15
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - material.hemp
+    - material.pine_branch
+    ConversionRecipeIds:
+    - recipe.material.hemp_cloth
+    Inputs:
+    - ItemId: item.hemp_cloth
+      Quantity: 3
+    - ItemId: material.pine_branch
+      Quantity: 1
+    Visual: {fileID: 2851367907889318369, guid: 585b420dbc45cd24c82b5cfdb4731cec, type: 3}
+  - Id: recipe.wearable.starter_backpack
+    Name: Starter backpack
+    Category: Wearable
+    OutputId: item.starter_backpack
+    Model: StarterBackpack
+    PrefabPath: Tier01/Crafted/StarterBackpack
+    UnlockSource: Explorer E7 after Hunter H4
+    Note: Rank 1. Proposed base durability 4000 metres.
+    Slot: Backpack
+    Tier: 1
+    Yield: 1
+    Hearts: 0
+    BaseSeconds: 15
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - animal.rabbit.pelt
+    - ingredient.rock_salt
+    - material.hemp
+    - material.pine_branch
+    ConversionRecipeIds:
+    - recipe.material.hemp_cloth
+    - recipe.material.rabbit_leather
+    Inputs:
+    - ItemId: item.hemp_cloth
+      Quantity: 3
+    - ItemId: item.rabbit_leather
+      Quantity: 2
+    - ItemId: material.pine_branch
+      Quantity: 2
+    Visual: {fileID: 4964394015376633741, guid: 104ca77bc2f1a31428936b6d2455aeb5, type: 3}
+  - Id: recipe.food.apple_juice
+    Name: Apple juice
+    Category: Food
+    OutputId: item.apple_juice
+    Model: AppleJuice
+    PrefabPath: Tier01/Crafted/AppleJuice
+    UnlockSource: Gatherer G2
+    Note: 
+    Slot: 
+    Tier: 1
+    Yield: 1
+    Hearts: 1
+    BaseSeconds: 3
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - food.apples
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: food.apples
+      Quantity: 3
+    Visual: {fileID: 6002375883859553185, guid: f810cbb3d85a8fe4f92c3017ac694860, type: 3}
+  - Id: recipe.food.roasted_mushrooms
+    Name: Roasted mushrooms
+    Category: Food
+    OutputId: item.roasted_mushrooms
+    Model: RoastedMushrooms
+    PrefabPath: Tier01/Crafted/RoastedMushrooms
+    UnlockSource: Explorer E6 after region 4 mushrooms
+    Note: 
+    Slot: 
+    Tier: 1
+    Yield: 1
+    Hearts: 1
+    BaseSeconds: 3
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - ingredient.mushrooms
+    - material.pine_branch
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: ingredient.mushrooms
+      Quantity: 2
+    - ItemId: material.pine_branch
+      Quantity: 1
+    Visual: {fileID: 2620946518316163507, guid: efa93d728a3c4fc4ba7b3eba4b3a39ec, type: 3}
+  - Id: recipe.food.berry_oat_cakes
+    Name: Berry oat cakes
+    Category: Food
+    OutputId: item.berry_oat_cakes
+    Model: BerryOatCakes
+    PrefabPath: Tier01/Crafted/BerryOatCakes
+    UnlockSource: Normal mission; branch placement pending
+    Note: 
+    Slot: 
+    Tier: 1
+    Yield: 2
+    Hearts: 1
+    BaseSeconds: 3
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - food.berries
+    - ingredient.oats
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: ingredient.oats
+      Quantity: 2
+    - ItemId: food.berries
+      Quantity: 2
+    Visual: {fileID: 6026329343246126592, guid: 88d5e307e6787f84e8ea6d0b471603ce, type: 3}
+  - Id: recipe.food.roasted_rabbit
+    Name: Roasted rabbit
+    Category: Food
+    OutputId: item.roasted_rabbit
+    Model: RoastedRabbit
+    PrefabPath: Tier01/Crafted/RoastedRabbit
+    UnlockSource: Explorer E2
+    Note: 
+    Slot: 
+    Tier: 1
+    Yield: 1
+    Hearts: 2
+    BaseSeconds: 3
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - animal.rabbit.meat
+    - material.pine_branch
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: animal.rabbit.meat
+      Quantity: 1
+    - ItemId: material.pine_branch
+      Quantity: 1
+    Visual: {fileID: 2238417851992247943, guid: ff91ac78541b6dc49aa72464815593c7, type: 3}
+  - Id: recipe.food.herb_trout
+    Name: Herb trout
+    Category: Food
+    OutputId: item.herb_trout
+    Model: HerbTrout
+    PrefabPath: Tier01/Crafted/HerbTrout
+    UnlockSource: Explorer E8 once farm Tea herbs are buyable
+    Note: 
+    Slot: 
+    Tier: 1
+    Yield: 1
+    Hearts: 2
+    BaseSeconds: 3
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - fish.rainbow_trout
+    - ingredient.tea_herbs
+    - material.pine_branch
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: fish.rainbow_trout
+      Quantity: 1
+    - ItemId: ingredient.tea_herbs
+      Quantity: 1
+    - ItemId: material.pine_branch
+      Quantity: 1
+    Visual: {fileID: 2354051892804992645, guid: 0c5203184a926d34a86e4849557beab5, type: 3}
+  - Id: recipe.food.roasted_rainbow_trout
+    Name: Roasted rainbow trout
+    Category: Food
+    OutputId: item.roasted_rainbow_trout
+    Model: RoastedRainbowTrout
+    PrefabPath: Tier01/Crafted/RoastedRainbowTrout
+    UnlockSource: Normal mission; branch placement pending
+    Note: 
+    Slot: 
+    Tier: 1
+    Yield: 1
+    Hearts: 2
+    BaseSeconds: 3
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - fish.rainbow_trout
+    - material.pine_branch
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: fish.rainbow_trout
+      Quantity: 1
+    - ItemId: material.pine_branch
+      Quantity: 1
+    Visual: {fileID: 573379020554131531, guid: 786a36460492a754bbceedd8622c6d1a, type: 3}
+  - Id: recipe.food.roasted_largemouth_bass
+    Name: Roasted largemouth bass
+    Category: Food
+    OutputId: item.roasted_largemouth_bass
+    Model: RoastedLargemouthBass
+    PrefabPath: Tier01/Crafted/RoastedLargemouthBass
+    UnlockSource: Normal mission; branch placement pending
+    Note: 
+    Slot: 
+    Tier: 1
+    Yield: 1
+    Hearts: 2
+    BaseSeconds: 3
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - fish.largemouth_bass
+    - material.pine_branch
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: fish.largemouth_bass
+      Quantity: 1
+    - ItemId: material.pine_branch
+      Quantity: 1
+    Visual: {fileID: 9216140963121011348, guid: f4f13200b21f2284db1b5daf3940d5c3, type: 3}
+  - Id: recipe.food.roasted_bluegill
+    Name: Roasted bluegill
+    Category: Food
+    OutputId: item.roasted_bluegill
+    Model: RoastedBluegill
+    PrefabPath: Tier01/Crafted/RoastedBluegill
+    UnlockSource: Normal mission; branch placement pending
+    Note: 
+    Slot: 
+    Tier: 1
+    Yield: 1
+    Hearts: 2
+    BaseSeconds: 3
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - fish.bluegill
+    - material.pine_branch
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: fish.bluegill
+      Quantity: 1
+    - ItemId: material.pine_branch
+      Quantity: 1
+    Visual: {fileID: 1605516420351888325, guid: 865fee8d9a5d1b9469b2bcf5de9e1ea5, type: 3}
+  - Id: recipe.food.roasted_yellow_perch
+    Name: Roasted yellow perch
+    Category: Food
+    OutputId: item.roasted_yellow_perch
+    Model: RoastedYellowPerch
+    PrefabPath: Tier01/Crafted/RoastedYellowPerch
+    UnlockSource: Normal mission; branch placement pending
+    Note: 
+    Slot: 
+    Tier: 1
+    Yield: 1
+    Hearts: 2
+    BaseSeconds: 3
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - fish.yellow_perch
+    - material.pine_branch
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: fish.yellow_perch
+      Quantity: 1
+    - ItemId: material.pine_branch
+      Quantity: 1
+    Visual: {fileID: 2629709712543025170, guid: b29a2e7d970682e46a1ffa004298e80b, type: 3}
+  - Id: recipe.food.strawberry_cow_yogurt_drink
+    Name: Strawberry cow-yogurt drink
+    Category: Food
+    OutputId: item.strawberry_cow_yogurt_drink
+    Model: StrawberryCowYogurtDrink
+    PrefabPath: Tier01/Crafted/StrawberryCowYogurtDrink
+    UnlockSource: Normal mission; branch placement pending
+    Note: 
+    Slot: 
+    Tier: 1
+    Yield: 1
+    Hearts: 3
+    BaseSeconds: 3
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - food.milk.cow
+    - food.strawberries
+    ConversionRecipeIds:
+    - recipe.food.cow_yogurt
+    Inputs:
+    - ItemId: ingredient.cow_yogurt
+      Quantity: 1
+    - ItemId: food.strawberries
+      Quantity: 2
+    Visual: {fileID: 8005171685195346364, guid: 7f0c82c53ae1b19418c5985b8809e406, type: 3}
+  - Id: recipe.food.cow_cheese_tart
+    Name: Cow-cheese tart
+    Category: Food
+    OutputId: item.cow_cheese_tart
+    Model: CowCheeseTart
+    PrefabPath: Tier01/Crafted/CowCheeseTart
+    UnlockSource: Normal mission; branch placement pending
+    Note: 
+    Slot: 
+    Tier: 1
+    Yield: 2
+    Hearts: 5
+    BaseSeconds: 3
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - food.milk.cow
+    - ingredient.egg
+    - ingredient.rock_salt
+    - ingredient.wheat
+    ConversionRecipeIds:
+    - recipe.food.cow_cheese
+    - recipe.material.wheat_flour
+    Inputs:
+    - ItemId: ingredient.wheat_flour
+      Quantity: 2
+    - ItemId: ingredient.cow_cheese
+      Quantity: 1
+    - ItemId: ingredient.egg
+      Quantity: 1
+    Visual: {fileID: 3991716682306730282, guid: dd6fefc8c7b79b84b9bbccea1c701be5, type: 3}
+  - Id: recipe.food.cow_cream
+    Name: Cow cream
+    Category: Food
+    OutputId: ingredient.cow_cream
+    Model: CowCream
+    PrefabPath: Tier01/Crafted/CowCream
+    UnlockSource: Normal mission; branch placement pending
+    Note: Food recipe/mastery, refined ingredient output; direct recovery not authored.
+    Slot: 
+    Tier: 1
+    Yield: 2
+    Hearts: 0
+    BaseSeconds: 10
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - food.milk.cow
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: food.milk.cow
+      Quantity: 3
+    Visual: {fileID: 247297749550815581, guid: 78651f610203a5546af8d4ca86fe3f89, type: 3}
+  - Id: recipe.food.cow_butter
+    Name: Cow butter
+    Category: Food
+    OutputId: ingredient.cow_butter
+    Model: CowButter
+    PrefabPath: Tier01/Crafted/CowButter
+    UnlockSource: Normal mission; branch placement pending
+    Note: Food recipe/mastery, refined ingredient output; direct recovery not authored.
+    Slot: 
+    Tier: 1
+    Yield: 1
+    Hearts: 0
+    BaseSeconds: 10
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - food.milk.cow
+    ConversionRecipeIds:
+    - recipe.food.cow_cream
+    Inputs:
+    - ItemId: ingredient.cow_cream
+      Quantity: 2
+    Visual: {fileID: 6881329853087143229, guid: a50f78a734993ce42ae7c501c5a77c2b, type: 3}
+  - Id: recipe.food.cow_cheese
+    Name: Cow cheese
+    Category: Food
+    OutputId: ingredient.cow_cheese
+    Model: CowCheese
+    PrefabPath: Tier01/Crafted/CowCheese
+    UnlockSource: Normal mission; branch placement pending
+    Note: Food recipe/mastery, refined ingredient output; direct recovery not authored.
+    Slot: 
+    Tier: 1
+    Yield: 1
+    Hearts: 0
+    BaseSeconds: 300
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - food.milk.cow
+    - ingredient.rock_salt
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: food.milk.cow
+      Quantity: 3
+    - ItemId: ingredient.rock_salt
+      Quantity: 1
+    Visual: {fileID: 1767555167747349669, guid: 95c8b3f8c66cdb04eab6614270e512fa, type: 3}
+  - Id: recipe.food.goat_cheese
+    Name: Goat cheese
+    Category: Food
+    OutputId: ingredient.goat_cheese
+    Model: GoatCheese
+    PrefabPath: Tier01/Crafted/GoatCheese
+    UnlockSource: Normal mission; branch placement pending
+    Note: Food recipe/mastery, refined ingredient output; direct recovery not authored.
+    Slot: 
+    Tier: 1
+    Yield: 1
+    Hearts: 0
+    BaseSeconds: 300
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - food.milk.goat
+    - ingredient.rock_salt
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: food.milk.goat
+      Quantity: 3
+    - ItemId: ingredient.rock_salt
+      Quantity: 1
+    Visual: {fileID: 608820862433343209, guid: 5296a467dd9fdc845859e4acd0a877c5, type: 3}
+  - Id: recipe.food.mixed_milk_cheese
+    Name: Mixed-milk cheese
+    Category: Food
+    OutputId: ingredient.mixed_milk_cheese
+    Model: MixedMilkCheese
+    PrefabPath: Tier01/Crafted/MixedMilkCheese
+    UnlockSource: Normal mission; branch placement pending
+    Note: Food recipe/mastery, refined ingredient output; direct recovery not authored.
+      Optional recipe proposal.
+    Slot: 
+    Tier: 1
+    Yield: 1
+    Hearts: 0
+    BaseSeconds: 300
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - food.milk.cow
+    - food.milk.goat
+    - ingredient.rock_salt
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: food.milk.cow
+      Quantity: 1
+    - ItemId: food.milk.goat
+      Quantity: 1
+    - ItemId: ingredient.rock_salt
+      Quantity: 1
+    Visual: {fileID: 9120462280690894099, guid: 63c7f77613dc80f44a236a429ec7f41c, type: 3}
+  - Id: recipe.food.cow_yogurt
+    Name: Cow yogurt
+    Category: Food
+    OutputId: ingredient.cow_yogurt
+    Model: CowYogurt
+    PrefabPath: Tier01/Crafted/CowYogurt
+    UnlockSource: Normal mission; branch placement pending
+    Note: Food recipe/mastery, refined ingredient output; direct recovery not authored.
+    Slot: 
+    Tier: 1
+    Yield: 2
+    Hearts: 0
+    BaseSeconds: 60
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - food.milk.cow
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: food.milk.cow
+      Quantity: 2
+    Visual: {fileID: 2979582269083192696, guid: 1c5d11f8e45636943b09d3530699d268, type: 3}
+  - Id: recipe.food.toasted_pine_nuts
+    Name: Toasted pine nuts
+    Category: Food
+    OutputId: item.toasted_pine_nuts
+    Model: ToastedPineNuts
+    PrefabPath: Tier01/Crafted/ToastedPineNuts
+    UnlockSource: Normal mission; branch placement pending
+    Note: 
+    Slot: 
+    Tier: 1
+    Yield: 1
+    Hearts: 2
+    BaseSeconds: 20
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - ingredient.pine_nuts
+    - material.pine_branch
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: ingredient.pine_nuts
+      Quantity: 2
+    - ItemId: material.pine_branch
+      Quantity: 1
+    Visual: {fileID: 5150951725600726407, guid: 6ef15a2fa162e7c458707c20a1bcd39c, type: 3}
+  - Id: recipe.food.roasted_shrimp
+    Name: Roasted shrimp
+    Category: Food
+    OutputId: item.roasted_shrimp
+    Model: RoastedShrimp
+    PrefabPath: BalloonExclusive/Items/RoastedShrimp
+    UnlockSource: Optional balloon recipe; exact ingredient sources must be discovered
+      and accessible
+    Note: 
+    Slot: 
+    Tier: 1
+    Yield: 1
+    Hearts: 2
+    BaseSeconds: 3
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - ingredient.shrimp
+    - material.pine_branch
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: ingredient.shrimp
+      Quantity: 1
+    - ItemId: material.pine_branch
+      Quantity: 1
+    Visual: {fileID: 4545852586312437033, guid: e86f93dc46dae504e9f916db39b91150, type: 3}
+  - Id: recipe.food.shrimp_pie
+    Name: Shrimp pie
+    Category: Food
+    OutputId: item.shrimp_pie
+    Model: ShrimpPie
+    PrefabPath: BalloonExclusive/Items/ShrimpPie
+    UnlockSource: Optional balloon recipe; exact ingredient sources must be discovered
+      and accessible
+    Note: 
+    Slot: 
+    Tier: 1
+    Yield: 1
+    Hearts: 3
+    BaseSeconds: 3
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - food.milk.cow
+    - ingredient.shrimp
+    - ingredient.wheat
+    ConversionRecipeIds:
+    - recipe.food.cow_butter
+    - recipe.food.cow_cream
+    - recipe.material.wheat_flour
+    Inputs:
+    - ItemId: ingredient.shrimp
+      Quantity: 1
+    - ItemId: ingredient.wheat_flour
+      Quantity: 1
+    - ItemId: ingredient.cow_butter
+      Quantity: 1
+    Visual: {fileID: 598554920501394127, guid: b64f148d84116274b996a012d3524331, type: 3}
+  - Id: recipe.food.apple_oat_compote
+    Name: Apple-oat compote
+    Category: Food
+    OutputId: item.apple_oat_compote
+    Model: AppleOatCompote
+    PrefabPath: BalloonExclusive/Items/AppleOatCompote
+    UnlockSource: Optional balloon recipe; exact ingredient sources must be discovered
+      and accessible
+    Note: 
+    Slot: 
+    Tier: 1
+    Yield: 1
+    Hearts: 6
+    BaseSeconds: 3
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - food.apples
+    - food.milk.cow
+    - ingredient.oats
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: food.apples
+      Quantity: 3
+    - ItemId: ingredient.oats
+      Quantity: 2
+    - ItemId: food.milk.cow
+      Quantity: 1
+    Visual: {fileID: 6681605555259973281, guid: 522127ec2648ec54b903722ee65627bc, type: 3}
+  - Id: recipe.food.red_berry_oat_porridge
+    Name: Red-berry oat porridge
+    Category: Food
+    OutputId: item.red_berry_oat_porridge
+    Model: RedBerryOatPorridge
+    PrefabPath: BalloonExclusive/Items/RedBerryOatPorridge
+    UnlockSource: Optional balloon recipe; exact ingredient sources must be discovered
+      and accessible
+    Note: 
+    Slot: 
+    Tier: 1
+    Yield: 1
+    Hearts: 6
+    BaseSeconds: 3
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - food.berries
+    - food.milk.cow
+    - ingredient.oats
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: food.berries
+      Quantity: 3
+    - ItemId: ingredient.oats
+      Quantity: 2
+    - ItemId: food.milk.cow
+      Quantity: 1
+    Visual: {fileID: 631989695044322582, guid: 9c95aa0f7df30e84ca64b45fbe6e365c, type: 3}
+  - Id: recipe.food.premium_apple_pie
+    Name: Premium apple pie
+    Category: Food
+    OutputId: item.premium_apple_pie
+    Model: PremiumApplePie
+    PrefabPath: Tier01/Crafted/PremiumApplePie
+    UnlockSource: 'Bakery replacement recipe offer: 1% proposal; exactly one knowledge
+      unlock, never a stack'
+    Note: 8 gold per serving; 7200 gold per 1000; recipe 80 gold. Source gates apply
+      before random selection.
+    Slot: 
+    Tier: 1
+    Yield: 1
+    Hearts: 12
+    BaseSeconds: 3
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - food.apples
+    - food.milk.cow
+    - ingredient.wheat
+    ConversionRecipeIds:
+    - recipe.food.cow_butter
+    - recipe.food.cow_cream
+    - recipe.material.wheat_flour
+    Inputs:
+    - ItemId: ingredient.wheat_flour
+      Quantity: 2
+    - ItemId: food.apples
+      Quantity: 3
+    - ItemId: ingredient.cow_butter
+      Quantity: 1
+    Visual: {fileID: 7985027188201779, guid: 26a40cade50203c4f96da9e815145ebe, type: 3}
+  - Id: recipe.misc.pine_bird
+    Name: Pine bird sculpture
+    Category: Misc
+    OutputId: item.pine_bird
+    Model: PineBird
+    PrefabPath: Tier01/Crafted/PineBird
+    UnlockSource: Lumberjack L2
+    Note: 
+    Slot: 
+    Tier: 1
+    Yield: 1
+    Hearts: 0
+    BaseSeconds: 10
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - material.pine_log
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: material.pine_log
+      Quantity: 2
+    Visual: {fileID: 8207515047029193324, guid: bb5fc35fd1b31144281ee5254df6036e, type: 3}
+  - Id: recipe.misc.cord_charm
+    Name: Cord charm
+    Category: Misc
+    OutputId: item.cord_charm
+    Model: CordCharm
+    PrefabPath: Tier01/Crafted/CordCharm
+    UnlockSource: Normal mission; branch placement pending
+    Note: 
+    Slot: 
+    Tier: 1
+    Yield: 1
+    Hearts: 0
+    BaseSeconds: 10
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - material.flint
+    - material.hemp
+    - material.pebbles
+    ConversionRecipeIds:
+    - recipe.material.hemp_cord
+    - recipe.material.polished_pebble
+    Inputs:
+    - ItemId: item.polished_pebble
+      Quantity: 1
+    - ItemId: item.hemp_cord
+      Quantity: 1
+    Visual: {fileID: 690415587435012553, guid: 052bcc7692eed394fb40c6880bf0c9af, type: 3}
+  - Id: recipe.misc.rabbit_toy
+    Name: Rabbit toy
+    Category: Misc
+    OutputId: item.rabbit_toy
+    Model: RabbitToy
+    PrefabPath: Tier01/Crafted/RabbitToy
+    UnlockSource: Hunter H2
+    Note: 
+    Slot: 
+    Tier: 1
+    Yield: 1
+    Hearts: 0
+    BaseSeconds: 10
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - animal.rabbit.pelt
+    - material.hemp
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: animal.rabbit.pelt
+      Quantity: 2
+    - ItemId: material.hemp
+      Quantity: 1
+    Visual: {fileID: 557612161622189962, guid: 6918fd035cfcdc14c8d026e7c0ac304d, type: 3}
+  - Id: recipe.misc.pinecone_ornament
+    Name: Pine-cone ornament
+    Category: Misc
+    OutputId: item.pinecone_ornament
+    Model: PineconeOrnament
+    PrefabPath: Tier01/Crafted/PineconeOrnament
+    UnlockSource: Normal mission; branch placement pending
+    Note: 
+    Slot: 
+    Tier: 1
+    Yield: 1
+    Hearts: 0
+    BaseSeconds: 10
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - material.pine_branch
+    - material.pine_cone
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: material.pine_cone
+      Quantity: 2
+    - ItemId: material.pine_branch
+      Quantity: 1
+    Visual: {fileID: 7809824768585230125, guid: 68e9d230435fd0145829588603e14fbe, type: 3}
+  - Id: recipe.misc.pinecone_rabbit
+    Name: Pine-cone rabbit ornament
+    Category: Misc
+    OutputId: item.pinecone_rabbit
+    Model: PineconeRabbit
+    PrefabPath: BalloonExclusive/Items/PineconeRabbit
+    UnlockSource: Optional balloon recipe; exact ingredient sources must be discovered
+      and accessible
+    Note: 
+    Slot: 
+    Tier: 1
+    Yield: 1
+    Hearts: 0
+    BaseSeconds: 10
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - material.hemp
+    - material.pine_cone
+    - material.pine_log
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: material.pine_cone
+      Quantity: 1
+    - ItemId: material.pine_log
+      Quantity: 1
+    - ItemId: material.hemp
+      Quantity: 1
+    Visual: {fileID: 2766327955363118459, guid: 89a2ecc46bd2c6a4e93b25c84223f9b8, type: 3}
+  ExternalInputs:
+  - Id: food.milk.cow
+    Name: Cow milk
+    Model: CowMilk
+    Source: Ranch; require discovered settlement and reachable exact listing
+    PrefabPath: Tier01/Crafted/CowMilk
+    Visual: {fileID: 6869115657246401848, guid: 81e9a1b660c85fc409993bb4e52649d3, type: 3}
+  - Id: food.milk.goat
+    Name: Goat milk
+    Model: GoatMilk
+    Source: Ranch; require discovered settlement and reachable exact listing
+    PrefabPath: Tier01/Crafted/GoatMilk
+    Visual: {fileID: 1941393971610162614, guid: cd86c2426134ccc4c88383166d1ef035, type: 3}
+  - Id: ingredient.egg
+    Name: Egg
+    Model: Egg
+    Source: Ranch; require discovered settlement and reachable exact listing
+    PrefabPath: Tier01/Crafted/Egg
+    Visual: {fileID: 7272831434698444804, guid: 0e9c42308de52f34ca9d68a7c1ea6db4, type: 3}
+  - Id: ingredient.mushrooms
+    Name: Mushrooms
+    Model: Mushrooms
+    Source: Exact loose source discovery (region 4)
+    PrefabPath: Tier01/Crafted/Mushrooms
+    Visual: {fileID: 6617717019606375220, guid: 2ee4f8dbbf5a9734ab130e2643a8660f, type: 3}
+  - Id: ingredient.shrimp
+    Name: Shrimp
+    Model: Shrimp
+    Source: Tier-one fishery cash listing only; never a region fishing drop
+    PrefabPath: Tier01/Crafted/Shrimp
+    Visual: {fileID: 4695491963981330816, guid: b8a48a19e0cbcc94591b524cf502bdff, type: 3}
+  Models:
+  - Model: PinePlank
+    Triangles: 36
+    Width: 900
+    Height: 300
+  - Model: PineCharcoal
+    Triangles: 84
+    Width: 900
+    Height: 481
+  - Model: HempCord
+    Triangles: 1776
+    Width: 900
+    Height: 655
+  - Model: HempThread
+    Triangles: 3568
+    Width: 609
+    Height: 900
+  - Model: NettleThread
+    Triangles: 3568
+    Width: 609
+    Height: 900
+  - Model: HempCloth
+    Triangles: 132
+    Width: 900
+    Height: 357
+  - Model: NettleCloth
+    Triangles: 132
+    Width: 900
+    Height: 357
+  - Model: FineHempCloth
+    Triangles: 516
+    Width: 900
+    Height: 386
+  - Model: CuredRabbitPelt
+    Triangles: 160
+    Width: 900
+    Height: 300
+  - Model: FineRabbitPelt
+    Triangles: 244
+    Width: 900
+    Height: 300
+  - Model: RabbitLeather
+    Triangles: 172
+    Width: 900
+    Height: 300
+  - Model: FineRabbitLeather
+    Triangles: 256
+    Width: 900
+    Height: 300
+  - Model: PlantStuffing
+    Triangles: 252
+    Width: 900
+    Height: 407
+  - Model: PineBeam
+    Triangles: 204
+    Width: 900
+    Height: 300
+  - Model: PinePanel
+    Triangles: 60
+    Width: 900
+    Height: 750
+  - Model: LimestoneTiles
+    Triangles: 24
+    Width: 900
+    Height: 300
+  - Model: PolishedPebble
+    Triangles: 96
+    Width: 900
+    Height: 744
+  - Model: FiredBricks
+    Triangles: 36
+    Width: 900
+    Height: 450
+  - Model: ClayCup
+    Triangles: 600
+    Width: 900
+    Height: 672
+  - Model: WheatFlour
+    Triangles: 108
+    Width: 900
+    Height: 444
+  - Model: ReedBraid
+    Triangles: 1440
+    Width: 300
+    Height: 900
+  - Model: Mortar
+    Triangles: 108
+    Width: 900
+    Height: 444
+  - Model: PineAxeNormal
+    Triangles: 164
+    Width: 477
+    Height: 900
+  - Model: PineSlingshotNormal
+    Triangles: 132
+    Width: 622
+    Height: 900
+  - Model: PineRodNormal
+    Triangles: 240
+    Width: 345
+    Height: 900
+  - Model: RabbitHat
+    Triangles: 132
+    Width: 900
+    Height: 723
+  - Model: RabbitBoots
+    Triangles: 592
+    Width: 900
+    Height: 660
+  - Model: HempShirt
+    Triangles: 240
+    Width: 900
+    Height: 588
+  - Model: HempPants
+    Triangles: 144
+    Width: 698
+    Height: 900
+  - Model: StarterBackpack
+    Triangles: 540
+    Width: 626
+    Height: 900
+  - Model: AppleJuice
+    Triangles: 168
+    Width: 839
+    Height: 900
+  - Model: RoastedMushrooms
+    Triangles: 276
+    Width: 900
+    Height: 506
+  - Model: BerryOatCakes
+    Triangles: 272
+    Width: 900
+    Height: 300
+  - Model: RoastedRabbit
+    Triangles: 138
+    Width: 900
+    Height: 319
+  - Model: HerbTrout
+    Triangles: 398
+    Width: 900
+    Height: 300
+  - Model: RoastedRainbowTrout
+    Triangles: 326
+    Width: 900
+    Height: 300
+  - Model: RoastedLargemouthBass
+    Triangles: 206
+    Width: 900
+    Height: 347
+  - Model: RoastedBluegill
+    Triangles: 254
+    Width: 900
+    Height: 480
+  - Model: RoastedYellowPerch
+    Triangles: 206
+    Width: 900
+    Height: 300
+  - Model: StrawberryCowYogurtDrink
+    Triangles: 200
+    Width: 800
+    Height: 900
+  - Model: CowCheeseTart
+    Triangles: 804
+    Width: 900
+    Height: 327
+  - Model: CowCream
+    Triangles: 168
+    Width: 839
+    Height: 900
+  - Model: CowButter
+    Triangles: 24
+    Width: 900
+    Height: 470
+  - Model: CowCheese
+    Triangles: 132
+    Width: 900
+    Height: 366
+  - Model: GoatCheese
+    Triangles: 132
+    Width: 900
+    Height: 366
+  - Model: MixedMilkCheese
+    Triangles: 144
+    Width: 900
+    Height: 401
+  - Model: CowYogurt
+    Triangles: 168
+    Width: 839
+    Height: 900
+  - Model: ToastedPineNuts
+    Triangles: 432
+    Width: 900
+    Height: 494
+  - Model: RoastedShrimp
+    Triangles: 508
+    Width: 900
+    Height: 507
+  - Model: ShrimpPie
+    Triangles: 2196
+    Width: 900
+    Height: 452
+  - Model: AppleOatCompote
+    Triangles: 636
+    Width: 900
+    Height: 456
+  - Model: RedBerryOatPorridge
+    Triangles: 636
+    Width: 900
+    Height: 456
+  - Model: PremiumApplePie
+    Triangles: 840
+    Width: 900
+    Height: 349
+  - Model: PineBird
+    Triangles: 166
+    Width: 900
+    Height: 757
+  - Model: CordCharm
+    Triangles: 828
+    Width: 505
+    Height: 900
+  - Model: RabbitToy
+    Triangles: 380
+    Width: 497
+    Height: 900
+  - Model: PineconeOrnament
+    Triangles: 1102
+    Width: 542
+    Height: 900
+  - Model: PineconeRabbit
+    Triangles: 794
+    Width: 469
+    Height: 900
+  - Model: CowMilk
+    Triangles: 780
+    Width: 892
+    Height: 900
+  - Model: GoatMilk
+    Triangles: 792
+    Width: 892
+    Height: 900
+  - Model: Egg
+    Triangles: 100
+    Width: 665
+    Height: 900
+  - Model: Mushrooms
+    Triangles: 252
+    Width: 900
+    Height: 604
+  - Model: Shrimp
+    Triangles: 484
+    Width: 900
+    Height: 507
+  Sources:
+  - ItemId: material.pine_branch
+    Source: Exact loose source discovery
+    Regions: 01000000
+    Blocked: 0
+  - ItemId: animal.rabbit.pelt
+    Source: Exact loose source discovery
+    Regions: 01000000
+    Blocked: 0
+  - ItemId: food.apples
+    Source: Exact loose source discovery
+    Regions: 01000000
+    Blocked: 0
+  - ItemId: material.hemp
+    Source: Exact loose source discovery
+    Regions: 02000000
+    Blocked: 0
+  - ItemId: material.flint
+    Source: Exact loose source discovery
+    Regions: 02000000
+    Blocked: 0
+  - ItemId: material.pine_cone
+    Source: Exact loose source discovery
+    Regions: 02000000
+    Blocked: 0
+  - ItemId: material.nettle_fiber
+    Source: Exact loose source discovery
+    Regions: 03000000
+    Blocked: 0
+  - ItemId: material.clay
+    Source: Exact loose source discovery
+    Regions: 03000000
+    Blocked: 0
+  - ItemId: ingredient.rock_salt
+    Source: Exact loose source discovery
+    Regions: 03000000
+    Blocked: 0
+  - ItemId: material.limestone
+    Source: Exact loose source discovery
+    Regions: 04000000
+    Blocked: 0
+  - ItemId: food.strawberries
+    Source: Exact loose source discovery
+    Regions: 04000000
+    Blocked: 0
+  - ItemId: ingredient.mushrooms
+    Source: Exact loose source discovery
+    Regions: 04000000
+    Blocked: 0
+  - ItemId: ingredient.oats
+    Source: Exact loose source discovery
+    Regions: 05000000
+    Blocked: 0
+  - ItemId: material.pebbles
+    Source: Exact loose source discovery
+    Regions: 05000000
+    Blocked: 0
+  - ItemId: food.berries
+    Source: Exact loose source discovery
+    Regions: 05000000
+    Blocked: 0
+  - ItemId: material.reeds
+    Source: Exact loose source discovery
+    Regions: 06000000
+    Blocked: 0
+  - ItemId: ingredient.wheat
+    Source: Exact loose source discovery
+    Regions: 06000000
+    Blocked: 0
+  - ItemId: material.sand
+    Source: Exact loose source discovery
+    Regions: 06000000
+    Blocked: 0
+  - ItemId: material.pine_branch
+    Source: Pine chopping
+    Regions: 010000000200000003000000040000000500000006000000
+    Blocked: 0
+  - ItemId: material.pine_log
+    Source: Pine chopping
+    Regions: 010000000200000003000000040000000500000006000000
+    Blocked: 0
+  - ItemId: ingredient.pine_nuts
+    Source: Pine chopping
+    Regions: 010000000200000003000000040000000500000006000000
+    Blocked: 0
+  - ItemId: animal.rabbit.pelt
+    Source: Rabbit hunting
+    Regions: 010000000200000003000000040000000500000006000000
+    Blocked: 0
+  - ItemId: animal.rabbit.meat
+    Source: Rabbit hunting
+    Regions: 010000000200000003000000040000000500000006000000
+    Blocked: 0
+  - ItemId: material.bone
+    Source: Rabbit hunting
+    Regions: 010000000200000003000000040000000500000006000000
+    Blocked: 0
+  - ItemId: ingredient.animal_fat
+    Source: Rabbit hunting
+    Regions: 010000000200000003000000040000000500000006000000
+    Blocked: 0
+  - ItemId: fish.rainbow_trout
+    Source: Exact local fishing pair
+    Regions: 010000000300000005000000
+    Blocked: 0
+  - ItemId: fish.largemouth_bass
+    Source: Exact local fishing pair
+    Regions: 020000000300000006000000
+    Blocked: 0
+  - ItemId: fish.bluegill
+    Source: Exact local fishing pair
+    Regions: 010000000400000006000000
+    Blocked: 0
+  - ItemId: fish.yellow_perch
+    Source: Exact local fishing pair
+    Regions: 020000000400000005000000
+    Blocked: 0
+  - ItemId: food.milk.cow
+    Source: Ranch; require discovered settlement and reachable exact listing
+    Regions: 
+    Blocked: 0
+  - ItemId: food.milk.goat
+    Source: Ranch; require discovered settlement and reachable exact listing
+    Regions: 
+    Blocked: 0
+  - ItemId: ingredient.egg
+    Source: Ranch; require discovered settlement and reachable exact listing
+    Regions: 
+    Blocked: 0
+  - ItemId: ingredient.tea_herbs
+    Source: Farm; require region 4 discovered, settlement reached and exact listing
+    Regions: 04000000
+    Blocked: 0
+  - ItemId: ingredient.shrimp
+    Source: Tier-one fishery cash listing only; never a region fishing drop
+    Regions: 
+    Blocked: 0

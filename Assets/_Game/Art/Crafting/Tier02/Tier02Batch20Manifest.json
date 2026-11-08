@@ -1,0 +1,158 @@
+{
+  "Revision": 1,
+  "Batch": 20,
+  "Scope": "5 passive Food art outputs; no gameplay value or shared shader changes.",
+  "BlenderVersion": "5.2.3 LTS",
+  "Items": [
+    {
+      "Name": "BottledHoneyTea",
+      "Model": "BottledHoneyTea",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/BottledHoneyTea.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/BottledHoneyTeaPalette.png",
+      "PrefabPath": "Tier02/Food/BottledHoneyTea",
+      "Triangles": 1124,
+      "BoundsMin": [
+        -0.25,
+        -0.48,
+        -0.212774
+      ],
+      "BoundsMax": [
+        0.25,
+        0.51,
+        0.205
+      ],
+      "DisplayName": "Bottled honey tea",
+      "ItemId": "",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-G18",
+      "MissionRegion": 12,
+      "IngredientBrief": "1 Tea herb + 1 Honey + 1 Glass bottle -> 1",
+      "Role": "Food",
+      "Representation": "display",
+      "VesselPolicy": "Illustrative serving vessel/closure; only the tea recipe explicitly consumes Glass bottle",
+      "DepictedPortions": 1,
+      "BindingStatus": "Passive Food art; canonical output IDs/live bindings and gameplay pending"
+    },
+    {
+      "Name": "CarrotSoup",
+      "Model": "CarrotSoup",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/CarrotSoup.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/CarrotSoupPalette.png",
+      "PrefabPath": "Tier02/Food/CarrotSoup",
+      "Triangles": 768,
+      "BoundsMin": [
+        -0.365,
+        -0.2,
+        -0.365
+      ],
+      "BoundsMax": [
+        0.365,
+        0.138,
+        0.365
+      ],
+      "DisplayName": "Carrot soup",
+      "ItemId": "",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-G4",
+      "MissionRegion": 8,
+      "IngredientBrief": "3 Carrots + 1 Rock salt -> 1",
+      "Role": "Food",
+      "Representation": "display",
+      "VesselPolicy": "Illustrative serving vessel/closure; only the tea recipe explicitly consumes Glass bottle",
+      "DepictedPortions": 1,
+      "BindingStatus": "Passive Food art; canonical output IDs/live bindings and gameplay pending"
+    },
+    {
+      "Name": "BarleyBread",
+      "Model": "BarleyBread",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/BarleyBread.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/BarleyBreadPalette.png",
+      "PrefabPath": "Tier02/Food/BarleyBread",
+      "Triangles": 1392,
+      "BoundsMin": [
+        -0.43,
+        -0.125,
+        -0.255
+      ],
+      "BoundsMax": [
+        0.43,
+        0.231791,
+        0.255
+      ],
+      "DisplayName": "Barley bread",
+      "ItemId": "",
+      "RecipeId": "recipe.food.barley_bread",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-G10",
+      "MissionRegion": 10,
+      "IngredientBrief": "2 Barley flour + 1 Water -> 2",
+      "Role": "Food",
+      "Representation": "display",
+      "VesselPolicy": "Illustrative serving vessel/closure; only the tea recipe explicitly consumes Glass bottle",
+      "DepictedPortions": 1,
+      "BindingStatus": "Passive Food art; canonical output IDs/live bindings and gameplay pending"
+    },
+    {
+      "Name": "TomatoRiceBowl",
+      "Model": "TomatoRiceBowl",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/TomatoRiceBowl.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/TomatoRiceBowlPalette.png",
+      "PrefabPath": "Tier02/Food/TomatoRiceBowl",
+      "Triangles": 3664,
+      "BoundsMin": [
+        -0.365,
+        -0.2,
+        -0.365
+      ],
+      "BoundsMax": [
+        0.365,
+        0.174977,
+        0.365
+      ],
+      "DisplayName": "Tomato rice bowl",
+      "ItemId": "",
+      "RecipeId": "recipe.food.tomato_rice_bowl",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-G13",
+      "MissionRegion": 11,
+      "IngredientBrief": "2 Rice + 2 Tomatoes -> 2",
+      "Role": "Food",
+      "Representation": "display",
+      "VesselPolicy": "Illustrative serving vessel/closure; only the tea recipe explicitly consumes Glass bottle",
+      "DepictedPortions": 1,
+      "BindingStatus": "Passive Food art; canonical output IDs/live bindings and gameplay pending"
+    },
+    {
+      "Name": "HoneyGlazedCarrots",
+      "Model": "HoneyGlazedCarrots",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/HoneyGlazedCarrots.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/HoneyGlazedCarrotsPalette.png",
+      "PrefabPath": "Tier02/Food/HoneyGlazedCarrots",
+      "Triangles": 1400,
+      "BoundsMin": [
+        -0.365,
+        -0.13,
+        -0.365
+      ],
+      "BoundsMax": [
+        0.365,
+        0.09028,
+        0.365
+      ],
+      "DisplayName": "Honey-glazed carrots",
+      "ItemId": "",
+      "RecipeId": "recipe.food.honey_glazed_carrots",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-G14",
+      "MissionRegion": 11,
+      "IngredientBrief": "3 Carrots + 1 Honey -> 2",
+      "Role": "Food",
+      "Representation": "display",
+      "VesselPolicy": "Illustrative serving vessel/closure; only the tea recipe explicitly consumes Glass bottle",
+      "DepictedPortions": 1,
+      "BindingStatus": "Passive Food art; canonical output IDs/live bindings and gameplay pending"
+    }
+  ]
+}

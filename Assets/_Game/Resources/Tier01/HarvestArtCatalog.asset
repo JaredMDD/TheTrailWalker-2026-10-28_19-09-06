@@ -1,0 +1,112 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90ef465780e53554c9cc43831c49fe76, type: 3}
+  m_Name: HarvestArtCatalog
+  m_EditorClassIdentifier: Assembly-CSharp::TheTrailWalker.Harvest.Tier1HarvestArtCatalog
+  PineTrunk: {fileID: 6578945829264663430, guid: 1350a9e991a675a48bffca832e28cfea, type: 3}
+  MassivePineTrunk: {fileID: 6684516704732537494, guid: f1c7a7b13ac28c140a552694f8e90113, type: 3}
+  Rabbit: {fileID: 8627473923427521970, guid: 23ae3858428958342ae810e2da77b88d, type: 3}
+  FishingPoint: {fileID: 2234085564620040835, guid: 19cbf831797025e41a9560f681635432, type: 3}
+  TreeDrops:
+  - ItemId: material.pine_branch
+    Visual: {fileID: 5871780582022655336, guid: ecc524244b4e17844a6986f1e61ec368, type: 3}
+    NormalMinBundles: 2
+    NormalMaxBundles: 5
+    EliteMinBundles: 4
+    EliteMaxBundles: 10
+  - ItemId: material.pine_log
+    Visual: {fileID: 4833560147716448907, guid: 30b580a3198d4c14ab51fe536f1239bb, type: 3}
+    NormalMinBundles: 2
+    NormalMaxBundles: 5
+    EliteMinBundles: 4
+    EliteMaxBundles: 10
+  - ItemId: ingredient.pine_nuts
+    Visual: {fileID: 4228002133633898675, guid: 71f88b4b8db91404f8f3b676349eda60, type: 3}
+    NormalMinBundles: 2
+    NormalMaxBundles: 4
+    EliteMinBundles: 4
+    EliteMaxBundles: 6
+  HuntingDrops:
+  - ItemId: animal.rabbit.pelt
+    Visual: {fileID: 8599905368063122502, guid: 059a0c51dfc03d24cbef52b09be12b3e, type: 3}
+    NormalMinBundles: 2
+    NormalMaxBundles: 5
+    EliteMinBundles: 4
+    EliteMaxBundles: 10
+  - ItemId: animal.rabbit.meat
+    Visual: {fileID: 1386407913973925770, guid: 1e27d1202e1a907408bf28aab5b30669, type: 3}
+    NormalMinBundles: 2
+    NormalMaxBundles: 5
+    EliteMinBundles: 4
+    EliteMaxBundles: 10
+  - ItemId: material.bone
+    Visual: {fileID: 7526022949712767461, guid: 88e891be1fc43c140b4dd01eadb6199f, type: 3}
+    NormalMinBundles: 2
+    NormalMaxBundles: 5
+    EliteMinBundles: 4
+    EliteMaxBundles: 10
+  - ItemId: ingredient.animal_fat
+    Visual: {fileID: 873307165850348373, guid: df0cdca62b1477d42aefbf08aeb63a4d, type: 3}
+    NormalMinBundles: 1
+    NormalMaxBundles: 3
+    EliteMinBundles: 1
+    EliteMaxBundles: 6
+  FishVisuals:
+  - ItemId: fish.rainbow_trout
+    Visual: {fileID: 6519992195243924696, guid: fdce551fe1938524ca63d5e65decd5e1, type: 3}
+    NormalMinBundles: 0
+    NormalMaxBundles: 0
+    EliteMinBundles: 0
+    EliteMaxBundles: 0
+  - ItemId: fish.largemouth_bass
+    Visual: {fileID: 7565689612803798636, guid: fdf753dba29bcf840a2dc543e642122b, type: 3}
+    NormalMinBundles: 0
+    NormalMaxBundles: 0
+    EliteMinBundles: 0
+    EliteMaxBundles: 0
+  - ItemId: fish.bluegill
+    Visual: {fileID: 6569064081467610141, guid: b4e355b07a5c95645aad16065f11664f, type: 3}
+    NormalMinBundles: 0
+    NormalMaxBundles: 0
+    EliteMinBundles: 0
+    EliteMaxBundles: 0
+  - ItemId: fish.yellow_perch
+    Visual: {fileID: 5204037396577327135, guid: 1af791d26ff9d114bb7500047a261321, type: 3}
+    NormalMinBundles: 0
+    NormalMaxBundles: 0
+    EliteMinBundles: 0
+    EliteMaxBundles: 0
+  RegionFishPairs:
+  - RegionNumber: 1
+    FishA: fish.rainbow_trout
+    FishB: fish.bluegill
+  - RegionNumber: 2
+    FishA: fish.largemouth_bass
+    FishB: fish.yellow_perch
+  - RegionNumber: 3
+    FishA: fish.rainbow_trout
+    FishB: fish.largemouth_bass
+  - RegionNumber: 4
+    FishA: fish.bluegill
+    FishB: fish.yellow_perch
+  - RegionNumber: 5
+    FishA: fish.rainbow_trout
+    FishB: fish.yellow_perch
+  - RegionNumber: 6
+    FishA: fish.largemouth_bass
+    FishB: fish.bluegill
+  UnitsPerBundle: 1000
+  MassiveTreeMultiplier: 50
+  FishNormalMinBundles: 2
+  FishNormalMaxBundles: 5
+  FishEliteMinBundles: 4
+  FishEliteMaxBundles: 10

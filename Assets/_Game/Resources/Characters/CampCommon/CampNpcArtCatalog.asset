@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec365c1bb44736342884fc8132c08d85, type: 3}
+  m_Name: CampNpcArtCatalog
+  m_EditorClassIdentifier: Assembly-CSharp::TheTrailWalker.CampNpcArtCatalog
+  MaleBase: {fileID: 5388943371033701394, guid: 531fd1f8c05dc3a4f946b2e597c2209b, type: 3}
+  FemaleBase: {fileID: 9155550413158362729, guid: 9d9a298e7e13aff44881b42e3c674ca0, type: 3}
+  SkinTones:
+  - {fileID: 2100000, guid: b0336a00d5f3c1a4a9e87a046c2c33cc, type: 2}
+  - {fileID: 2100000, guid: ad9589888357050429ddd8a25ff4211e, type: 2}
+  - {fileID: 2100000, guid: 9d9ade203ab6e1148a21109c9a1b1d8c, type: 2}
+  - {fileID: 2100000, guid: 6c10f143ded71a540acb60ce8d5ca7a3, type: 2}
+  - {fileID: 2100000, guid: 9eae1951207db1c4888b80846727e12c, type: 2}
+  - {fileID: 2100000, guid: 01bef2bba63e86747bea3404818f2e49, type: 2}
+  HairColors:
+  - {fileID: 2100000, guid: 91a4c4e3d35e6da49a6f45c8c3b6a0ae, type: 2}
+  - {fileID: 2100000, guid: 67e4099805d31b545a821abcc6cb98bc, type: 2}
+  - {fileID: 2100000, guid: f8409a04ae662f7499e21ce83c8fe606, type: 2}
+  - {fileID: 2100000, guid: 6a3dd5359377e4044a452a03ef8f44c7, type: 2}
+  OutfitStudies:
+  - Name: Tier00Rags
+    VisualTier: 0
+    Male: {fileID: 5388943371033701394, guid: 531fd1f8c05dc3a4f946b2e597c2209b, type: 3}
+    Female: {fileID: 9155550413158362729, guid: 9d9a298e7e13aff44881b42e3c674ca0, type: 3}
+    Backpack: {fileID: 2564530060482614350, guid: e6cba92ada40d7c4b9f5d63f251d2414, type: 3}
+    ClothingMaterial: {fileID: 2100000, guid: 9ce326a0ac94a824f814e941cbe35992, type: 2}
+  - Name: Tier01HempRabbit
+    VisualTier: 1
+    Male: {fileID: 5450661337042721717, guid: dcba2ee1056f702438b27056362c8aca, type: 3}
+    Female: {fileID: 1940719395605782162, guid: 2a0f59e48fa1aaa43a89c80b79cbe751, type: 3}
+    Backpack: {fileID: 1719861534090254194, guid: 4af5a8c82a609a74aa031712bd81f19c, type: 3}
+    ClothingMaterial: {fileID: 2100000, guid: 5c8cb9fb7ad1fc44394600eb29cd50b5, type: 2}
+  - Name: Tier02FlaxBeaver
+    VisualTier: 2
+    Male: {fileID: 7021425078624500893, guid: b84e6e0685f7c3e46941db4134a972d2, type: 3}
+    Female: {fileID: 173963268173333045, guid: ccfcb637f103cd84e81a85525fd62fb5, type: 3}
+    Backpack: {fileID: 3324175543490684066, guid: 15c675cd6814ba544a5a2473aaffb4d5, type: 3}
+    ClothingMaterial: {fileID: 2100000, guid: ab60f82c595ac1143a7eb0bb3fbb0e8b, type: 2}
+  - Name: Tier03CottonFeather
+    VisualTier: 3
+    Male: {fileID: 5126799218873862619, guid: d681104c11fc017448752186d50221e5, type: 3}
+    Female: {fileID: 1815759802599528884, guid: dfc425058c2c4e04fba9ddb35d766c16, type: 3}
+    Backpack: {fileID: 731034021909643881, guid: 50163b3a34712884cbe3a952cac33a69, type: 3}
+    ClothingMaterial: {fileID: 2100000, guid: b539214b6b19ebb4881426a3fa22f593, type: 2}
+  - Name: Tier04CottonBoar
+    VisualTier: 4
+    Male: {fileID: 1012943167694883131, guid: f11a53a8a1cebc048855d6d384673da2, type: 3}
+    Female: {fileID: 8111413732605746970, guid: 3bdfda438c2adbb4a9860551a06d5900, type: 3}
+    Backpack: {fileID: 3227064193843268990, guid: 3f8bc4187b8d30e439f813c0a1219f22, type: 3}
+    ClothingMaterial: {fileID: 2100000, guid: 4ce209b78acc8554bb284addee7874be, type: 2}
+  FutureSelectionRule: 'ART ONLY. Future implementation: tier-zero rags always available;
+    any learned hat/boots/shirt/pants recipe discovers that matching full clothing
+    set. Select a whole eligible set, never mixed clothing pieces. Select backpack
+    separately from its own learned recipe IDs, independent of outfit tier. Owning
+    gear, visiting regions, quality, mastery, or knowing a backpack recipe does not
+    discover a clothing set. Tiers 2-4 here are visual studies, not authored gameplay
+    recipe bindings. No selection, animation, spawning or persistence logic is implemented.'

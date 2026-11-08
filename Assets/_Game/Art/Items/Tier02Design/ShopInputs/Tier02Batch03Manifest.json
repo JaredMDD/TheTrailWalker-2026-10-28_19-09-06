@@ -1,0 +1,82 @@
+{
+  "Revision": 1,
+  "Batch": 3,
+  "Scope": "Three passive shop-input assets; no recipes/stats/sources/footprints changed.",
+  "BlenderVersion": "5.2.3 LTS",
+  "Items": [
+    {
+      "Name": "Lavender",
+      "Model": "Lavender",
+      "SourcePath": "Assets/_Game/Art/Items/Tier02Design/ShopInputs/Lavender.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/LavenderPalette.png",
+      "PrefabPath": "Tier02/ShopInputs/Lavender",
+      "Triangles": 1820,
+      "BoundsMin": [
+        -0.286252,
+        -0.430579,
+        -0.071839
+      ],
+      "BoundsMax": [
+        0.314432,
+        0.579,
+        0.07708
+      ],
+      "DisplayName": "Lavender",
+      "ItemId": "",
+      "RuntimeBinding": "Passive art only; runtime IDs/stock binding need content review",
+      "SourceService": "Farm",
+      "SourceGate": "Discover region 10",
+      "SourceRegions": [
+        10
+      ]
+    },
+    {
+      "Name": "Crab",
+      "Model": "Crab",
+      "SourcePath": "Assets/_Game/Art/Items/Tier02Design/ShopInputs/Crab.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/CrabPalette.png",
+      "PrefabPath": "Tier02/ShopInputs/Crab",
+      "Triangles": 1716,
+      "BoundsMin": [
+        -0.8212,
+        -0.4716,
+        -0.120231
+      ],
+      "BoundsMax": [
+        0.821018,
+        0.638223,
+        0.099861
+      ],
+      "DisplayName": "Crab",
+      "ItemId": "",
+      "RuntimeBinding": "Passive art only; runtime IDs/stock binding need content review",
+      "SourceService": "Fishery",
+      "SourceGate": "Discover a tier-two region",
+      "SourceRegions": []
+    },
+    {
+      "Name": "DuckMeat",
+      "Model": "DuckMeat",
+      "SourcePath": "Assets/_Game/Art/Items/Tier02Design/ShopInputs/DuckMeat.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/DuckMeatPalette.png",
+      "PrefabPath": "Tier02/ShopInputs/DuckMeat",
+      "Triangles": 420,
+      "BoundsMin": [
+        -0.44,
+        -0.255,
+        -0.14
+      ],
+      "BoundsMax": [
+        0.43,
+        0.255,
+        0.14
+      ],
+      "DisplayName": "Duck meat",
+      "ItemId": "ranch.duck_meat",
+      "RuntimeBinding": "Passive art only; runtime IDs/stock binding need content review",
+      "SourceService": "Ranch",
+      "SourceGate": "Discover a tier-two region",
+      "SourceRegions": []
+    }
+  ]
+}

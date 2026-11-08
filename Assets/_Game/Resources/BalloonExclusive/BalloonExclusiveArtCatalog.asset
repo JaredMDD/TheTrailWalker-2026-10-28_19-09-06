@@ -1,0 +1,934 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb780d8f7bc2498498c3088017a942d3, type: 3}
+  m_Name: BalloonExclusiveArtCatalog
+  m_EditorClassIdentifier: Assembly-CSharp::TheTrailWalker.BalloonExclusiveArtCatalog
+  Outputs:
+  - RecipeId: recipe.food.roasted_shrimp
+    OutputId: item.roasted_shrimp
+    Name: Roasted shrimp
+    Category: Food
+    IngredientBrief: 1 Shrimp + 1 Pine branch -> 1
+    Kind: PreparedFood
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 1
+    Yield: 1
+    HeartsPerServing: 2
+    FutureTierArtOnly: 0
+    Consumable: 1
+    Visual: {fileID: 4545852586312437033, guid: e86f93dc46dae504e9f916db39b91150, type: 3}
+  - RecipeId: recipe.food.shrimp_pie
+    OutputId: item.shrimp_pie
+    Name: Shrimp pie
+    Category: Food
+    IngredientBrief: 1 Shrimp + 1 Wheat flour + 1 Cow butter -> 1
+    Kind: PreparedFood
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 1
+    Yield: 1
+    HeartsPerServing: 3
+    FutureTierArtOnly: 0
+    Consumable: 1
+    Visual: {fileID: 598554920501394127, guid: b64f148d84116274b996a012d3524331, type: 3}
+  - RecipeId: recipe.food.roasted_crab
+    OutputId: item.roasted_crab
+    Name: Roasted crab
+    Category: Food
+    IngredientBrief: 1 Crab + 2 Birch branches -> 1
+    Kind: PreparedFood
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 2
+    Yield: 1
+    HeartsPerServing: 3
+    FutureTierArtOnly: 0
+    Consumable: 1
+    Visual: {fileID: 1529605741565284207, guid: c62a8a0bcf9908549b833d5978b5bfdc, type: 3}
+  - RecipeId: recipe.food.creamy_crab_soup
+    OutputId: item.creamy_crab_soup
+    Name: Creamy crab soup
+    Category: Food
+    IngredientBrief: 1 Crab + 1 Cow cream + 1 Carrot -> 1
+    Kind: PreparedFood
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 2
+    Yield: 1
+    HeartsPerServing: 4
+    FutureTierArtOnly: 0
+    Consumable: 1
+    Visual: {fileID: 3591330059713291303, guid: 6fe8a6e7f2060ca43b6ca6ae7a07b681, type: 3}
+  - RecipeId: recipe.food.honey_blackberry_biscuits
+    OutputId: item.honey_blackberry_biscuits
+    Name: Honey-blackberry biscuits
+    Category: Food
+    IngredientBrief: 2 Wheat flour + 1 Honey + 1 Blackberry -> 2
+    Kind: PreparedFood
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 2
+    Yield: 2
+    HeartsPerServing: 3
+    FutureTierArtOnly: 0
+    Consumable: 1
+    Visual: {fileID: 718124527377405962, guid: 7a3e2c375b4a68c4293ccd39a551eb22, type: 3}
+  - RecipeId: recipe.food.roasted_squid
+    OutputId: item.roasted_squid
+    Name: Roasted squid
+    Category: Food
+    IngredientBrief: 1 Squid + 3 Mesquite branches -> 1
+    Kind: PreparedFood
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 3
+    Yield: 1
+    HeartsPerServing: 4
+    FutureTierArtOnly: 0
+    Consumable: 1
+    Visual: {fileID: 2764675813082396186, guid: e2ce6934f39af4e4d82651134a86ff6f, type: 3}
+  - RecipeId: recipe.food.squid_rice_bowl
+    OutputId: item.squid_rice_bowl
+    Name: Squid rice bowl
+    Category: Food
+    IngredientBrief: 1 Squid + 1 Rice + 1 Green chili -> 1
+    Kind: PreparedFood
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 3
+    Yield: 1
+    HeartsPerServing: 5
+    FutureTierArtOnly: 0
+    Consumable: 1
+    Visual: {fileID: 4277004644376870591, guid: 0685a0007fb5f0148b62c2a67e3458d6, type: 3}
+  - RecipeId: recipe.food.mint_cow_cheese_flatbread
+    OutputId: item.mint_cow_cheese_flatbread
+    Name: Mint cow-cheese flatbread
+    Category: Food
+    IngredientBrief: 1 Wheat flour + 1 Cow cheese + 1 Wild mint -> 1
+    Kind: PreparedFood
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 3
+    Yield: 1
+    HeartsPerServing: 4
+    FutureTierArtOnly: 0
+    Consumable: 1
+    Visual: {fileID: 5904746652096499705, guid: ad0bce5261476144b8d4a03d9cc20588, type: 3}
+  - RecipeId: recipe.food.roasted_lobster
+    OutputId: item.roasted_lobster
+    Name: Roasted lobster
+    Category: Food
+    IngredientBrief: 1 Lobster + 1 Oak log + 2 Oak branches -> 1
+    Kind: PreparedFood
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 4
+    Yield: 1
+    HeartsPerServing: 6
+    FutureTierArtOnly: 0
+    Consumable: 1
+    Visual: {fileID: 6429540043550238148, guid: 229fc3a910d6521438e0677b0d383a99, type: 3}
+  - RecipeId: recipe.food.lobster_rice_bowl
+    OutputId: item.lobster_rice_bowl
+    Name: Lobster rice bowl
+    Category: Food
+    IngredientBrief: 1 Lobster + 1 Rice + 1 Seaweed -> 1
+    Kind: PreparedFood
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 4
+    Yield: 1
+    HeartsPerServing: 6
+    FutureTierArtOnly: 0
+    Consumable: 1
+    Visual: {fileID: 7545666633660540849, guid: 63ea0f147ae839f4cab01d063b958b10, type: 3}
+  - RecipeId: recipe.food.cacao_coconut_tart
+    OutputId: item.cacao_coconut_tart
+    Name: Cacao-coconut tart
+    Category: Food
+    IngredientBrief: 1 Cacao powder + 1 Coconut + 1 Wheat flour -> 1
+    Kind: PreparedFood
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 4
+    Yield: 1
+    HeartsPerServing: 6
+    FutureTierArtOnly: 0
+    Consumable: 1
+    Visual: {fileID: 1140041919284942708, guid: dc37e2a4e2222124595a6640583d732a, type: 3}
+  - RecipeId: recipe.food.apple_oat_compote
+    OutputId: item.apple_oat_compote
+    Name: Apple-oat compote
+    Category: Food
+    IngredientBrief: 3 Apples + 2 Oats + 1 Cow milk -> 1
+    Kind: PreparedFood
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 1
+    Yield: 1
+    HeartsPerServing: 6
+    FutureTierArtOnly: 0
+    Consumable: 1
+    Visual: {fileID: 6681605555259973281, guid: 522127ec2648ec54b903722ee65627bc, type: 3}
+  - RecipeId: recipe.food.red_berry_oat_porridge
+    OutputId: item.red_berry_oat_porridge
+    Name: Red-berry oat porridge
+    Category: Food
+    IngredientBrief: 3 Red berries + 2 Oats + 1 Cow milk -> 1
+    Kind: PreparedFood
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 1
+    Yield: 1
+    HeartsPerServing: 6
+    FutureTierArtOnly: 0
+    Consumable: 1
+    Visual: {fileID: 631989695044322582, guid: 9c95aa0f7df30e84ca64b45fbe6e365c, type: 3}
+  - RecipeId: recipe.food.beaver_barley_hotpot
+    OutputId: item.beaver_barley_hotpot
+    Name: Beaver-barley hotpot
+    Category: Food
+    IngredientBrief: 2 Raw beaver meat + 2 Barley + 1 Carrot -> 1
+    Kind: PreparedFood
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 2
+    Yield: 1
+    HeartsPerServing: 7
+    FutureTierArtOnly: 0
+    Consumable: 1
+    Visual: {fileID: 880750226656757624, guid: 7ebccf8ead650494eaf0b2968f656b79, type: 3}
+  - RecipeId: recipe.food.blackberry_honey_oats
+    OutputId: item.blackberry_honey_oats
+    Name: Blackberry-honey oats
+    Category: Food
+    IngredientBrief: 3 Blackberries + 2 Oats + 1 Honey -> 1
+    Kind: PreparedFood
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 2
+    Yield: 1
+    HeartsPerServing: 7
+    FutureTierArtOnly: 0
+    Consumable: 1
+    Visual: {fileID: 5369272712217621389, guid: b7effe1636e560d4685d34efd3e2cfb6, type: 3}
+  - RecipeId: recipe.food.turkey_bean_bowl
+    OutputId: item.turkey_bean_bowl
+    Name: Turkey-bean bowl
+    Category: Food
+    IngredientBrief: 2 Raw turkey meat + 2 Beans + 1 Corn flour -> 1
+    Kind: PreparedFood
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 3
+    Yield: 1
+    HeartsPerServing: 8
+    FutureTierArtOnly: 0
+    Consumable: 1
+    Visual: {fileID: 1815022685118513515, guid: 4248afedb02ab0249a8059deb16f0aa3, type: 3}
+  - RecipeId: recipe.food.pumpkin_chickpea_pot
+    OutputId: item.pumpkin_chickpea_pot
+    Name: Pumpkin-chickpea pot
+    Category: Food
+    IngredientBrief: 2 Pumpkins + 2 Chickpeas + 1 Cow cheese -> 1
+    Kind: PreparedFood
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 3
+    Yield: 1
+    HeartsPerServing: 8
+    FutureTierArtOnly: 0
+    Consumable: 1
+    Visual: {fileID: 8058086411299909817, guid: 923c4a4b1352ed4408015e26245e5c2e, type: 3}
+  - RecipeId: recipe.food.boar_potato_chili
+    OutputId: item.boar_potato_chili
+    Name: Boar-potato chili
+    Category: Food
+    IngredientBrief: 2 Raw boar meat + 2 Potatoes + 1 Green chili -> 1
+    Kind: PreparedFood
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 4
+    Yield: 1
+    HeartsPerServing: 9
+    FutureTierArtOnly: 0
+    Consumable: 1
+    Visual: {fileID: 6668400583466336377, guid: e3c3c35180b7b044887fef70060f0942, type: 3}
+  - RecipeId: recipe.food.coconut_cacao_pudding
+    OutputId: item.coconut_cacao_pudding
+    Name: Coconut-cacao pudding
+    Category: Food
+    IngredientBrief: 2 Coconuts + 1 Cacao powder + 1 Cow milk -> 1
+    Kind: PreparedFood
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 4
+    Yield: 1
+    HeartsPerServing: 10
+    FutureTierArtOnly: 0
+    Consumable: 1
+    Visual: {fileID: 2895902685636023400, guid: 3514e0656aa363e4694ff2cca4f5744d, type: 3}
+  - RecipeId: recipe.misc.pinecone_rabbit
+    OutputId: item.pinecone_rabbit
+    Name: Pine-cone rabbit ornament
+    Category: Misc
+    IngredientBrief: 1 Pine cone + 1 Pine log + 1 Hemp fiber -> 1
+    Kind: Misc
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 1
+    Yield: 1
+    HeartsPerServing: 0
+    FutureTierArtOnly: 0
+    Consumable: 0
+    Visual: {fileID: 2766327955363118459, guid: 89a2ecc46bd2c6a4e93b25c84223f9b8, type: 3}
+  - RecipeId: recipe.misc.birch_wax_bee
+    OutputId: item.birch_wax_bee
+    Name: Birch-wax bee toy
+    Category: Misc
+    IngredientBrief: 1 Birch plank + 1 Beeswax + 1 Raw beaver pelt -> 1
+    Kind: Misc
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 2
+    Yield: 1
+    HeartsPerServing: 0
+    FutureTierArtOnly: 0
+    Consumable: 0
+    Visual: {fileID: 7684731864849688748, guid: f091d275ff3172447985c2f9fac0dc2a, type: 3}
+  - RecipeId: recipe.misc.painted_turkey
+    OutputId: item.painted_turkey
+    Name: Painted turkey carving
+    Category: Misc
+    IngredientBrief: 1 Mesquite plank + 1 Turkey feather + 1 Yellow ochre -> 1
+    Kind: Misc
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 3
+    Yield: 1
+    HeartsPerServing: 0
+    FutureTierArtOnly: 0
+    Consumable: 0
+    Visual: {fileID: 1612808759858208450, guid: 2c4b42c887cf35a448f6b4e38998d03a, type: 3}
+  - RecipeId: recipe.misc.silver_sun_brooch
+    OutputId: item.silver_sun_brooch
+    Name: Silver sun brooch
+    Category: Misc
+    IngredientBrief: 1 Silver ingot + 1 Cut turquoise + 1 Flax cord -> 1
+    Kind: Misc
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 3
+    Yield: 1
+    HeartsPerServing: 0
+    FutureTierArtOnly: 0
+    Consumable: 0
+    Visual: {fileID: 3131312747575677257, guid: 61cacaee5134bef489cd8260e2557b5f, type: 3}
+  - RecipeId: recipe.misc.obsidian_boar
+    OutputId: item.obsidian_boar
+    Name: Obsidian boar carving
+    Category: Misc
+    IngredientBrief: 1 Oak plank + 1 Obsidian + 1 Sunflower oil -> 1
+    Kind: Misc
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 4
+    Yield: 1
+    HeartsPerServing: 0
+    FutureTierArtOnly: 0
+    Consumable: 0
+    Visual: {fileID: 446572471152018342, guid: 815bc39eb519a754d9b8328c05f16851, type: 3}
+  - RecipeId: recipe.food.truffle_cow_cheese_flatbread
+    OutputId: item.truffle_cow_cheese_flatbread
+    Name: Truffle cow-cheese flatbread
+    Category: Food
+    IngredientBrief: 2 Truffle + 1 Wheat flour + 1 Cow cheese -> 1
+    Kind: PreparedFood
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 2
+    Yield: 1
+    HeartsPerServing: 8
+    FutureTierArtOnly: 0
+    Consumable: 1
+    Visual: {fileID: 8598058338028629924, guid: 8ce33594940ee45438316c94e4cd9ae3, type: 3}
+  - RecipeId: recipe.food.turkey_truffle_bean_pot
+    OutputId: item.turkey_truffle_bean_pot
+    Name: Turkey-truffle bean pot
+    Category: Food
+    IngredientBrief: 1 Truffle + 2 Raw turkey meat + 2 Beans -> 1
+    Kind: PreparedFood
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 3
+    Yield: 1
+    HeartsPerServing: 9
+    FutureTierArtOnly: 0
+    Consumable: 1
+    Visual: {fileID: 2187639165663376056, guid: b5f42f3a35b1b5a41bbbddd08075533e, type: 3}
+  - RecipeId: recipe.misc.deer_antler_maple_token
+    OutputId: item.deer_antler_maple_token
+    Name: Deer antler maple token
+    Category: Misc
+    IngredientBrief: 1 Deer antler + 1 Maple plank + 1 Willow cord
+    Kind: Misc
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 5
+    Yield: 1
+    HeartsPerServing: 0
+    FutureTierArtOnly: 1
+    Consumable: 0
+    Visual: {fileID: 9099511174253724718, guid: 6eb240b022797a7428702fba7fce2c52, type: 3}
+  - RecipeId: recipe.food.roasted_scallop
+    OutputId: item.roasted_scallop
+    Name: Roasted scallop
+    Category: Food
+    IngredientBrief: 1 Scallop + 1 Maple log + 2 Maple branches
+    Kind: PreparedFood
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 5
+    Yield: 1
+    HeartsPerServing: 10
+    FutureTierArtOnly: 1
+    Consumable: 1
+    Visual: {fileID: 6208880869594700258, guid: dc6a1acb170d4ad4682f82a17690ddd3, type: 3}
+  - RecipeId: recipe.food.scallop_rye_chowder
+    OutputId: item.scallop_rye_chowder
+    Name: Scallop rye chowder
+    Category: Food
+    IngredientBrief: 2 Scallop + 2 Rye + 1 Cow cream
+    Kind: PreparedFood
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 5
+    Yield: 1
+    HeartsPerServing: 12
+    FutureTierArtOnly: 1
+    Consumable: 1
+    Visual: {fileID: 266806047471413032, guid: 0daaed60baafba8478b05d2fdb8854ef, type: 3}
+  - RecipeId: recipe.food.venison_pear_pot
+    OutputId: item.venison_pear_pot
+    Name: Venison pear pot
+    Category: Food
+    IngredientBrief: 2 Raw deer meat + 2 Pears + 1 Maple syrup
+    Kind: PreparedFood
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 5
+    Yield: 1
+    HeartsPerServing: 11
+    FutureTierArtOnly: 1
+    Consumable: 1
+    Visual: {fileID: 6603840245375822903, guid: f4de3cfe9aae0a54b80fc41942a18dbd, type: 3}
+  - RecipeId: recipe.food.goat_apricot_pot
+    OutputId: item.goat_apricot_pot
+    Name: Mountain goat apricot pot
+    Category: Food
+    IngredientBrief: 2 Raw mountain goat meat + 2 Apricots + 1 Fennel seed
+    Kind: PreparedFood
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 6
+    Yield: 1
+    HeartsPerServing: 11
+    FutureTierArtOnly: 1
+    Consumable: 1
+    Visual: {fileID: 7801263890899568564, guid: 7d6ff8337e2b74a47aa46cc45dd05088, type: 3}
+  - RecipeId: recipe.misc.goat_horn_silk_charm
+    OutputId: item.goat_horn_silk_charm
+    Name: Mountain goat horn silk charm
+    Category: Misc
+    IngredientBrief: 1 Mountain goat horn + 1 Cedar plank + 1 Silk cloth
+    Kind: Misc
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 6
+    Yield: 1
+    HeartsPerServing: 0
+    FutureTierArtOnly: 1
+    Consumable: 0
+    Visual: {fileID: 8290016130891939127, guid: 80a4c1838a4e03d4ab1ccb34cc50b46a, type: 3}
+  - RecipeId: recipe.food.mussel_buckwheat_bowl
+    OutputId: item.mussel_buckwheat_bowl
+    Name: Mussel buckwheat bowl
+    Category: Food
+    IngredientBrief: 2 Mussel + 2 Buckwheat + 1 Mountain thyme
+    Kind: PreparedFood
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 6
+    Yield: 1
+    HeartsPerServing: 12
+    FutureTierArtOnly: 1
+    Consumable: 1
+    Visual: {fileID: 1313439907955575076, guid: bcd433a853693e242b46515eb38a9ba3, type: 3}
+  - RecipeId: recipe.food.roasted_mussel
+    OutputId: item.roasted_mussel
+    Name: Roasted mussel
+    Category: Food
+    IngredientBrief: 1 Mussel + 1 Cedar log + 2 Cedar branches
+    Kind: PreparedFood
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 6
+    Yield: 1
+    HeartsPerServing: 10
+    FutureTierArtOnly: 1
+    Consumable: 1
+    Visual: {fileID: 908478506848312323, guid: 98700253bf0230f4b87e08a8b9e9145f, type: 3}
+  - RecipeId: recipe.food.buffalo_amaranth_pot
+    OutputId: item.buffalo_amaranth_pot
+    Name: Buffalo amaranth pot
+    Category: Food
+    IngredientBrief: 2 Raw buffalo meat + 2 Amaranth seeds + 1 Sesame oil
+    Kind: PreparedFood
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 7
+    Yield: 1
+    HeartsPerServing: 12
+    FutureTierArtOnly: 1
+    Consumable: 1
+    Visual: {fileID: 7463371317295164691, guid: cefa22fb453e0dc4f9b65c9446929f2c, type: 3}
+  - RecipeId: recipe.misc.buffalo_horn_indigo_token
+    OutputId: item.buffalo_horn_indigo_token
+    Name: Buffalo horn indigo token
+    Category: Misc
+    IngredientBrief: 1 Buffalo horn + 1 Redwood plank + 1 Indigo dye
+    Kind: Misc
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 7
+    Yield: 1
+    HeartsPerServing: 0
+    FutureTierArtOnly: 1
+    Consumable: 0
+    Visual: {fileID: 5907346953521240806, guid: 9f813a628f0861f46830a917a43c95b9, type: 3}
+  - RecipeId: recipe.food.octopus_millet_bowl
+    OutputId: item.octopus_millet_bowl
+    Name: Octopus millet bowl
+    Category: Food
+    IngredientBrief: 2 Octopus + 2 Millet + 1 Tarragon
+    Kind: PreparedFood
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 7
+    Yield: 1
+    HeartsPerServing: 12
+    FutureTierArtOnly: 1
+    Consumable: 1
+    Visual: {fileID: 7516160583565421481, guid: eb32767e8e25be34b87bfbcf76dbcb40, type: 3}
+  - RecipeId: recipe.food.roasted_octopus
+    OutputId: item.roasted_octopus
+    Name: Roasted octopus
+    Category: Food
+    IngredientBrief: 1 Octopus + 1 Redwood log + 2 Redwood branches
+    Kind: PreparedFood
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 7
+    Yield: 1
+    HeartsPerServing: 10
+    FutureTierArtOnly: 1
+    Consumable: 1
+    Visual: {fileID: 3444613383837526494, guid: 1d7c697b4607f6642a2410e7ddb5b0b2, type: 3}
+  - RecipeId: recipe.misc.bear_claw_lotus_charm
+    OutputId: item.bear_claw_lotus_charm
+    Name: Bear claw lotus charm
+    Category: Misc
+    IngredientBrief: 1 Bear claw + 1 Ebony plank + 1 Lotus cloth
+    Kind: Misc
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 8
+    Yield: 1
+    HeartsPerServing: 0
+    FutureTierArtOnly: 1
+    Consumable: 0
+    Visual: {fileID: 6260708067395029775, guid: 9d13e1b918dc853469b7a19424d660e8, type: 3}
+  - RecipeId: recipe.food.bear_date_pot
+    OutputId: item.bear_date_pot
+    Name: Bear date pot
+    Category: Food
+    IngredientBrief: 2 Raw bear meat + 2 Dates + 1 Black sesame oil
+    Kind: PreparedFood
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 8
+    Yield: 1
+    HeartsPerServing: 12
+    FutureTierArtOnly: 1
+    Consumable: 1
+    Visual: {fileID: 7439151578052508782, guid: 92d8c9c62fafc764881e5be30104e61e, type: 3}
+  - RecipeId: recipe.food.oyster_sorghum_chowder
+    OutputId: item.oyster_sorghum_chowder
+    Name: Oyster sorghum chowder
+    Category: Food
+    IngredientBrief: 2 Oyster + 2 Sorghum + 1 Cow cream
+    Kind: PreparedFood
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 8
+    Yield: 1
+    HeartsPerServing: 12
+    FutureTierArtOnly: 1
+    Consumable: 1
+    Visual: {fileID: 4142079086504752095, guid: 09514d595a68d184aa09c7427a79c6c6, type: 3}
+  - RecipeId: recipe.food.roasted_oyster
+    OutputId: item.roasted_oyster
+    Name: Roasted oyster
+    Category: Food
+    IngredientBrief: 1 Oyster + 1 Ebony log + 2 Ebony branches
+    Kind: PreparedFood
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 8
+    Yield: 1
+    HeartsPerServing: 10
+    FutureTierArtOnly: 1
+    Consumable: 1
+    Visual: {fileID: 3324249003181373902, guid: a040fb6246596d3428dcc38a7a5d17ce, type: 3}
+  - RecipeId: recipe.barrel.apple_cider
+    OutputId: item.apple_cider_barrel
+    Name: Apple cider barrel
+    Category: Barrel
+    IngredientBrief: 4 Oak planks + 2 Iron fittings + 12 Apples -> 1 filled barrel
+    Kind: FilledBarrel
+    DrinkKey: apple_cider
+    RequiredRecipeId: 
+    PrerequisiteBrief: Known Oak plank recipe and discovered exact ingredient sources
+    Tier: 4
+    Yield: 1
+    HeartsPerServing: 0
+    FutureTierArtOnly: 0
+    Consumable: 0
+    Visual: {fileID: 8416944562983735104, guid: 2cde2d003b4cf6945a5ac113ce5fc045, type: 3}
+  - RecipeId: recipe.food.apple_cider
+    OutputId: item.apple_cider
+    Name: Apple cider bottle
+    Category: Food
+    IngredientBrief: 1 Apple cider barrel + 8 Glass bottles -> 8 Apple cider
+    Kind: BottledDrink
+    DrinkKey: apple_cider
+    RequiredRecipeId: recipe.barrel.apple_cider
+    PrerequisiteBrief: Known Oak plank recipe and discovered exact ingredient sources;
+      also know this drink's filling recipe
+    Tier: 4
+    Yield: 8
+    HeartsPerServing: 6
+    FutureTierArtOnly: 0
+    Consumable: 1
+    Visual: {fileID: 8054727215222732203, guid: 64540e0ed61866e4d80453dd485da333, type: 3}
+  - RecipeId: recipe.barrel.strawberry_wine
+    OutputId: item.strawberry_wine_barrel
+    Name: Strawberry wine barrel
+    Category: Barrel
+    IngredientBrief: 4 Oak planks + 2 Iron fittings + 12 Strawberries + 2 Sugar ->
+      1 filled barrel
+    Kind: FilledBarrel
+    DrinkKey: strawberry_wine
+    RequiredRecipeId: 
+    PrerequisiteBrief: Known Oak plank recipe and discovered exact ingredient sources
+    Tier: 4
+    Yield: 1
+    HeartsPerServing: 0
+    FutureTierArtOnly: 0
+    Consumable: 0
+    Visual: {fileID: 8389642887831961446, guid: 5c3726e718f38d345842ce4110edbb03, type: 3}
+  - RecipeId: recipe.food.strawberry_wine
+    OutputId: item.strawberry_wine
+    Name: Strawberry wine bottle
+    Category: Food
+    IngredientBrief: 1 Strawberry wine barrel + 8 Glass bottles -> 8 Strawberry wine
+    Kind: BottledDrink
+    DrinkKey: strawberry_wine
+    RequiredRecipeId: recipe.barrel.strawberry_wine
+    PrerequisiteBrief: Known Oak plank recipe and discovered exact ingredient sources;
+      also know this drink's filling recipe
+    Tier: 4
+    Yield: 8
+    HeartsPerServing: 7
+    FutureTierArtOnly: 0
+    Consumable: 1
+    Visual: {fileID: 6904101292283092923, guid: 6f1d859105326f244aef102971894613, type: 3}
+  - RecipeId: recipe.barrel.blackberry_wine
+    OutputId: item.blackberry_wine_barrel
+    Name: Blackberry wine barrel
+    Category: Barrel
+    IngredientBrief: 4 Oak planks + 2 Iron fittings + 12 Blackberries + 2 Sugar ->
+      1 filled barrel
+    Kind: FilledBarrel
+    DrinkKey: blackberry_wine
+    RequiredRecipeId: 
+    PrerequisiteBrief: Known Oak plank recipe and discovered exact ingredient sources
+    Tier: 4
+    Yield: 1
+    HeartsPerServing: 0
+    FutureTierArtOnly: 0
+    Consumable: 0
+    Visual: {fileID: 8262876945613030406, guid: 67dba2e401f8ce84cbc574900ec2301f, type: 3}
+  - RecipeId: recipe.food.blackberry_wine
+    OutputId: item.blackberry_wine
+    Name: Blackberry wine bottle
+    Category: Food
+    IngredientBrief: 1 Blackberry wine barrel + 8 Glass bottles -> 8 Blackberry wine
+    Kind: BottledDrink
+    DrinkKey: blackberry_wine
+    RequiredRecipeId: recipe.barrel.blackberry_wine
+    PrerequisiteBrief: Known Oak plank recipe and discovered exact ingredient sources;
+      also know this drink's filling recipe
+    Tier: 4
+    Yield: 8
+    HeartsPerServing: 8
+    FutureTierArtOnly: 0
+    Consumable: 1
+    Visual: {fileID: 2719749492880283145, guid: ee09743823d513744915ebf8a402c3e4, type: 3}
+  - RecipeId: recipe.barrel.blueberry_wine
+    OutputId: item.blueberry_wine_barrel
+    Name: Blueberry wine barrel
+    Category: Barrel
+    IngredientBrief: 4 Oak planks + 2 Iron fittings + 12 Blueberries + 2 Honey ->
+      1 filled barrel
+    Kind: FilledBarrel
+    DrinkKey: blueberry_wine
+    RequiredRecipeId: 
+    PrerequisiteBrief: Known Oak plank recipe and discovered exact ingredient sources
+    Tier: 4
+    Yield: 1
+    HeartsPerServing: 0
+    FutureTierArtOnly: 0
+    Consumable: 0
+    Visual: {fileID: 6152472404450065161, guid: ac3a200c9e0190d4d89e5966b16438d8, type: 3}
+  - RecipeId: recipe.food.blueberry_wine
+    OutputId: item.blueberry_wine
+    Name: Blueberry wine bottle
+    Category: Food
+    IngredientBrief: 1 Blueberry wine barrel + 8 Glass bottles -> 8 Blueberry wine
+    Kind: BottledDrink
+    DrinkKey: blueberry_wine
+    RequiredRecipeId: recipe.barrel.blueberry_wine
+    PrerequisiteBrief: Known Oak plank recipe and discovered exact ingredient sources;
+      also know this drink's filling recipe
+    Tier: 4
+    Yield: 8
+    HeartsPerServing: 8
+    FutureTierArtOnly: 0
+    Consumable: 1
+    Visual: {fileID: 7495204536814449175, guid: 532e6a22d9c43114b92dfa450d249f05, type: 3}
+  - RecipeId: recipe.barrel.honey_mead
+    OutputId: item.honey_mead_barrel
+    Name: Spiced honey mead barrel
+    Category: Barrel
+    IngredientBrief: 4 Oak planks + 2 Iron fittings + 10 Honey + 1 Wild mint -> 1
+      filled barrel
+    Kind: FilledBarrel
+    DrinkKey: honey_mead
+    RequiredRecipeId: 
+    PrerequisiteBrief: Known Oak plank recipe and discovered exact ingredient sources
+    Tier: 4
+    Yield: 1
+    HeartsPerServing: 0
+    FutureTierArtOnly: 0
+    Consumable: 0
+    Visual: {fileID: 7755645203113107372, guid: db40ed2b1b8b8244bbc0223a295455f4, type: 3}
+  - RecipeId: recipe.food.honey_mead
+    OutputId: item.honey_mead
+    Name: Spiced honey mead bottle
+    Category: Food
+    IngredientBrief: 1 Spiced honey mead barrel + 8 Glass bottles -> 8 Spiced honey
+      mead
+    Kind: BottledDrink
+    DrinkKey: honey_mead
+    RequiredRecipeId: recipe.barrel.honey_mead
+    PrerequisiteBrief: Known Oak plank recipe and discovered exact ingredient sources;
+      also know this drink's filling recipe
+    Tier: 4
+    Yield: 8
+    HeartsPerServing: 9
+    FutureTierArtOnly: 0
+    Consumable: 1
+    Visual: {fileID: 7257358860904965173, guid: d2ce8bf965f581642b6281eb3ec4353b, type: 3}
+  - RecipeId: recipe.barrel.barley_ale
+    OutputId: item.barley_ale_barrel
+    Name: Barley ale barrel
+    Category: Barrel
+    IngredientBrief: 4 Oak planks + 2 Iron fittings + 12 Barley + 2 Honey -> 1 filled
+      barrel
+    Kind: FilledBarrel
+    DrinkKey: barley_ale
+    RequiredRecipeId: 
+    PrerequisiteBrief: Known Oak plank recipe and discovered exact ingredient sources
+    Tier: 4
+    Yield: 1
+    HeartsPerServing: 0
+    FutureTierArtOnly: 0
+    Consumable: 0
+    Visual: {fileID: 2875937764723091108, guid: 2ce74fedacaf853418c65cb2ebae206e, type: 3}
+  - RecipeId: recipe.food.barley_ale
+    OutputId: item.barley_ale
+    Name: Barley ale bottle
+    Category: Food
+    IngredientBrief: 1 Barley ale barrel + 8 Glass bottles -> 8 Barley ale
+    Kind: BottledDrink
+    DrinkKey: barley_ale
+    RequiredRecipeId: recipe.barrel.barley_ale
+    PrerequisiteBrief: Known Oak plank recipe and discovered exact ingredient sources;
+      also know this drink's filling recipe
+    Tier: 4
+    Yield: 8
+    HeartsPerServing: 7
+    FutureTierArtOnly: 0
+    Consumable: 1
+    Visual: {fileID: 4501687038690771301, guid: f68da5f53079bea49951a3a55d63ada7, type: 3}
+  - RecipeId: recipe.barrel.wheat_beer
+    OutputId: item.wheat_beer_barrel
+    Name: Wheat beer barrel
+    Category: Barrel
+    IngredientBrief: 4 Oak planks + 2 Iron fittings + 8 Wheat + 4 Barley -> 1 filled
+      barrel
+    Kind: FilledBarrel
+    DrinkKey: wheat_beer
+    RequiredRecipeId: 
+    PrerequisiteBrief: Known Oak plank recipe and discovered exact ingredient sources
+    Tier: 4
+    Yield: 1
+    HeartsPerServing: 0
+    FutureTierArtOnly: 0
+    Consumable: 0
+    Visual: {fileID: 2493886320165671424, guid: 79db98b1dafc5334c84b798b5241ca1c, type: 3}
+  - RecipeId: recipe.food.wheat_beer
+    OutputId: item.wheat_beer
+    Name: Wheat beer bottle
+    Category: Food
+    IngredientBrief: 1 Wheat beer barrel + 8 Glass bottles -> 8 Wheat beer
+    Kind: BottledDrink
+    DrinkKey: wheat_beer
+    RequiredRecipeId: recipe.barrel.wheat_beer
+    PrerequisiteBrief: Known Oak plank recipe and discovered exact ingredient sources;
+      also know this drink's filling recipe
+    Tier: 4
+    Yield: 8
+    HeartsPerServing: 7
+    FutureTierArtOnly: 0
+    Consumable: 1
+    Visual: {fileID: 5046526560982510510, guid: 6db5565cacf38c846bff629440e80a68, type: 3}
+  - RecipeId: recipe.barrel.cane_rum
+    OutputId: item.cane_rum_barrel
+    Name: Cane rum barrel
+    Category: Barrel
+    IngredientBrief: 4 Oak planks + 2 Iron fittings + 12 Sugar cane + 2 Sugar ->
+      1 filled barrel
+    Kind: FilledBarrel
+    DrinkKey: cane_rum
+    RequiredRecipeId: 
+    PrerequisiteBrief: Known Oak plank recipe and discovered exact ingredient sources
+    Tier: 4
+    Yield: 1
+    HeartsPerServing: 0
+    FutureTierArtOnly: 0
+    Consumable: 0
+    Visual: {fileID: 3307236922541099091, guid: b4b52f6924efc9640b80fa06171826f2, type: 3}
+  - RecipeId: recipe.food.cane_rum
+    OutputId: item.cane_rum
+    Name: Cane rum bottle
+    Category: Food
+    IngredientBrief: 1 Cane rum barrel + 8 Glass bottles -> 8 Cane rum
+    Kind: BottledDrink
+    DrinkKey: cane_rum
+    RequiredRecipeId: recipe.barrel.cane_rum
+    PrerequisiteBrief: Known Oak plank recipe and discovered exact ingredient sources;
+      also know this drink's filling recipe
+    Tier: 4
+    Yield: 8
+    HeartsPerServing: 9
+    FutureTierArtOnly: 0
+    Consumable: 1
+    Visual: {fileID: 7195598741355632519, guid: a23519900385d6c40b0cbf6db5cb4e77, type: 3}
+  - RecipeId: recipe.barrel.corn_whiskey
+    OutputId: item.corn_whiskey_barrel
+    Name: Charred-oak whiskey barrel
+    Category: Barrel
+    IngredientBrief: 4 Oak planks + 2 Iron fittings + 8 Corn + 4 Barley + 1 Mesquite
+      charcoal -> 1 filled barrel
+    Kind: FilledBarrel
+    DrinkKey: corn_whiskey
+    RequiredRecipeId: 
+    PrerequisiteBrief: Known Oak plank recipe and discovered exact ingredient sources
+    Tier: 4
+    Yield: 1
+    HeartsPerServing: 0
+    FutureTierArtOnly: 0
+    Consumable: 0
+    Visual: {fileID: 1998350958415670896, guid: 4be228cfb3453bb49a56e1af8959fb33, type: 3}
+  - RecipeId: recipe.food.corn_whiskey
+    OutputId: item.corn_whiskey
+    Name: Charred-oak whiskey bottle
+    Category: Food
+    IngredientBrief: 1 Charred-oak whiskey barrel + 8 Glass bottles -> 8 Charred-oak
+      whiskey
+    Kind: BottledDrink
+    DrinkKey: corn_whiskey
+    RequiredRecipeId: recipe.barrel.corn_whiskey
+    PrerequisiteBrief: Known Oak plank recipe and discovered exact ingredient sources;
+      also know this drink's filling recipe
+    Tier: 4
+    Yield: 8
+    HeartsPerServing: 10
+    FutureTierArtOnly: 0
+    Consumable: 1
+    Visual: {fileID: 134924829174080122, guid: b3cffc2369260ee44a91150b51da0cfc, type: 3}

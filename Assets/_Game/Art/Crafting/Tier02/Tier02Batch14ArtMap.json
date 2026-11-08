@@ -1,0 +1,66 @@
+{
+  "Scope": "Passive garment art mapping only; no runtime catalog/stat/footprint changes",
+  "Frame": "Body-root metres; +Y up; +Z forward; hips .88, torso .94, head 1.43",
+  "SourceManifest": "Assets/_Game/Art/Crafting/Tier02/Tier02Batch14Manifest.json",
+  "Items": [
+    {
+      "Model": "FlaxWorkShirt",
+      "ItemId": "item.flax_work_shirt",
+      "RecipeId": "recipe.wearable.flax_work_shirt",
+      "PrefabPath": "Tier02/Wearables/FlaxWorkShirt",
+      "Representation": "display",
+      "Body": "",
+      "Anchor": ""
+    },
+    {
+      "Model": "FlaxTrousers",
+      "ItemId": "item.flax_trousers",
+      "RecipeId": "recipe.wearable.flax_trousers",
+      "PrefabPath": "Tier02/Wearables/FlaxTrousers",
+      "Representation": "display",
+      "Body": "",
+      "Anchor": ""
+    },
+    {
+      "Model": "MaleWearFlaxWorkShirt",
+      "ItemId": "item.flax_work_shirt",
+      "RecipeId": "recipe.wearable.flax_work_shirt",
+      "PrefabPath": "Tier02/Wearables/MaleWearFlaxWorkShirt",
+      "Representation": "worn",
+      "Body": "Male",
+      "Anchor": "Body-root metre coordinates; runtime skinning/binding pending"
+    },
+    {
+      "Model": "MaleWearFlaxTrousers",
+      "ItemId": "item.flax_trousers",
+      "RecipeId": "recipe.wearable.flax_trousers",
+      "PrefabPath": "Tier02/Wearables/MaleWearFlaxTrousers",
+      "Representation": "worn",
+      "Body": "Male",
+      "Anchor": "Body-root metre coordinates; runtime skinning/binding pending"
+    },
+    {
+      "Model": "FemaleWearFlaxWorkShirt",
+      "ItemId": "item.flax_work_shirt",
+      "RecipeId": "recipe.wearable.flax_work_shirt",
+      "PrefabPath": "Tier02/Wearables/FemaleWearFlaxWorkShirt",
+      "Representation": "worn",
+      "Body": "Female",
+      "Anchor": "Body-root metre coordinates; runtime skinning/binding pending"
+    },
+    {
+      "Model": "FemaleWearFlaxTrousers",
+      "ItemId": "item.flax_trousers",
+      "RecipeId": "recipe.wearable.flax_trousers",
+      "PrefabPath": "Tier02/Wearables/FemaleWearFlaxTrousers",
+      "Representation": "worn",
+      "Body": "Female",
+      "Anchor": "Body-root metre coordinates; runtime skinning/binding pending"
+    }
+  ],
+  "DocumentarySetAOnly": {
+    "shirt_pockets": 3,
+    "pants_hooks": 3
+  },
+  "Pending": "Runtime skeleton weights/segment ownership, equipment binding, exact catalog identity, contents transfer, saves and current gameplay/device checks"
+}

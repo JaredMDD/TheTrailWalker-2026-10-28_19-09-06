@@ -1,0 +1,1252 @@
+{
+  "Revision": 1,
+  "Scope": "T1 merchant surface assignment only",
+  "Items": [
+    {
+      "Id": "special.t1.hat",
+      "Name": "Wayfarer's felt hat",
+      "Model": "SpecialT01HatItem",
+      "Role": "Display",
+      "PrefabPath": "Assets/_Game/Resources/BalloonGoods/Items/SpecialT01HatItem.prefab",
+      "PaletteFamily": "MerchantHat",
+      "SourcePaths": [
+        "Assets/_Game/Art/Items/BalloonGoods/SpecialT01HatItem.obj"
+      ],
+      "SourceSHA256": [
+        "106a230276f0e63d7f85b4a141a8627e2b3735d7fc22bcaf17622b1ac93cdd8c"
+      ]
+    },
+    {
+      "Id": "special.t1.hat",
+      "Name": "Wayfarer's felt hat",
+      "Model": "SpecialT01HatMaleWorn",
+      "Role": "MaleWorn",
+      "PrefabPath": "Assets/_Game/Resources/BalloonGoods/Wearables/Male/SpecialT01HatMaleWorn.prefab",
+      "PaletteFamily": "MerchantHat",
+      "SourcePaths": [
+        "Assets/_Game/Art/Items/BalloonGoods/SpecialT01HatMaleWorn.obj"
+      ],
+      "SourceSHA256": [
+        "5b95e110286e2aab3aea476c54b371a1f93434c93abc5fd31ec4d8e5c6374d1e"
+      ]
+    },
+    {
+      "Id": "special.t1.hat",
+      "Name": "Wayfarer's felt hat",
+      "Model": "SpecialT01HatFemaleWorn",
+      "Role": "FemaleWorn",
+      "PrefabPath": "Assets/_Game/Resources/BalloonGoods/Wearables/Female/SpecialT01HatFemaleWorn.prefab",
+      "PaletteFamily": "MerchantHat",
+      "SourcePaths": [
+        "Assets/_Game/Art/Items/BalloonGoods/SpecialT01HatFemaleWorn.obj"
+      ],
+      "SourceSHA256": [
+        "3c117a16150c9dff36d0e77a84758b17b93702adbc3438e2b4c0bce6eb65c6ab"
+      ]
+    },
+    {
+      "Id": "special.t1.boots",
+      "Name": "Wayfarer's trail boots",
+      "Model": "SpecialT01BootsItem",
+      "Role": "Display",
+      "PrefabPath": "Assets/_Game/Resources/BalloonGoods/Items/SpecialT01BootsItem.prefab",
+      "PaletteFamily": "MerchantBoots",
+      "SourcePaths": [
+        "Assets/_Game/Art/Items/BalloonGoods/SpecialT01BootsItem.obj"
+      ],
+      "SourceSHA256": [
+        "f42cd974f032ec61818fa9455267b45bcf08a8cd6071f2063a163fb5eb7c7534"
+      ]
+    },
+    {
+      "Id": "special.t1.boots",
+      "Name": "Wayfarer's trail boots",
+      "Model": "SpecialT01BootsMaleWorn",
+      "Role": "MaleWorn",
+      "PrefabPath": "Assets/_Game/Resources/BalloonGoods/Wearables/Male/SpecialT01BootsMaleWorn.prefab",
+      "PaletteFamily": "MerchantBoots",
+      "SourcePaths": [
+        "Assets/_Game/Art/Items/BalloonGoods/SpecialT01BootsMaleWorn.obj"
+      ],
+      "SourceSHA256": [
+        "1389616821fd775ed7878a626fd787986ef4ed0b874967704e35994b43ac157b"
+      ]
+    },
+    {
+      "Id": "special.t1.boots",
+      "Name": "Wayfarer's trail boots",
+      "Model": "SpecialT01BootsFemaleWorn",
+      "Role": "FemaleWorn",
+      "PrefabPath": "Assets/_Game/Resources/BalloonGoods/Wearables/Female/SpecialT01BootsFemaleWorn.prefab",
+      "PaletteFamily": "MerchantBoots",
+      "SourcePaths": [
+        "Assets/_Game/Art/Items/BalloonGoods/SpecialT01BootsFemaleWorn.obj"
+      ],
+      "SourceSHA256": [
+        "cca221fbbcb11f77dc5b0e90213d7012ca14ba1e8cf5edb9c714ca342440e771"
+      ]
+    },
+    {
+      "Id": "special.t1.shirt",
+      "Name": "Wayfarer's waxed shirt",
+      "Model": "SpecialT01ShirtItem",
+      "Role": "Display",
+      "PrefabPath": "Assets/_Game/Resources/BalloonGoods/Items/SpecialT01ShirtItem.prefab",
+      "PaletteFamily": "MerchantShirt",
+      "SourcePaths": [
+        "Assets/_Game/Art/Items/BalloonGoods/SpecialT01ShirtItem.obj"
+      ],
+      "SourceSHA256": [
+        "fa72b3fc802e6fac137d1dc7a1b425b1dc162a40d00aeb78291dfb6fc039b141"
+      ]
+    },
+    {
+      "Id": "special.t1.shirt",
+      "Name": "Wayfarer's waxed shirt",
+      "Model": "SpecialT01ShirtMaleWorn",
+      "Role": "MaleWorn",
+      "PrefabPath": "Assets/_Game/Resources/BalloonGoods/Wearables/Male/SpecialT01ShirtMaleWorn.prefab",
+      "PaletteFamily": "MerchantShirt",
+      "SourcePaths": [
+        "Assets/_Game/Art/Items/BalloonGoods/SpecialT01ShirtMaleWorn.obj"
+      ],
+      "SourceSHA256": [
+        "7342a002008e2e163d9a612cb741fc2a917f5b4a2d4f381ef952da58bde1bf44"
+      ]
+    },
+    {
+      "Id": "special.t1.shirt",
+      "Name": "Wayfarer's waxed shirt",
+      "Model": "SpecialT01ShirtFemaleWorn",
+      "Role": "FemaleWorn",
+      "PrefabPath": "Assets/_Game/Resources/BalloonGoods/Wearables/Female/SpecialT01ShirtFemaleWorn.prefab",
+      "PaletteFamily": "MerchantShirt",
+      "SourcePaths": [
+        "Assets/_Game/Art/Items/BalloonGoods/SpecialT01ShirtFemaleWorn.obj"
+      ],
+      "SourceSHA256": [
+        "22a0e6685822d4ef93f3c94028ceb116f268149687004bfcfbb89f5c42fd7bf3"
+      ]
+    },
+    {
+      "Id": "special.t1.pants",
+      "Name": "Wayfarer's field trousers",
+      "Model": "SpecialT01PantsItem",
+      "Role": "Display",
+      "PrefabPath": "Assets/_Game/Resources/BalloonGoods/Items/SpecialT01PantsItem.prefab",
+      "PaletteFamily": "MerchantPants",
+      "SourcePaths": [
+        "Assets/_Game/Art/Items/BalloonGoods/SpecialT01PantsItem.obj"
+      ],
+      "SourceSHA256": [
+        "b6e6c477689a3a993666ab53beca2ca06200f964d5ade1a2ec40d90a16a7bb5d"
+      ]
+    },
+    {
+      "Id": "special.t1.pants",
+      "Name": "Wayfarer's field trousers",
+      "Model": "SpecialT01PantsMaleWorn",
+      "Role": "MaleWorn",
+      "PrefabPath": "Assets/_Game/Resources/BalloonGoods/Wearables/Male/SpecialT01PantsMaleWorn.prefab",
+      "PaletteFamily": "MerchantPants",
+      "SourcePaths": [
+        "Assets/_Game/Art/Items/BalloonGoods/SpecialT01PantsMaleWorn.obj"
+      ],
+      "SourceSHA256": [
+        "e43124af4fea379f7494eebd6a0615dffb3c11ebb3dbeae0bc72052ef7c7213f"
+      ]
+    },
+    {
+      "Id": "special.t1.pants",
+      "Name": "Wayfarer's field trousers",
+      "Model": "SpecialT01PantsFemaleWorn",
+      "Role": "FemaleWorn",
+      "PrefabPath": "Assets/_Game/Resources/BalloonGoods/Wearables/Female/SpecialT01PantsFemaleWorn.prefab",
+      "PaletteFamily": "MerchantPants",
+      "SourcePaths": [
+        "Assets/_Game/Art/Items/BalloonGoods/SpecialT01PantsFemaleWorn.obj"
+      ],
+      "SourceSHA256": [
+        "62bc19dc7b6937e350ef608d1048030ba3ffc0529e93c2bc61c9600cade056ed"
+      ]
+    },
+    {
+      "Id": "special.t1.pack",
+      "Name": "Wayfarer's ridge pack",
+      "Model": "SpecialT01PackItem",
+      "Role": "Display",
+      "PrefabPath": "Assets/_Game/Resources/BalloonGoods/Items/SpecialT01PackItem.prefab",
+      "PaletteFamily": "MerchantPack",
+      "SourcePaths": [
+        "Assets/_Game/Art/Items/BalloonGoods/SpecialT01PackItem.obj"
+      ],
+      "SourceSHA256": [
+        "30ed2a07968db0ff45f975c6c5b850cd85c8dd159e57753d538661340db1d6d7"
+      ]
+    },
+    {
+      "Id": "special.t1.pack",
+      "Name": "Wayfarer's ridge pack",
+      "Model": "SpecialT01PackMaleWorn",
+      "Role": "MaleWorn",
+      "PrefabPath": "Assets/_Game/Resources/BalloonGoods/Wearables/Male/SpecialT01PackMaleWorn.prefab",
+      "PaletteFamily": "MerchantPack",
+      "SourcePaths": [
+        "Assets/_Game/Art/Items/BalloonGoods/SpecialT01PackMaleWorn.obj"
+      ],
+      "SourceSHA256": [
+        "ba5cc17e07f13a76175dd6febf4beeec65883d3431ec7655b35192ad348207e0"
+      ]
+    },
+    {
+      "Id": "special.t1.pack",
+      "Name": "Wayfarer's ridge pack",
+      "Model": "SpecialT01PackFemaleWorn",
+      "Role": "FemaleWorn",
+      "PrefabPath": "Assets/_Game/Resources/BalloonGoods/Wearables/Female/SpecialT01PackFemaleWorn.prefab",
+      "PaletteFamily": "MerchantPack",
+      "SourcePaths": [
+        "Assets/_Game/Art/Items/BalloonGoods/SpecialT01PackFemaleWorn.obj"
+      ],
+      "SourceSHA256": [
+        "077a93cda9d81a00c01b78188211d7779cfbfa3647cc1d85812664091c40a9b3"
+      ]
+    },
+    {
+      "Id": "MysteryBoxTier01",
+      "Name": "Tier-one mystery box — olive and brass",
+      "Model": "MysteryBoxTier01",
+      "Role": "Box",
+      "PrefabPath": "Assets/_Game/Resources/BalloonGoods/MysteryBoxes/MysteryBoxTier01.prefab",
+      "PaletteFamily": "MerchantMysteryBox",
+      "SourcePaths": [
+        "Assets/_Game/Art/Items/BalloonGoods/MysteryBoxBody.obj",
+        "Assets/_Game/Art/Items/BalloonGoods/MysteryBoxLid.obj",
+        "Assets/_Game/Art/Items/BalloonGoods/MysteryTier1Seal.obj"
+      ],
+      "SourceSHA256": [
+        "d7755a53c43be6055c544b85b27e443bc74903864a45c606ef9d954b161159cb",
+        "d9b0e4b3cd012239d5715e06d3e6bdbb69085c2c8741f67ebdd2ada615a68fa8",
+        "66a346a6831fc827b80a0a17251898bc715d4ed92b0b9bd110a825257781abf1"
+      ]
+    }
+  ],
+  "PaletteFamilies": [
+    {
+      "Name": "MerchantHat",
+      "Path": "Assets/_Game/Art/Items/Tier01Design/Palettes/MerchantHatPalette.png",
+      "MaterialPath": "Assets/_Game/Resources/Tier01/MerchantDesignMaterials/MerchantHat.mat",
+      "DetailScale": 7,
+      "DetailStrength": 0.45,
+      "Slots": [
+        {
+          "Index": 0,
+          "Semantic": "maincloth",
+          "DetailType": "cloth",
+          "RGB": [
+            153,
+            158,
+            91
+          ]
+        },
+        {
+          "Index": 1,
+          "Semantic": "secondarycloth",
+          "DetailType": "cloth",
+          "RGB": [
+            223,
+            205,
+            157
+          ]
+        },
+        {
+          "Index": 2,
+          "Semantic": "leather",
+          "DetailType": "leather",
+          "RGB": [
+            107,
+            70,
+            40
+          ]
+        },
+        {
+          "Index": 3,
+          "Semantic": "darkleather",
+          "DetailType": "leather",
+          "RGB": [
+            67,
+            43,
+            28
+          ]
+        },
+        {
+          "Index": 4,
+          "Semantic": "crimsoncloth",
+          "DetailType": "cloth",
+          "RGB": [
+            170,
+            36,
+            42
+          ]
+        },
+        {
+          "Index": 5,
+          "Semantic": "darkcrimsoncloth",
+          "DetailType": "cloth",
+          "RGB": [
+            112,
+            24,
+            34
+          ]
+        },
+        {
+          "Index": 6,
+          "Semantic": "brassmetal",
+          "DetailType": "metal",
+          "RGB": [
+            195,
+            146,
+            62
+          ]
+        },
+        {
+          "Index": 7,
+          "Semantic": "brasshighlight",
+          "DetailType": "metal",
+          "RGB": [
+            240,
+            200,
+            106
+          ]
+        },
+        {
+          "Index": 8,
+          "Semantic": "liningcloth",
+          "DetailType": "cloth",
+          "RGB": [
+            195,
+            180,
+            133
+          ]
+        },
+        {
+          "Index": 9,
+          "Semantic": "leathersoles",
+          "DetailType": "leather",
+          "RGB": [
+            48,
+            42,
+            32
+          ]
+        },
+        {
+          "Index": 10,
+          "Semantic": "shell",
+          "DetailType": "flat",
+          "RGB": [
+            235,
+            216,
+            175
+          ]
+        },
+        {
+          "Index": 11,
+          "Semantic": "framewood",
+          "DetailType": "wood",
+          "RGB": [
+            137,
+            88,
+            46
+          ]
+        },
+        {
+          "Index": 12,
+          "Semantic": "darkframewood",
+          "DetailType": "wood",
+          "RGB": [
+            77,
+            47,
+            29
+          ]
+        },
+        {
+          "Index": 13,
+          "Semantic": "feather",
+          "DetailType": "plant_fibre",
+          "RGB": [
+            133,
+            94,
+            58
+          ]
+        },
+        {
+          "Index": 14,
+          "Semantic": "white",
+          "DetailType": "flat",
+          "RGB": [
+            245,
+            235,
+            205
+          ]
+        },
+        {
+          "Index": 15,
+          "Semantic": "dark",
+          "DetailType": "flat",
+          "RGB": [
+            31,
+            31,
+            27
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "MerchantBoots",
+      "Path": "Assets/_Game/Art/Items/Tier01Design/Palettes/MerchantBootsPalette.png",
+      "MaterialPath": "Assets/_Game/Resources/Tier01/MerchantDesignMaterials/MerchantBoots.mat",
+      "DetailScale": 7,
+      "DetailStrength": 0.45,
+      "Slots": [
+        {
+          "Index": 0,
+          "Semantic": "maincloth",
+          "DetailType": "cloth",
+          "RGB": [
+            153,
+            158,
+            91
+          ]
+        },
+        {
+          "Index": 1,
+          "Semantic": "secondarycloth",
+          "DetailType": "cloth",
+          "RGB": [
+            223,
+            205,
+            157
+          ]
+        },
+        {
+          "Index": 2,
+          "Semantic": "leather",
+          "DetailType": "leather",
+          "RGB": [
+            107,
+            70,
+            40
+          ]
+        },
+        {
+          "Index": 3,
+          "Semantic": "darkleather",
+          "DetailType": "leather",
+          "RGB": [
+            67,
+            43,
+            28
+          ]
+        },
+        {
+          "Index": 4,
+          "Semantic": "crimsoncloth",
+          "DetailType": "cloth",
+          "RGB": [
+            170,
+            36,
+            42
+          ]
+        },
+        {
+          "Index": 5,
+          "Semantic": "darkcrimsoncloth",
+          "DetailType": "cloth",
+          "RGB": [
+            112,
+            24,
+            34
+          ]
+        },
+        {
+          "Index": 6,
+          "Semantic": "brassmetal",
+          "DetailType": "metal",
+          "RGB": [
+            195,
+            146,
+            62
+          ]
+        },
+        {
+          "Index": 7,
+          "Semantic": "brasshighlight",
+          "DetailType": "metal",
+          "RGB": [
+            240,
+            200,
+            106
+          ]
+        },
+        {
+          "Index": 8,
+          "Semantic": "liningcloth",
+          "DetailType": "cloth",
+          "RGB": [
+            195,
+            180,
+            133
+          ]
+        },
+        {
+          "Index": 9,
+          "Semantic": "leathersoles",
+          "DetailType": "leather",
+          "RGB": [
+            48,
+            42,
+            32
+          ]
+        },
+        {
+          "Index": 10,
+          "Semantic": "shell",
+          "DetailType": "flat",
+          "RGB": [
+            235,
+            216,
+            175
+          ]
+        },
+        {
+          "Index": 11,
+          "Semantic": "framewood",
+          "DetailType": "wood",
+          "RGB": [
+            137,
+            88,
+            46
+          ]
+        },
+        {
+          "Index": 12,
+          "Semantic": "darkframewood",
+          "DetailType": "wood",
+          "RGB": [
+            77,
+            47,
+            29
+          ]
+        },
+        {
+          "Index": 13,
+          "Semantic": "feather",
+          "DetailType": "plant_fibre",
+          "RGB": [
+            133,
+            94,
+            58
+          ]
+        },
+        {
+          "Index": 14,
+          "Semantic": "white",
+          "DetailType": "flat",
+          "RGB": [
+            245,
+            235,
+            205
+          ]
+        },
+        {
+          "Index": 15,
+          "Semantic": "dark",
+          "DetailType": "flat",
+          "RGB": [
+            31,
+            31,
+            27
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "MerchantShirt",
+      "Path": "Assets/_Game/Art/Items/Tier01Design/Palettes/MerchantShirtPalette.png",
+      "MaterialPath": "Assets/_Game/Resources/Tier01/MerchantDesignMaterials/MerchantShirt.mat",
+      "DetailScale": 7,
+      "DetailStrength": 0.45,
+      "Slots": [
+        {
+          "Index": 0,
+          "Semantic": "maincloth",
+          "DetailType": "cloth",
+          "RGB": [
+            153,
+            158,
+            91
+          ]
+        },
+        {
+          "Index": 1,
+          "Semantic": "secondarycloth",
+          "DetailType": "cloth",
+          "RGB": [
+            223,
+            205,
+            157
+          ]
+        },
+        {
+          "Index": 2,
+          "Semantic": "leather",
+          "DetailType": "leather",
+          "RGB": [
+            107,
+            70,
+            40
+          ]
+        },
+        {
+          "Index": 3,
+          "Semantic": "darkleather",
+          "DetailType": "leather",
+          "RGB": [
+            67,
+            43,
+            28
+          ]
+        },
+        {
+          "Index": 4,
+          "Semantic": "crimsoncloth",
+          "DetailType": "cloth",
+          "RGB": [
+            170,
+            36,
+            42
+          ]
+        },
+        {
+          "Index": 5,
+          "Semantic": "darkcrimsoncloth",
+          "DetailType": "cloth",
+          "RGB": [
+            112,
+            24,
+            34
+          ]
+        },
+        {
+          "Index": 6,
+          "Semantic": "brassmetal",
+          "DetailType": "metal",
+          "RGB": [
+            195,
+            146,
+            62
+          ]
+        },
+        {
+          "Index": 7,
+          "Semantic": "brasshighlight",
+          "DetailType": "metal",
+          "RGB": [
+            240,
+            200,
+            106
+          ]
+        },
+        {
+          "Index": 8,
+          "Semantic": "liningcloth",
+          "DetailType": "cloth",
+          "RGB": [
+            195,
+            180,
+            133
+          ]
+        },
+        {
+          "Index": 9,
+          "Semantic": "leathersoles",
+          "DetailType": "leather",
+          "RGB": [
+            48,
+            42,
+            32
+          ]
+        },
+        {
+          "Index": 10,
+          "Semantic": "shell",
+          "DetailType": "flat",
+          "RGB": [
+            235,
+            216,
+            175
+          ]
+        },
+        {
+          "Index": 11,
+          "Semantic": "framewood",
+          "DetailType": "wood",
+          "RGB": [
+            137,
+            88,
+            46
+          ]
+        },
+        {
+          "Index": 12,
+          "Semantic": "darkframewood",
+          "DetailType": "wood",
+          "RGB": [
+            77,
+            47,
+            29
+          ]
+        },
+        {
+          "Index": 13,
+          "Semantic": "feather",
+          "DetailType": "plant_fibre",
+          "RGB": [
+            133,
+            94,
+            58
+          ]
+        },
+        {
+          "Index": 14,
+          "Semantic": "white",
+          "DetailType": "flat",
+          "RGB": [
+            245,
+            235,
+            205
+          ]
+        },
+        {
+          "Index": 15,
+          "Semantic": "dark",
+          "DetailType": "flat",
+          "RGB": [
+            31,
+            31,
+            27
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "MerchantPants",
+      "Path": "Assets/_Game/Art/Items/Tier01Design/Palettes/MerchantPantsPalette.png",
+      "MaterialPath": "Assets/_Game/Resources/Tier01/MerchantDesignMaterials/MerchantPants.mat",
+      "DetailScale": 7,
+      "DetailStrength": 0.45,
+      "Slots": [
+        {
+          "Index": 0,
+          "Semantic": "maincloth",
+          "DetailType": "cloth",
+          "RGB": [
+            153,
+            158,
+            91
+          ]
+        },
+        {
+          "Index": 1,
+          "Semantic": "secondarycloth",
+          "DetailType": "cloth",
+          "RGB": [
+            223,
+            205,
+            157
+          ]
+        },
+        {
+          "Index": 2,
+          "Semantic": "leather",
+          "DetailType": "leather",
+          "RGB": [
+            107,
+            70,
+            40
+          ]
+        },
+        {
+          "Index": 3,
+          "Semantic": "darkleather",
+          "DetailType": "leather",
+          "RGB": [
+            67,
+            43,
+            28
+          ]
+        },
+        {
+          "Index": 4,
+          "Semantic": "crimsoncloth",
+          "DetailType": "cloth",
+          "RGB": [
+            170,
+            36,
+            42
+          ]
+        },
+        {
+          "Index": 5,
+          "Semantic": "darkcrimsoncloth",
+          "DetailType": "cloth",
+          "RGB": [
+            112,
+            24,
+            34
+          ]
+        },
+        {
+          "Index": 6,
+          "Semantic": "brassmetal",
+          "DetailType": "metal",
+          "RGB": [
+            195,
+            146,
+            62
+          ]
+        },
+        {
+          "Index": 7,
+          "Semantic": "brasshighlight",
+          "DetailType": "metal",
+          "RGB": [
+            240,
+            200,
+            106
+          ]
+        },
+        {
+          "Index": 8,
+          "Semantic": "liningcloth",
+          "DetailType": "cloth",
+          "RGB": [
+            195,
+            180,
+            133
+          ]
+        },
+        {
+          "Index": 9,
+          "Semantic": "leathersoles",
+          "DetailType": "leather",
+          "RGB": [
+            48,
+            42,
+            32
+          ]
+        },
+        {
+          "Index": 10,
+          "Semantic": "shell",
+          "DetailType": "flat",
+          "RGB": [
+            235,
+            216,
+            175
+          ]
+        },
+        {
+          "Index": 11,
+          "Semantic": "framewood",
+          "DetailType": "wood",
+          "RGB": [
+            137,
+            88,
+            46
+          ]
+        },
+        {
+          "Index": 12,
+          "Semantic": "darkframewood",
+          "DetailType": "wood",
+          "RGB": [
+            77,
+            47,
+            29
+          ]
+        },
+        {
+          "Index": 13,
+          "Semantic": "feather",
+          "DetailType": "plant_fibre",
+          "RGB": [
+            133,
+            94,
+            58
+          ]
+        },
+        {
+          "Index": 14,
+          "Semantic": "white",
+          "DetailType": "flat",
+          "RGB": [
+            245,
+            235,
+            205
+          ]
+        },
+        {
+          "Index": 15,
+          "Semantic": "dark",
+          "DetailType": "flat",
+          "RGB": [
+            31,
+            31,
+            27
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "MerchantPack",
+      "Path": "Assets/_Game/Art/Items/Tier01Design/Palettes/MerchantPackPalette.png",
+      "MaterialPath": "Assets/_Game/Resources/Tier01/MerchantDesignMaterials/MerchantPack.mat",
+      "DetailScale": 7,
+      "DetailStrength": 0.45,
+      "Slots": [
+        {
+          "Index": 0,
+          "Semantic": "maincloth",
+          "DetailType": "cloth",
+          "RGB": [
+            153,
+            158,
+            91
+          ]
+        },
+        {
+          "Index": 1,
+          "Semantic": "secondarycloth",
+          "DetailType": "cloth",
+          "RGB": [
+            223,
+            205,
+            157
+          ]
+        },
+        {
+          "Index": 2,
+          "Semantic": "leather",
+          "DetailType": "leather",
+          "RGB": [
+            107,
+            70,
+            40
+          ]
+        },
+        {
+          "Index": 3,
+          "Semantic": "darkleather",
+          "DetailType": "leather",
+          "RGB": [
+            67,
+            43,
+            28
+          ]
+        },
+        {
+          "Index": 4,
+          "Semantic": "crimsoncloth",
+          "DetailType": "cloth",
+          "RGB": [
+            170,
+            36,
+            42
+          ]
+        },
+        {
+          "Index": 5,
+          "Semantic": "darkcrimsoncloth",
+          "DetailType": "cloth",
+          "RGB": [
+            112,
+            24,
+            34
+          ]
+        },
+        {
+          "Index": 6,
+          "Semantic": "brassmetal",
+          "DetailType": "metal",
+          "RGB": [
+            195,
+            146,
+            62
+          ]
+        },
+        {
+          "Index": 7,
+          "Semantic": "brasshighlight",
+          "DetailType": "metal",
+          "RGB": [
+            240,
+            200,
+            106
+          ]
+        },
+        {
+          "Index": 8,
+          "Semantic": "liningcloth",
+          "DetailType": "cloth",
+          "RGB": [
+            195,
+            180,
+            133
+          ]
+        },
+        {
+          "Index": 9,
+          "Semantic": "leathersoles",
+          "DetailType": "leather",
+          "RGB": [
+            48,
+            42,
+            32
+          ]
+        },
+        {
+          "Index": 10,
+          "Semantic": "shell",
+          "DetailType": "flat",
+          "RGB": [
+            235,
+            216,
+            175
+          ]
+        },
+        {
+          "Index": 11,
+          "Semantic": "framewood",
+          "DetailType": "wood",
+          "RGB": [
+            137,
+            88,
+            46
+          ]
+        },
+        {
+          "Index": 12,
+          "Semantic": "darkframewood",
+          "DetailType": "wood",
+          "RGB": [
+            77,
+            47,
+            29
+          ]
+        },
+        {
+          "Index": 13,
+          "Semantic": "feather",
+          "DetailType": "plant_fibre",
+          "RGB": [
+            133,
+            94,
+            58
+          ]
+        },
+        {
+          "Index": 14,
+          "Semantic": "white",
+          "DetailType": "flat",
+          "RGB": [
+            245,
+            235,
+            205
+          ]
+        },
+        {
+          "Index": 15,
+          "Semantic": "dark",
+          "DetailType": "flat",
+          "RGB": [
+            31,
+            31,
+            27
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "MerchantMysteryBox",
+      "Path": "Assets/_Game/Art/Items/Tier01Design/Palettes/MerchantMysteryBoxPalette.png",
+      "MaterialPath": "Assets/_Game/Resources/Tier01/MerchantDesignMaterials/MerchantMysteryBox.mat",
+      "DetailScale": 5,
+      "DetailStrength": 0.38,
+      "Slots": [
+        {
+          "Index": 0,
+          "Semantic": "oliveboxlacquer",
+          "DetailType": "flat",
+          "RGB": [
+            112,
+            134,
+            64
+          ]
+        },
+        {
+          "Index": 1,
+          "Semantic": "secondarycloth",
+          "DetailType": "cloth",
+          "RGB": [
+            223,
+            205,
+            157
+          ]
+        },
+        {
+          "Index": 2,
+          "Semantic": "leather",
+          "DetailType": "leather",
+          "RGB": [
+            107,
+            70,
+            40
+          ]
+        },
+        {
+          "Index": 3,
+          "Semantic": "darkleather",
+          "DetailType": "leather",
+          "RGB": [
+            67,
+            43,
+            28
+          ]
+        },
+        {
+          "Index": 4,
+          "Semantic": "crimsonboxlacquer",
+          "DetailType": "flat",
+          "RGB": [
+            170,
+            36,
+            42
+          ]
+        },
+        {
+          "Index": 5,
+          "Semantic": "darkcrimsonlining",
+          "DetailType": "cloth",
+          "RGB": [
+            112,
+            24,
+            34
+          ]
+        },
+        {
+          "Index": 6,
+          "Semantic": "brassmetal",
+          "DetailType": "metal",
+          "RGB": [
+            195,
+            146,
+            62
+          ]
+        },
+        {
+          "Index": 7,
+          "Semantic": "brasshighlight",
+          "DetailType": "metal",
+          "RGB": [
+            240,
+            200,
+            106
+          ]
+        },
+        {
+          "Index": 8,
+          "Semantic": "liningcloth",
+          "DetailType": "cloth",
+          "RGB": [
+            195,
+            180,
+            133
+          ]
+        },
+        {
+          "Index": 9,
+          "Semantic": "leathersoles",
+          "DetailType": "leather",
+          "RGB": [
+            48,
+            42,
+            32
+          ]
+        },
+        {
+          "Index": 10,
+          "Semantic": "shell",
+          "DetailType": "flat",
+          "RGB": [
+            235,
+            216,
+            175
+          ]
+        },
+        {
+          "Index": 11,
+          "Semantic": "framewood",
+          "DetailType": "wood",
+          "RGB": [
+            137,
+            88,
+            46
+          ]
+        },
+        {
+          "Index": 12,
+          "Semantic": "darkframewood",
+          "DetailType": "wood",
+          "RGB": [
+            77,
+            47,
+            29
+          ]
+        },
+        {
+          "Index": 13,
+          "Semantic": "feather",
+          "DetailType": "plant_fibre",
+          "RGB": [
+            133,
+            94,
+            58
+          ]
+        },
+        {
+          "Index": 14,
+          "Semantic": "white",
+          "DetailType": "flat",
+          "RGB": [
+            245,
+            235,
+            205
+          ]
+        },
+        {
+          "Index": 15,
+          "Semantic": "dark",
+          "DetailType": "flat",
+          "RGB": [
+            31,
+            31,
+            27
+          ]
+        }
+      ]
+    }
+  ],
+  "FitStatus": "Ordinary T1 hats/pack fits are handled elsewhere. Special worn geometry was not refitted; old special-fit geometry remains for a later refit.",
+  "GeometryPolicy": "Existing source geometry, UVs, prefab hierarchy, transforms, hinges and animation are preserved."
+}

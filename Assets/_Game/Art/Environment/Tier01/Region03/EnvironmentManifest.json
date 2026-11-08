@@ -1,0 +1,452 @@
+{
+  "Number": 3,
+  "Name": "Mistwood",
+  "PaletteSize": 32,
+  "TrailColorRGB": [
+    106,
+    89,
+    60
+  ],
+  "Models": [
+    {
+      "Id": "env.tier01.region03.ForestPineTall",
+      "Name": "ForestPineTall",
+      "Category": "Tree",
+      "Triangles": 184,
+      "BoundsMin": [
+        -1.5902451990087398,
+        -0.016853925196242802,
+        -1.4555405489442932
+      ],
+      "BoundsMax": [
+        1.6192534344813703,
+        8,
+        1.4044189205606614
+      ],
+      "FootprintRadius": 2.149,
+      "CastsShadows": true,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 10.15,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region03/ForestPineTall"
+    },
+    {
+      "Id": "env.tier01.region03.ForestPineYoung",
+      "Name": "ForestPineYoung",
+      "Category": "Tree",
+      "Triangles": 184,
+      "BoundsMin": [
+        -0.6922578294696393,
+        -0.016853925196242802,
+        -0.7688328466673628
+      ],
+      "BoundsMax": [
+        0.697496147250871,
+        3.8,
+        0.7004428727388838
+      ],
+      "FootprintRadius": 1.011,
+      "CastsShadows": true,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 9.01,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region03/ForestPineYoung"
+    },
+    {
+      "Id": "env.tier01.region03.CrookedForestPine",
+      "Name": "CrookedForestPine",
+      "Category": "Tree",
+      "Triangles": 184,
+      "BoundsMin": [
+        -1.1376469630205976,
+        -0.021653415829894426,
+        -1.456003354843911
+      ],
+      "BoundsMax": [
+        1.7801090051485846,
+        6.7,
+        1.4707769234965358
+      ],
+      "FootprintRadius": 2.066,
+      "CastsShadows": true,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 10.07,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region03/CrookedForestPine"
+    },
+    {
+      "Id": "env.tier01.region03.ShadedBush",
+      "Name": "ShadedBush",
+      "Category": "Shrub",
+      "Triangles": 340,
+      "BoundsMin": [
+        -0.8619976394712978,
+        -0.022395158140011202,
+        -0.9778521809480707
+      ],
+      "BoundsMax": [
+        0.7,
+        1.025,
+        0.6847815667760512
+      ],
+      "FootprintRadius": 1.141,
+      "CastsShadows": true,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 4.14,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region03/ShadedBush"
+    },
+    {
+      "Id": "env.tier01.region03.ForestLowShrub",
+      "Name": "ForestLowShrub",
+      "Category": "Shrub",
+      "Triangles": 340,
+      "BoundsMin": [
+        -0.8619976394712978,
+        -0.02964705749547226,
+        -0.9778521809480707
+      ],
+      "BoundsMax": [
+        0.7,
+        0.533,
+        0.6847815667760512
+      ],
+      "FootprintRadius": 1.141,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 4.14,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region03/ForestLowShrub"
+    },
+    {
+      "Id": "env.tier01.region03.ForestFern",
+      "Name": "ForestFern",
+      "Category": "GroundCover",
+      "Triangles": 784,
+      "BoundsMin": [
+        -0.5878106732848929,
+        0.024211134143733628,
+        -0.6358293746192527
+      ],
+      "BoundsMax": [
+        0.6520706327870491,
+        0.6521708246960999,
+        0.6358293746192527
+      ],
+      "FootprintRadius": 0.888,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.89,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region03/ForestFern"
+    },
+    {
+      "Id": "env.tier01.region03.BroadleafClump",
+      "Name": "BroadleafClump",
+      "Category": "GroundCover",
+      "Triangles": 784,
+      "BoundsMin": [
+        -0.41195088831898796,
+        0.023793174857822275,
+        -0.44555452501974213
+      ],
+      "BoundsMax": [
+        0.4568927406340157,
+        0.40232755942831666,
+        0.44555452501974213
+      ],
+      "FootprintRadius": 0.622,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.62,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region03/BroadleafClump"
+    },
+    {
+      "Id": "env.tier01.region03.ForestGrass",
+      "Name": "ForestGrass",
+      "Category": "GroundCover",
+      "Triangles": 24,
+      "BoundsMin": [
+        -0.4094809607717649,
+        0,
+        -0.3841937560939435
+      ],
+      "BoundsMax": [
+        0.3160207173795909,
+        0.6226099174998811,
+        0.4498877233751695
+      ],
+      "FootprintRadius": 0.553,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.55,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region03/ForestGrass"
+    },
+    {
+      "Id": "env.tier01.region03.MossCarpet",
+      "Name": "MossCarpet",
+      "Category": "GroundCover",
+      "Triangles": 224,
+      "BoundsMin": [
+        -0.41165762407692824,
+        -0.035,
+        -0.40886246776159674
+      ],
+      "BoundsMax": [
+        0.4305255888325765,
+        0.10500000000000001,
+        0.40886246776159674
+      ],
+      "FootprintRadius": 0.587,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.59,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region03/MossCarpet"
+    },
+    {
+      "Id": "env.tier01.region03.MossyBoulder",
+      "Name": "MossyBoulder",
+      "Category": "Rock",
+      "Triangles": 420,
+      "BoundsMin": [
+        -1.2757361506170162,
+        0,
+        -0.882571084139206
+      ],
+      "BoundsMax": [
+        1.2338414432434486,
+        0.8374902498568523,
+        0.8671340053247918
+      ],
+      "FootprintRadius": 1.53,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 4.53,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region03/MossyBoulder"
+    },
+    {
+      "Id": "env.tier01.region03.DarkRockCluster",
+      "Name": "DarkRockCluster",
+      "Category": "Rock",
+      "Triangles": 280,
+      "BoundsMin": [
+        -1.5298600363040986,
+        0,
+        -1.0279077504707852
+      ],
+      "BoundsMax": [
+        1.5468618233477986,
+        0.6863896401785643,
+        1.1051556564664975
+      ],
+      "FootprintRadius": 1.872,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 4.87,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region03/DarkRockCluster"
+    },
+    {
+      "Id": "env.tier01.region03.RootFan",
+      "Name": "RootFan",
+      "Category": "Deadwood",
+      "Triangles": 136,
+      "BoundsMin": [
+        -1.1595863172167344,
+        -0.010918707388538772,
+        -0.5337710700741499
+      ],
+      "BoundsMax": [
+        0.65,
+        0.391402962970555,
+        0.6571708123735804
+      ],
+      "FootprintRadius": 1.083,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 4.08,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region03/RootFan"
+    },
+    {
+      "Id": "env.tier01.region03.FallenForestTrunk",
+      "Name": "FallenForestTrunk",
+      "Category": "Deadwood",
+      "Triangles": 56,
+      "BoundsMin": [
+        -1.4,
+        0.0,
+        -0.1969615506024416
+      ],
+      "BoundsMax": [
+        1.4,
+        0.45202989511734337,
+        0.35767796114028955
+      ],
+      "FootprintRadius": 1.427,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 4.43,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region03/FallenForestTrunk"
+    },
+    {
+      "Id": "env.tier01.region03.RaisedRootBank",
+      "Name": "RaisedRootBank",
+      "Category": "Terrain",
+      "Triangles": 160,
+      "BoundsMin": [
+        -4.0,
+        0.0,
+        -3.0
+      ],
+      "BoundsMax": [
+        4.0,
+        0.78,
+        3.0
+      ],
+      "FootprintRadius": 5.0,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 8.0,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier01/Region03/RaisedRootBank"
+    },
+    {
+      "Id": "env.tier01.region03.ForestSlope",
+      "Name": "ForestSlope",
+      "Category": "Terrain",
+      "Triangles": 160,
+      "BoundsMin": [
+        -5.0,
+        0.0,
+        -6.0
+      ],
+      "BoundsMax": [
+        5.0,
+        2.8,
+        6.0
+      ],
+      "FootprintRadius": 7.81,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 10.81,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier01/Region03/ForestSlope"
+    },
+    {
+      "Id": "env.tier01.region03.MistwoodRidge",
+      "Name": "MistwoodRidge",
+      "Category": "Terrain",
+      "Triangles": 160,
+      "BoundsMin": [
+        -11.0,
+        0.0,
+        -14.0
+      ],
+      "BoundsMax": [
+        11.0,
+        5.0,
+        14.0
+      ],
+      "FootprintRadius": 17.804,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 20.8,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier01/Region03/MistwoodRidge"
+    },
+    {
+      "Id": "env.tier01.region03.ForestFloorPatch",
+      "Name": "ForestFloorPatch",
+      "Category": "Terrain",
+      "Triangles": 72,
+      "BoundsMin": [
+        -3.0,
+        0,
+        -3.0
+      ],
+      "BoundsMax": [
+        3.0,
+        0,
+        3.0
+      ],
+      "FootprintRadius": 4.243,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 7.24,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier01/Region03/ForestFloorPatch"
+    },
+    {
+      "Id": "env.tier01.region03.LeafLitterPatch",
+      "Name": "LeafLitterPatch",
+      "Category": "Terrain",
+      "Triangles": 216,
+      "BoundsMin": [
+        -3.0,
+        -0.036,
+        -3.0
+      ],
+      "BoundsMax": [
+        3.0,
+        0.054,
+        3.0
+      ],
+      "FootprintRadius": 4.243,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 7.24,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier01/Region03/LeafLitterPatch"
+    },
+    {
+      "Id": "env.tier01.region03.ForestTrailShoulder",
+      "Name": "ForestTrailShoulder",
+      "Category": "Terrain",
+      "Triangles": 72,
+      "BoundsMin": [
+        -3.0,
+        0,
+        -3.0
+      ],
+      "BoundsMax": [
+        3.0,
+        0,
+        3.0
+      ],
+      "FootprintRadius": 4.243,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 7.24,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier01/Region03/ForestTrailShoulder"
+    },
+    {
+      "Id": "env.tier01.region03.ForestClearingPatch",
+      "Name": "ForestClearingPatch",
+      "Category": "Terrain",
+      "Triangles": 72,
+      "BoundsMin": [
+        -4.0,
+        0,
+        -4.0
+      ],
+      "BoundsMax": [
+        4.0,
+        0,
+        4.0
+      ],
+      "FootprintRadius": 5.657,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 8.66,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier01/Region03/ForestClearingPatch"
+    }
+  ]
+}

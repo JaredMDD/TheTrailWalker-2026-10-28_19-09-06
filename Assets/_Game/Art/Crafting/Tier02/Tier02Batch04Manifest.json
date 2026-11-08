@@ -1,0 +1,108 @@
+{
+  "Revision": 1,
+  "Batch": 4,
+  "Scope": "Four passive Material output assets; no recipes/stats/sources/footprints changed.",
+  "BlenderVersion": "5.2.3 LTS",
+  "Items": [
+    {
+      "Name": "BirchPlank",
+      "Model": "BirchPlank",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/BirchPlank.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/BirchPlankPalette.png",
+      "PrefabPath": "Tier02/Materials/BirchPlank",
+      "Triangles": 1364,
+      "BoundsMin": [
+        -0.552052,
+        -0.175,
+        -0.047617
+      ],
+      "BoundsMax": [
+        0.5523,
+        0.175,
+        0.047617
+      ],
+      "DisplayName": "Birch plank",
+      "ItemId": "",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive Material art; canonical item/recipe IDs and live binding unresolved",
+      "MissionCode": "T2-L1",
+      "MissionRegion": 7,
+      "IngredientBrief": "3 Birch logs -> 1"
+    },
+    {
+      "Name": "BirchBeam",
+      "Model": "BirchBeam",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/BirchBeam.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/BirchBeamPalette.png",
+      "PrefabPath": "Tier02/Materials/BirchBeam",
+      "Triangles": 656,
+      "BoundsMin": [
+        -0.53,
+        -0.152315,
+        -0.152315
+      ],
+      "BoundsMax": [
+        0.53,
+        0.152315,
+        0.152315
+      ],
+      "DisplayName": "Birch beam",
+      "ItemId": "",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive Material art; canonical item/recipe IDs and live binding unresolved",
+      "MissionCode": "T2-L5",
+      "MissionRegion": 9,
+      "IngredientBrief": "4 Birch planks + 1 Hemp cord -> 1"
+    },
+    {
+      "Name": "BirchCharcoal",
+      "Model": "BirchCharcoal",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/BirchCharcoal.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/BirchCharcoalPalette.png",
+      "PrefabPath": "Tier02/Materials/BirchCharcoal",
+      "Triangles": 288,
+      "BoundsMin": [
+        -0.475315,
+        -0.285378,
+        -0.141741
+      ],
+      "BoundsMax": [
+        0.449901,
+        0.219407,
+        0.151741
+      ],
+      "DisplayName": "Birch charcoal",
+      "ItemId": "",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive Material art; canonical item/recipe IDs and live binding unresolved",
+      "MissionCode": "T2-L11",
+      "MissionRegion": 11,
+      "IngredientBrief": "3 Birch branches -> 2"
+    },
+    {
+      "Name": "BirchPanel",
+      "Model": "BirchPanel",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/BirchPanel.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/BirchPanelPalette.png",
+      "PrefabPath": "Tier02/Materials/BirchPanel",
+      "Triangles": 1340,
+      "BoundsMin": [
+        -0.3655,
+        -0.415,
+        -0.040117
+      ],
+      "BoundsMax": [
+        0.3655,
+        0.415,
+        0.039736
+      ],
+      "DisplayName": "Birch panel",
+      "ItemId": "",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive Material art; canonical item/recipe IDs and live binding unresolved",
+      "MissionCode": "T2-L13",
+      "MissionRegion": 11,
+      "IngredientBrief": "3 Birch planks + 1 Beeswax -> 1"
+    }
+  ]
+}

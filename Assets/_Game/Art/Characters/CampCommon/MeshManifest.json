@@ -1,0 +1,183 @@
+{
+  "Revision": 4,
+  "Style": "faceted",
+  "Parts": [
+    {
+      "Name": "MaleHead",
+      "Triangles": 239
+    },
+    {
+      "Name": "MaleFaceDetails",
+      "Triangles": 24
+    },
+    {
+      "Name": "MaleBrows",
+      "Triangles": 24
+    },
+    {
+      "Name": "MaleHairCrop",
+      "Triangles": 192
+    },
+    {
+      "Name": "MaleHairSweep",
+      "Triangles": 240
+    },
+    {
+      "Name": "MaleHairBob",
+      "Triangles": 220
+    },
+    {
+      "Name": "MaleHairTied",
+      "Triangles": 228
+    },
+    {
+      "Name": "MaleTorso",
+      "Triangles": 184
+    },
+    {
+      "Name": "MaleShirtPockets",
+      "Triangles": 72
+    },
+    {
+      "Name": "MaleRagPatches",
+      "Triangles": 204
+    },
+    {
+      "Name": "MalePackStraps",
+      "Triangles": 192
+    },
+    {
+      "Name": "MaleAdvancedTrim",
+      "Triangles": 88
+    },
+    {
+      "Name": "MaleHips",
+      "Triangles": 80
+    },
+    {
+      "Name": "MaleThigh",
+      "Triangles": 96
+    },
+    {
+      "Name": "FemaleHead",
+      "Triangles": 239
+    },
+    {
+      "Name": "FemaleFaceDetails",
+      "Triangles": 48
+    },
+    {
+      "Name": "FemaleBrows",
+      "Triangles": 24
+    },
+    {
+      "Name": "FemaleHairCrop",
+      "Triangles": 192
+    },
+    {
+      "Name": "FemaleHairSweep",
+      "Triangles": 240
+    },
+    {
+      "Name": "FemaleHairBob",
+      "Triangles": 220
+    },
+    {
+      "Name": "FemaleHairTied",
+      "Triangles": 228
+    },
+    {
+      "Name": "FemaleTorso",
+      "Triangles": 184
+    },
+    {
+      "Name": "FemaleShirtPockets",
+      "Triangles": 72
+    },
+    {
+      "Name": "FemaleRagPatches",
+      "Triangles": 204
+    },
+    {
+      "Name": "FemalePackStraps",
+      "Triangles": 192
+    },
+    {
+      "Name": "FemaleAdvancedTrim",
+      "Triangles": 88
+    },
+    {
+      "Name": "FemaleHips",
+      "Triangles": 80
+    },
+    {
+      "Name": "FemaleThigh",
+      "Triangles": 96
+    },
+    {
+      "Name": "Beard",
+      "Triangles": 87
+    },
+    {
+      "Name": "Neck",
+      "Triangles": 36
+    },
+    {
+      "Name": "UpperArm",
+      "Triangles": 112
+    },
+    {
+      "Name": "Forearm",
+      "Triangles": 60
+    },
+    {
+      "Name": "Hand",
+      "Triangles": 102
+    },
+    {
+      "Name": "Shin",
+      "Triangles": 128
+    },
+    {
+      "Name": "Boot",
+      "Triangles": 180
+    },
+    {
+      "Name": "BareFoot",
+      "Triangles": 128
+    },
+    {
+      "Name": "Belt",
+      "Triangles": 40
+    },
+    {
+      "Name": "FurCap",
+      "Triangles": 240
+    },
+    {
+      "Name": "FeatherTrim",
+      "Triangles": 52
+    },
+    {
+      "Name": "ClothHood",
+      "Triangles": 330
+    },
+    {
+      "Name": "BackpackBody",
+      "Triangles": 144
+    },
+    {
+      "Name": "RagBackpack",
+      "Triangles": 128
+    },
+    {
+      "Name": "PackFrame",
+      "Triangles": 48
+    },
+    {
+      "Name": "PackRoll",
+      "Triangles": 56
+    }
+  ],
+  "Rig": "Shared faceted skeleton (faceted_people): hips pivot 0.50 seated, torso +0.06, head +0.49, shoulders (0.205|0.188, 0.415|0.400), upper arm 0.29, forearm 0.25, thigh 0.38, shin 0.40, ankle 0.10. Flat normals. Right hand is mirrored."
+}

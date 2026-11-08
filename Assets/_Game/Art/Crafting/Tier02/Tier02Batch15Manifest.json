@@ -1,0 +1,98 @@
+{
+  "Revision": 1,
+  "Batch": 15,
+  "Scope": "3 passive Wearable art outputs; no gameplay value or shared shader changes.",
+  "BlenderVersion": "5.2.3 LTS",
+  "Items": [
+    {
+      "Name": "MarshPack",
+      "Model": "MarshPack",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/MarshPack.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/MarshPackPalette.png",
+      "PrefabPath": "Tier02/Wearables/MarshPack",
+      "Triangles": 2572,
+      "BoundsMin": [
+        -0.288,
+        -0.3915,
+        -0.299246
+      ],
+      "BoundsMax": [
+        0.288,
+        0.3915,
+        0.299246
+      ],
+      "DisplayName": "Marsh pack",
+      "ItemId": "item.marsh_pack",
+      "RecipeId": "recipe.wearable.marsh_pack",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-E6",
+      "MissionRegion": 9,
+      "IngredientBrief": "4 Hemp cloth + 3 Beaver leather + 2 Birch planks + 2 Copper fittings -> 1",
+      "Role": "Wearable",
+      "Representation": "display",
+      "Body": "",
+      "Anchor": "Centered inventory display",
+      "BindingStatus": "Passive art only; runtime equipment/strap weighting and phone tests pending"
+    },
+    {
+      "Name": "MaleWearMarshPack",
+      "Model": "MaleWearMarshPack",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/MaleWearMarshPack.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/MaleWearMarshPackPalette.png",
+      "PrefabPath": "Tier02/Wearables/MaleWearMarshPack",
+      "Triangles": 3996,
+      "BoundsMin": [
+        -0.191476,
+        -0.19,
+        -0.2615
+      ],
+      "BoundsMax": [
+        0.191477,
+        0.261408,
+        0.328166
+      ],
+      "DisplayName": "Marsh pack (Male fitted)",
+      "ItemId": "item.marsh_pack",
+      "RecipeId": "recipe.wearable.marsh_pack",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-E6",
+      "MissionRegion": 9,
+      "IngredientBrief": "4 Hemp cloth + 3 Beaver leather + 2 Birch planks + 2 Copper fittings -> 1",
+      "Role": "Wearable",
+      "Representation": "worn",
+      "Body": "Male",
+      "Anchor": "BackpackAnchor local; parent at (0,1.14,-0.20); identity TRS",
+      "BindingStatus": "Passive art only; runtime equipment/strap weighting and phone tests pending"
+    },
+    {
+      "Name": "FemaleWearMarshPack",
+      "Model": "FemaleWearMarshPack",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/FemaleWearMarshPack.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/FemaleWearMarshPackPalette.png",
+      "PrefabPath": "Tier02/Wearables/FemaleWearMarshPack",
+      "Triangles": 3996,
+      "BoundsMin": [
+        -0.171921,
+        -0.19,
+        -0.2615
+      ],
+      "BoundsMax": [
+        0.171921,
+        0.245,
+        0.329723
+      ],
+      "DisplayName": "Marsh pack (Female fitted)",
+      "ItemId": "item.marsh_pack",
+      "RecipeId": "recipe.wearable.marsh_pack",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-E6",
+      "MissionRegion": 9,
+      "IngredientBrief": "4 Hemp cloth + 3 Beaver leather + 2 Birch planks + 2 Copper fittings -> 1",
+      "Role": "Wearable",
+      "Representation": "worn",
+      "Body": "Female",
+      "Anchor": "BackpackAnchor local; parent at (0,1.14,-0.20); identity TRS",
+      "BindingStatus": "Passive art only; runtime equipment/strap weighting and phone tests pending"
+    }
+  ]
+}

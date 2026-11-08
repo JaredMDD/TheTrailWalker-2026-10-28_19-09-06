@@ -1,0 +1,59 @@
+{
+  "Region": 8,
+  "Models": [
+    {
+      "Name": "FlaxFiber",
+      "Triangles": 480,
+      "BoundsMin": [
+        -0.4956,
+        -0.09,
+        -0.101
+      ],
+      "BoundsMax": [
+        0.4991,
+        0.11,
+        0.101
+      ],
+      "ProposedFootprint": [
+        1000,
+        201
+      ]
+    },
+    {
+      "Name": "CopperOre",
+      "Triangles": 288,
+      "BoundsMin": [
+        -0.3792,
+        -0.28,
+        -0.415
+      ],
+      "BoundsMax": [
+        0.4874,
+        0.28,
+        0.415
+      ],
+      "ProposedFootprint": [
+        480,
+        310
+      ]
+    },
+    {
+      "Name": "Carrots",
+      "Triangles": 504,
+      "BoundsMin": [
+        -0.3177,
+        -0.47,
+        -0.085
+      ],
+      "BoundsMax": [
+        0.3419,
+        0.53,
+        0.145
+      ],
+      "ProposedFootprint": [
+        528,
+        800
+      ]
+    }
+  ]
+}

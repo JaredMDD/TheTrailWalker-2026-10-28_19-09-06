@@ -1,0 +1,86 @@
+{
+  "Revision": 1,
+  "Batch": 9,
+  "Scope": "3 passive Material art outputs; no gameplay value or shared shader changes.",
+  "BlenderVersion": "5.2.3 LTS",
+  "Items": [
+    {
+      "Name": "BarleyFlour",
+      "Model": "BarleyFlour",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/BarleyFlour.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/BarleyFlourPalette.png",
+      "PrefabPath": "Tier02/Materials/BarleyFlour",
+      "Triangles": 1324,
+      "BoundsMin": [
+        -0.33,
+        -0.37,
+        -0.234539
+      ],
+      "BoundsMax": [
+        0.33,
+        0.36,
+        0.225
+      ],
+      "DisplayName": "Barley flour",
+      "ItemId": "",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-G9",
+      "MissionRegion": 9,
+      "IngredientBrief": "3 Barley -> 2; camp/home 5 s",
+      "Role": "Material"
+    },
+    {
+      "Name": "FlaxOil",
+      "Model": "FlaxOil",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/FlaxOil.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/FlaxOilPalette.png",
+      "PrefabPath": "Tier02/Materials/FlaxOil",
+      "Triangles": 1112,
+      "BoundsMin": [
+        -0.21,
+        -0.46,
+        -0.208511
+      ],
+      "BoundsMax": [
+        0.21,
+        0.48,
+        0.18
+      ],
+      "DisplayName": "Flax oil",
+      "ItemId": "",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-G11",
+      "MissionRegion": 10,
+      "IngredientBrief": "3 Flax seeds -> 1; fixed Material timer",
+      "Role": "Material"
+    },
+    {
+      "Name": "Beeswax",
+      "Model": "Beeswax",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/Beeswax.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/BeeswaxPalette.png",
+      "PrefabPath": "Tier02/Materials/Beeswax",
+      "Triangles": 356,
+      "BoundsMin": [
+        -0.388313,
+        -0.334433,
+        -0.078897
+      ],
+      "BoundsMax": [
+        0.352657,
+        0.287456,
+        0.097
+      ],
+      "DisplayName": "Beeswax",
+      "ItemId": "",
+      "RecipeId": "recipe.material.beeswax",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-G12",
+      "MissionRegion": 11,
+      "IngredientBrief": "2 Honey -> 1; fixed Material timer; no mastery",
+      "Role": "Material"
+    }
+  ]
+}

@@ -1,0 +1,128 @@
+{
+  "Revision": 1,
+  "Batch": 24,
+  "Scope": "4 passive Misc art outputs; no gameplay value or shared shader changes.",
+  "BlenderVersion": "5.2.3 LTS",
+  "Items": [
+    {
+      "Name": "PaintedBirchBird",
+      "Model": "PaintedBirchBird",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/PaintedBirchBird.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/PaintedBirchBirdPalette.png",
+      "PrefabPath": "Tier02/Misc/PaintedBirchBird",
+      "Triangles": 3120,
+      "BoundsMin": [
+        -0.462974,
+        -0.277,
+        -0.142281
+      ],
+      "BoundsMax": [
+        0.36468,
+        0.289101,
+        0.142281
+      ],
+      "DisplayName": "Painted birch bird",
+      "ItemId": "",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-L16",
+      "MissionRegion": 12,
+      "IngredientBrief": "2 Birch planks + 1 Yellow ochre -> 1",
+      "Role": "Misc",
+      "Representation": "display",
+      "GameplayRole": "Sale Misc, never functional furniture or equipment",
+      "BindingStatus": "Passive art; canonical output IDs/live bindings unresolved",
+      "IngredientPolicy": "Yellow ochre only pigment; remaining dark/light cues are bare/recessed Birch; no feathers or metal legs"
+    },
+    {
+      "Name": "FishingCharm",
+      "Model": "FishingCharm",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/FishingCharm.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/FishingCharmPalette.png",
+      "PrefabPath": "Tier02/Misc/FishingCharm",
+      "Triangles": 3012,
+      "BoundsMin": [
+        -0.277497,
+        -0.3671,
+        -0.030755
+      ],
+      "BoundsMax": [
+        0.287313,
+        0.375665,
+        0.022
+      ],
+      "DisplayName": "Fishing charm",
+      "ItemId": "",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-E17",
+      "MissionRegion": 12,
+      "IngredientBrief": "1 Cattail cord + 1 Copper fitting -> 1",
+      "Role": "Misc",
+      "Representation": "display",
+      "GameplayRole": "Sale Misc, never functional furniture or equipment",
+      "BindingStatus": "Passive art; canonical output IDs/live bindings unresolved",
+      "IngredientPolicy": "Cattail cord T2-E14 and Copper fittings T2-L4; not Hemp/Flax cord; no fishing luck, tool uses or hook function"
+    },
+    {
+      "Name": "BeeswaxCandle",
+      "Model": "BeeswaxCandle",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/BeeswaxCandle.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/BeeswaxCandlePalette.png",
+      "PrefabPath": "Tier02/Misc/BeeswaxCandle",
+      "Triangles": 1052,
+      "BoundsMin": [
+        -0.17336,
+        -0.4,
+        -0.17943
+      ],
+      "BoundsMax": [
+        0.17864,
+        0.412263,
+        0.176
+      ],
+      "DisplayName": "Beeswax candle",
+      "ItemId": "",
+      "RecipeId": "recipe.misc.beeswax_candle",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-G19",
+      "MissionRegion": 12,
+      "IngredientBrief": "2 Beeswax + 1 Flax cord -> 1",
+      "Role": "Misc",
+      "Representation": "display",
+      "GameplayRole": "Sale Misc, never functional furniture or equipment",
+      "BindingStatus": "Passive art; canonical output IDs/live bindings unresolved",
+      "SourcePolicy": "Beeswax T2-G12 / Honey region 11; exact Flax cord T2-E2; unlit static candle, no light or home buff"
+    },
+    {
+      "Name": "SandstoneOwl",
+      "Model": "SandstoneOwl",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/SandstoneOwl.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/SandstoneOwlPalette.png",
+      "PrefabPath": "Tier02/Misc/SandstoneOwl",
+      "Triangles": 2752,
+      "BoundsMin": [
+        -0.26,
+        -0.397,
+        -0.18
+      ],
+      "BoundsMax": [
+        0.26,
+        0.356306,
+        0.18
+      ],
+      "DisplayName": "Sandstone owl",
+      "ItemId": "",
+      "RecipeId": "recipe.misc.sandstone_owl",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-L10",
+      "MissionRegion": 10,
+      "IngredientBrief": "2 Sandstone tiles + 1 Birch plank -> 1",
+      "Role": "Misc",
+      "Representation": "display",
+      "GameplayRole": "Sale Misc, never functional furniture or equipment",
+      "BindingStatus": "Passive art; canonical output IDs/live bindings unresolved",
+      "IngredientPolicy": "Sandstone sculpture with integral Birch plank plinth; no marble/gem eyes, paint, furniture placement or buff"
+    }
+  ]
+}

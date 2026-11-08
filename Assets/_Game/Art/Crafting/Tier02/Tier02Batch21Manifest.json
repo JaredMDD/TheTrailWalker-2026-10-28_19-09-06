@@ -1,0 +1,162 @@
+{
+  "Revision": 1,
+  "Batch": 21,
+  "Scope": "5 passive Food art outputs; no gameplay value or shared shader changes.",
+  "BlenderVersion": "5.2.3 LTS",
+  "Items": [
+    {
+      "Name": "BlackberryGlazedBeaver",
+      "Model": "BlackberryGlazedBeaver",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/BlackberryGlazedBeaver.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/BlackberryGlazedBeaverPalette.png",
+      "PrefabPath": "Tier02/Food/BlackberryGlazedBeaver",
+      "Triangles": 3220,
+      "BoundsMin": [
+        -0.365,
+        -0.13,
+        -0.365
+      ],
+      "BoundsMax": [
+        0.365,
+        0.143,
+        0.365
+      ],
+      "DisplayName": "Blackberry-glazed beaver",
+      "ItemId": "",
+      "RecipeId": "recipe.food.blackberry_glazed_beaver",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-H2",
+      "MissionRegion": 7,
+      "IngredientBrief": "1 Raw beaver meat + 1 Blackberries + 2 Birch branches -> 1",
+      "Role": "Food",
+      "Representation": "display",
+      "DepictedPortions": 1,
+      "VesselPolicy": "Illustrative serving vessel; no additional recipe inputs",
+      "BindingStatus": "Passive Food art; canonical output IDs/live bindings unresolved",
+      "FuelPolicy": "Two Birch branches are consumed cooking fuel, not an edible garnish"
+    },
+    {
+      "Name": "BeaverCarrotStew",
+      "Model": "BeaverCarrotStew",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/BeaverCarrotStew.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/BeaverCarrotStewPalette.png",
+      "PrefabPath": "Tier02/Food/BeaverCarrotStew",
+      "Triangles": 1808,
+      "BoundsMin": [
+        -0.365,
+        -0.2,
+        -0.365
+      ],
+      "BoundsMax": [
+        0.365,
+        0.138,
+        0.365
+      ],
+      "DisplayName": "Beaver-carrot stew",
+      "ItemId": "",
+      "RecipeId": "recipe.food.beaver_carrot_stew",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-H8",
+      "MissionRegion": 8,
+      "IngredientBrief": "2 Raw beaver meat + 2 Carrots + 1 Rock salt -> 2",
+      "Role": "Food",
+      "Representation": "display",
+      "DepictedPortions": 1,
+      "VesselPolicy": "Illustrative serving vessel; no additional recipe inputs",
+      "BindingStatus": "Passive Food art; canonical output IDs/live bindings unresolved"
+    },
+    {
+      "Name": "RabbitBarleySoup",
+      "Model": "RabbitBarleySoup",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/RabbitBarleySoup.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/RabbitBarleySoupPalette.png",
+      "PrefabPath": "Tier02/Food/RabbitBarleySoup",
+      "Triangles": 2756,
+      "BoundsMin": [
+        -0.365,
+        -0.2,
+        -0.365
+      ],
+      "BoundsMax": [
+        0.365,
+        0.138,
+        0.365
+      ],
+      "DisplayName": "Rabbit barley soup",
+      "ItemId": "",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-H10",
+      "MissionRegion": 9,
+      "IngredientBrief": "2 Rabbit meat + 2 Barley + 1 Tea herb -> 2",
+      "Role": "Food",
+      "Representation": "display",
+      "DepictedPortions": 1,
+      "VesselPolicy": "Illustrative serving vessel; no additional recipe inputs",
+      "BindingStatus": "Passive Food art; canonical output IDs/live bindings unresolved",
+      "SourcePolicy": "Tea herbs from farm; rabbit meat from tier one"
+    },
+    {
+      "Name": "BeaverMushroomPot",
+      "Model": "BeaverMushroomPot",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/BeaverMushroomPot.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/BeaverMushroomPotPalette.png",
+      "PrefabPath": "Tier02/Food/BeaverMushroomPot",
+      "Triangles": 2220,
+      "BoundsMin": [
+        -0.494,
+        -0.22,
+        -0.373634
+      ],
+      "BoundsMax": [
+        0.494,
+        0.169,
+        0.365
+      ],
+      "DisplayName": "Beaver mushroom pot",
+      "ItemId": "",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-H13",
+      "MissionRegion": 8,
+      "IngredientBrief": "2 Beaver meat + 2 Mushrooms + 1 Carrot -> 2",
+      "Role": "Food",
+      "Representation": "display",
+      "DepictedPortions": 1,
+      "VesselPolicy": "Illustrative serving vessel; no additional recipe inputs",
+      "BindingStatus": "Passive Food art; canonical output IDs/live bindings unresolved",
+      "SourcePolicy": "Mushrooms from region 4; appended H13 opens with region 8"
+    },
+    {
+      "Name": "CreamyTruffleBarleyPot",
+      "Model": "CreamyTruffleBarleyPot",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/CreamyTruffleBarleyPot.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/CreamyTruffleBarleyPotPalette.png",
+      "PrefabPath": "Tier02/Food/CreamyTruffleBarleyPot",
+      "Triangles": 3960,
+      "BoundsMin": [
+        -0.494,
+        -0.22,
+        -0.382873
+      ],
+      "BoundsMax": [
+        0.494,
+        0.16,
+        0.365
+      ],
+      "DisplayName": "Creamy truffle-barley pot",
+      "ItemId": "",
+      "RecipeId": "recipe.food.truffle_barley_pot",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-G22",
+      "MissionRegion": 10,
+      "IngredientBrief": "2 Truffle + 2 Barley + 1 Cow cream -> 1",
+      "Role": "Food",
+      "Representation": "display",
+      "DepictedPortions": 1,
+      "VesselPolicy": "Illustrative serving vessel; no additional recipe inputs",
+      "BindingStatus": "Passive Food art; canonical output IDs/live bindings unresolved",
+      "UnlockPolicy": "T2-G22 optional and nonblocking; collect 10 Truffle; Barley region 9 and exact Cow cream source G13 required"
+    }
+  ]
+}

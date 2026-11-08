@@ -1,0 +1,452 @@
+{
+  "Number": 10,
+  "Name": "Sunlit Uplands",
+  "PaletteSize": 32,
+  "TrailColorRGB": [
+    144,
+    116,
+    76
+  ],
+  "Models": [
+    {
+      "Id": "env.tier02.region10.UplandBirch",
+      "Name": "UplandBirch",
+      "Category": "Tree",
+      "Triangles": 616,
+      "BoundsMin": [
+        -1.2168204661783948,
+        0.0,
+        -1.34834267305751
+      ],
+      "BoundsMax": [
+        1.1619274259558172,
+        6.4350000000000005,
+        1.3189963747506948
+      ],
+      "FootprintRadius": 1.787,
+      "CastsShadows": true,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 9.79,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region10/UplandBirch"
+    },
+    {
+      "Id": "env.tier02.region10.BirchGroveClump",
+      "Name": "BirchGroveClump",
+      "Category": "Tree",
+      "Triangles": 1848,
+      "BoundsMin": [
+        -1.4016398515863426,
+        -0.006543535321966777,
+        -1.7948683531357634
+      ],
+      "BoundsMax": [
+        1.7140491689379318,
+        5.385079356162612,
+        1.7192734422019589
+      ],
+      "FootprintRadius": 2.348,
+      "CastsShadows": true,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 10.35,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region10/BirchGroveClump"
+    },
+    {
+      "Id": "env.tier02.region10.SunlitBirchSapling",
+      "Name": "SunlitBirchSapling",
+      "Category": "Tree",
+      "Triangles": 616,
+      "BoundsMin": [
+        -0.4786478007014502,
+        0.0,
+        -0.4689615022538223
+      ],
+      "BoundsMax": [
+        0.5594555721288171,
+        2.2769999999999997,
+        0.49773264272187706
+      ],
+      "FootprintRadius": 0.709,
+      "CastsShadows": true,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 8.71,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region10/SunlitBirchSapling"
+    },
+    {
+      "Id": "env.tier02.region10.UplandHeathShrub",
+      "Name": "UplandHeathShrub",
+      "Category": "Shrub",
+      "Triangles": 340,
+      "BoundsMin": [
+        -0.8004263795090623,
+        -0.029697009352530935,
+        -0.9080055965946372
+      ],
+      "BoundsMax": [
+        0.6500000000000001,
+        0.492,
+        0.635868597720619
+      ],
+      "FootprintRadius": 1.059,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 4.06,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region10/UplandHeathShrub"
+    },
+    {
+      "Id": "env.tier02.region10.HollowShrub",
+      "Name": "HollowShrub",
+      "Category": "Shrub",
+      "Triangles": 340,
+      "BoundsMin": [
+        -0.8619976394712978,
+        -0.022926143286784394,
+        -0.9778521809480707
+      ],
+      "BoundsMax": [
+        0.7,
+        0.984,
+        0.6847815667760512
+      ],
+      "FootprintRadius": 1.141,
+      "CastsShadows": true,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 4.14,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region10/HollowShrub"
+    },
+    {
+      "Id": "env.tier02.region10.UplandGrass",
+      "Name": "UplandGrass",
+      "Category": "GroundCover",
+      "Triangles": 24,
+      "BoundsMin": [
+        -0.26935539961877686,
+        0,
+        -0.30178399158170893
+      ],
+      "BoundsMax": [
+        0.43105153694014225,
+        0.5452351359276812,
+        0.44561907828112163
+      ],
+      "FootprintRadius": 0.512,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.51,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region10/UplandGrass"
+    },
+    {
+      "Id": "env.tier02.region10.SunlitWildflowers",
+      "Name": "SunlitWildflowers",
+      "Category": "GroundCover",
+      "Triangles": 504,
+      "BoundsMin": [
+        -0.22953995655948076,
+        0,
+        -0.3994436337582036
+      ],
+      "BoundsMax": [
+        0.5822981502773479,
+        0.3476905318075233,
+        0.4411260481831782
+      ],
+      "FootprintRadius": 0.584,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.58,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region10/SunlitWildflowers"
+    },
+    {
+      "Id": "env.tier02.region10.HollowFern",
+      "Name": "HollowFern",
+      "Category": "GroundCover",
+      "Triangles": 784,
+      "BoundsMin": [
+        -0.5878885301561694,
+        0.024429495032674057,
+        -0.6359059597088106
+      ],
+      "BoundsMax": [
+        0.6521532144200626,
+        0.7020889393627472,
+        0.6359059597088106
+      ],
+      "FootprintRadius": 0.888,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.89,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region10/HollowFern"
+    },
+    {
+      "Id": "env.tier02.region10.SandstoneOutcrop",
+      "Name": "SandstoneOutcrop",
+      "Category": "Rock",
+      "Triangles": 56,
+      "BoundsMin": [
+        -1.9230732507514015,
+        0,
+        -1.0477435720494488
+      ],
+      "BoundsMax": [
+        1.7639207219558504,
+        1.6480000000000001,
+        0.8812150090728125
+      ],
+      "FootprintRadius": 2.081,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 5.08,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region10/SandstoneOutcrop"
+    },
+    {
+      "Id": "env.tier02.region10.SandstoneLedge",
+      "Name": "SandstoneLedge",
+      "Category": "Rock",
+      "Triangles": 56,
+      "BoundsMin": [
+        -2.7338422800213085,
+        0,
+        -1.3239633483810196
+      ],
+      "BoundsMax": [
+        2.4260802918414854,
+        0.721,
+        1.3897815623836132
+      ],
+      "FootprintRadius": 2.915,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 5.92,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region10/SandstoneLedge"
+    },
+    {
+      "Id": "env.tier02.region10.UplandStoneCluster",
+      "Name": "UplandStoneCluster",
+      "Category": "Rock",
+      "Triangles": 280,
+      "BoundsMin": [
+        -1.4388826130839156,
+        0,
+        -1.0432217157410841
+      ],
+      "BoundsMax": [
+        1.4463845194149063,
+        0.6097476996509197,
+        0.9822302473372462
+      ],
+      "FootprintRadius": 1.763,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 4.76,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region10/UplandStoneCluster"
+    },
+    {
+      "Id": "env.tier02.region10.FallenBirchTrunk",
+      "Name": "FallenBirchTrunk",
+      "Category": "Deadwood",
+      "Triangles": 56,
+      "BoundsMin": [
+        -1.4,
+        0.0,
+        -0.17726539554219745
+      ],
+      "BoundsMax": [
+        1.4,
+        0.43202989511734335,
+        0.35767796114028955
+      ],
+      "FootprintRadius": 1.425,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 4.43,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region10/FallenBirchTrunk"
+    },
+    {
+      "Id": "env.tier02.region10.WoodedHollow",
+      "Name": "WoodedHollow",
+      "Category": "Terrain",
+      "Triangles": 160,
+      "BoundsMin": [
+        -5.0,
+        -1.2,
+        -5.0
+      ],
+      "BoundsMax": [
+        5.0,
+        0.0,
+        5.0
+      ],
+      "FootprintRadius": 7.071,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 10.07,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier02/Region10/WoodedHollow"
+    },
+    {
+      "Id": "env.tier02.region10.UplandSlope",
+      "Name": "UplandSlope",
+      "Category": "Terrain",
+      "Triangles": 160,
+      "BoundsMin": [
+        -5.0,
+        0.0,
+        -6.0
+      ],
+      "BoundsMax": [
+        5.0,
+        2.6,
+        6.0
+      ],
+      "FootprintRadius": 7.81,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 10.81,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier02/Region10/UplandSlope"
+    },
+    {
+      "Id": "env.tier02.region10.UplandKnoll",
+      "Name": "UplandKnoll",
+      "Category": "Terrain",
+      "Triangles": 160,
+      "BoundsMin": [
+        -6.0,
+        0.0,
+        -5.0
+      ],
+      "BoundsMax": [
+        6.0,
+        2.4,
+        5.0
+      ],
+      "FootprintRadius": 7.81,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 10.81,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier02/Region10/UplandKnoll"
+    },
+    {
+      "Id": "env.tier02.region10.DistantUplandRidge",
+      "Name": "DistantUplandRidge",
+      "Category": "Terrain",
+      "Triangles": 160,
+      "BoundsMin": [
+        -14.0,
+        0.0,
+        -14.0
+      ],
+      "BoundsMax": [
+        14.0,
+        6.0,
+        14.0
+      ],
+      "FootprintRadius": 19.799,
+      "CastsShadows": false,
+      "DistantOnly": true,
+      "RecommendedRoadClearance": 22.8,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier02/Region10/DistantUplandRidge"
+    },
+    {
+      "Id": "env.tier02.region10.UplandGroundPatch",
+      "Name": "UplandGroundPatch",
+      "Category": "Terrain",
+      "Triangles": 72,
+      "BoundsMin": [
+        -3.0,
+        0,
+        -3.0
+      ],
+      "BoundsMax": [
+        3.0,
+        0,
+        3.0
+      ],
+      "FootprintRadius": 4.243,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 7.24,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier02/Region10/UplandGroundPatch"
+    },
+    {
+      "Id": "env.tier02.region10.HollowLeafLitter",
+      "Name": "HollowLeafLitter",
+      "Category": "Terrain",
+      "Triangles": 216,
+      "BoundsMin": [
+        -3.0,
+        -0.036,
+        -3.0
+      ],
+      "BoundsMax": [
+        3.0,
+        0.054,
+        3.0
+      ],
+      "FootprintRadius": 4.243,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 7.24,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier02/Region10/HollowLeafLitter"
+    },
+    {
+      "Id": "env.tier02.region10.UplandTrailShoulder",
+      "Name": "UplandTrailShoulder",
+      "Category": "Terrain",
+      "Triangles": 72,
+      "BoundsMin": [
+        -3.0,
+        0,
+        -3.0
+      ],
+      "BoundsMax": [
+        3.0,
+        0,
+        3.0
+      ],
+      "FootprintRadius": 4.243,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 7.24,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier02/Region10/UplandTrailShoulder"
+    },
+    {
+      "Id": "env.tier02.region10.UplandClearingPatch",
+      "Name": "UplandClearingPatch",
+      "Category": "Terrain",
+      "Triangles": 72,
+      "BoundsMin": [
+        -4.0,
+        0,
+        -4.0
+      ],
+      "BoundsMax": [
+        4.0,
+        0,
+        4.0
+      ],
+      "FootprintRadius": 5.657,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 8.66,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier02/Region10/UplandClearingPatch"
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "Revision": 1,
+  "Batch": 12,
+  "Scope": "2 passive Tool art outputs; no gameplay value or shared shader changes.",
+  "BlenderVersion": "5.2.3 LTS",
+  "Items": [
+    {
+      "Name": "NormalBirchRod",
+      "Model": "NormalBirchRod",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/NormalBirchRod.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/NormalBirchRodPalette.png",
+      "PrefabPath": "Tier02/Tools/NormalBirchRod",
+      "Triangles": 2428,
+      "BoundsMin": [
+        -0.207597,
+        -0.73,
+        -0.045231
+      ],
+      "BoundsMax": [
+        0.41,
+        0.79,
+        0.045231
+      ],
+      "DisplayName": "Normal birch rod",
+      "ItemId": "",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-E5",
+      "MissionRegion": 8,
+      "IngredientBrief": "2 Birch branches + 1 Copper fitting + 1 Hemp cord -> 1",
+      "Role": "Tool"
+    },
+    {
+      "Name": "EliteBirchRod",
+      "Model": "EliteBirchRod",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/EliteBirchRod.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/EliteBirchRodPalette.png",
+      "PrefabPath": "Tier02/Tools/EliteBirchRod",
+      "Triangles": 3534,
+      "BoundsMin": [
+        -0.210366,
+        -0.73,
+        -0.062609
+      ],
+      "BoundsMax": [
+        0.41,
+        0.79,
+        0.049
+      ],
+      "DisplayName": "Elite birch rod",
+      "ItemId": "",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-E8",
+      "MissionRegion": 10,
+      "IngredientBrief": "1 Normal birch rod + 2 Fine hemp cloth -> 1",
+      "Role": "Tool"
+    }
+  ]
+}

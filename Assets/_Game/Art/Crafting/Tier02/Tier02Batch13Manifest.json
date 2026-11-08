@@ -1,0 +1,182 @@
+{
+  "Revision": 1,
+  "Batch": 13,
+  "Scope": "6 passive Wearable art outputs; no gameplay value or shared shader changes.",
+  "BlenderVersion": "5.2.3 LTS",
+  "Items": [
+    {
+      "Name": "BeaverFurCap",
+      "Model": "BeaverFurCap",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/BeaverFurCap.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/BeaverFurCapPalette.png",
+      "PrefabPath": "Tier02/Wearables/BeaverFurCap",
+      "Triangles": 696,
+      "BoundsMin": [
+        -0.303,
+        -0.162,
+        -0.378
+      ],
+      "BoundsMax": [
+        0.303,
+        0.162,
+        0.378
+      ],
+      "DisplayName": "Beaver-fur cap",
+      "ItemId": "item.beaver_fur_cap",
+      "RecipeId": "recipe.wearable.beaver_fur_cap",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-G8",
+      "MissionRegion": 9,
+      "IngredientBrief": "2 Fine beaver pelts + 1 Hemp thread -> 1",
+      "Role": "Wearable",
+      "Representation": "display"
+    },
+    {
+      "Name": "MarshBoots",
+      "Model": "MarshBoots",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/MarshBoots.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/MarshBootsPalette.png",
+      "PrefabPath": "Tier02/Wearables/MarshBoots",
+      "Triangles": 1398,
+      "BoundsMin": [
+        -0.4214,
+        -0.3402,
+        -0.2072
+      ],
+      "BoundsMax": [
+        0.4214,
+        0.3402,
+        0.2072
+      ],
+      "DisplayName": "Marsh boots",
+      "ItemId": "item.marsh_boots",
+      "RecipeId": "recipe.wearable.marsh_boots",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-L6",
+      "MissionRegion": 9,
+      "IngredientBrief": "2 Beaver leather + 1 Birch plank -> 1",
+      "Role": "Wearable",
+      "Representation": "display"
+    },
+    {
+      "Name": "MaleWearBeaverFurCap",
+      "Model": "MaleWearBeaverFurCap",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/MaleWearBeaverFurCap.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/MaleWearBeaverFurCapPalette.png",
+      "PrefabPath": "Tier02/Wearables/MaleWearBeaverFurCap",
+      "Triangles": 696,
+      "BoundsMin": [
+        -0.101,
+        0.191,
+        -0.13
+      ],
+      "BoundsMax": [
+        0.101,
+        0.299,
+        0.122
+      ],
+      "DisplayName": "Beaver-fur cap (Male fitted)",
+      "ItemId": "item.beaver_fur_cap",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-G8",
+      "MissionRegion": 9,
+      "IngredientBrief": "2 Fine beaver pelts + 1 Hemp thread -> 1",
+      "Role": "Wearable",
+      "Representation": "worn",
+      "Body": "Male",
+      "Anchor": "HeadAnchor/HatAnchor",
+      "BindingStatus": "Authored item identity only; no live equipment binding/weights/animation"
+    },
+    {
+      "Name": "MaleWearMarshBoots",
+      "Model": "MaleWearMarshBoots",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/MaleWearMarshBoots.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/MaleWearMarshBootsPalette.png",
+      "PrefabPath": "Tier02/Wearables/MaleWearMarshBoots",
+      "Triangles": 2796,
+      "BoundsMin": [
+        -0.174,
+        0.0,
+        -0.083
+      ],
+      "BoundsMax": [
+        0.174,
+        0.243,
+        0.218
+      ],
+      "DisplayName": "Marsh boots (Male fitted)",
+      "ItemId": "item.marsh_boots",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-L6",
+      "MissionRegion": 9,
+      "IngredientBrief": "2 Beaver leather + 1 Birch plank -> 1",
+      "Role": "Wearable",
+      "Representation": "worn",
+      "Body": "Male",
+      "Anchor": "BodyRoot; split LeftBoot/RightBoot for runtime",
+      "BindingStatus": "Authored item identity only; no live equipment binding/weights/animation"
+    },
+    {
+      "Name": "FemaleWearBeaverFurCap",
+      "Model": "FemaleWearBeaverFurCap",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/FemaleWearBeaverFurCap.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/FemaleWearBeaverFurCapPalette.png",
+      "PrefabPath": "Tier02/Wearables/FemaleWearBeaverFurCap",
+      "Triangles": 696,
+      "BoundsMin": [
+        -0.101,
+        0.185341,
+        -0.13
+      ],
+      "BoundsMax": [
+        0.101,
+        0.290141,
+        0.122
+      ],
+      "DisplayName": "Beaver-fur cap (Female fitted)",
+      "ItemId": "item.beaver_fur_cap",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-G8",
+      "MissionRegion": 9,
+      "IngredientBrief": "2 Fine beaver pelts + 1 Hemp thread -> 1",
+      "Role": "Wearable",
+      "Representation": "worn",
+      "Body": "Female",
+      "Anchor": "HeadAnchor/HatAnchor",
+      "BindingStatus": "Authored item identity only; no live equipment binding/weights/animation"
+    },
+    {
+      "Name": "FemaleWearMarshBoots",
+      "Model": "FemaleWearMarshBoots",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/FemaleWearMarshBoots.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/FemaleWearMarshBootsPalette.png",
+      "PrefabPath": "Tier02/Wearables/FemaleWearMarshBoots",
+      "Triangles": 2796,
+      "BoundsMin": [
+        -0.174,
+        0.0,
+        -0.083
+      ],
+      "BoundsMax": [
+        0.174,
+        0.243,
+        0.218
+      ],
+      "DisplayName": "Marsh boots (Female fitted)",
+      "ItemId": "item.marsh_boots",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-L6",
+      "MissionRegion": 9,
+      "IngredientBrief": "2 Beaver leather + 1 Birch plank -> 1",
+      "Role": "Wearable",
+      "Representation": "worn",
+      "Body": "Female",
+      "Anchor": "BodyRoot; split LeftBoot/RightBoot for runtime",
+      "BindingStatus": "Authored item identity only; no live equipment binding/weights/animation"
+    }
+  ]
+}

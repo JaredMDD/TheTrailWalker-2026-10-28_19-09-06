@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f762be705e222434cadccc2185671b9b, type: 3}
+  m_Name: BaseRagsOpening
+  m_EditorClassIdentifier: Assembly-CSharp::TheTrailWalker.InventoryContainerSkin
+  Kind: 5
+  EquipmentDefinitionId: 
+  Cloth: {r: 0.37, g: 0.31, b: 0.23, a: 1}
+  Shade: {r: 0.2, g: 0.16, b: 0.11, a: 1}
+  Binding: {r: 0.25, g: 0.17, b: 0.105, a: 1}
+  Thread: {r: 0.72, g: 0.63, b: 0.44, a: 1}
+  Patch: {r: 0.47, g: 0.39, b: 0.27, a: 1}

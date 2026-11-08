@@ -35,6 +35,10 @@ namespace TheTrailWalker.Domain.Equipment
         // Confirmed shared rate for camp/settlement regeneration, faint recovery and food delivery (raised from 0.25).
         public const double RecoveryPerSecond = 1.0 / 3.0;
         public bool IsEmpty => Hearts <= EmptyEpsilon;
+        // Auto-eat (user, November 7, 2026): carried prepared food is eaten at 0.1 hearts, while walking continues, so the
+        // meter normally never reaches zero. Zero with no prepared food still stops the walker and leads to fainting.
+        public const double AutoEatThreshold = 0.1;
+        public bool ShouldAutoEat(bool safeArea) => !safeArea && !Fainted && PendingFood <= 0 && Hearts <= AutoEatThreshold;
         public bool ShouldFaint(bool safeArea, bool accessibleFood) => !safeArea && !Fainted && IsEmpty && PendingFood <= 0 && !accessibleFood;
         public void BeginFaint() { if (Fainted || !IsEmpty || PendingFood > 0) throw new InvalidOperationException("Invalid faint transition"); Hearts = 0; Fainted = true; FaintElapsed = 0; }
 

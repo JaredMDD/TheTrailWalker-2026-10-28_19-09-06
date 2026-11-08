@@ -1,0 +1,76 @@
+{
+  "Models": [
+    {
+      "Name": "BurnedWoodCampfire",
+      "Triangles": 630,
+      "BoundsMin": [
+        -0.5836998397023976,
+        0.0,
+        -0.514164243987076
+      ],
+      "BoundsMax": [
+        0.5545331949206235,
+        0.34331584941177584,
+        0.4360538431150505
+      ]
+    },
+    {
+      "Name": "PineLogSeat",
+      "Triangles": 482,
+      "BoundsMin": [
+        -0.7,
+        0,
+        -0.24205
+      ],
+      "BoundsMax": [
+        0.7,
+        0.43,
+        0.30460669058009837
+      ]
+    },
+    {
+      "Name": "BirchLogSeat",
+      "Triangles": 454,
+      "BoundsMin": [
+        -0.67,
+        0,
+        -0.235
+      ],
+      "BoundsMax": [
+        0.67,
+        0.43,
+        0.235
+      ]
+    },
+    {
+      "Name": "MesquiteLogSeat",
+      "Triangles": 482,
+      "BoundsMin": [
+        -0.69,
+        0,
+        -0.2578632598873903
+      ],
+      "BoundsMax": [
+        0.69,
+        0.43,
+        0.30460669058009837
+      ]
+    },
+    {
+      "Name": "OakLogSeat",
+      "Triangles": 522,
+      "BoundsMin": [
+        -0.75,
+        0,
+        -0.2632
+      ],
+      "BoundsMax": [
+        0.75,
+        0.43,
+        0.30460669058009837
+      ]
+    }
+  ],
+  "SeatSurfaceHeight": 0.43,
+  "Policy": "Static decorative art only. No flames, glow, smoke, particles, animation, colliders, resource drops, selection logic or live camp replacement."
+}

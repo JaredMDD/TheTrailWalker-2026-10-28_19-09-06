@@ -1,6 +1,8 @@
 # TheTrailWalker: Revised Design and Step-by-Step Development Plan
 
-Updated: October 30, 2026.
+**Progression logic revision - November 6, 2026:** construction bridges now precede settlement arrival, mission execution order is separate from stable codes, barrel filling has explicit pantry permissions, and exotic-pet capacity counts opportunities separately from test stacks. See Part 1 sections 9.0.1 and 11.6.1; Part 2 sections 10.1, 15 and 16.5.1. **Design updated; gameplay implementation and current test/build/device status are not certified by this edit.** The other tool should review [the logic and testing handoff](Docs/PROJECT_HANDOFF.md#logic-review).
+
+Updated: November 6, 2026 (progression logic: early construction bridges, explicit mission execution order, barrel permissions, and exotic-pet capacity; implementation review pending).
 
 **Progression beyond tier 4:** [Recommendations Part 2](PROJECT_RECOMENDATIONS_PART_2.md) collects the already reserved tier-5–8 advancements, open design data and proposed expansion milestones. Current implementation scope remains the four-tier base.
 
@@ -127,7 +129,7 @@ Use debug travel to test settlement and late-tier content before all 24 regions 
 | Mission order | Latest `Trail.md` examples mix recipe categories and add Explorer | Four independent mixed-recipe branches with source/recipe prerequisites; the old category-phase gate is removed |
 | Restock on leaving and entering | Visit identity controls refreshes and repeat trading | Preserve shop visit-based behavior; completed/canceled camp trades refresh only after leaving and returning or reaching a different camp |
 | Warehouse gold | Previously ambiguous exchange denomination; then 3% | **Revised October 31, 2026:** 1 gold per 1,000 cash paid for ten boxes; 10,000 cash -> 10 gold; integer cash remainder carried; no extra bonuses |
-| Furniture grants a buff on first purchase | The first-purchase behavior is now confirmed | Permanent unlock per furniture definition; moving/storing/selling/rebuying never grants another copy of its buff |
+| Furniture grants a buff on first purchase | The first-purchase behavior is now confirmed; **revised November 7, 2026:** the buff applies only while a piece of that type is placed | One buff per furniture definition, active while placed, none while in house storage; duplicates, moving or rebuying never grant another copy (section 13.2) |
 | Camp crafting and production furniture | Mandatory settlement stations could prevent camp crafting | Furniture improves recipes; basic unlocked recipes remain craftable at camps/home unless explicitly station-tagged later |
 | Mystery box full stacks and a full bag | Six full stacks can exceed available area | Use a persistent reward tray; never delete or force-place overflow |
 | Pocket eligibility | A tiny stone can be small while a 1,000-stack is visibly large | Preserve one eligible stack per pocket regardless of quantity; make this intentional compression explicit |
@@ -189,13 +191,15 @@ Use four active equipment/resource capability tiers, independent of five quality
 
 | Rank | Boots max speed, m/s | Hat max hearts | Shirt pockets | Pants hooks | Backpack width x height, logical units |
 | --- | --- | --- | --- | --- | --- |
-| Starter, no boots/hat | 1.0 | 3 | 0 | 0 | 6 x 4 |
-| 1 | 1.5 | 4 | 2 | 2 | 8 x 4 |
-| 2 | 2.0 | 6 | 4 | 4 | 10 x 4 |
-| 3 | 2.5 | 9 | 7 | 7 | 12 x 4 |
-| 4 | 3.0 | 12 | 10 | 10 | 14 x 4 |
+| Starter, no boots/hat | 1.5 | 3 | 0 | 0 | 6 x 4 |
+| 1 | 2.25 | 4 | 2 | 2 | 8 x 4 |
+| 2 | 3.0 | 6 | 4 | 4 | 10 x 4 |
+| 3 | 3.75 | 9 | 7 | 7 | 12 x 4 |
+| 4 | 4.5 | 12 | 10 | 10 | 14 x 4 |
 
-Requested speed ranges from zero to the current boots cap. **Confirmed defaults:** no boots gives slow walking (**1.0 m/s**, raised from 0.8 on October 30, 2026); no hat gives three stamina hearts; rag shirt/pants give zero pockets/hooks and the rag pack provides starter area. Initially, tools/resources must fit in the backpack. Highest active-tier boots cap (**confirmed 3.0 m/s**; raised from 1.6 to 2.0 and then to 3.0 on October 30, 2026 because walking felt slow; boots add 0.5 m/s per rank), hats at twelve hearts, shirts at ten pockets, and pants at ten hooks. Merchant gear cannot exceed those caps. Starter rags are nondepleting fallback representations with no sellable instance or extra bonuses. Backpack dimensions are virtual layout units, not kilograms or visible slots.
+**Two sets per tier from tier two (user, November 5, 2026):** the rank values above are each tier's limit, which **Set B** reaches. **Set A**, built from the block's first three regions, sits halfway from the previous limit, rounded up. Wearables therefore store explicit capability values; see section 9.6.1.
+
+Requested speed ranges from zero to the current boots cap. **Confirmed defaults:** no boots gives slow walking (**1.5 m/s**; raised from 0.8 to 1.0 on October 30 and 1.5x to 1.5 on October 31, 2026); no hat gives three stamina hearts; rag shirt/pants give zero pockets/hooks and the rag pack provides starter area. Initially, tools/resources must fit in the backpack. Highest active-tier boots cap (**confirmed 4.5 m/s**; raised from 1.6 to 2.0 and then to 3.0 on October 30, 2026 because walking felt slow, then 1.5x to 4.5 on October 31, 2026; boots add 0.75 m/s per rank), hats at twelve hearts, shirts at ten pockets, and pants at ten hooks. Merchant gear cannot exceed those caps. Starter rags are nondepleting fallback representations with no sellable instance or extra bonuses. Backpack dimensions are virtual layout units, not kilograms or visible slots.
 
 ### 4.4 Stamina and wear
 
@@ -408,32 +412,34 @@ Do not populate these tiers' runtime loot, tools, missions, shops, mystery boxes
 
 Every region separately contains its current-tier tree, passive animal, and suitable fishing interactables. Logs, raw meat, fish, fat, bones, eggs/sap and other interaction-only rewards do not occupy a featured loose slot. Branch + pelt/hide are the baseline overlaps, with explicitly authored tree-food overlaps permitted by section 7.1.1; **tier three's second overlap is turkey feather**, explicitly confirmed instead of a nonexistent turkey pelt. Boar hide is tier four's pelt-family equivalent. Tree food ingredients are mandatory under section 7.1.1. An explicitly authored food ingredient may share TreeHarvest and LooseGathering sources using the same exact ID; this exception does not add loose slots or authorize unrelated animal overlaps.
 
+**Camps per region (confirmed by the user, October 31, 2026):** tier one 10-14 camps per region, tier two 12-16, tier three 14-18, tier four 16-20. Each region's count is random within its tier's range, not incremental (for example 13, 10, 11, 14). **Past tier four the count does not increase (user, November 5, 2026):** tiers 5-8 use 16-20 camps per region too ([Part 2](PROJECT_RECOMENDATIONS_PART_2.md) section 7). The table's camp counts were rolled once (seed 20261031) and are kept for later region map planning; Dawn Plains is built with 10.
+
 | Region | Tier | Three featured loose item IDs, shown by display name | Intended recipe uses | Proposed camps |
 | --- | --- | --- | --- | --- |
 | 1 Dawn Plains | 1 | Pine branches; Rabbit pelt; Apples | Pine logs/tools; slingshot/toy; apple juice | 10 |
-| 2 Windward Hills | 1 | Hemp fiber; Flint; Pine cones | Hemp cloth; pine axe; pine-cone ornament | 10 |
+| 2 Windward Hills | 1 | Hemp fiber; Flint; Pine cones | Hemp cloth; pine axe; pine-cone ornament | 12 |
 | 3 Mistwood | 1 | Nettle fiber; Clay; Rock salt | Thread/stuffing; bricks/cups; curing/food | 11 |
-| 4 Fern Hollow | 1 | Limestone; Strawberries; Mushrooms | Tiles; yogurt drink; roasted mushrooms | 12 |
-| 5 Cloudstep Mountains | 1 | Oats; Pebbles; Red berries | Oat cakes; polished-pebble charm; berry cakes | 13 |
+| 4 Fern Hollow | 1 | Limestone; Strawberries; Mushrooms | Tiles; yogurt drink; roasted mushrooms | 13 |
+| 5 Cloudstep Mountains | 1 | Oats; Pebbles; Red berries | Oat cakes; polished-pebble charm; berry cakes | 10 |
 | 6 Reedwater Delta | 1 | Reeds; Wheat; Sand | Reed braid; wheat flour; upgrade mortar | 14 |
 | 7 Whispering Marsh | 2 | Birch branches; Beaver pelt; Blackberries | Birch logs; beaver leather/toy; blackberry juice | 12 |
 | 8 Amber Riverbanks | 2 | Flax fiber; Copper ore; Carrots | Flax cloth; copper ingot/fittings; carrot soup | 13 |
-| 9 Bluewater Basin | 2 | Barley; Quartz; Blueberries | Barley flour/soup; glass/cut quartz; blueberry jam | 14 |
-| 10 Sunlit Uplands | 2 | Sandstone; Truffle; Flax seeds | Tiles; truffle meals; flax oil | 14 |
-| 11 Mirror Lakes | 2 | Rice; Tomatoes; Honey | Fish bowls; stew; honey drinks | 18 |
-| 12 Frostveil Taiga | 2 | Tin ore; Yellow ochre; Cattail fiber | Bronze; painted birch carving; cattail cord/fishing charm | 20 |
-| 13 Golden Grasslands | 3 | Mesquite branches; Turkey feathers; Corn | Mesquite logs; feather garment/toy; corn flour | 20 |
-| 14 Ember Canyons | 3 | Cotton fiber; Iron ore; Beans | Cotton cloth; iron tools; stew/chili | 20 |
-| 15 Red Dune Desert | 3 | Granite; Chickpeas; Pumpkins | Tiles; chickpea stew; porridge | 22 |
-| 16 Hidden Oasis | 3 | Slate; Turquoise; Soybeans | Tiles; turquoise jewelry; soy milk | 22 |
-| 17 Windswept Plateau | 3 | Sugar cane; Green chili; Sunflower seeds | Sugar; turkey chili; sunflower oil | 24 |
-| 18 Snowmelt Highlands | 3 | Silver ore; Wild mint; Agave fiber | Silver jewelry; mint tea; agave cord/desert charm | 24 |
-| 19 Sunset Savanna | 4 | Oak branches; Boar hide; Potatoes | Oak logs; boar leather; stew | 24 |
-| 20 Stormwatch Cliffs | 4 | Marble; Gold ore; Cacao beans | Tiles; gold jewelry; cacao powder/drinks | 24 |
-| 21 Crescent Beaches | 4 | Basalt; Emerald; Coffee beans | Polished stone; emerald jewelry; coffee | 24 |
-| 22 Rainforest Coast | 4 | Obsidian; Ruby; Vanilla pods | Obsidian pendant; ruby jewelry; vanilla drink | 24 |
-| 23 Silverwater Estuary | 4 | Sapphire; Lapis lazuli; Seaweed | Sapphire pendant; lapis bracelet; seaweed rice parcel | 24 |
-| 24 Coral Shores | 4 | Diamond; Coconuts; Bamboo fiber | Diamond necklace; coconut drink; bamboo cloth/coastal shirt | 24 |
+| 9 Bluewater Basin | 2 | Barley; Quartz; Blueberries | Barley flour/soup; glass/cut quartz; blueberry jam | 13 |
+| 10 Sunlit Uplands | 2 | Sandstone; Truffle; Flax seeds | Tiles; truffle meals; flax oil | 15 |
+| 11 Mirror Lakes | 2 | Rice; Tomatoes; Honey | Fish bowls; stew; honey drinks | 13 |
+| 12 Frostveil Taiga | 2 | Tin ore; Yellow ochre; Cattail fiber | Bronze; painted birch carving; cattail cord/fishing charm | 13 |
+| 13 Golden Grasslands | 3 | Mesquite branches; Turkey feathers; Corn | Mesquite logs; feather garment/toy; corn flour | 14 |
+| 14 Ember Canyons | 3 | Cotton fiber; Iron ore; Beans | Cotton cloth; iron tools; stew/chili | 18 |
+| 15 Red Dune Desert | 3 | Granite; Chickpeas; Pumpkins | Tiles; chickpea stew; porridge | 18 |
+| 16 Hidden Oasis | 3 | Slate; Turquoise; Soybeans | Tiles; turquoise jewelry; soy milk | 14 |
+| 17 Windswept Plateau | 3 | Sugar cane; Green chili; Sunflower seeds | Sugar; turkey chili; sunflower oil | 16 |
+| 18 Snowmelt Highlands | 3 | Silver ore; Wild mint; Agave fiber | Silver jewelry; mint tea; agave cord/desert charm | 15 |
+| 19 Sunset Savanna | 4 | Oak branches; Boar hide; Potatoes | Oak logs; boar leather; stew | 16 |
+| 20 Stormwatch Cliffs | 4 | Marble; Gold ore; Cacao beans | Tiles; gold jewelry; cacao powder/drinks | 17 |
+| 21 Crescent Beaches | 4 | Basalt; Emerald; Coffee beans | Polished stone; emerald jewelry; coffee | 20 |
+| 22 Rainforest Coast | 4 | Obsidian; Ruby; Vanilla pods | Obsidian pendant; ruby jewelry; vanilla drink | 19 |
+| 23 Silverwater Estuary | 4 | Sapphire; Lapis lazuli; Seaweed | Sapphire pendant; lapis bracelet; seaweed rice parcel | 17 |
+| 24 Coral Shores | 4 | Diamond; Coconuts; Bamboo fiber | Diamond necklace; coconut drink; bamboo cloth/coastal shirt | 19 |
 
 The featured resources are the normal loose spawn table for that region; their weights can differ between segments. Older materials can remain available through revisiting regions, camps' offered items, discovered settlement stock, and the baseline interaction overlaps and explicitly authored tree-food overlaps (section 7.1.1). Do not casually add a fourth loose type or repeat old featured IDs in later maps. Map cards show exactly the three resource icons in this table, separately from tree/animal/fishing indicators, plus locked/discovered state. A fishing point can use its local tier's valid species without making fish a fourth featured resource.
 
@@ -476,6 +482,7 @@ Useful **fixed-input recipe seeds**, to unlock through the four branches (not al
 | Cacao powder | 2 Cacao beans -> 2 | Material |
 | Roasted coffee | 2 Coffee beans + 1 Oak branch -> 2 | Tier-four Material ingredient; explicit roasting fuel |
 | Cut emerald/ruby/sapphire/diamond | Each gets its own fixed recipe: 2 named raw gems -> 1 same named cut gem | Four separate Material definitions; no wildcard runtime recipe |
+| Polished lapis | 2 Lapis lazuli -> 1 | Tier-four Material (November 6, 2026). Lapis is opaque, so it is polished rather than cut. Feeds the premium Lapis jewel box; the ordinary Lapis bracelet keeps raw lapis beads |
 | Emerald ring | 1 Cut emerald + 1 Gold ingot -> 1 | Misc |
 | Ruby ring | 1 Cut ruby + 1 Gold ingot -> 1 | Misc |
 | Sapphire pendant | 1 Cut sapphire + 1 Silver ingot -> 1 | Misc |
@@ -487,7 +494,7 @@ Useful **fixed-input recipe seeds**, to unlock through the four branches (not al
 | Bamboo cloth | 4 Bamboo fiber -> 2 | Material |
 | Coastal shirt | 4 Bamboo cloth + 2 Fine boar leather -> 1 | Tier-four optional second-set Wearable, max ten pockets |
 
-Flax oil and sunflower oil have distinct sinks: seed oil biscuits use 2 Wheat flour + 1 Flax oil, while chili oat cakes use 2 Oats + 1 Sunflower oil + 1 Green chili. Never use an interchangeable Oil input. The draft house table uses four Reed braids for level two and six Mortar for level three; their region-six material unlocks are proposed later missions below. Counts remain test data; materials are unlevelled and furniture store-only.
+Flax oil and sunflower oil have distinct sinks: seed oil biscuits use 2 Wheat flour + 1 Flax oil, while chili oat cakes use 2 Oats + 1 Sunflower oil + 1 Green chili. Never use an interchangeable Oil input. **Note (November 7, 2026):** neither biscuit nor oat-cake recipe was ever authored, so Flax oil's use is now the house level 6 deposit (section 13.1). Sunflower oil already has recipe uses (Boar leather, Oak panel, Oak boar, Highland shirt). The draft house table uses four Reed braids for level two and six Mortar for level three; their region-six material unlocks are proposed later missions below. Counts remain test data; materials are unlevelled and furniture store-only.
 
 ### 6.2.4 Camp spacing and the 26-heart ceiling
 
@@ -761,12 +768,14 @@ Search carried backpack/hook tools for the matching family, positive remaining u
 - **Finishing a trail tree:** completing a line commits the harvest manifest (wood plus the required food ingredient, section 7.1.1) once, closes the interaction, plays the tree-falling animation, and then spawns the rewards on the trail for pickup. Eligibility, Elite drop boosts and the +2 tier ceiling follow section 8.2 unchanged; without an eligible carried axe, selecting the tree shows a hint and starts nothing.
 - **Camera:** when the interaction ends, restore the yaw the player had before it started.
 - **Massive trees (settlement lumber field):** same cutting mechanic with their larger action counts, but finishing does **not** close the interaction: the rewards spawn in the same focused screen for pickup, and only the Return button closes it. Their pending-reward persistence and expiry remain as in sections 7.2 and 13; other presentation is settled in Milestone 13.
+- **Massive trees can be revisited after the cut (user, November 5, 2026):** the interaction is not one-time. While standing, a massive tree works like the other trees (tap, focused screen, chopping). Once it is cut down, tapping the felled tree (its stump and reward piles) **opens the focused pickup screen again**, so a player whose bag filled up can come back and keep picking up the remaining drops. Re-entering never re-rolls or adds rewards: it shows exactly the pending piles that are left, and Return closes it as before. The felled tree stays interactive this way until its piles are empty or they expire with its 72-hour reward cycle. Then it shows only the regrowth stump until it respawns.
 
 ### 8.2.2 Hunting interaction
 
 **Confirmed (October 30, 2026):**
 
 - **Interactable look:** animals have simple movement and grazing animations near their fixed spawn points (encounter areas, section 7.3). A bow silhouette being drawn and released above an animal signals that it can be hunted. Animals stay passive: no attacks and no player damage.
+  - **Implemented (user, November 7, 2026):** the rabbit is rebuilt in the approved faceted character style (revision 4, same rig pivots, 600 triangles). Animals no longer bob in place: each one cycles between grazing (head down to the grass, nibbling, ears laid back), looking around (sits up, ears upright, head turns, ear flicks) and moving to another spot inside a 1 m encounter area, following the terrain. Rabbits move in real hops: crouch, push off with the hind legs while the forelegs reach, arc nose-up then nose-down, land on the forepaws, gather the hind feet, pause. While hunted the rabbit hops alertly between the hunt's points (about 0.5 m/s, about 1.5 m/s with longer, flatter hops after a miss). A generic four-beat walk gait (`AnimalGait.Walk`) is ready for the later walking species (beaver, boar) once their models exist; the turkey will need its own two-legged gait. Code: `AnimalMotion.cs` (AnimalAnimator, AnimalWanderer); review filmstrips: The Trail Walker > Art > Animal Motion Filmstrips (`Docs/Art/Tier01/Motion/`); Milestone 6 adds five movement checks. **Device check pending:** hop readability at the trail camera distance, wander staying clear of the road, and frame time with six animals per anchor.
 - **Starting:** selecting the animal starts the interaction with the same rules as chopping (section 8.2.1). The view focuses on the animal, camera control is off, the inventory button becomes **Return**, and the harvest stop applies. Unlike a tree, the animal **keeps moving within the screen bounds** during the interaction.
 - **Shooting:** the hunting tool's model is shown at the bottom of the screen: the slingshot (tiers 1-2) or the bow (tiers 3-4, preferably shown horizontally). The player drags down to draw the string, aims at the animal and releases to shoot. The draw area stays above the device's bottom system-gesture area, as in chopping.
 - **Animal heart:** while the interaction lasts, the animal shows a full heart above it. Each hit removes a fraction of the heart equal to one hit of the action count in section 8.2: thirds for a matching-tier Normal tool (3 hits), the whole heart for a matching-tier Elite (1 hit), smaller fractions for higher-tier targets. This heart is a harvest-progress display, not combat health or player stamina.
@@ -879,6 +888,10 @@ Validation per required item: exact ID/quantity/quality checks **and** `(materia
 
 The exception does not apply to Material/Tool/Wearable/Misc recipes. House-upgrade deposits, furniture purchases, and mission collection requests are not crafting recipes; retain their separately authored source/progression costs rather than accidentally applying recipe rules to every transaction. Thus older glass panels in a later house deposit remain a valid long-term sink, while a tier-four crafted garment must obey 3/4 inputs.
 
+**Barrel-filling permission (revised November 6, 2026):** use one explicit `BarrelFilling` role for both parts, independently of its Misc aging timer. In addition to direct inputs inside {R-1, R}, filling may use (a) the recipe's exact authored aging-produce IDs (discovered fruit, grain, cane or Honey, regardless of tier), and (b) its exact authored barrel-pantry IDs: **Sugar, Honey and Maple syrup**. Food pantry flags alone do not authorize a Misc/BarrelFilling input. Define per-recipe allowlists, never runtime choices of any tagged ingredient. Honey may have both permissions but is consumed once. Wood, fittings, charcoal/fuel and all nonlisted inputs keep the normal tier window. Upstream conversions are checked under their own recipe role/tier; this exception never spreads recursively into smelting, syrup production, tools, garments or ordinary Misc.
+
+Validate each exact input with `inTierWindow OR (role == Food AND approvedFoodPantryOrContainer AND materialTier <= RecipeUnlockTier) OR (role == BarrelFilling AND exactInputInAuthoredAgingOrBarrelPantryList)`, as well as the existing exact-ID/quantity/quality/source checks. Filling and bottling remain separate unlocks; bottling remains Food with its exact filled barrel plus Glass bottles. Check source access and conversion knowledge recursively at offer generation and commit. **Pending checks:** accept tier-six Apricot brandy with known Sugar conversion/source and tier-five Plum wine with known Maple syrup conversion/source; reject missing sources/conversions, unlisted fruit substitutions and out-of-window wood/fittings/fuel. This is a plan correction, not an implementation/test result.
+
 ### 9.0.2 Explicit tier bridges for nonfood recipes
 
 To remove the draft's older-tier leaks without interchangeable ingredients, use these fixed Material recipes:
@@ -946,12 +959,12 @@ Abstract leather through fixed tier-valid recipes: Rabbit pelt + Rock salt makes
 | Fine flax cloth | 3 flax cloth + 1 hemp thread | 1 | Camp/home, fixed material timer; tier-two advanced cloth |
 | Fine cotton cloth | 3 cotton cloth + 1 beeswax | 1 | Camp/home, 20 s |
 | Turkey feather weave | 3 turkey feathers + 1 cotton thread | 1 | Camp/home, fixed material timer; tier-three advanced animal material |
-| Cured rabbit pelt | 2 raw rabbit pelts + 1 salt | 1 | Camp/home, 15 s |
+| Cured rabbit pelt | 2 raw rabbit pelts + 1 animal fat | 1 | Camp/home, 15 s. **Revised November 7, 2026:** animal fat replaces salt (fat-softened fur), so it no longer duplicates Rabbit leather's inputs and the rabbit's fat drop has a use |
 | Cured beaver pelt | 2 raw beaver pelts + 1 salt | 1 | Camp/home, 15 s |
 | Rabbit leather | 2 raw rabbit pelts + 1 salt | 1 | Camp/home, 15 s |
 | Beaver leather | 2 raw beaver pelts + 1 salt | 1 | Camp/home, 15 s |
 | Boar leather | 2 boar hides + 1 sunflower oil | 1 | Tier-four Material with tier-three oil |
-| Fine rabbit leather | 2 rabbit leather + 1 hemp thread | 1 | Tier-one Material; no future beeswax |
+| Fine rabbit leather | 2 rabbit leather + 1 nettle thread | 1 | Tier-one Material; no future beeswax. **Revised November 7, 2026:** Nettle thread replaces Hemp thread so Nettle thread has a use (section 11.6.1.1) |
 | Fine beaver leather | 2 beaver leather + 1 beeswax | 1 | Camp/home, 20 s |
 | Fine boar leather | 2 boar leather + 1 cotton thread | 1 | Tier-four Material with tier-three thread |
 | Fine rabbit pelt | 2 cured rabbit pelts + 1 hemp thread | 1 | Camp/home, 20 s |
@@ -1001,7 +1014,7 @@ Abstract leather through fixed tier-valid recipes: Rabbit pelt + Rock salt makes
 | Mixed-milk cheese, optional | 1 cow milk + 1 goat milk + 1 salt | 1 | Separate Food recipe/mastery; both milks required |
 | Cow yogurt | 2 cow milk | 2 | Camp/home, Food level-one 1 min; no culture item |
 
-No starter culture, yeast, enzyme, or tannin is required. Each cheese recipe uses its exact named milk(s) and salt; waiting abstracts the process and follows the Food mastery/time limit. Nettle cloth and hemp cloth are separate tier-one recipes, not interchangeable inputs. Cotton belongs to tier three. Extra cut-gem/wood/metal variants require their own explicit recipe/output definitions before use. Provide guaranteed early fiber/salt sources so material-first missions are achievable.
+**Dairy unlock gate (November 7, 2026):** milk is a ranch purchase, so Cow cream, Cow butter, the cheeses, Cow yogurt and every recipe that uses them unlock no earlier than mission region 5 (section 11.6.1.1). No starter culture, yeast, enzyme, or tannin is required. Each cheese recipe uses its exact named milk(s) and salt; waiting abstracts the process and follows the Food mastery/time limit. Nettle cloth and hemp cloth are separate tier-one recipes, not interchangeable inputs. Cotton belongs to tier three. Extra cut-gem/wood/metal variants require their own explicit recipe/output definitions before use. Provide guaranteed early fiber/salt sources so material-first missions are achievable.
 
 Classify each recipe by its **primary output role**, not by whether it appears as an ingredient. Logs, planks, cord/thread/cloth, leather, ingots, fittings, tiles, beams, panels, cups/bottles, flour, and sugar are Material recipes. Cream, butter, cheese, and yogurt are Food recipes: ingredient use does not remove their mastery/timer rules. Food times are authored level-one examples. Packaging cups/bottles are stackable crafted materials, not storage furniture or equipment, and are consumed into the final recipe. Do not add reusable-container return/recycling mechanics initially. Using prepared food as an ingredient never grants its recipe mastery twice.
 
@@ -1045,7 +1058,7 @@ The material rows' nonzero times are fixed per recipe/tier, not improved by use.
 | Tier-three backpack | 4 cotton cloth + 3 beaver leather + 2 mesquite planks + 2 iron fittings | 12 x 4 area; no generic leather/metal selector |
 | Tier-four backpack | 4 fine cotton cloth + 3 fine boar leather + 2 oak planks + 2 steel fittings | 14 x 4 area; no substitutions |
 
-These are individual fixed-ingredient recipes. An authoring template may help create additional definitions, but never exposes a runtime material choice. Remaining hats/boots/shirts/pants need their own exact recipes before activation; no generic higher-tier garment recipe fills those gaps automatically. Indestructible merchant gear remains noncraftable with the same global caps.
+**Superseded for garments (November 5, 2026):** the tier-two hat and backpack, the tier-three feather garment and backpack, and the tier-four shirt, pants and backpack above are now the **Set A** garments of section 9.6.1, with Set A capabilities instead of the tier limit. Section 9.6.1 lists every garment for both sets of tiers two to four. These are individual fixed-ingredient recipes. An authoring template may help create additional definitions, but never exposes a runtime material choice. Remaining hats/boots/shirts/pants need their own exact recipes before activation; no generic higher-tier garment recipe fills those gaps automatically. Indestructible merchant gear remains noncraftable with the same global caps.
 
 Every tool is Normal unless marked Elite. The table now covers all 21 active tool definitions: three tier-one Normals plus Normal/Elite pairs at tiers two-four. Proposed Normal recipes use current-tier branches/core metal or animal inputs rather than a second large current-tier plank bundle. Elite then consumes that Normal plus exactly two previous-tier advanced units as section 8.4 specifies. The Elite keeps family/tier but has fewer actions up to that tier, greater base durability, and `HasDropBoost = true` for every eligible target. Normals never gain a drop buff from over-tier advantage. All Tool/Wearable recipes stay x1 only.
 
@@ -1057,19 +1070,19 @@ Every tool is Normal unless marked Elite. The table now covers all 21 active too
 | Roasted mushrooms | 2 mushrooms + 1 pine branch | 1 | 1; tier-one wood is consumed |
 | Berry oat cakes | 2 oats + 2 red berries | 2 | 1 |
 | Roasted rabbit | 1 raw rabbit meat + 1 pine branch | 1 | 2; Explorer reward, no salt prerequisite |
-| Roasted beaver | 1 raw beaver meat + 2 birch branches | 1 | 3; tier-two roast |
-| Roasted turkey | 1 raw turkey meat + 3 mesquite branches | 1 | 4; tier-three roast |
-| Roasted boar | 1 raw boar meat + 1 oak log + 2 oak branches | 1 | 6; tier-four roast |
+| ~~Roasted beaver~~ -> **Blackberry-glazed beaver** (`recipe.food.blackberry_glazed_beaver`) | 1 raw beaver meat + 1 blackberries + 2 birch branches | 1 | 3; tier-two glaze, region 7 (revised November 7, 2026) |
+| ~~Roasted turkey~~ -> **Turkey carrot skewers** (`recipe.food.turkey_carrot_skewers`) | 1 raw turkey meat + 1 carrots + 2 mesquite branches | 1 | 4; tier-three skewers, tier-two Carrots (revised November 7, 2026) |
+| ~~Roasted boar~~ -> **Acorn-crusted boar** (`recipe.food.acorn_crusted_boar`) | 1 raw boar meat + 1 roasted acorn meal + 2 oak branches | 1 | 6; tier-four crust, region 19 (revised November 7, 2026) |
 | Herb trout | 1 rainbow trout + 1 tea herb + 1 pine branch | 1 | 2; separate tier-one recipe, no salt needed |
 | Corn flatbread | 2 corn flour + 1 water | 2 | 2 |
 | Turkey bean stew | 2 turkey meat + 2 beans + 1 tomato | 2 | 3 |
 | Mesquite nut cakes | 2 mesquite pods + 1 wheat flour + 1 honey | 2 | 3 |
-| Boar potato stew | 2 boar meat + 2 potatoes + 1 salt | 2 | 4 |
+| ~~Boar potato stew~~ -> **Boar potato hash** (`recipe.food.boar_potato_hash`) | 1 boar meat + 2 potatoes + 1 cow butter | 2 | 5; revised November 7, 2026 (was a copy of the Beaver-carrot stew pattern) |
 | Carp rice bowl | 2 rice + 2 common carp + 1 salt | 2 | 4 |
 | Pike rice bowl | 2 rice + 2 northern pike + 1 salt | 2 | 4; independent recipe/output |
 | Rabbit barley soup | 2 rabbit meat + 2 barley + 1 tea herb | 2 | 5 |
 | Cow-cheese tart | 2 wheat flour + 1 cow cheese + 1 egg | 2 | 5; goat/mixed cheese not accepted |
-| Boar bean chili | 2 boar meat + 2 beans + 1 green chili | 2 | 6; tier-four recipe, no tier-two tomato |
+| ~~Boar bean chili~~ -> **Boar cacao mole** (`recipe.food.boar_cacao_mole`) | 1 boar meat + 1 cacao powder + 1 green chili | 1 | 6; revised November 7, 2026: the old recipe copied Turkey chili (2 meat + 2 Beans + 1 Green chili) with more hearts |
 | Salmon rice parcel | 2 salmon + 2 rice + 1 tea herb | 2 | 6 |
 | Beaver mushroom pot | 2 beaver meat + 2 mushrooms + 1 carrot | 2 | 6; tier-two recipe using tier-one mushrooms |
 | Honey herbal tea | 1 tea herb + 1 honey + 1 water | 1 | 1 |
@@ -1098,10 +1111,10 @@ Each row below is a separate named Food recipe/output with its own mastery and e
 
 | Unlock tier | Exact roasted-fish output | Fixed inputs -> one serving |
 | --- | --- | --- |
-| 1 | Roasted rainbow trout | 1 Rainbow trout + 1 Pine branch -> 1 |
-| 1 | Roasted largemouth bass | 1 Largemouth bass + 1 Pine branch -> 1 |
-| 1 | Roasted bluegill | 1 Bluegill + 1 Pine branch -> 1 |
-| 1 | Roasted yellow perch | 1 Yellow perch + 1 Pine branch -> 1 |
+| 1 | ~~Roasted rainbow trout~~ -> **Trout mushroom skillet** (`recipe.food.trout_mushroom_skillet`) | 1 Rainbow trout + 1 Mushrooms + 1 Pine branch -> 1; 2 hearts |
+| 1 | ~~Roasted largemouth bass~~ -> **Salt-baked bass** (`recipe.food.salt_baked_bass`) | 1 Largemouth bass + 2 Rock salt + 1 Pine branch -> 1; 2 hearts |
+| 1 | ~~Roasted bluegill~~ -> **Pine-nut bluegill** (`recipe.food.pine_nut_bluegill`) | 1 Bluegill + 1 Pine nuts + 1 Pine branch -> 1; 2 hearts |
+| 1 | ~~Roasted yellow perch~~ -> **Apple-stuffed perch** (`recipe.food.apple_stuffed_perch`) | 1 Yellow perch + 1 Apples + 1 Pine branch -> 1; 2 hearts |
 | 2 | Roasted common carp | 1 Common carp + 2 Birch branches -> 1 |
 | 2 | Roasted northern pike | 1 Northern pike + 2 Birch branches -> 1 |
 | 2 | Roasted channel catfish | 1 Channel catfish + 2 Birch branches -> 1 |
@@ -1115,40 +1128,42 @@ Each row below is a separate named Food recipe/output with its own mastery and e
 | 4 | Roasted red drum | 1 Red drum + 1 Oak log + 2 Oak branches -> 1 |
 | 4 | Roasted red snapper | 1 Red snapper + 1 Oak log + 2 Oak branches -> 1 |
 
-Starting stamina values can be two/three/four/six hearts per tier-one/two/three/four serving, matching ordinary food planning for the 26-heart leg; species-specific tuning can follow without substituting ingredients. All are stackable, support existing bulk quantities, level 1-10, and stay under the one-hour Food timer limit. Bulk multiplies wood and fish costs exactly: x100 roasted boar needs 100 Raw boar meat + 100 Oak logs + 200 Oak branches; an x100 request never treats one wood piece as fuel for the whole batch.
+**Tier one revised (user, November 7, 2026):** the four plain tier-one roasts are replaced by four different dishes (rows above), each pairing its fish with a tier-one ingredient discovered by region 4: Mushrooms (region 4), Rock salt (region 3), Pine nuts (pine chopping) and Apples (region 1). None uses ranch dairy, so the dishes need no settlement access. Each keeps the Pine branch as listed fire fuel, the 2-heart tier-one value of Herb trout, and its own ID and mastery. With Herb trout (E8), tier one has five fish dishes and no plain roast. The four roast recipes already exist in code (`Tier1Recipes.cs`, `Tier1CraftedItems.cs`, `Tier01Recipes.json`) with art. On implementation, remove them from the recipe catalog, but keep their item definitions as legacy food so roasts already in test saves stay valid and edible: never delete them silently or turn them into another item. The four new dishes need their own models. **Tiers two to four (user, November 5, 2026):** from tier two each fish species is a collection mission that teaches a varied dish instead (section 9.6.5), so the tier 2-4 rows are not authored as recipes. Starting stamina values can be two/three/four/six hearts per tier-one/two/three/four serving, matching ordinary food planning for the 26-heart leg; species-specific tuning can follow without substituting ingredients. All are stackable, support existing bulk quantities, level 1-10, and stay under the one-hour Food timer limit. Bulk multiplies wood and fish costs exactly: x100 Acorn-crusted boar needs 100 Raw boar meat + 100 Roasted acorn meal + 200 Oak branches; an x100 request never treats one wood piece as fuel for the whole batch.
 
 Existing stews, drinks, and non-roasted dishes do not automatically receive another hidden fuel charge. The recipe itself must list each cost. Roasted coffee's material recipe also lists its Oak branch. Apple juice remains the fuel-free early survival recipe, and the revised early roasted-rabbit mission can use leftover Pine branches without salt or an advanced processing unlock.
 
 ### 9.4.2 Optional balloon-box recipe collection
 
+**Premium goods (confirmed October 31, 2026):** every Food recipe obtained from a mystery box or bought in a store (balloon box, bakery) makes a **premium good**, like the Premium apple pie: proposed **8-12 total hearts per serving**, rising with tier for box recipes (tier one 8-10, tier two 9-10, tier three 10-11, tier four 11-12); bakery goods keep their section 9.4.4 values (8-12). Mission recipes keep the ordinary 1-6 hearts. The tables in sections 9.4.2-9.4.3 use these values; tier one is implemented.
+
 **Confirmed direction:** add recipe unlocks to mystery-box rewards, mainly Food and Misc. The following **26 recipe seeds** (21 Food, 5 Misc, including eight additional high-recovery regional meals and two truffle dishes in section 9.4.3) are a proposal, separate from normal mission recipes. They never replace the first apple juice, roasted rabbit, Pine bird, Rabbit toy, or clothing unlocks. Make them optional discoveries, not random prerequisites for mandatory progression. Each ID is unique; names do not create interchangeable ingredient slots.
 
 | Recipe ID / output | Unlock tier | Exact ingredients -> yield | Starting hearts per serving |
 | --- | --- | --- | --- |
-| `recipe.food.roasted_shrimp` — Roasted shrimp | 1 | 1 Shrimp + 1 Pine branch -> 1 | 2 |
-| `recipe.food.shrimp_pie` — Shrimp pie | 1 | 1 Shrimp + 1 Wheat flour + 1 Cow butter -> 1 | 3 |
-| `recipe.food.roasted_crab` — Roasted crab | 2 | 1 Crab + 2 Birch branches -> 1 | 3 |
-| `recipe.food.creamy_crab_soup` — Creamy crab soup | 2 | 1 Crab + 1 Cow cream + 1 Carrot -> 1 | 4 |
-| `recipe.food.honey_blackberry_biscuits` — Honey-blackberry biscuits | 2 | 2 Wheat flour + 1 Honey + 1 Blackberry -> 2 | 3 |
-| `recipe.food.roasted_squid` — Roasted squid | 3 | 1 Squid + 3 Mesquite branches -> 1 | 4 |
-| `recipe.food.squid_rice_bowl` — Squid rice bowl | 3 | 1 Squid + 1 Rice + 1 Green chili -> 1 | 5 |
-| `recipe.food.mint_cow_cheese_flatbread` — Mint cow-cheese flatbread | 3 | 1 Wheat flour + 1 Cow cheese + 1 Wild mint -> 1 | 4 |
-| `recipe.food.roasted_lobster` — Roasted lobster | 4 | 1 Lobster + 1 Oak log + 2 Oak branches -> 1 | 6 |
-| `recipe.food.lobster_rice_bowl` — Lobster rice bowl | 4 | 1 Lobster + 1 Rice + 1 Seaweed -> 1 | 6 |
-| `recipe.food.cacao_coconut_tart` — Cacao-coconut tart | 4 | 1 Cacao powder + 1 Coconut + 1 Wheat flour -> 1 | 6 |
+| `recipe.food.roasted_shrimp` — Roasted shrimp | 1 | 1 Shrimp + 1 Pine branch -> 1 | 8 |
+| `recipe.food.shrimp_pie` — Shrimp pie | 1 | 1 Shrimp + 1 Wheat flour + 1 Cow butter -> 1 | 10 |
+| `recipe.food.roasted_crab` — Roasted crab | 2 | 1 Crab + 2 Birch branches -> 1 | 9 |
+| `recipe.food.creamy_crab_soup` — Creamy crab soup | 2 | 1 Crab + 1 Cow cream + 1 Carrot -> 1 | 10 |
+| `recipe.food.honey_blackberry_biscuits` — Honey-blackberry biscuits | 2 | 2 Wheat flour + 1 Honey + 1 Blackberry -> 2 | 9 |
+| `recipe.food.roasted_squid` — Roasted squid | 3 | 1 Squid + 3 Mesquite branches -> 1 | 10 |
+| `recipe.food.squid_rice_bowl` — Squid rice bowl | 3 | 1 Squid + 1 Rice + 1 Green chili -> 1 | 11 |
+| `recipe.food.mint_cow_cheese_flatbread` — Mint cow-cheese flatbread | 3 | 1 Wheat flour + 1 Cow cheese + 1 Wild mint -> 1 | 10 |
+| `recipe.food.roasted_lobster` — Roasted lobster | 4 | 1 Lobster + 1 Oak log + 2 Oak branches -> 1 | 11 |
+| `recipe.food.lobster_rice_bowl` — Lobster rice bowl | 4 | 1 Lobster + 1 Rice + 1 Seaweed -> 1 | 12 |
+| `recipe.food.cacao_coconut_tart` — Cacao-coconut tart | 4 | 1 Cacao powder + 1 Coconut + 1 Wheat flour -> 1 | 12 |
 
-**Additional regional meals — proposed values, confirmed stronger-food direction:** these eight non-pie dishes extend the same optional box pool. Apple juice stays the guaranteed one-heart starter; a richer apple dish becomes an optional six-heart discovery. Pies can remain premium bakery goods. Every serving below has six or more total progressive hearts, no durability, and the usual Food mastery/timer rules.
+**Additional regional meals — proposed values, confirmed stronger-food direction:** these eight non-pie dishes extend the same optional box pool. Apple juice stays the guaranteed one-heart starter; a richer apple dish becomes an optional ten-heart discovery. Every serving below has ten or more total progressive hearts, no durability, and the usual Food mastery/timer rules.
 
 | Recipe ID / output | Unlock tier | Exact ingredients -> yield | Total hearts per serving | Required discovered ingredient regions |
 | --- | --- | --- | --- | --- |
-| `recipe.food.apple_oat_compote` — Apple-oat compote | 1 | 3 Apples + 2 Oats + 1 Cow milk -> 1 | 6 | 1 and 5; reachable cow-milk shop |
-| `recipe.food.red_berry_oat_porridge` — Red-berry oat porridge | 1 | 3 Red berries + 2 Oats + 1 Cow milk -> 1 | 6 | 5; reachable cow-milk shop |
-| `recipe.food.beaver_barley_hotpot` — Beaver-barley hotpot | 2 | 2 Raw beaver meat + 2 Barley + 1 Carrot -> 1 | 7 | Beaver hunting in 7-12, Barley in 9, Carrot in 8 |
-| `recipe.food.blackberry_honey_oats` — Blackberry-honey oats | 2 | 3 Blackberries + 2 Oats + 1 Honey -> 1 | 7 | 7, 5, and 11 |
-| `recipe.food.turkey_bean_bowl` — Turkey-bean bowl | 3 | 2 Raw turkey meat + 2 Beans + 1 Corn flour -> 1 | 8 | Turkey hunting in 13-18, Beans in 14, Corn in 13 plus known flour conversion |
-| `recipe.food.pumpkin_chickpea_pot` — Pumpkin-chickpea pot | 3 | 2 Pumpkins + 2 Chickpeas + 1 Cow cheese -> 1 | 8 | 15; reachable exact cow-cheese source |
-| `recipe.food.boar_potato_chili` — Boar-potato chili | 4 | 2 Raw boar meat + 2 Potatoes + 1 Green chili -> 1 | 9 | Boar hunting in 19-24, Potatoes in 19, Green chili in 17 |
-| `recipe.food.coconut_cacao_pudding` — Coconut-cacao pudding | 4 | 2 Coconuts + 1 Cacao powder + 1 Cow milk -> 1 | 10 | 24 and 20 plus known cacao conversion; reachable cow-milk shop |
+| `recipe.food.apple_oat_compote` — Apple-oat compote | 1 | 3 Apples + 2 Oats + 1 Cow milk -> 1 | 10 | 1 and 5; reachable cow-milk shop |
+| `recipe.food.red_berry_oat_porridge` — Red-berry oat porridge | 1 | 3 Red berries + 2 Oats + 1 Cow milk -> 1 | 10 | 5; reachable cow-milk shop |
+| `recipe.food.beaver_barley_hotpot` — Beaver-barley hotpot | 2 | 2 Raw beaver meat + 2 Barley + 1 Carrot -> 1 | 10 | Beaver hunting in 7-12, Barley in 9, Carrot in 8 |
+| `recipe.food.blackberry_honey_oats` — Blackberry-honey oats | 2 | 3 Blackberries + 2 Oats + 1 Honey -> 1 | 10 | 7, 5, and 11 |
+| `recipe.food.turkey_bean_bowl` — Turkey-bean bowl | 3 | 2 Raw turkey meat + 2 Beans + 1 Corn flour -> 1 | 11 | Turkey hunting in 13-18, Beans in 14, Corn in 13 plus known flour conversion |
+| `recipe.food.pumpkin_chickpea_pot` — Pumpkin-chickpea pot | 3 | 2 Pumpkins + 2 Chickpeas + 1 Cow cheese -> 1 | 11 | 15; reachable exact cow-cheese source |
+| `recipe.food.boar_potato_chili` — Boar-potato chili | 4 | 2 Raw boar meat + 2 Potatoes + 1 Green chili -> 1 | 12 | Boar hunting in 19-24, Potatoes in 19, Green chili in 17 |
+| `recipe.food.coconut_cacao_pudding` — Coconut-cacao pudding | 4 | 2 Coconuts + 1 Cacao powder + 1 Cow milk -> 1 | 12 | 24 and 20 plus known cacao conversion; reachable cow-milk shop |
 
 The region column is an eligibility gate, not an extra ingredient or a requirement to hold stock. At box generation, require discovery of **every named regional ingredient source**, an accessible exact dairy/shop source, and a known conversion or reachable shop for flour/cheese/cacao. A discovered tier alone is insufficient: reaching region 1 does not make the region-5 oat recipes eligible. Older exact Oats/Honey/dairy/flour use existing Food pantry exceptions; main produce/meat remain within own/previous tier. None requires gold ingredients, a new station, a hidden fuel charge, or another random box recipe. Revisiting a discovered source region remains valid after progressing. Existing seafood/other recipe values are unchanged; these are stronger optional alternatives.
 
@@ -1173,8 +1188,8 @@ The seafood ingredients are bought Q5, but their quality does not override craft
 | Recipe ID / output | Unlock tier | Exact ingredients -> yield | Total hearts per serving | Unlock source and prerequisites |
 | --- | --- | --- | --- | --- |
 | `recipe.food.truffle_barley_pot` — Creamy truffle-barley pot | 2 | 2 Truffle + 2 Barley + 1 Cow cream -> 1 | 6 | Optional authored Gatherer side mission after region 10, Barley region 9 and reachable exact Cow cream source; collect 10 Truffle to learn |
-| `recipe.food.truffle_cow_cheese_flatbread` — Truffle cow-cheese flatbread | 2 | 2 Truffle + 1 Wheat flour + 1 Cow cheese -> 1 | 8 | Balloon box; region 10 and region 6 Wheat/flour conversion or reachable exact flour shop; known/reachable exact Cow cheese source |
-| `recipe.food.turkey_truffle_bean_pot` — Turkey-truffle bean pot | 3 | 1 Truffle + 2 Raw turkey meat + 2 Beans -> 1 | 9 | Balloon box; discovered truffle region 10, turkey hunting in 13-18 and Beans region 14 |
+| `recipe.food.truffle_cow_cheese_flatbread` — Truffle cow-cheese flatbread | 2 | 2 Truffle + 1 Wheat flour + 1 Cow cheese -> 1 | 10 | Balloon box; region 10 and region 6 Wheat/flour conversion or reachable exact flour shop; known/reachable exact Cow cheese source |
+| `recipe.food.turkey_truffle_bean_pot` — Turkey-truffle bean pot | 3 | 1 Truffle + 2 Raw turkey meat + 2 Beans -> 1 | 11 | Balloon box; discovered truffle region 10, turkey hunting in 13-18 and Beans region 14 |
 
 The ten-Truffle request is an explicit lower-cost optional tier-two mission override, not a new mandatory branch gate. It shares the existing one-active-mission limit, exact-ID consumption and camp hand-in; offer only after every ingredient source is accessible. It grants only the named recipe once at mastery one. Finish or defer it without blocking main missions/house/region progression. Guarantee sufficient loose truffle opportunities without any pet. The first recipe is mission-only and excluded from box rolls; the other two extend section 9.4.2's pool to **26 IDs = 21 Food + 5 Misc**. No free finished output is granted. Duplicate protection, six typed box slots, proposed roll weights, exact source discovery and mastery-one grants remain unchanged. Mark Truffle in the food-ingredient catalog and show its region-10 source in recipe previews.
 
@@ -1222,15 +1237,15 @@ Two-step drinks: a **filling recipe** puts fruit, grain, cane or honey into an o
 
 | Drink | Filling recipe (ID: inputs -> 1 filled barrel) | Bottling recipe (ID) | Hearts per bottle | Ingredient sources |
 | --- | --- | --- | --- | --- |
-| Apple cider | `recipe.barrel.apple_cider`: 4 Oak planks + 2 Iron fittings + 12 Apples | `recipe.food.apple_cider` | 6 | Apples region 1 |
-| Strawberry wine | `recipe.barrel.strawberry_wine`: 4 Oak planks + 2 Iron fittings + 12 Strawberries + 2 Sugar | `recipe.food.strawberry_wine` | 7 | Strawberries 4, Sugar (Sugar cane 17) |
-| Blackberry wine | `recipe.barrel.blackberry_wine`: 4 Oak planks + 2 Iron fittings + 12 Blackberries + 2 Sugar | `recipe.food.blackberry_wine` | 8 | Blackberries 7, Sugar (17) |
-| Blueberry wine | `recipe.barrel.blueberry_wine`: 4 Oak planks + 2 Iron fittings + 12 Blueberries + 2 Honey | `recipe.food.blueberry_wine` | 8 | Blueberries 9, Honey 11 |
-| Spiced honey mead | `recipe.barrel.honey_mead`: 4 Oak planks + 2 Iron fittings + 10 Honey + 1 Wild mint | `recipe.food.honey_mead` | 9 | Honey 11, Wild mint 18 |
-| Barley ale | `recipe.barrel.barley_ale`: 4 Oak planks + 2 Iron fittings + 12 Barley + 2 Honey | `recipe.food.barley_ale` | 7 | Barley 9, Honey 11 |
-| Wheat beer | `recipe.barrel.wheat_beer`: 4 Oak planks + 2 Iron fittings + 8 Wheat + 4 Barley | `recipe.food.wheat_beer` | 7 | Wheat 6, Barley 9 |
-| Cane rum | `recipe.barrel.cane_rum`: 4 Oak planks + 2 Iron fittings + 12 Sugar cane + 2 Sugar | `recipe.food.cane_rum` | 9 | Sugar cane 17 (Sugar from it) |
-| Charred-oak whiskey | `recipe.barrel.corn_whiskey`: 4 Oak planks + 2 Iron fittings + 8 Corn + 4 Barley + 1 Mesquite charcoal | `recipe.food.corn_whiskey` | 10 | Corn 13, Barley 9, Mesquite charcoal (tier 3) |
+| Apple cider | `recipe.barrel.apple_cider`: 4 Oak planks + 2 Iron fittings + 12 Apples | `recipe.food.apple_cider` | 11 | Apples region 1 |
+| Strawberry wine | `recipe.barrel.strawberry_wine`: 4 Oak planks + 2 Iron fittings + 12 Strawberries + 2 Sugar | `recipe.food.strawberry_wine` | 12 | Strawberries 4, Sugar (Sugar cane 17) |
+| Blackberry wine | `recipe.barrel.blackberry_wine`: 4 Oak planks + 2 Iron fittings + 12 Blackberries + 2 Sugar | `recipe.food.blackberry_wine` | 12 | Blackberries 7, Sugar (17) |
+| Blueberry wine | `recipe.barrel.blueberry_wine`: 4 Oak planks + 2 Iron fittings + 12 Blueberries + 2 Honey | `recipe.food.blueberry_wine` | 12 | Blueberries 9, Honey 11 |
+| Spiced honey mead | `recipe.barrel.honey_mead`: 4 Oak planks + 2 Iron fittings + 10 Honey + 1 Wild mint | `recipe.food.honey_mead` | 12 | Honey 11, Wild mint 18 |
+| Barley ale | `recipe.barrel.barley_ale`: 4 Oak planks + 2 Iron fittings + 12 Barley + 2 Honey | `recipe.food.barley_ale` | 11 | Barley 9, Honey 11 |
+| Wheat beer | `recipe.barrel.wheat_beer`: 4 Oak planks + 2 Iron fittings + 8 Wheat + 4 Barley | `recipe.food.wheat_beer` | 11 | Wheat 6, Barley 9 |
+| Cane rum | `recipe.barrel.cane_rum`: 4 Oak planks + 2 Iron fittings + 12 Sugar cane + 2 Sugar | `recipe.food.cane_rum` | 12 | Sugar cane 17 (Sugar from it) |
+| Charred-oak whiskey | `recipe.barrel.corn_whiskey`: 4 Oak planks + 2 Iron fittings + 8 Corn + 4 Barley + 1 Mesquite charcoal | `recipe.food.corn_whiskey` | 12 | Corn 13, Barley 9, Mesquite charcoal (tier 3) |
 
 Every bottling recipe is `1 [drink] barrel + 8 Glass bottles -> 8 [drink]` (e.g. `recipe.food.apple_cider`: 1 Apple cider barrel + 8 Glass bottles -> 8 Apple cider).
 
@@ -1252,7 +1267,11 @@ The inputs are cheap tier-one to tier-four materials (planks, fittings and produ
 
 **Further candidates (not in the pool yet):** rice wine (Rice 11), red-berry wine (Red berries 5 + Sugar 17).
 
-**Box pool effect:** the collectible box pool grows from 26 to **44 recipes** (26 + 9 filling + 9 bottling); the per-slot recipe chance (5%) and the six-entry box structure are unchanged, so each individual recipe becomes a little rarer.
+**Resolved (November 6, 2026; the user left both decisions to Claude):**
+1. **Hearts:** the bottles now give 11-12 hearts like the other tier-four premium box Food (section 9.4.2): ciders and beers 11; wines, mead, rum and whiskey 12. Prices are unchanged. Part 2's barrel drinks already use 11-12.
+2. **Ingredient window:** an explicit **barrel exception** (section 9.0.1). Filling recipes may use any discovered fruit, grain, cane or honey from any tier, because aging is how old produce keeps its value late in the game. The barrel itself (Oak planks, Iron fittings) and any conversion input (Mesquite charcoal) stay inside the tier window. Bottling recipes need no exception: their inputs are the barrel and Glass bottles.
+
+**Box pool effect:** the collectible box pool grows from 26 to **44 recipes** (26 + 9 filling + 9 bottling), the eight premium ranch recipes (section 13.4.2) bring it to 52, and the seven precious-metal and gem keepsakes (section 9.5.1) to 59; the per-slot recipe chance (5%) and the six-entry box structure are unchanged, so each individual recipe becomes a little rarer.
 
 ### 9.5 Sculptures, jewelry, and stuffed toys
 
@@ -1265,6 +1284,161 @@ The inputs are cheap tier-one to tier-four materials (planks, fittings and produ
 
 All products stack to 1,000 by compatible item ID/quality/stat profile. Plant stuffing has one fixed material recipe: 3 nettle fiber -> 2 plant stuffing. Reeds cannot replace nettle in that recipe. Extra silver/gold/gem jewelry variants need separate fixed definitions if introduced within tier four. Deferred species remain backlog only. Sale Misc is never functional furniture. Preserve full-stack testing while deferring price balance.
 
+### 9.5.1 Precious-metal and gem keepsakes (mystery-box exclusive, proposal, user request November 5, 2026)
+
+Seven premium **Misc** recipes tied to each tier's precious metals and gems, unlocked only from the mystery box. **Tier one has none** (it has no precious metal or gem; user decision). Each follows the premium rule of section 9.6.6: at least three distinct ingredients, including a refined material (ingot, cut gem, fittings or fine leather), priced at the **top of its tier's Misc range** (section 12.2). They stay within the nonfood tier window {R-1, R}. Misc rules apply: levelled 1-10, longer timers with mastery, stack to 1,000, no durability, never furniture.
+
+| Recipe ID / output | Tier | Exact ingredients -> 1 | Sources needed |
+| --- | --- | --- | --- |
+| `recipe.misc.quartz_prism_lantern` — Quartz prism lantern | 2 | 1 Cut quartz + 2 Copper fittings + 1 Glass | Quartz 9, Copper ore 8 (Cut quartz, Copper fittings and Glass recipes known) |
+| `recipe.misc.tin_quartz_music_box` — Tin-and-quartz music box | 2 | 1 Tin ingot + 1 Cut quartz + 1 Birch plank | Tin ore 12, Quartz 9 |
+| `recipe.misc.silver_turquoise_buckle` — Silver turquoise belt buckle | 3 | 1 Silver ingot + 1 Cut turquoise + 1 Fine beaver leather | Silver ore 18, Turquoise 16, Honey 11 (Beeswax) |
+| `recipe.misc.bronze_turquoise_compass` — Bronze turquoise compass | 3 | 1 Bronze ingots + 1 Cut turquoise + 1 Glass | Copper 8 and Tin 12 (Bronze), Turquoise 16 |
+| `recipe.misc.diamond_pocket_watch` — Diamond pocket watch | 4 | 1 Gold ingot + 1 Cut diamond + 1 Steel fittings | Gold ore 20, Diamond 24 |
+| `recipe.misc.royal_gem_chalice` — Royal gem chalice | 4 | 1 Gold ingot + 1 Cut ruby + 1 Cut sapphire | Gold ore 20, Ruby 22, Sapphire 23 |
+| `recipe.misc.lapis_jewel_box` — Lapis jewel box | 4 | 2 Oak planks + 1 Polished lapis + 1 Gold ingot | Lapis lazuli 23 (Polished lapis recipe known), Gold ore 20 |
+
+**Eligibility** (section 14): the recipe tier is discovered, every named source is discovered, and each refined input has a known recipe (all are mission rewards in section 11.6) or an accessible exact shop. **Box pool effect:** the collectible pool grows from 52 to **59** (26 + 18 barrel + 8 ranch + 7 keepsakes). Part 2 section 10.3 continues with tiers 5-8.
+
+### 9.6 Tiers 2-4: two equipment sets, more food and Misc (proposal, user request November 5, 2026)
+
+**Why (user, November 5, 2026):** from tier two the regions stretch further (12-20 camps, legs up to 26 hearts) and each block's resources arrive over six regions. So, besides the Normal/Elite tools, **every tier from two up has two equipment sets**, and missions get **more Food and Misc recipes** to keep progression steady across the long stretches. Section 11.6 places every recipe below in the four branches. **Ingredient rule for these recipes (user):** a recipe uses only the most significant real-life ingredients that exist in the current catalog, one to three distinct inputs (four only for advanced backpacks). Real-life seasonings, binders and processing steps that have no catalog item are left out. All the usual rules still apply: exact IDs only, the {R-1, R} tier window for nonfood (section 9.0.1), the Food pantry exceptions, Wearable/Tool recipes x1 only, and timers by category and tier (section 10.2).
+
+#### 9.6.1 The two sets: Set A (early regions) and Set B (late regions)
+
+- **Set A** is built from the first three regions of the block (7-9, 13-15, 19-21) plus previous-tier materials. It reaches **halfway from the previous tier's limit to this tier's limit, rounded up** (boots in 0.05 m/s steps).
+- **Set B** needs at least one material from the last three regions (10-12, 16-18, 22-24). It reaches the **tier limit** in the section 4.3 table and has **+25% base durability** over Set A at equal mastery, quality and furniture. The calibration target "tier-three gear at L10 Q5 about 10 km" applies to tier-three Set B; Set A lands near 8 km. Tier-four Set B at L10 Q5 is about 14 km.
+- **Not Normal/Elite:** the two sets are separate garments with their own recipes, mastery, art and names. There is no upgrade recipe and nothing is consumed from Set A. Tier one keeps its single set (it already reaches the tier-one limit).
+- **Balloon special gear (section 14.1)** rounds the same halfway value **down** and never wears out, so Set A is always equal or slightly stronger while special gear keeps its infinite durability. The global caps are unchanged.
+
+| Tier | Set | Hat hearts | Boots m/s | Shirt pockets | Pants hooks | Backpack | Source regions |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 2 | A Marsh | 5 | 2.65 | 3 | 3 | 9 x 4 | 7-9 |
+| 2 | B Taiga | 6 | 3.0 | 4 | 4 | 10 x 4 | 10-12 |
+| 3 | A Prairie | 8 | 3.4 | 6 | 6 | 11 x 4 | 13-15 |
+| 3 | B Highland | 9 | 3.75 | 7 | 7 | 12 x 4 | 16-18 |
+| 4 | A Savanna | 11 | 4.15 | 9 | 9 | 13 x 4 | 19-21 |
+| 4 | B Coastal | 12 | 4.5 | 10 | 10 | 14 x 4 | 22-24 |
+
+**Implementation impact:** capabilities can no longer be looked up from the slot's rank alone (`EquipmentState.Hearts[Rank]` and similar), because Set A sits between ranks. Each wearable definition stores its explicit capability value (hearts, speed, pockets, hooks or backpack size). The rank stays as the tier for durability, prices and the section 4.3 caps. Saved gear keeps working because the tier-one items keep their current values.
+
+**Set recipes** (IDs `recipe.wearable.<id>` -> `item.<id>`; branches as in section 11.1: Gatherer hats, Lumberjack boots, Hunter shirts, Explorer pants and backpacks). Rows marked *existing* are the section 9.3 garments, now assigned to Set A with the Set A capability above; their ingredients are unchanged.
+
+| Tier / set | Slot | Item (ID) | Exact ingredients -> 1 | Latest source region |
+| --- | --- | --- | --- | --- |
+| 2 A | Hat | Beaver-fur cap (`beaver_fur_cap`) | 2 Fine beaver pelts + 1 Hemp thread (*existing* tier-two hat) | 7 |
+| 2 A | Boots | Marsh boots (`marsh_boots`) | 2 Beaver leather + 1 Birch plank | 7 |
+| 2 A | Shirt | Flax work shirt (`flax_work_shirt`) | 3 Flax cloth + 1 Beaver leather | 8 |
+| 2 A | Pants | Flax trousers (`flax_trousers`) | 3 Flax cloth + 1 Copper fittings | 8 |
+| 2 A | Backpack | Marsh pack (`marsh_pack`) | 4 Hemp cloth + 3 Beaver leather + 2 Birch planks + 2 Copper fittings (*existing* tier-two backpack) | 8 |
+| 2 B | Hat | Taiga fur hat (`taiga_fur_hat`) | 1 Fine beaver pelt + 1 Fine flax cloth + 1 Cattail cord | 12 |
+| 2 B | Boots | Taiga boots (`taiga_boots`) | 2 Fine beaver leather + 1 Tin ingot | 12 |
+| 2 B | Shirt | Taiga waxed shirt (`taiga_waxed_shirt`) | 3 Fine flax cloth + 1 Fine beaver leather | 11 |
+| 2 B | Pants | Taiga trousers (`taiga_trousers`) | 3 Fine flax cloth + 1 Cattail cord + 1 Copper fittings | 12 |
+| 2 B | Backpack | Taiga frame pack (`taiga_frame_pack`) | 3 Fine flax cloth + 2 Fine beaver leather + 2 Cattail cord | 12 |
+| 3 A | Hat | Prairie feather hat (`prairie_feather_hat`) | 2 Cotton cloth + 3 Turkey feathers | 14 |
+| 3 A | Boots | Canyon boots (`canyon_boots`) | 2 Beaver leather + 1 Iron fittings + 1 Cotton cord | 14 |
+| 3 A | Shirt | Prairie feather shirt (`prairie_feather_shirt`) | 3 Cotton cloth + 2 Turkey feathers + 1 Beaver leather (*existing* feather garment) | 14 |
+| 3 A | Pants | Canyon trousers (`canyon_trousers`) | 3 Cotton cloth + 1 Iron fittings + 1 Flax cord | 14 |
+| 3 A | Backpack | Canyon pack (`canyon_pack`) | 4 Cotton cloth + 3 Beaver leather + 2 Mesquite planks + 2 Iron fittings (*existing* tier-three backpack) | 14 |
+| 3 B | Hat | Highland hat (`highland_hat`) | 2 Fine cotton cloth + 1 Turkey feather weave + 1 Cut turquoise | 16 |
+| 3 B | Boots | Highland boots (`highland_boots`) | 2 Fine beaver leather + 2 Agave cord + 1 Iron fittings | 18 |
+| 3 B | Shirt | Highland shirt (`highland_shirt`) | 3 Fine cotton cloth + 1 Fine beaver leather + 1 Sunflower oil | 17 |
+| 3 B | Pants | Highland trousers (`highland_trousers`) | 3 Fine cotton cloth + 2 Iron fittings + 1 Agave cord | 18 |
+| 3 B | Backpack | Highland frame pack (`highland_frame_pack`) | 4 Fine cotton cloth + 2 Fine beaver leather + 2 Mesquite beams + 2 Agave cord | 18 |
+| 4 A | Hat | Savanna hide hat (`savanna_hide_hat`) | 2 Boar leather + 1 Fine cotton cloth | 19 |
+| 4 A | Boots | Savanna boots (`savanna_boots`) | 2 Fine boar leather + 1 Steel fittings | 19 |
+| 4 A | Shirt | Savanna shirt (`savanna_shirt`) | 4 Fine cotton cloth + 2 Fine boar leather (*existing* tier-four shirt) | 19 |
+| 4 A | Pants | Savanna trousers (`savanna_trousers`) | 4 Fine cotton cloth + 2 Iron fittings + 1 Boar leather (*existing* tier-four pants) | 19 |
+| 4 A | Backpack | Savanna pack (`savanna_pack`) | 4 Fine cotton cloth + 3 Fine boar leather + 2 Oak planks + 2 Steel fittings (*existing* tier-four backpack) | 19 |
+| 4 B | Hat | Coral-coast sun hat (`coral_coast_sun_hat`) | 3 Bamboo cloth + 1 Fine boar leather | 24 |
+| 4 B | Boots | Tide boots (`tide_boots`) | 2 Fine boar leather + 1 Bamboo cloth + 1 Steel fittings | 24 |
+| 4 B | Shirt | Coastal shirt (`coastal_shirt`) | 4 Bamboo cloth + 2 Fine boar leather (*existing* section 6.2.3 second-set shirt) | 24 |
+| 4 B | Pants | Coastal trousers (`coastal_trousers`) | 4 Bamboo cloth + 2 Steel fittings + 1 Fine boar leather | 24 |
+| 4 B | Backpack | Coastal pack (`coastal_pack`) | 4 Bamboo cloth + 3 Fine boar leather + 2 Oak beams + 2 Steel fittings | 24 |
+
+Tier-four Set B depends on Coral Shores' Bamboo fiber, the last region, so it is the capstone set of phase one. Every Set B garment also needs that block's late-region materials, so Set A is the set worn through the first half of each block. Art follows the faceted fitted-shell pipeline (`Docs/Art/Characters/PlayerDefault/player-avatar-designs.txt`), one item model and one fitted wearable per garment, themed by each set's landscape.
+
+#### 9.6.2 New Material recipe: Beeswax
+
+Beeswax is used by Birch panel, Birch beaver, Fine beaver leather, Fine cotton cloth, Mesquite panel and the Birch-wax bee toy, but had no source. **Proposed:** `recipe.material.beeswax`, tier two: **2 Honey -> 1 Beeswax**, fixed material timer, no mastery. It is crafted only, from region 11's Honey. All beeswax recipes therefore become craftable from region 11, which matches the Set B timing. **Revision reversed (November 7, 2026):** the Beaver toy keeps **1 Plant stuffing** as section 9.5 lists. The earlier switch to Flax stuffing was made because Plant stuffing had no unlock path; tier-one mission H8 (section 11.6.1.1) now teaches it, and the toy is the only use of Plant stuffing. Flax stuffing keeps its use in the tier-three Turkey toy.
+
+#### 9.6.3 New Food recipes (mission rewards, ordinary 3-6 hearts)
+
+Mission foods keep the ordinary range (premium 8-12 stays with boxes and the bakery). Values per serving rise by tier, so tier-four legs (14-26 hearts) can be crossed with 6-heart meals as section 6.2.4 assumes.
+
+| Recipe ID / output | Tier | Exact ingredients -> yield | Hearts per serving | Source regions |
+| --- | --- | --- | --- | --- |
+| `recipe.food.beaver_carrot_stew` — Beaver-carrot stew | 2 | 2 Raw beaver meat + 2 Carrots + 1 Rock salt -> 2 | 5 | beaver 7-12, carrots 8 |
+| `recipe.food.barley_bread` — Barley bread | 2 | 2 Barley flour + 1 Water -> 2 | 3 | 9 |
+| `recipe.food.walleye_barley_soup` — Walleye-barley soup | 2 | 1 Walleye + 2 Barley + 1 Carrot -> 1 | 5 | walleye 8/10/11, barley 9 |
+| `recipe.food.pike_barley_cakes` — Pike barley cakes | 2 | 1 Northern pike + 1 Barley flour + 1 Egg -> 2 | 4 | pike 8/9/12, barley 9 |
+| `recipe.food.tomato_rice_bowl` — Tomato rice bowl | 2 | 2 Rice + 2 Tomatoes -> 2 | 4 | 11 |
+| `recipe.food.honey_glazed_carrots` — Honey-glazed carrots | 2 | 3 Carrots + 1 Honey -> 2 | 4 | 8, 11 |
+| `recipe.food.catfish_tomato_stew` — Catfish-tomato stew | 2 | 1 Channel catfish + 2 Tomatoes + 1 Rice -> 1 | 5 | catfish 7/10/12, 11 |
+| `recipe.food.corn_turkey_pie` — Corn-turkey pie | 3 | 2 Corn flour + 1 Raw turkey meat + 1 Egg -> 2 | 5 | corn 13, turkey 13-18 |
+| `recipe.food.pumpkin_cream_soup` — Pumpkin cream soup | 3 | 2 Pumpkins + 1 Cow cream -> 2 | 4 | 15 |
+| `recipe.food.sturgeon_chickpea_pot` — Sturgeon-chickpea pot | 3 | 1 Sturgeon + 2 Chickpeas + 1 Rock salt -> 1 | 6 | sturgeon 14/15/18, 15 |
+| `recipe.food.sunflower_corn_bread` — Sunflower corn bread | 3 | 2 Corn flour + 1 Sunflower seeds -> 2 | 4 | 13, 17 |
+| `recipe.food.chili_bean_wrap` — Chili bean wrap | 3 | 1 Corn flatbread + 2 Beans + 1 Green chili -> 1 | 6 | 13, 14, 17 |
+| `recipe.food.brown_trout_mint_bake` — Brown-trout mint bake | 3 | 1 Brown trout + 1 Wild mint + 1 Cow butter -> 1 | 6 | trout 13/16/18, 18 |
+| `recipe.food.lake_trout_corn_chowder` — Lake-trout corn chowder | 3 | 1 Lake trout + 2 Corn + 1 Cow milk -> 1 | 6 | lake trout 14/16/17, corn 13 |
+| `recipe.food.potato_red_drum_bake` — Potato red-drum bake | 4 | 1 Red drum + 2 Potatoes + 1 Cow butter -> 1 | 6 | drum 19/21/23, 19 |
+| `recipe.food.gar_fish_cakes` — Gar fish cakes | 4 | 1 Longnose gar + 2 Potatoes + 1 Egg -> 2 | 5 | gar 19/20/22, potatoes 19 |
+| `recipe.food.cacao_oat_bar` — Cacao oat bar | 4 | 2 Cacao powder + 1 Oats + 1 Honey -> 2 | 5 | 20 |
+| `recipe.food.mocha` — Mocha | 4 | 1 Roasted coffee + 1 Cacao powder + 1 Cow milk -> 1 | 5 | 20, 21 |
+| `recipe.food.coffee_roast_boar` — Coffee-roast boar | 4 | 1 Raw boar meat + 1 Roasted coffee + 1 Oak log -> 1 | 6 | boar 19-24, 21 |
+| `recipe.food.vanilla_coconut_milk` — Vanilla coconut milk | 4 | 2 Coconuts + 1 Vanilla pods -> 2 | 5 | 22, 24 |
+| `recipe.food.coconut_snapper_curry` — Coconut snapper curry | 4 | 1 Red snapper + 1 Coconut + 1 Green chili -> 1 | 6 | snapper 20/21/24, 24 |
+
+Older Oats, Honey, Rock salt, Egg, Water and dairy enter through the existing pantry list. Green chili (tier three) is a regional vegetable within the tier-four window. No hidden fuel: only the boar roast lists wood, as section 9.4.1 requires.
+
+#### 9.6.4 New Misc recipes (sale goods, mission rewards)
+
+| Recipe ID / output | Tier | Exact ingredients -> 1 | Kind |
+| --- | --- | --- | --- |
+| `recipe.misc.beeswax_candle` — Beeswax candle | 2 | 2 Beeswax + 1 Flax cord | Craft good |
+| `recipe.misc.sandstone_owl` — Sandstone owl | 2 | 2 Sandstone tiles + 1 Birch plank | Sculpture |
+| `recipe.misc.granite_turkey` — Granite turkey statue | 3 | 3 Granite tiles + 1 Mesquite plank | Sculpture |
+| `recipe.misc.slate_oasis_plaque` — Slate oasis plaque | 3 | 2 Slate tiles + 1 Cut turquoise | Sculpture |
+| `recipe.misc.feather_dreamcatcher` — Feather dreamcatcher | 3 | 1 Agave cord + 3 Turkey feathers + 1 Mesquite branch | Craft good |
+| `recipe.misc.silver_bell` — Silver bell | 3 | 1 Silver ingot + 1 Cotton cord | Jewelry/charm |
+| `recipe.misc.marble_bust` — Marble boar bust | 4 | 3 Marble tiles + 1 Gold ingot | Sculpture |
+| `recipe.misc.basalt_lantern` — Basalt lantern | 4 | 1 Polished basalt + 1 Steel fittings | Sculpture |
+| `recipe.misc.carved_tusk_pendant` — Carved tusk pendant | 4 | 1 Boar tusk + 1 Cotton cord | Jewelry |
+| `recipe.misc.bamboo_wind_chime` — Bamboo wind chime | 4 | 3 Bamboo fiber + 1 Gold ingot | Craft good |
+
+Boar tusk is the boar's interaction-only byproduct (section 6.3); it needs a boar harvest output definition before this recipe activates.
+
+#### 9.6.5 Fish collection missions and varied fish dishes (user, November 5, 2026)
+
+**Every fish species from tier two up has its own collection mission** (section 11.6): the player brings that species and learns a fish dish. Discovery alone teaches nothing.
+
+**Variety instead of plain roasts (user):** tiers two to four do not use the plain wood-roast fish recipes of section 9.4.1. Each species' mission teaches a different kind of dish (cakes, rice bowl, soup, stew, pot, chowder, bake, parcel or curry), using ingredients from the same block. **Tier one (revised November 7, 2026):** its four plain roasts are replaced by the Trout mushroom skillet, Salt-baked bass, Pine-nut bluegill and Apple-stuffed perch (section 9.4.1), next to Herb trout, so no tier uses plain fish roasts. **Meat variety (user, November 7, 2026):** the same rule now covers hunted meat. Roasted rabbit stays as the only plain roast: the implemented tier-one starter that defines the basic form. Each later tier's first hunting food is a different dish made with that block's early ingredients, instead of the same roast with more hearts: Blackberry-glazed beaver, Turkey carrot skewers and Acorn-crusted boar (section 9.4). The two near-copies Boar potato stew and Boar bean chili became Boar potato hash and Boar cacao mole. Each tier's meat dishes now differ in form (glaze, skewers, crust, hash, mole, stew, pot, pie, chili). Remaining close pair, left as is: Turkey bean stew (tomato) and Turkey chili (green chili) share 2 meat + 2 Beans within tier three.
+
+| Tier | Species -> dish (mission) |
+| --- | --- |
+| 2 | Common carp -> Carp rice bowl; Northern pike -> Pike barley cakes; Channel catfish -> Catfish-tomato stew; Walleye -> Walleye-barley soup (a Rice mission also teaches the Pike rice bowl) |
+| 3 | Salmon -> Salmon rice parcel; Sturgeon -> Sturgeon-chickpea pot; Brown trout -> Brown-trout mint bake; Lake trout -> Lake-trout corn chowder |
+| 4 | Longnose gar -> Gar fish cakes; Tuna -> Seaweed rice parcel; Red drum -> Potato red-drum bake; Red snapper -> Coconut snapper curry |
+
+The tree-food recipes and conversions (section 7.1.1) for birch, mesquite and oak are mission rewards too (Birch sap, Mesquite pods and Acorns requests in section 11.6), not discovery unlocks. Tier one's Toasted pine nuts stays as designed.
+
+#### 9.6.6 Every recipe has a mission; the shop and mystery-box rule
+
+**All recipes of tiers two to four are mission rewards (user, November 5, 2026),** including materials and the recipes that earlier had no source:
+- **Tier 2:** Honey herbal tea, Honey oat drink, Bottled honey tea, Rabbit barley soup, Pike rice bowl, Copper pendant, Birch panel, Glass panels, Cut quartz.
+- **Tier 3:** Pumpkin oat porridge, Mesquite nut cakes, Bronze ingots, Turquoise bracelet, Nails, Mesquite panel.
+- **Tier 4:** Clay cup and Hot cacao cup, Oak panel, Ruby brooch.
+
+The optional wool chain (Raw wool, Wool yarn, Wool cloth) has no source and no recipe that needs it, so it is **deferred** to the backlog rather than placed. Section 11.6.5 checks that no tier 2-4 recipe is left without a mission.
+
+**Shop and mystery-box rule (user):** a recipe may move from a mission to a shop or the mystery box only if it is reworked into an **advanced (premium) recipe**:
+- **Food:** 8-12 total hearts (section 9.4.2) and at least three distinct ingredients, one of them refined or from another region.
+- **Misc:** at least three distinct ingredients including a refined material (ingot, cut gem, fine cloth or leather), priced as top Misc.
+
+Simple one- or two-ingredient recipes and every Material, Tool and Wearable recipe stay mission rewards. This keeps shops and boxes as optional sources of strong recipes, never the only path to a basic one.
+
 ## 10. Crafting UI, timers, and bulk crafting
 
 **Confirmed presentation:** keep the crafting menu and adjacent inventory open. Preserve the 3 x 3 ingredient grid, Craft/Autofill on its right, recipe book at top right, and Return at bottom right. Select a known recipe, exact ingredients and x1/x10/x100/x1000 for stackables; tools/wearables/backpacks are x1 only. Slots represent distinct ingredient types and reserved quantities, not one unit each. Preview resulting quality, applicable durability, total quantity, timer and bag footprint.
@@ -1273,7 +1447,7 @@ On Craft, validate location/ingredients/ownership/capacity/queue and consume ing
 
 The timed product **occupies real backpack space immediately after this drop**. It can be repositioned freely but cannot be eaten, equipped, sold, used as an ingredient, submitted to a mission, put on a shelf, or deposited in the warehouse until ready. The same batch's stackable outputs share one timer; split yield above 1,000 into legal stacks with a shared batch ID. Different pending batches never merge; ready outputs may merge by ordinary metadata rules. Tools/gear always remain unique x1 instances. Preserve the timer badge on the bag product; show a HUD ready indicator without closing/reopening crafting.
 
-**Delegated question-5 default:** deterministically find free bag placement after removing inputs and reserve it before committing. Never rearrange existing player items. If there is no room, visibly route the output into the persistent overflow tray and animate toward its badge beside the backpack; the timer keeps running there. A pending output has exactly one owner (bag or tray), with a shared batch reference, never a duplicate item in both a bag and an invisible queue. Eight outstanding batch records is the proposed initial limit, including ready tray outputs; reject further requests without costs. Ready bag outputs need no second claim; tray transfer requires room. Completion credits mastery once whether the item is in bag or tray; mission eligibility begins only when ready and carried.
+**Delegated question-5 default:** deterministically find free bag placement after removing inputs and reserve it before committing. Never rearrange existing player items. If there is no room, visibly route the output into the persistent overflow tray and animate toward its badge beside the backpack; the timer keeps running there. A pending output has exactly one owner (bag or tray), with a shared batch reference, never a duplicate item in both a bag and an invisible queue. **No craft-slot limit (confirmed October 31, 2026, replacing the earlier eight-record proposal):** any number of timed batches can run at once, so late-game x1 tools and gear never wait for a free slot. Ready bag outputs need no second claim; tray transfer requires room. Mastery is counted once when the craft starts (revised November 2, 2026, see section 10), whether the output sits in the bag or the tray; mission eligibility begins only when ready and carried.
 
 Use `1 + 0.2 * log2(batchCount)` as the proposed stackable duration factor, including x1000; x1 gear uses factor one. Category/mastery curves and the less-than-one-hour Food/Tool limit remain. Materials have no mastery and gathered-material conversions stay instant. Snapshot output stats/furniture at start. Persist output owner/placement, shared timer, completion/mastery transaction and presentation state atomically; reload resumes remaining time without duplicate output, repeated consumption or mastery. Presentation animation can be skipped after reload. Crafting is allowed at camps and inside the player's home only.
 
@@ -1298,7 +1472,7 @@ Recommended cumulative **finished-output-unit** thresholds:
 
 These thresholds are proposed test data, not confirmed final pacing. A batch producing 2,000 finished food servings counts 2,000 units, not one button press. A stackable x1000 craft can therefore reach level ten rapidly, which is useful for the requested limit tests. Tools/wearables advance through repeated x1 crafts; bulk requests remain unavailable. Do not slow mastery just to offset full-stack pickups.
 
-Snapshot mastery and furniture at the batch's start; every output in that batch uses that snapshot even if it finishes enough units to gain several levels. Credit finished units once when a successful batch becomes ready, not on start, inventory transfer, repeated claim, sale, or use. Partially claiming a ready batch does not grant more mastery. Instant materials contribute none. If multiple batches become ready together, each retains its own creation snapshot. A save transaction records both completion and credited units so reopening cannot farm mastery.
+Snapshot mastery and furniture at the batch's start; every output in that batch uses that snapshot even if it finishes enough units to gain several levels. **Revised (user, November 2, 2026): count the crafted units once at the moment of crafting, not when the timer completes.** Otherwise several same-level items could be crafted back to back without levelling up, and the player would have to wait for the timer to get the next level's bonus stats. A craft started while an earlier batch of the same recipe is still pending already uses the level that batch earned. Units are never counted on inventory transfer, repeated claim, sale or use. Batches saved before this change are counted once when they finish (`CraftBatch.MasteryCredited`). Partially claiming a ready batch does not grant more mastery. Instant materials contribute none. If multiple batches become ready together, each retains its own creation snapshot. A save transaction records both completion and credited units so reopening cannot farm mastery.
 
 Only future batches benefit from a level gain or new furniture. Existing items retain their intrinsic values and durability. The recipe book shows level, count to next level, current/next stats, and the category-specific time change; material recipes display **No mastery** and **Instant** or their fixed timer instead of a fake level one.
 
@@ -1355,7 +1529,7 @@ Preserve the new examples as twelve specific missions. Generic words in `Trail.m
 | Hunter / shirt | 10 Rabbit pelts -> Normal pine slingshot | 10 Normal pine slingshots -> Rabbit toy | 10 Rabbit toys -> Tier-one shirt |
 | Explorer / pants | 10 Hemp fiber -> Hemp cloth | 10 Raw rabbit meat -> Roasted rabbit | 10 Hemp cloth -> Tier-one pants |
 
-These four clothing rewards complete one set's hat/boots/shirt/pants; backpack comes in a later mission. Branch-to-slot assignments remain consistent in later tiers. Switching branches resumes its saved mission index; it does not create a new category-phase gate or reset another branch. Optional second clothing sets can add variants within a tier, with independent recipes/stats and the existing caps; they do not add a fifth resource tier. Do not make two full sets a prerequisite for the first prototype.
+These four clothing rewards complete one set's hat/boots/shirt/pants; backpack comes in a later mission. Branch-to-slot assignments remain consistent in later tiers. Switching branches resumes its saved mission index; it does not create a new category-phase gate or reset another branch. **From tier two every tier has two clothing sets (user, November 5, 2026):** Set A from the block's early regions and Set B from its late regions, with independent recipes and stats within the existing caps (section 9.6.1). They do not add a fifth resource tier. Tier one keeps one set.
 
 ### 11.2 Make the starter graph achievable
 
@@ -1391,11 +1565,11 @@ After the first clothing rewards, extend each tier with plank/refined pelt/leath
 - Gatherer G4: 10 Pine logs -> Pine plank recipe; G5: 10 Reeds -> Reed braid (region six).
 - Lumberjack L4: 10 Pine planks -> Pine beam, with the cord recipe available through Explorer; L5: 10 Sand -> Mortar (region six).
 - Hunter H4: 10 Rabbit pelts -> Rabbit leather; then pelt/refinement and toy variants as needed.
-- Explorer E4: 10 Hemp fiber -> Hemp cord; E5: 10 Pine branches -> Normal pine rod, after cord/bone access; E6: 10 Mushrooms -> Roasted mushrooms (region 4 loose mushrooms; the reward needs only mushrooms and pine branches); E7: 10 Hemp cloth -> starter backpack after Hunter's Rabbit leather unlock; E8: 10 Rainbow trout -> Herb trout, offered only once farm Tea herbs are buyable (region 4 discovered and the farm settlement reachable), because the reward recipe needs one Tea herb. No mission consumes or collects Tea herbs.
+- Explorer E4: 10 Hemp fiber -> Hemp cord; E5: 10 Bone -> Normal pine rod, after cord/bone access (**request revised November 7, 2026** from Pine branches, which G1 already collects, so the rabbit's Bone drop has a collection mission; section 11.6.1.1); E6: 10 Mushrooms -> Roasted mushrooms (region 4 loose mushrooms; the reward needs only mushrooms and pine branches); E7: 10 Hemp cloth -> starter backpack after Hunter's Rabbit leather unlock; E8: 10 Rainbow trout -> Herb trout, offered only once farm Tea herbs are buyable (region 4 discovered and the farm settlement reachable), because the reward recipe needs one Tea herb. No mission consumes or collects Tea herbs.
 
 These are proposed additions after the twelve specified starters. Never require fish before a rod recipe/source exists. Validate the reward recipe's craftability as well as the mission's requested item. The graph permits interleaving branches; it does not reinstate the old universal category sequence.
 
-From tier two, spread Normal/Elite axe/hunting/rod unlocks and up to two clothing sets across the six-region block. Keep Gatherer hats, Lumberjack boots, Hunter shirts, and Explorer pants; assign backpack and advanced materials explicitly to one branch. A second set may improve durability or presentation while respecting ten pockets/hooks, twelve hearts, and brisk-walk caps. Use the 18-item featured source table and interaction-only drops to schedule mission availability; never request a region-14 material while region 14 is undiscovered.
+**Tiers two to four are planned mission by mission in section 11.6 (November 5, 2026)**, including the tier-one bridge missions that unlock the refinements tier two needs. From tier two, spread Normal/Elite axe/hunting/rod unlocks and the two clothing sets across the six-region block. Keep Gatherer hats, Lumberjack boots, Hunter shirts, and Explorer pants; assign backpack and advanced materials explicitly to one branch. A second set may improve durability or presentation while respecting ten pockets/hooks, twelve hearts, and brisk-walk caps. Use the 18-item featured source table and interaction-only drops to schedule mission availability; never request a region-14 material while region 14 is undiscovered.
 
 Each mission definition stores branch, resource tier, sequence index, exact requested item/quantity, prerequisite mission/recipe IDs, earliest accessible source region, and recipe reward ID. Tier three's hunting-shared ingredient is Turkey feathers, not a nonexistent pelt. Shops are optional supplements; Q5 store stock is not a mandatory shortcut around an inaccessible source/recipe. No mission references a deferred animal/wood tier.
 
@@ -1414,7 +1588,7 @@ Keep the specified first twelve mission counts at ten. Extra mechanics tests may
 
 Apply the default by resource tier, not region number or recipe mastery. Each mission still stores its explicit quantity; any lower override for an expensive high-tier craft should be an authored balancing choice, not a silent runtime discount. Do not exceed 150 in the campaign. Boundary-only mechanics-test missions can exceed it but are not normal progression. Warehouse boxes remain ten units and are unaffected.
 
-Keep tool-instance missions honest: a request for 150 tools means 150 finished unique tools through x1 crafts, not 150 tool uses, 150 partial durability units, or a newly introduced bulk recipe. Requests must name Normal or Elite IDs explicitly. A Normal-tool request cannot be filled by an Elite, and the Normal consumed in an upgrade cannot also count toward the active mission.
+**Instance requests (proposal, November 5, 2026):** missions that ask for tools or garments use authored lower counts of **20 / 30 / 40** in tiers two / three / four (section 11.6), because each instance is a separate x1 craft. Stackable requests keep 50 / 100 / 150. Keep tool-instance missions honest: a request for 150 tools means 150 finished unique tools through x1 crafts, not 150 tool uses, 150 partial durability units, or a newly introduced bulk recipe. Requests must name Normal or Elite IDs explicitly. A Normal-tool request cannot be filled by an Elite, and the Normal consumed in an upgrade cannot also count toward the active mission.
 
 Budget **recursive recipe costs and competing sinks**, not just the last recipe screen. For example, 150 Elite axe upgrades at the proposed two-plank cost consume **150 same-tier Normal axes + 300 previous-tier planks**. Through the 3-log/3-branch conversions, 300 planks equal 900 logs or 2,700 branches if all wood is converted from branches, before counting the Normal tools' own ingredients. Direct tree logs provide another acquisition path. Home upgrades, materials submitted to missions, other equipment, and expected tool wear must remain in the same ledger.
 
@@ -1439,6 +1613,333 @@ Collection rules:
 - Never choose an inaccessible future-region mission by ordinary progression. The mystery-box exception for a current mission does not justify making it mandatory to buy gold boxes.
 
 Every unlock needs a path from available resources/recipes. Build an editor dependency report for cycles, missing sources, disabled-tier references, furniture outputs, and excessive ingredients (warn above three distinct ingredients, reject above nine). Check that all eight house levels are achievable with the four active tiers, and that the first home after region four does not require tier-two-plus materials.
+
+### 11.6 Mission plan for tiers 2-4 (proposal, user request November 5, 2026)
+
+Every row is one mission: **consume the request -> learn one recipe**, as in tier one. The rules of sections 11.1-11.5 and the implemented mission region gate are unchanged:
+- one active mission
+- missions open by **mission region** (the region column): region N's missions open once region N-1 has none left to offer
+- a mission stays locked, showing its first missing link, until its reward recipe is craftable
+
+Recipes come from sections 8.4, 9.2-9.6 and 9.0.2. **Bold** rewards are the two equipment sets (section 9.6.1).
+
+**Quantities:** stackable requests use the section 11.4 defaults: **50** in tier two, **100** in tier three, **150** in tier four. Tool and garment requests are unique x1 instances, so they use an authored lower override: **20 / 30 / 40** (section 11.4 allows lower authored values; x1 crafting workload is the reason). Prerequisites from another branch are noted the way tier one notes them (for example G3 needs the Pine bird recipe from L2).
+
+**Ordering rules kept:**
+- the Normal tool before its Elite
+- previous-tier refinements before the Elite upgrades that consume them (section 8.4)
+- every Set A before the Set B of the same slot
+- each block finishes the refinements the next block's Elites need: Birch planks, Fine beaver pelts and Fine flax cloth in tier two; Mesquite planks, Turkey feather weave and Fine cotton cloth in tier three
+
+#### 11.6.1 Tier-one bridge missions (regions 3-4 for construction; region 6 for the remaining bridges)
+
+The tier-two Elite upgrades consume Pine planks, Fine rabbit pelts and Fine hemp cloth, and the first house levels need Fired bricks and Limestone tiles. Copper and tin smelting need Pine charcoal, and several tier-two recipes need Hemp thread and Wheat flour. None of these is unlocked by the 22 implemented tier-one missions. Ten units each:
+
+| Code | Request | Reward recipe | Note |
+| --- | --- | --- | --- |
+| G6 | 10 Wheat | Wheat flour | Pantry flour for later Food |
+| L6 | 10 Pine logs | Pine charcoal | Mission region 3; before L7; fuel for bricks and later smelting |
+| H5 | 10 Animal fat | Cured rabbit pelt | **Revised November 7, 2026:** requests the rabbit's fat drop, which the revised pelt recipe (2 Rabbit pelts + 1 Animal fat) also uses |
+| H6 | 10 Cured rabbit pelts | Fine rabbit pelt | Needs Hemp thread (E9) |
+| E9 | 10 Hemp cord | Hemp thread | |
+| E10 | 10 Hemp thread | Fine hemp cloth | |
+| L7 | 10 Clay | Fired bricks | Mission region 3; needs Pine charcoal (L6); house levels 1-2 |
+| L8 | 10 Limestone | Limestone tiles | Mission region 4 (house level 3) |
+
+**Progression correction, November 6, 2026 (design; implementation review pending):** L6 and L7 both belong to mission region 3, in that order; L8 belongs to region 4. G6, H5, H6, E9 and E10 remain region 6. Stable codes are identifiers, not sort keys. The tier-one Lumberjack execution order is **L1 -> L2 -> L3 -> L4 -> L6 -> L7 -> L8 -> L5**, followed by tier-two missions. L5 (Mortar) remains region 6 and must not precede the construction bridges. Preserve the existing starter order and cross-branch prerequisites; do not globally sort by code or region.
+
+**Implementation (Claude, November 6, 2026; 12:08 build installed, save kept):** implemented. `MissionBook` is mission catalog 2: Lumberjack runs L1-L4, **L6** (10 Pine logs -> Pine charcoal, region 3), **L7** (10 Clay -> Fired bricks, region 3), **L8** (10 Limestone -> Limestone tiles, region 4), then **L5** Mortar (region 6). The papers show each mission's position (L5 is "Mission 8 of 8"). Saves record the mission catalog; older saves are checked against the original L1-L5 order and then migrated once. Claims are kept and nothing is granted. An L5 already accepted may finish first, and the branch then continues with L6. Thirteen new Milestone 8 checks cover the order, the region gates, the first-home chain (G4, L6, L7 and L8 learned by the region-four missions without grants) and migration (L5 claimed, L5 active, round trips, forged flags rejected). All Milestone 1-8 suites pass. The phone save (L4 claimed, E6 active, mission region 4) loads, and its Lumberjack paper offers L6 next. Not yet played on the phone.
+
+The first-home chain is source-reachable by settlement arrival after region 4: G4 Pine planks; L6 Pine charcoal from region-one branches; L7 Fired bricks from region-three Clay. L8 Limestone tiles uses region-four Limestone for the later level-three house. House level 2 still waits for region-six Reed braid, and level 3 for its tier-two refinements. No gift, debug grant, shop bypass or recipe-tier exception is needed for this design path.
+
+**Ordering and migration contract:** author a separate execution ordinal/ordered-ID list per branch. Preserve mission/recipe IDs and quantities. Validate legacy saves against their original catalog before migration; retain claimed rewards and any active mission/delivered count without charging again. A migrated active mission may finish before newly inserted predecessors; then offer the first unclaimed mission in the revised order. Existing claims stay satisfied even when new predecessors are unclaimed. Never infer a new claim from a later claimed code or regrant an old reward. Version this migration and apply it once. New saves use the revised order immediately.
+
+**Acceptance pending:** without debug bypasses, prove charcoal -> bricks -> level-one home is source-reachable by region-four settlement arrival, while Mortar/Reed braid and tier-two house gates remain later. Check branch switching, locked reward prerequisites and legacy saves before/after L5 with active/partially delivered missions. Keep full-stack testing and debug tools; these targeted checks do not certify campaign balance or complete natural progression. See [logic/testing review handoff](Docs/PROJECT_HANDOFF.md#logic-review).
+
+#### 11.6.1.1 Tier-one coverage missions (design, November 7, 2026; implementation pending)
+
+**Why (user, November 7, 2026):** every item that can be gathered, loose or from an interactable, needs a collection mission, and every tier-one material needs at least one use (a recipe or a house deposit). No new tier-one recipe is added: each mission below teaches a recipe that already existed without a mission. Ten units each; same region gate and one-active-mission rule.
+
+| Code | Mission region | Request | Reward recipe | Needs / note |
+| --- | --- | --- | --- | --- |
+| G7 | 2 | Pine cones | Pine-cone ornament | Region-2 loose Pine cones |
+| G8 | 2 | Pine nuts | Toasted pine nuts | Pine nuts from chopping (Normal pine axe, L1) |
+| G9 | 5 | Rock salt | Cow cheese | Ranch Cow milk (settlement after region 4) |
+| G10 | 5 | Oats | Cow yogurt | Ranch Cow milk |
+| G11 | 5 | Strawberries | Strawberry cow-yogurt drink | Cow yogurt (G10) |
+| G12 | 5 | Red berries | Berry oat cakes | Region-5 Oats |
+| G13 | 5 | Cow yogurt | Cow cream | Crafted request; Cow cream feeds tier-two to tier-four missions (Truffle pot, Pumpkin cream soup, Vanilla cow-cream drink) |
+| G14 | 5 | Cow cream | Cow butter | Crafted request; Cow butter feeds Mesquite pod cakes, Brown-trout mint bake and Potato red-drum bake |
+| G15 | 6 | Cow cheese | Cow-cheese tart | Wheat flour (G6), ranch Egg |
+| L9 | 5 | Pebbles | Polished pebble | Region-5 Pebbles, region-2 Flint |
+| L10 | 5 | Polished pebbles | Cord charm | Hemp cord (E4) |
+| L11 | 6 | Pine planks | Pine panel | House level 2 deposit (section 13.1) |
+| H7 | 6 | Fine rabbit pelts | Fine rabbit leather | Nettle thread (E16), which replaces Hemp thread in Fine rabbit leather: 2 Rabbit leather + 1 Nettle thread -> 1. House level 4 deposit |
+| H8 | 6 | Nettle fiber | Plant stuffing | Used by the tier-two Beaver toy (section 9.6.2 revision reversed) |
+| E11 | 4 | Rainbow trout | Trout mushroom skillet | Normal pine rod (E5); Mushrooms (region 4) |
+| E12 | 4 | Largemouth bass | Salt-baked bass | Bass regions 2/3/6; Rock salt (region 3) |
+| E13 | 4 | Bluegill | Pine-nut bluegill | Bluegill regions 1/4/6; Pine nuts from chopping |
+| E14 | 4 | Yellow perch | Apple-stuffed perch | Perch regions 2/4/5; Apples (region 1) |
+| E15 | 3 | Nettle fiber | Nettle cloth | House level 2 deposit (replaces Hemp cloth there) |
+| E16 | 6 | Nettle cloth | Nettle thread | Used by Fine rabbit leather |
+
+**Dairy gate (user, November 7, 2026):** cream, yogurt and cheese are made from Cow or Goat milk, which is only sold at the ranch, so every milk-based recipe is unlocked **after region 4**: its mission region is 5 or later (G9, G10, G13 and G14 in region 5; G11 strawberry drink in region 5; G15 cheese tart in region 6). This gives the player a region to reach the settlement and its ranch first. The same applies to optional box and bakery offers that use milk, cream, butter, yogurt or cheese (Apple-oat compote, Red-berry oat porridge, Shrimp pie, Premium apple pie and later dairy recipes): offer them only once region 5 is discovered, not merely the settlement. No tier-one mission before region 5, and no tier-one fish dish, uses dairy.
+
+**Changed existing missions:** E5 requests **10 Bone** instead of Pine branches (its Pine rod reward already needs Bone, and G1 already collects branches). H5 requests **10 Animal fat** instead of Rabbit leather, and Cured rabbit pelt becomes 2 Rabbit pelts + 1 Animal fat (section 9.2). E5 is in the implemented catalog, so changing its request needs the section 11.6.1 versioned migration: an E5 already accepted or partly delivered finishes on its old request.
+
+**Branch execution order (explicit, not by code; revised November 7, 2026 for the prototype):** missions that need a settlement listing (ranch dairy, farm Tea herbs) go **last in their branch**. Settlements arrive in Milestone 10, and branches run in order, so a settlement-locked mission in the middle would block every later mission of its branch. Moving E8 keeps its order relative to every older mission (it still follows E7), so saves made under catalogs 1-2 validate unchanged.
+- Gatherer: G1, G2, G3, G4, G7, G8, G12, G5, G6, then the dairy missions G9, G10, G11, G13, G14, G15
+- Lumberjack: L1, L2, L3, L4, L6, L7, L8, L9, L10, L5, L11
+- Hunter: H1, H2, H3, H4, H5, H8, H6, H7 (H8 runs before H6, which waits for Hemp thread from Explorer E9)
+- Explorer: E1, E2, E3, E4, E5, E15, E6, E7, E11, E12, E13, E14, E9, E10, E16, then E8 (farm Tea herbs)
+
+**Result:** tier one has 50 missions (22 implemented + 8 bridge + 20 coverage), about 0.71 per camp over 70 camps, close to tier two's density. Every tier-one loose resource and interaction drop (Pine logs and nuts; Rabbit meat, Bone and fat; all four fish) has a collection mission. Every tier-one material has a use. The only tier-one recipes still without a mission are Goat cheese and Mixed-milk cheese (no consumer either; keep them as ranch-milk side foods or move them to the backlog) and the optional box and bakery recipes.
+
+#### 11.6.2 Tier two (regions 7-12; 50 units, 20 instances)
+
+| Code | Region | Request | Reward recipe | Needs |
+| --- | --- | --- | --- | --- |
+| T2-G1 | 7 | Birch branches | Birch log | |
+| T2-G2 | 7 | Blackberries | Blackberry juice | |
+| T2-G3 | 7 | Birch sap | Birch sap milk drink | Sap from birch trees (the pine axe works one tier above) |
+| T2-G4 | 8 | Carrots | Carrot soup | |
+| T2-G5 | 9 | Blueberries | Blueberry jam | |
+| T2-G6 | 9 | Quartz | Glass | Pine charcoal (L6) |
+| T2-G7 | 9 | Quartz | Cut quartz | |
+| T2-G8 | 9 | Blueberry jam | **Beaver-fur cap (2A hat)** | Fine beaver pelt (T2-H5), Hemp thread (E9) |
+| T2-G9 | 9 | Barley | Barley flour | |
+| T2-G10 | 10 | Barley flour | Barley bread | |
+| T2-G11 | 10 | Flax seeds | Flax oil | |
+| T2-G12 | 11 | Honey | Beeswax | |
+| T2-G13 | 11 | Tomatoes | Tomato rice bowl | |
+| T2-G14 | 11 | Carrots | Honey-glazed carrots | |
+| T2-G15 | 11 | Honey | Honey herbal tea | Farm Tea herbs |
+| T2-G16 | 11 | Honey herbal tea | Honey oat drink | |
+| T2-G17 | 12 | Glass | Glass bottle | Container for later drinks |
+| T2-G18 | 12 | Glass bottles | Bottled honey tea | |
+| T2-G19 | 12 | Beeswax | Beeswax candle | Flax cord (T2-E2) |
+| T2-G20 | 12 | Beeswax candles | **Taiga fur hat (2B hat)** | Fine flax cloth (T2-E10), Cattail cord (T2-E14) |
+| T2-G21 | 10 | Lavender | Lavender pouch | Farm Lavender (region 10 discovered); listed last, opens with region 10 |
+| T2-G22 | 10 | **10** Truffle | Creamy truffle-barley pot | Added November 7, 2026: the optional side mission of section 9.4.3, now in the table. Barley (region 9), Cow cream (G13). Lower authored quantity (10); listed last, never blocks other missions |
+| T2-L1 | 7 | Birch logs | Birch plank | |
+| T2-L2 | 8 | Copper ore | Copper ingot | Pine charcoal (L6) |
+| T2-L3 | 8 | Copper ingots | Normal birch axe | |
+| T2-L4 | 8 | Copper ore | Copper fittings | |
+| T2-L5 | 9 | Birch planks | Birch beam | |
+| T2-L6 | 9 | Birch beams | **Marsh boots (2A boots)** | Beaver leather (T2-H3) |
+| T2-L7 | 9 | 20 Normal birch axes | Elite birch axe | Pine plank (G4) |
+| T2-L8 | 9 | Cut quartz | Copper pendant | |
+| T2-L9 | 10 | Sandstone | Sandstone tiles | |
+| T2-L10 | 10 | Sandstone tiles | Sandstone owl | |
+| T2-L11 | 11 | Birch logs | Birch charcoal | Fuel for tier-three iron and silver |
+| T2-L12 | 11 | Beeswax | Birch beaver sculpture | Beeswax (T2-G12) |
+| T2-L13 | 11 | Birch planks | Birch panel | Beeswax (T2-G12) |
+| T2-L14 | 12 | Tin ore | Tin ingot | |
+| T2-L15 | 12 | Tin ingots | **Taiga boots (2B boots)** | Fine beaver leather (T2-H11) |
+| T2-L16 | 12 | Yellow ochre | Painted birch bird | |
+| T2-L17 | 12 | Glass | Glass panels | |
+| T2-H1 | 7 | Beaver pelts | Normal birch slingshot | Hemp cord (E4) |
+| T2-H2 | 7 | Raw beaver meat | Blackberry-glazed beaver | Hunted with the pine slingshot (one tier above); Blackberries (region 7) |
+| T2-H3 | 7 | Beaver pelts | Beaver leather | |
+| T2-H4 | 7 | Beaver pelts | Cured beaver pelt | |
+| T2-H5 | 8 | Cured beaver pelts | Fine beaver pelt | |
+| T2-H6 | 8 | 20 Normal birch slingshots | Elite birch slingshot | Fine rabbit pelt (H6) |
+| T2-H7 | 8 | Beaver leather | **Flax work shirt (2A shirt)** | Flax cloth (T2-E1) |
+| T2-H8 | 8 | Carrots | Beaver-carrot stew | |
+| T2-H9 | 9 | Fine beaver pelts | Beaver toy | Plant stuffing (H8), Hemp thread (E9); revised November 7, 2026 from Flax stuffing |
+| T2-H10 | 9 | Barley | Rabbit barley soup | Farm Tea herbs; tier-one rabbit meat |
+| T2-H11 | 11 | Beeswax | Fine beaver leather | Beeswax (T2-G12) |
+| T2-H12 | 11 | Beaver toys | **Taiga waxed shirt (2B shirt)** | Fine flax cloth (T2-E10) |
+| T2-H13 | 8 | Mushrooms | Beaver mushroom pot | Tier-one Mushrooms (region 4); listed last, opens with region 8 |
+| T2-E1 | 8 | Flax fiber | Flax cloth | |
+| T2-E2 | 8 | Flax fiber | Flax cord | |
+| T2-E3 | 8 | Flax cloth | **Flax trousers (2A pants)** | Copper fittings (T2-L4) |
+| T2-E4 | 8 | Flax cord | Flax stuffing | |
+| T2-E5 | 8 | Birch logs | Normal birch rod | Copper fittings (T2-L4) |
+| T2-E6 | 9 | 20 Flax trousers | **Marsh pack (2A backpack)** | Beaver leather (T2-H3) |
+| T2-E7 | 9 | Northern pike | Pike barley cakes | Caught with the pine rod (one tier above) |
+| T2-E8 | 10 | 20 Normal birch rods | Elite birch rod | Fine hemp cloth (E10) |
+| T2-E9 | 10 | Walleye | Walleye-barley soup | |
+| T2-E10 | 10 | Flax cloth | Fine flax cloth | Hemp thread (E9) |
+| T2-E11 | 11 | Common carp | Carp rice bowl | |
+| T2-E12 | 11 | Rice | Pike rice bowl | |
+| T2-E13 | 11 | Channel catfish | Catfish-tomato stew | |
+| T2-E14 | 12 | Cattail fiber | Cattail cord | |
+| T2-E15 | 12 | Cattail cord | **Taiga trousers (2B pants)** | Fine flax cloth (T2-E10) |
+| T2-E16 | 12 | 20 Taiga trousers | **Taiga frame pack (2B backpack)** | Fine beaver leather (T2-H11) |
+| T2-E17 | 12 | Copper fittings | Fishing charm | |
+
+#### 11.6.3 Tier three (regions 13-18; 100 units, 30 instances)
+
+| Code | Region | Request | Reward recipe | Needs |
+| --- | --- | --- | --- | --- |
+| T3-G1 | 13 | Mesquite branches | Mesquite log | |
+| T3-G2 | 13 | Corn | Corn flour | |
+| T3-G3 | 13 | Corn flour | Corn flatbread | |
+| T3-G4 | 13 | Mesquite pods | Mesquite flour | Pods from mesquite trees |
+| T3-G5 | 13 | Mesquite flour | Mesquite pod cakes | |
+| T3-G6 | 13 | Mesquite pods | Mesquite nut cakes | |
+| T3-G7 | 14 | Beans | Turkey bean stew | |
+| T3-G8 | 15 | Pumpkins | Pumpkin cream soup | |
+| T3-G9 | 15 | Pumpkin cream soup | Pumpkin oat porridge | |
+| T3-G10 | 15 | Corn flatbread | **Prairie feather hat (3A hat)** | Cotton cloth (T3-E1) |
+| T3-G11 | 15 | Chickpeas | Chickpea stew | |
+| T3-G12 | 16 | Soybeans | Soy milk | |
+| T3-G13 | 16 | Soy milk | Tofu | |
+| T3-G14 | 16 | Tofu | Tofu vegetable bowl | |
+| T3-G15 | 16 | Turquoise | Cut turquoise | |
+| T3-G16 | 17 | Sugar cane | Sugar | |
+| T3-G17 | 17 | Sunflower seeds | Sunflower oil | |
+| T3-G18 | 17 | Corn flour | Sunflower corn bread | |
+| T3-G19 | 17 | Beans | Chili bean wrap | |
+| T3-G20 | 18 | Wild mint | Mint tea | |
+| T3-G21 | 18 | Mint tea | **Highland hat (3B hat)** | Fine cotton cloth (T3-E9), Turkey feather weave (T3-H3), Cut turquoise (T3-G15) |
+| T3-L1 | 13 | Mesquite logs | Mesquite plank | |
+| T3-L2 | 14 | Iron ore | Iron ingot | Birch charcoal (T2-L11) |
+| T3-L3 | 14 | Iron ingots | Normal mesquite axe | |
+| T3-L4 | 14 | Iron ore | Iron fittings | |
+| T3-L5 | 14 | Iron ingots | Nails | |
+| T3-L6 | 14 | Mesquite planks | Mesquite beam | |
+| T3-L7 | 15 | Mesquite beams | **Canyon boots (3A boots)** | Cotton cord (T3-E3) |
+| T3-L8 | 15 | 30 Normal mesquite axes | Elite mesquite axe | |
+| T3-L9 | 15 | Mesquite planks | Mesquite panel | |
+| T3-L10 | 15 | Granite | Granite tiles | |
+| T3-L11 | 15 | Granite tiles | Granite turkey statue | |
+| T3-L12 | 16 | Slate | Slate tiles | |
+| T3-L13 | 16 | Slate tiles | Slate oasis plaque | Cut turquoise (T3-G15) |
+| T3-L14 | 16 | Cut turquoise | Mesquite sun | |
+| T3-L15 | 16 | Tin ingots | Bronze ingots | |
+| T3-L16 | 16 | Bronze ingots | Turquoise bracelet | Cut turquoise (T3-G15) |
+| T3-L17 | 17 | Mesquite logs | Mesquite charcoal | Fuel for tier-four steel |
+| T3-L18 | 18 | Silver ore | Silver ingot | |
+| T3-L19 | 18 | Silver ingots | **Highland boots (3B boots)** | Agave cord (T3-E12) |
+| T3-L20 | 18 | Silver ore | Silver bell | |
+| T3-H1 | 13 | Turkey feathers | Normal mesquite bow | |
+| T3-H2 | 13 | Raw turkey meat | Turkey carrot skewers | Carrots (region 8) |
+| T3-H3 | 14 | Turkey feathers | Turkey feather weave | Cotton thread (T3-E2) |
+| T3-H4 | 14 | 30 Normal mesquite bows | Elite mesquite bow | |
+| T3-H5 | 14 | Cotton fiber | Cotton stuffing | For the tier-four Boar toy |
+| T3-H6 | 15 | Turkey feather weave | **Prairie feather shirt (3A shirt)** | Cotton cloth (T3-E1) |
+| T3-H7 | 15 | Cotton stuffing | Turkey toy | The toy itself uses Flax stuffing (T2-E4) |
+| T3-H8 | 15 | Raw turkey meat | Corn-turkey pie | |
+| T3-H9 | 17 | Green chili | Turkey chili | |
+| T3-H10 | 17 | Sunflower oil | **Highland shirt (3B shirt)** | Fine cotton cloth (T3-E9) |
+| T3-H11 | 18 | Agave fiber | Feather dreamcatcher | Agave cord (T3-E12) |
+| T3-E1 | 14 | Cotton fiber | Cotton cloth | |
+| T3-E2 | 14 | Cotton fiber | Cotton thread | |
+| T3-E3 | 14 | Cotton fiber | Cotton cord | |
+| T3-E4 | 14 | Cotton cloth | **Canyon trousers (3A pants)** | Iron fittings (T3-L4) |
+| T3-E5 | 14 | Mesquite branches | Normal mesquite rod | Iron fittings (T3-L4), Cotton thread (T3-E2) |
+| T3-E6 | 15 | 30 Canyon trousers | **Canyon pack (3A backpack)** | |
+| T3-E7 | 15 | 30 Normal mesquite rods | Elite mesquite rod | |
+| T3-E8 | 15 | Sturgeon | Sturgeon-chickpea pot | Caught with the birch rod (one tier above) |
+| T3-E9 | 16 | Cotton cloth | Fine cotton cloth | |
+| T3-E10 | 16 | Lake trout | Lake-trout corn chowder | |
+| T3-E11 | 17 | Salmon | Salmon rice parcel | Farm Tea herbs |
+| T3-E12 | 18 | Agave fiber | Agave cord | |
+| T3-E13 | 18 | Agave cord | **Highland trousers (3B pants)** | |
+| T3-E14 | 18 | 30 Highland trousers | **Highland frame pack (3B backpack)** | |
+| T3-E15 | 18 | Brown trout | Brown-trout mint bake | |
+| T3-E16 | 18 | Silver ingots | Silver pendant | |
+| T3-E17 | 18 | Agave cord | Desert charm | |
+
+#### 11.6.4 Tier four (regions 19-24; 150 units, 40 instances)
+
+| Code | Region | Request | Reward recipe | Needs |
+| --- | --- | --- | --- | --- |
+| T4-G1 | 19 | Oak branches | Oak log | |
+| T4-G2 | 19 | Acorns | Roasted acorn meal | Acorns from oak trees |
+| T4-G3 | 19 | Roasted acorn meal | Acorn biscuits | |
+| T4-G4 | 20 | Cacao beans | Cacao powder | |
+| T4-G5 | 20 | Cacao powder | Hot cacao | |
+| T4-G6 | 20 | Hot cacao | **Savanna hide hat (4A hat)** | Boar leather (T4-H3) |
+| T4-G7 | 20 | Cacao powder | Cacao oat bar | |
+| T4-G8 | 20 | Gold ore | Gold ingot | Oak charcoal (T4-L2) |
+| T4-G9 | 20 | Clay | Clay cup | Tier-one Clay from region 3; the cup is a tier-one container recipe |
+| T4-G10 | 20 | Clay cups | Hot cacao cup | |
+| T4-G11 | 21 | Coffee beans | Roasted coffee | |
+| T4-G12 | 21 | Roasted coffee | Sweet coffee | |
+| T4-G13 | 21 | Sweet coffee | Mocha | |
+| T4-G14 | 21 | Emerald | Cut emerald | |
+| T4-G15 | 22 | Vanilla pods | Vanilla cow-cream drink | |
+| T4-G16 | 22 | Ruby | Cut ruby | |
+| T4-G17 | 23 | Sapphire | Cut sapphire | |
+| T4-G22 | 23 | Lapis lazuli | Polished lapis | Added November 6, 2026 (code appended) |
+| T4-G18 | 24 | Coconuts | Coconut drink | Glass bottle (T2-G17) |
+| T4-G19 | 24 | Coconuts | Vanilla coconut milk | |
+| T4-G20 | 24 | Diamond | Cut diamond | |
+| T4-G21 | 24 | Coconut drink | **Coral-coast sun hat (4B hat)** | Bamboo cloth (T4-E11) |
+| T4-L1 | 19 | Oak logs | Oak plank | |
+| T4-L2 | 19 | Oak branches | Oak charcoal | |
+| T4-L3 | 19 | Iron ingots | Steel ingot | Mesquite charcoal (T3-L17) |
+| T4-L4 | 19 | Steel ingots | Normal oak axe | |
+| T4-L5 | 19 | Iron ore | Steel fittings | |
+| T4-L6 | 20 | Oak planks | Oak beam | |
+| T4-L7 | 20 | Oak beams | **Savanna boots (4A boots)** | Fine boar leather (T4-H5) |
+| T4-L8 | 20 | 40 Normal oak axes | Elite oak axe | |
+| T4-L9 | 20 | Oak planks | Oak panel | |
+| T4-L10 | 20 | Marble | Marble tiles | |
+| T4-L11 | 20 | Marble tiles | Marble boar bust | Gold ingot (T4-G8) |
+| T4-L12 | 21 | Basalt | Polished basalt | |
+| T4-L13 | 21 | Polished basalt | Basalt lantern | |
+| T4-L14 | 21 | Oak planks | Oak boar sculpture | |
+| T4-L15 | 22 | Obsidian | Obsidian pendant | |
+| T4-L16 | 24 | Bamboo fiber | Bamboo wind chime | |
+| T4-L17 | 24 | Bamboo wind chimes | **Tide boots (4B boots)** | Bamboo cloth (T4-E11) |
+| T4-H1 | 19 | Boar hides | Normal oak bow | |
+| T4-H2 | 19 | Raw boar meat | Acorn-crusted boar | Roasted acorn meal (T4-G2) |
+| T4-H3 | 19 | Boar hides | Boar leather | |
+| T4-H4 | 19 | Potatoes | Boar potato hash | Cow butter (G14) |
+| T4-H5 | 20 | Boar leather | Fine boar leather | |
+| T4-H6 | 20 | 40 Normal oak bows | Elite oak bow | |
+| T4-H7 | 20 | Fine boar leather | **Savanna shirt (4A shirt)** | |
+| T4-H8 | 20 | Boar tusks | Carved tusk pendant | Boar tusk harvest output (section 9.6.4) |
+| T4-H9 | 21 | Raw boar meat | Boar cacao mole | Cacao powder (T4-G4), Green chili (region 17) |
+| T4-H10 | 21 | Roasted coffee | Coffee-roast boar | |
+| T4-H11 | 21 | Fine boar leather | Boar toy | |
+| T4-H12 | 22 | Cut ruby | Ruby ring | Gold ingot (T4-G8) |
+| T4-H13 | 22 | Ruby rings | Ruby brooch | |
+| T4-H14 | 24 | Boar toys | **Coastal shirt (4B shirt)** | Bamboo cloth (T4-E11) |
+| T4-E1 | 19 | Oak branches | Normal oak rod | Steel fittings (T4-L5) |
+| T4-E2 | 19 | Fine cotton cloth | **Savanna trousers (4A pants)** | Boar leather (T4-H3) |
+| T4-E3 | 19 | Red drum | Potato red-drum bake | Caught with the mesquite rod (one tier above) |
+| T4-E4 | 20 | 40 Savanna trousers | **Savanna pack (4A backpack)** | |
+| T4-E5 | 20 | 40 Normal oak rods | Elite oak rod | |
+| T4-E6 | 20 | Longnose gar | Gar fish cakes | |
+| T4-E7 | 21 | Cut emerald | Emerald ring | |
+| T4-E8 | 23 | Tuna | Seaweed rice parcel | |
+| T4-E9 | 23 | Seaweed | Lapis bracelet | Request revised November 7, 2026 from Lapis lazuli (still collected by T4-G22), so Seaweed has a collection mission |
+| T4-E10 | 23 | Cut sapphire | Sapphire pendant | |
+| T4-E11 | 24 | Bamboo fiber | Bamboo cloth | |
+| T4-E12 | 24 | Bamboo cloth | **Coastal trousers (4B pants)** | |
+| T4-E13 | 24 | 40 Coastal trousers | **Coastal pack (4B backpack)** | |
+| T4-E14 | 24 | Red snapper | Coconut snapper curry | |
+| T4-E15 | 24 | Cut diamond | Diamond necklace | |
+
+#### 11.6.5 Summary and checks
+
+- **Tiers 5-8** follow the same rules, with no new stats beyond tier four: [Part 2](PROJECT_RECOMENDATIONS_PART_2.md) sections 13-15 (180 missions, including nine gem-processing missions added November 6, 2026).
+- **Count:** 8 tier-one bridge missions, 20 tier-one coverage missions (section 11.6.1.1) and 69 / 69 / 68 missions in tiers two / three / four (234 new; 256 with tier one's 22). Tier four includes Polished lapis, added November 6, 2026; tier two includes the Truffle mission T2-G22, added November 7, 2026.
+- **Rewards per tier:**
+  - both equipment sets (10 garments) and the six tools
+  - the block's materials and refinements
+  - every Food recipe, including one dish per fish species and the tree foods
+  - every Misc recipe
+- **Mission density:** about 0.6-0.85 missions per camp. Tier two has 79 camps, tier three 95 and tier four 108 (section 6.2.2); tier one has 50 missions over 70 camps (section 11.6.1.1). Each region still opens a new batch through the region gate.
+- **Load:** the last region of each block carries the Set B garments, so the block finishes with its best gear. Tier four's Coral Shores carries 12 missions.
+- **Automated checks (when implemented):**
+  - every request has a source no later than its mission region
+  - every reward is craftable when offered
+  - the Normal tool before its Elite, and the previous-tier refinement before its Elite
+  - Set A before Set B per slot
+  - no duplicate reward
+  - every tier 2-4 recipe is a mission reward unless it is a premium shop or box recipe (section 9.6.6)
+  - each tier's four fish species have a collection mission (tier one included, November 7, 2026)
+  - every gatherable item, loose or from an interactable (logs, tree food, meat, bones, fat, trophies, fish), has a collection mission in its tier (November 7, 2026)
+  - every Material has at least one use: a recipe input or a house-upgrade deposit (November 7, 2026)
+  - every Set A and Set B value as in section 9.6.1
+  - instance requests at 20/30/40
+  - mission foods at or below 6 hearts
 
 ## 12. Camps, trading, currency, and travel
 
@@ -1567,6 +2068,8 @@ Do not rebalance away the large rewards caused by full-stack testing. Add transa
 
 ### 12.3 Rivers, maps, and fast travel
 
+**Camp map look (confirmed by the user, October 31, 2026):** the map looks like a real worn-out paper map, each region on its own themed sheet (Dawn Plains meadows and sun, Windward Hills hills and wind, Mistwood forest and fog, Fern Hollow ferns, Cloudstep Mountains peaks and clouds, Reedwater Delta channels and reeds). The background shows the **road** winding from the region's first camp up to the river and ferry; every camp is a **button with a campfire icon and its name beside it**, placed on the side of the road where the camp stands. **Undiscovered camps show as inactive buttons**; the current camp is highlighted. The sheet is headed by the region's three featured resource icons with small tree/animal/fishing indicators; other discovered regions are further pages (travel to them arrives at their first camp). The complete region-one layout (ten camps) was planned first.
+
 - Region borders end at a camp, with a river, ferry boat, and toll NPC just outside it.
 - Pay each border toll once. Persist the unlock before changing scenes; insufficient cash leaves the player at the camp with options to trade or revisit discovered locations.
 - **Ferry toll table (proposal, October 31, 2026):** tolls rise steeply so that each new tier is a real savings goal; the crossing out of tier three reaches about 2.2 million cash. The gold alternative follows the warehouse exchange: `goldToll = max(1, floor(cashToll / 1000))`. Region 24 has no outgoing ferry.
@@ -1638,24 +2141,57 @@ A collection book, opened from the user menu (book icon) wherever the menu is av
 
 The settlement is a side-scrolling selection scene; there is no direct character movement. Buildings are selectable destinations. Neighbor houses use seeded visual variants and house levels but have no simulated economy or real owners initially.
 
+**Confirmed settlement layout and neighbour houses (user, November 2, 2026; supersedes the line above where they differ):**
+- **Six house plots: three to the left of the settlement centre, three to the right.** The storefronts and the lumber field stand between the two groups of houses.
+- **The player picks a plot.** On first discovery of the settlement the player selects one of the six plots for their house; the other five become neighbours. The choice is saved and does not change afterwards (no plot moving is planned).
+- **All six start at house level 1.**
+- **The player's house** levels up only through the material upgrades in section 13.1.
+- **Each neighbour house** rolls a random number **1 to 3** at the start: the number of new regions the player must discover before it upgrades. A region counts as discovered when the player reaches **its first camp**. Each time a new region is discovered, every neighbour's count goes down by one. A neighbour whose count reaches zero upgrades one level and rolls a new 1-3 count. Example: a neighbour that rolled 1 upgrades at the next region; one that rolled 2 upgrades at the one after.
+- **Shared exteriors.** Every house, the player's and the neighbours', uses the **same exterior design for its level**, so the street shows a mix of levels. The 8 level exteriors (section 13.1) are made later, together with the player-home interiors for each level, so that both are organised as one set.
+- *Delegated defaults (proposals, adjust if needed):*
+  - Neighbours stop at level 8. Their level can be above or below the player's; they are decoration only, with no economy or owners.
+  - The counts and rolls are seeded and saved like other settlement state, so a reload never rerolls them.
+  - Regions discovered before the settlement do not count; counting starts when the plot is chosen.
+  - Several regions discovered while the settlement is not visited are applied one by one on the next visit.
+- **Build order:** the storefronts first; the house exteriors and interiors later.
+
 ### 13.1 House progression and upgrade deposits
 
-Keep eight **house levels**, distinct from four resource tiers: two house levels use each active tier's materials. The first two grow horizontally/slightly vertically; after level three, keep width fixed and grow vertically. Use a scrollable interior. Settlement after region four remains within tier one, so the first home/upgrade uses pine/early materials only.
+Keep eight **house levels**, distinct from four resource tiers: two house levels use each active tier's materials. **Depth growth (user, November 7, 2026; replaces the earlier vertical growth):** every house is **one storey**. Levels 1-3 widen (8, 10, 12 columns); every upgrade makes the house and its interior **longer toward the back**, never taller. The interior grid is **width x depth** on the floor: the room is seen from the front at an angle with the front wall cut away, row 0 is at the front and upgrades add rows at the back, so placed furniture keeps its coordinates. Deep rooms scroll front to back. Settlement after region four remains within tier one, so the first home/upgrade uses pine/early materials only.
 
-| Level | Visual stage | Interior grid | Example crafted upgrade cost to reach it |
+| Level | Visual stage | Interior grid (width x depth) | Upgrade deposit to reach it (25 x tier per material type) |
 | --- | --- | --- | --- |
-| 1 | Small shed | 8 x 5 | Tier 1: welcome quest; 8 pine planks + 4 fired bricks |
-| 2 | Extended shed | 10 x 6 | Tier 1: 10 pine beams + 12 bricks + 8 hemp cloth + 4 reed braids |
-| 3 | Proper wooden home; pets unlock | 12 x 7 | Tier 2: 14 birch beams + 16 limestone tiles + 10 fine beaver leather + 4 glass panels + 6 mortar |
-| 4 | Loft | 12 x 9 | Tier 2: 18 birch panels + 20 sandstone tiles + 12 fine hemp cloth + 12 copper fittings |
-| 5 | Two stories | 12 x 11 | Tier 3: 22 mesquite beams + 24 granite tiles + 14 cotton cloth + 16 iron fittings |
-| 6 | Expanded upper rooms | 12 x 13 | Tier 3: 24 mesquite panels + 24 slate tiles + 16 fine cotton cloth + 18 glass panels |
-| 7 | Frontier manor | 12 x 15 | Tier 4: 28 oak beams + 28 polished basalt + 18 fine boar leather + 20 glass panels |
-| 8 | Finished homestead | 12 x 17 | Tier 4: 32 oak panels + 24 marble tiles + 12 cut quartz + 24 steel fittings |
+| 1 | Small shed | 8 x 5 | Tier 1: welcome quest; 25 pine planks + 25 fired bricks |
+| 2 | Extended shed | 10 x 6 | Tier 1: 25 pine beams + 25 fired bricks + 25 nettle cloth + 25 reed braids + 25 pine panels |
+| 3 | Proper wooden home; pets unlock | 12 x 7 | Tier 2: 50 birch beams + 50 limestone tiles + 50 fine beaver leather + 50 glass panels + 50 mortar |
+| 4 | Back room | 12 x 9 | Tier 2: 50 birch panels + 50 sandstone tiles + 50 fine hemp cloth + 50 fine rabbit leather + 50 copper fittings |
+| 5 | Long hall | 12 x 11 | Tier 3: 75 mesquite beams + 75 granite tiles + 75 cotton cloth + 75 iron fittings + 75 nails |
+| 6 | Extended hall | 12 x 13 | Tier 3: 75 mesquite panels + 75 slate tiles + 75 fine cotton cloth + 75 glass panels + 75 flax oil |
+| 7 | Frontier manor | 12 x 15 | Tier 4: 100 oak beams + 100 polished basalt + 100 fine boar leather + 100 glass panels |
+| 8 | Finished homestead | 12 x 17 | Tier 4: 100 oak panels + 100 marble tiles + 100 cut quartz + 100 steel fittings + 100 polished lapis |
 
-Counts are deliberately small test data. House levels 3-4 need tier two (region seven onward), levels 5-6 tier three (region thirteen onward), levels 7-8 tier four (region nineteen onward), plus relevant material-unlock missions on the new branch graph. No deferred species/global Materials phase is required. Reed braid/Mortar make level-two/three upgrades useful sinks for their region-six sources; level-one home construction remains possible at region-four settlement arrival. House upgrades unlock store listings, not free crafted oven/window/chest outputs.
+**Material sinks (design, November 7, 2026):** five deposits gained a material that otherwise had no use or only a mystery-box use. Level 2 swaps Hemp cloth (many recipe uses) for Nettle cloth and adds Pine panels. Level 4 adds Fine rabbit leather, level 5 Nails, level 6 Flax oil (a wood finish; older-tier deposits are allowed, section 9.0.1) and level 8 Polished lapis. No level has more than five material types. Level 1 is unchanged, so the region-four first-home chain (G4, L6, L7) stays as tested. Each new material is a mission reward that unlocks no later than its level's regions: Nettle cloth E15, Pine panel L11, Fine rabbit leather H7, Nails T3-L5, Flax oil T2-G11, Polished lapis T4-G22.
+
+**Tiers 5-8** add house levels 9-16 (two per tier), decorative furniture, four more shop looks and four lumber sections, with no stronger buffs: [Part 2](PROJECT_RECOMENDATIONS_PART_2.md) section 16. **Deposit growth (user, November 5, 2026):** each upgrade asks the same amount of every listed material: **25 x the level's resource tier**, so tier one asks 25, tier two 50, tier three 75 and **tier four 100** per material type. Part 2 continues the rule (125 / 150 / 175 / 200 for tiers 5-8). Fired bricks and Limestone tiles, needed by levels 1-3, are unlocked by tier-one bridge missions L7 and L8 (section 11.6.1). House levels 3-4 need tier two (region seven onward), levels 5-6 tier three (region thirteen onward), levels 7-8 tier four (region nineteen onward), plus relevant material-unlock missions on the new branch graph. No deferred species/global Materials phase is required. Reed braid/Mortar make level-two/three upgrades useful sinks for their region-six sources; level-one home construction remains possible at region-four settlement arrival. House upgrades unlock store listings, not free crafted oven/window/chest outputs.
 
 The upgrade menu sits beside the furniture-store button and shows current level, next level, deposited/required units, and missing sources. Deposits transfer materials into house-upgrade escrow immediately; cancellation returns them through a tray. Upgrade completion, cost consumption, grid growth, and unlocks commit together. Use a migration rule if costs change after a save already contains deposits.
+
+**House art revision 2, depth growth (Claude, November 7, 2026):** the eight exteriors are rebuilt as one-storey homes whose wall depth grows 3.0 / 3.5 / 4.0 / 5.0 / 6.0 / 7.0 / 8.0 / 9.0 m (rows x 0.5 m + walls), widths unchanged (4.6 / 5.6 / 6.8 m), roof peak 2.9 -> 4.9 m. Side windows (one per ~1.7 m of wall), timber bays between them and a second chimney from level 6 make the length readable; the front dormers and floor bands are gone. Interiors are floors with back and side walls whose windows match the exterior, a cut front sill with the door threshold, and rafter stubs only on the wall plates so nothing blocks the angled view. Prefab anchors: `GridDepthUnit` (0, 0, -0.5), `ScrollMin/Max` front to back, and `InteriorCameraAnchor` (about 50 degrees down from the front). `HouseArtMetadata.FurnishingGrid` is columns x rows; `GridAxisY` became `GridAxisDepth`. Proposed plot depth 10.6 m (manifest `PlotDepth`). Sheets: `house-design-overview.png` (three-quarter views), `house-interior-overview.png`, `eight-level-lineup.png`. **Pending:** the in-game interior camera, scrolling and placement UI (none is implemented yet), and a device look.
+
+**House art, levels 1-8 (another tool, November 5, 2026; review by Claude the same day):** `Docs/PROJECT_HANDOFF.md#houses-2026-11-05`.
+- **Delivered:** eight exterior prefabs shared by the player and the neighbours, eight matching cutaway interiors with the exact grids above (8x5 to 12x17), eight furnished studies (six furniture proxies per level, preview only), and separate `PlayerPetHome` and `PetCollectionContainer` prefabs. Prefabs are in `Resources/Settlement/Houses`, the source is `Tools/Art/generate_house_meshes.py`, and the menus are **The Trail Walker > Art > Build / Capture Eight House Levels**. The sheets `house-design-overview.png`, `house-interior-overview.png` and `six-plot-street-study.png` are in `Docs/Art/Settlement/Houses`.
+- **Matches this section:**
+  - pine, birch, mesquite and oak for the two levels of each tier
+  - levels 1-2 widen (4.6 / 5.6 / 6.8 m) and the width stays fixed from level 3 while the house grows upward
+  - the pet home left of the home front and the collection container to its right, shown from level 3
+  - the street order (warehouse, bakery, ranch, farm, fishery, mine, tailor-material shop, lumber-field gap) between three plots on each side
+  - no furniture, buffs, costs or save data changed
+- **Fixed in review:** the six-plot street study cut off the outer house on each side (its frame covered about 102 m of a 130 m street). The frame now fits the whole street, so all six plots show. Recaptured; all Milestone 1-8 suites pass.
+- **Open for art:**
+  - the pet home has **one** model, but section 13.5 now gives it four levels (kennel, fenced run, pen with shelter, small barn), so it needs three more looks; Part 2 adds four more
+  - levels 9-16 (Part 2 section 16) are to be designed as one set with these eight
+  - the furniture proxies are placeholders for the 48 store furniture types
+- **Pending integration and testing:** plot choice, house placement, upgrade escrow and costs, neighbour countdowns, the upgrade and furniture UI, vertical home scrolling, furniture placement, chests and the shelf, pets at house level 3, and device checks (draw calls, memory, frame time).
 
 ### 13.2 Furniture and buff distribution
 
@@ -1676,15 +2212,68 @@ Each row below unlocks exactly six types. C = crafted quality, F = food recovery
 
 Recommended increments per first purchase: equipment life +5%, food recovery +5%, sale price +2%; four purchases give +20% life/recovery and +8% sale value. Craft-quality strength: worktable +1, loom +1, artisan bench +1, master loom +2, capped at `C = 5`. It raises finished Q (max Q5), which determines the quality-price premium and product-quality durability bonus; it no longer grants direct +5%-per-C price. Matching equipment-life furniture adds its percentage of level-adjusted base durability and contributes once to the durability-price factor. Selling-price furniture applies at sale, not craft. No bonus changes craft timers. Storage entries unlock containers, and food still cannot exceed maximum stamina. Values are proposed tuning data.
 
-**Confirmed:** buff unlocks are granted once per furniture definition on its first purchase and remain when furniture is stored or moved. Duplicates are decorative/storage only. Selling/rebuying, moving, placing, or loading the item never unlocks the buff again. Decorative rugs, lamps, pictures, and the twelve-position shelf can be variants within unlocked types or optional extras; do not accidentally count them as a seventh required type per level.
+~~Buff unlocks remain when furniture is stored or moved.~~ **Superseded (user, November 7, 2026): only placed furniture gives its buff, and only once per type.** A type's buff counts while **any** piece of that type is placed in the house (confirmed November 7, 2026); a piece in house storage gives nothing. Duplicates never add a second buff (they are decorative, or extra containers for chests). Moving a piece inside the room keeps the buff. Craft-quality and equipment-life buffs are still snapshotted at craft start, so storing a piece only affects crafts started afterwards; food and sale buffs read the placed set at the moment of eating or selling. Decorative rugs, lamps, pictures and the twelve-position shelf can be variants within unlocked types or optional extras; do not count them as a seventh required type per level.
 
 Footprints: most furniture 1 x 1, 2 x 1, or 2 x 2; largest 3 x 2. No individual piece occupies more than 15% of the level-one interior. Allow furniture to be stored in a catalog when not placed. A production-looking piece grants its listed buff initially; adding workstation minigames would be additional scope.
+
+**Buff tracking (user, November 7, 2026):** buffs are tracked in the background only. There is no buff panel, total, progress counter or other visual measure. The buff registry is derived from the placed pieces (and their first-purchase records), never stored as a separate total.
+
+**Furniture interaction, placement and storage (user, November 7, 2026):**
+- **Chests are the only furniture with a touch action.** Touching a placed chest opens that chest's inventory **above** the player inventory, and items move between the two (section 13.3). Every chest is its own container.
+- **Every other piece is used by holding it.** Holding a piece switches to a **bird's-eye (top-down) view of the house interior** with that piece selected, and the player moves it around the floor grid. A piece cannot be dropped onto cells another piece occupies: the other piece has to be moved first (no swapping or pushing). **Return** leaves the bird's-eye view and goes back to the normal interior view.
+- **Buying a piece** opens the same bird's-eye view with the new piece already placed at the **nearest free space**. The player can move it, or just press Return. **If no space fits it, it goes to the house storage.**
+- **House storage** holds bought pieces that are not placed. Stored pieces give no buff (rule above).
+
+**Interaction details (proposed, confirmed by the user November 7, 2026):**
+- Holding a chest also enters the bird's-eye view to move it (touch opens it, hold moves it), so chests follow the same placement rules.
+- In the bird's-eye view, a **Store** button sends the selected piece to house storage, and the storage list lets the player pick a stored piece to place, which appears at the nearest free space. A chest must be **empty** to be stored; a full chest stays placed.
+- "Nearest free space" means the free position closest to the room's front-centre (the door), searched row by row from the front. Bird's-eye placement snaps to whole grid cells. Furniture keeps its authored orientation (no rotation, as for inventory items).
+- Long rooms (levels 4-8) scroll front to back in the bird's-eye view, as in the normal view.
+
+**Proposed per-type footprints (width x depth in 0.5 m cells; every type a player owns always fits, using under 60% of the room):**
+
+| Level | Footprints | All types so far / room cells |
+| --- | --- | --- |
+| 1 | Worktable 2x1, Bedroll 2x1, Market sign 1x1, Boot bench 2x1, Sewing basket 1x1, Hat peg 1x1 | 9 / 40 |
+| 2 | Trouser rack 2x1, Chopping block 1x1, Sling stand 1x1, Rod rack 2x1, Bag frame 1x1, Pine chest 2x1 | 18 / 60 |
+| 3 | Loom 2x2, Clay cookstove 2x1, Display counter 3x1, Sofa 3x1, Sewing desk 2x1, Hat cabinet 2x1 | 34 / 84 |
+| 4 | Tailor's stool 1x1, Whetstone stand 1x1, Bow workbench 3x1, Tackle desk 2x1, Leather table 2x2, Birch chest 2x1 | 47 / 108 |
+| 5 | Artisan bench 3x1, Pantry dresser 2x1, Trophy cabinet 2x1, Boot cabinet 2x1, Cloth press 2x2, Hat display 1x1 | 61 / 132 |
+| 6 | Clothing armoire 2x1, Tool forge 2x2, Bow cabinet 2x1, Reel workshop 2x2, Pack-maker bench 3x1, Mesquite chest 3x1 | 79 / 156 |
+| 7 | Master loom 3x2, Dining table 3x2, Gallery pedestal 1x1, Travel sofa 3x1, Fine-cloth workstation 3x1, Milliner bench 2x1 | 100 / 180 |
+| 8 | Frontier wardrobe 2x1, Master tool station 3x2, Hunter's cabinet 2x1, Angler's cabinet 2x1, Expedition workbench 3x2, Reinforced oak chest 3x1 | 121 / 204 |
+
+Because buffs need placed pieces, the remaining space is what duplicates, extra chests and decorations can use; a validation should keep "all owned types fit" true for every level whenever footprints change.
+
+**Proposed prices (premium, cash; user, November 7, 2026: below the later ferry tolls of the same tier, but expensive):** every type at a level costs the same.
+
+| House level (tier) | 1 (T1) | 2 (T1) | 3 (T2) | 4 (T2) | 5 (T3) | 6 (T3) | 7 (T4) | 8 (T4) |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Cash per piece | 3,000 | 6,000 | 20,000 | 50,000 | 150,000 | 400,000 | 1,000,000 | 2,000,000 |
+| Full level (six types) | 18,000 | 36,000 | 120,000 | 300,000 | 900,000 | 2,400,000 | 6,000,000 | 12,000,000 |
+
+One piece stays under the same tier's late tolls (for example 2,000,000 against 3,000,000-8,000,000 in tier four) but above its early ones, and a full level costs several crossings, so the buffs are a premium goal for players who sell crafted goods. Duplicates cost the same. Cash only is proposed (no gold price); the toll's gold exchange (cash / 1,000) could be added later if wanted. Values are tuning data.
+
+**Proposed IDs and save data:** IDs `furniture.l<level>.<name>` (for example `furniture.l3.loom`). The save records each owned piece (instance ID, definition ID, placed cell or "stored", chest container ID and contents) and the first-purchase record per definition. Buffs are recomputed from placed pieces on load.
+
+**Art batch A delivered (Claude, November 7, 2026; art only):** the six level-1 types (Worktable, Bedroll, Market sign, Boot bench, Sewing basket, Hat peg) as production models in the faceted house palette, 188-456 triangles each, 0.27-1.67 m tall. Source `Tools/Art/generate_furniture.py` (catalog with IDs, categories, footprints and prices; it refuses a mesh outside its footprint), prefabs `Resources/Settlement/Furniture/Furniture<Name>.prefab` with `FurnitureArtMetadata` and a footprint selection box, transparent 256 px store icons in `Resources/UI/Furniture` (sprite import rule added), menus **The Trail Walker > Art > Build / Capture Furniture**. `FurnitureArtAssets.Validate()` runs 32 checks (IDs, six per level, footprint limits, price, mesh inside its footprint and under 2.0 m, all owned types fit with the nearest-free-space rule); report `Builds/Validation/Furniture-art-checks.txt`. Review renders in `Docs/Art/Settlement/Furniture` (lineup, level-1 room angled and bird's-eye, icon sheet). **Not implemented:** store, buffs, placement, house storage, chest inventories. **Art batch B delivered (Claude, November 7, 2026; art only):** the twelve level-2 (pine) and level-3 (birch) types: Trouser rack, Chopping block, Sling stand, Rod rack, Bag frame, Pine chest; Loom, Clay cookstove, Display counter, Sofa, Sewing desk, Hat cabinet. 156-444 triangles each (the Pine chest 276 with its lid), 0.57-1.90 m tall. The **Pine chest has a separate lid on a `LidPivot` hinge** at the back top edge, so the touch action can open it; a check requires a hinged lid on every chest. Validation is now 100 checks (adds six different buff categories per level and the chest lid); the room renders show every type owned so far placed by the nearest-free-space rule in the level 2 and level 3 rooms (`Docs/Art/Settlement/Furniture/level<N>-lineup / -room-angled / -room-birds-eye / -store-icons.png`). Batches C (levels 4-5) and D (6-8) remain.
+
+**Art batch C delivered (Claude, November 7, 2026; art only):** the twelve level-4 (birch with copper fittings, as the level-4 house trim) and level-5 (mesquite, iron) types: Tailor's stool, Whetstone stand, Bow workbench, Tackle desk, Leather table, Birch chest; Artisan bench, Pantry dresser, Trophy cabinet, Boot cabinet, Cloth press, Hat display. 224-568 triangles each, 0.57-1.80 m tall. The Birch chest reuses the generic chest body and hinged lid (`chest_lid`) in birch and copper. The generator and the validation now also enforce the 600-triangle budget (the Tackle desk was trimmed from 636 to 540). Validation: 197 checks, including all 24 and all 30 owned types fitting the level 4 (12x9) and level 5 (12x11) rooms. Batch D (levels 6-8) remains.
+
+**Art batch D delivered, furniture art complete (Claude, November 7, 2026; art only):** the eighteen level-6 (mesquite, iron), level-7 (oak, iron) and level-8 (oak, steel, as the level-8 house trim) types: Clothing armoire, Tool forge, Bow cabinet, Reel workshop, Pack-maker bench, Mesquite chest; Master loom, Dining table, Gallery pedestal, Travel sofa, Fine-cloth workstation, Milliner bench; Frontier wardrobe, Master tool station, Hunter's cabinet, Angler's cabinet, Expedition workbench, Reinforced oak chest. 180-592 triangles each, 0.57-1.97 m tall. All four chests share the hinged-lid design. **Glazed display cabinets are hollow** with framed doors and glint strips (the palette has no transparency), so the bows, rods and cups inside stay visible; the level-5 Trophy cabinet was rebuilt the same way. All **48 types** now exist as prefabs with metadata and transparent store icons; validation passes **316 checks**, including all 48 owned types fitting the level-8 (12x17) room together. Still to build in code: the furniture store, buff registry (placed pieces, once per type), bird's-eye placement, house storage and chest inventories.
+
+**Reviewed (user, November 7, 2026):** the nearest-free-space rule stays even though it fills the front row by the door first, so the first purchases can stand in front of the doorway. No cells are reserved. Buying opens the bird's-eye view, so the player can move the new piece right away (or later by holding it).
+
+**Art brief for the 48 production models (replacing the proxy studies):** the faceted house palette, with each level's wood matching its house tier (pine L1-2, birch L3-4, mesquite L5-6, oak L7-8). Each model fills its footprint (0.5 m per cell) with its pivot at the front-left cell corner and faces the street/camera side. Height up to 2.0 m. The top surfaces carry each piece's identity (tools on bench tops, cloth on the press), because both the angled interior view and the bird's-eye view look down on them. Wall-style pieces become free-standing (hat peg as a peg stand, market sign as a standing board). About 150-600 triangles each, plus a store icon from the existing item-icon renderer. Batches: A = level 1 (the six types Milestone 14 needs), B = levels 2-3, C = levels 4-5, D = levels 6-8. Validation: 48 unique IDs, six per level, four per category; buff totals reach their caps; footprints within limits and "all owned types fit"; each mesh inside its footprint; a price and no recipe for every type.
+
 
 **Confirmed store-only acquisition:** furniture has a store price/unlock, not an ingredient recipe; purchases never request materials. For example, bricks/glass panels contribute to a house upgrade; that level can unlock a clay cookstove or decorative window, which the player buys. Clay cups/glass bottles are recipe containers, not furniture. Chests/display shelves are bought too. Material drops cannot bypass the store through furniture crafting. Eight furniture-unlock levels do not imply eight resource tiers.
 
 Furniture/store companions are Q5 products under the store rule, but this does not add crafting levels, wear, or a second multiplier to their defined first-purchase buffs. Keep their authored buff strength/capacity and store price; their quality label does not duplicate a permanent unlock. Offline pet rewards are earned output, not purchases, and still use their own reward definitions.
 
 ### 13.3 Chests and shelf layout
+
+**Chest access (user, November 7, 2026):** chests are placed furniture inside the house. Touching one opens its own inventory **above** the player inventory so items move between them; every chest is a separate container, including duplicates bought as extra storage. Proposed sizes by chest type: Pine 6 x 6, Birch 12 x 6, Mesquite 24 x 6, Reinforced oak 48 x 6.
 
 **Confirmed:** each chest is one continuous spatial container with **horizontal scrolling**, like the backpack; no independent pages, vertical scrolling, or item rotation. Use fixed-height storage with proposed tier sizes 6 x 6, 12 x 6, 24 x 6, and 48 x 6 logical units. The largest remains 288 logical square units, not 288 slots. Free placement can cross any viewport boundary because there are no page boundaries. Save container ID, item coordinates and horizontal scroll offset, not page ownership. Migrate old page layouts into consecutive horizontal strips without losing contents.
 
@@ -1699,7 +2288,7 @@ The display shelf remains three rows of four positions, one ready item per posit
 | Warehouse/trading house | Two ten-unit exact-ID boxes; every ready sellable item, including unique gear; sum actual deposited values; 100% cash, 1 gold per 1,000 cash every ten boxes; no extra bonuses |
 | Lumber field | Two rows, six massive trees per wood tier; gold unlock per tier (proposal: pine 50, birch 300, mesquite 750, oak 1,500 gold; each requires its wood tier to be discovered); independent 72-hour respawn timestamps and persistent pending loot |
 | Bakery | Three offers: one common cash food stack and two premium gold slots; each premium stack may become one recipe (section 9.4.4) |
-| Ranch | Three full-stack cash offers from domestic meat/dairy/animal products; no wild hides/pelts |
+| Ranch | Three full-stack cash offers: two dairy/egg offers and one ranch-exclusive meat (section 13.4.2); no wild hides/pelts |
 | Farm | Three full-stack cash crop offers; region discovery controls availability (catalog herbs include Tea herbs after region 4 and Lavender after region 10) |
 | Mine | Three full-stack cash ore/stone offers; avoid future-region crafting bypass |
 | Fishery | Exactly two distinct discovered fish offers + one random eligible exclusive seafood offer; Q5, cash-only, each capped at one 1,000-unit stack per reset |
@@ -1708,6 +2297,113 @@ The display shelf remains three rows of four positions, one ready item per posit
 **Confirmed:** warehouse accepts **any ready, owned sellable item**, including materials, food, Misc, tools, clothing and backpacks; recipe knowledge, currencies, defaults, pending products and committed items are not sellable. Worn gear must be unequipped first. Keep two partial boxes, ten units/instances of one exact item ID per box. **Delegated default:** allow mixed quality/mastery/condition within that ID and sum each deposited unit's saved value; one tool counts as one, never as its remaining uses. Item IDs distinguish tier/variant. Proposed used-gear valuation: `cashUnitValue = savedIntrinsicValue * clamp(remainingDurability / maximumDurability, 0, 1)` for finite tools/wearables, full saved value for nondurables/indestructibles. Apply no furniture-sale or extra transaction bonus. Show each deposit's exact cash quote; lock its valuation once deposited. No partial-box payout. Remove ownership into escrow, replace completed boxes, pay cash and advance the ten-box gold cycle exactly once. Begin with one box/action, then bounded bulk deposit; a full test stack can fill 100 boxes without 100 simultaneous animations.
 
 **Confirmed settlement refresh (replaces the 30-minute proposal):** generate stock on settlement entry and refresh all ordinary resource/ingredient shop offers whenever the player actually **leaves the settlement and returns**. No timer, cooldown or daily cap. A new persisted `SettlementVisitId` commits fresh offer IDs/seed and full per-offer stock budgets once on re-entry; the player can immediately buy materials instead of gathering. Moving between home, shops, warehouse or other settlement subviews does not leave settlement. Reopening a resource shop within the same visit keeps its stock/purchases; app suspension/reload or canceled travel also keeps that visit. Show stock and cash/gold prices, no countdown. Pet ownership catalog remains permanent. Balloon shop sessions use their separate close/reopen rule in section 14.
+
+**Surface detail (user, November 2, 2026; 22:09 build installed for device testing):** plain solid colours read as modern architecture, trees as coloured pillars and rabbits as painted blobs, so surfaces now carry texture.
+- **How it works:**
+  - New shader `TheTrailWalker/FacetedDetail` (URP main light with shadows, ambient light, fog).
+  - Each palette colour stores a detail type in its alpha channel.
+  - The shader projects the matching grayscale tile from `Assets/_Game/Art/Shared/Detail/DetailAtlas.png` onto each face in object space (one tile per metre) and multiplies it over the colour. Meshes and UVs are unchanged, and colours without a type stay flat.
+- **The 15 detail tiles:** plaster with cracks, stone blocks, wood grain, bark furrows, shingles, brick, fur, cloth weave, thatch/straw, needles/leaves, soil, leather, grass, planks.
+- **Source:** `Tools/Art/detail_textures.py` builds the atlas and holds the palette slot mapping. The palette writers (`generate_region01_meshes.palette` and the kit `Palette`) keep the types when generators are rerun.
+- **Applying it:** **The Trail Walker > Art > Apply Surface Detail** switches every material that uses a mapped palette. The region builder no longer resets the shader on a rebuild.
+- **Applied to:**
+  - trail trees (bark) and rabbits (fur)
+  - camp log seats, campfire and camp NPC clothing (cloth weave and leather)
+  - the mission lady and the ferryman
+  - the tier-one environment kits (bark, grass, needles, stone, soil)
+  - the storefronts (plaster, stone, timber, planks, shingles, brick)
+  - the shopkeepers
+- **Trail pine trunk, revision 2:** flared root buttresses, an irregular outline shared across the chop joint, broken branch stubs and knots, and vertical bark furrows instead of a striped patchwork. The chopping rig is unchanged.
+- **Device checks:**
+  - bark and roots on trail trees, fur on rabbits
+  - camp seats and NPC clothes
+  - environment trees, grass and rocks
+  - the frame rate while walking (the shader does three texture lookups per pixel)
+
+**River ferry (user, November 2, 2026):** the ferryman now has a ferry. The river crossing's placeholder boxes are replaced by a cable ferry:
+- `FerryDock`: a plank pier on pilings with mooring posts, rope, a lantern and a ferry-call bell.
+- `FerryRaft`: a log raft with a plank deck, rails, a crate and rope coil, and two pulley guide posts riding the cable.
+- `FerryCable`: bank posts with a sagging rope across the river.
+
+All three use surface detail and appear on both the departure bank and the arrival landing (`TravelScenery.BuildRiver`; the primitives remain as fallback). Source `Tools/Art/generate_ferry_meshes.py`, menu **Build Ferry**. Art only: the crossing itself is not animated yet.
+
+**Camp ground fix (user, November 2, 2026: Quiet Hilltop looked slightly above the ground):**
+- **Cause:** the terrain follows the height of the nearest road point, and the scene builds one terrain over three joined legs, so the existing end-of-path flattening never reached the camps. On hill legs the ground under a clearing sat up to 0.5 m below it.
+- **Fix:** a disc around each clearing centre (full within 6.5 m, fading out by 9.5 m, kept clear of the road's first 1.6-2.8 m) is now levelled 0.1 m below the camp's height. The clearing has a 0.3 m base, so any small edge gap is hidden.
+- **New Milestone 5 check:** samples the ground under every camp clearing at both ends of every segment, on either side. Before the fix it flagged ten Windward Hills camps; now every camp passes, and the road clearance check still passes.
+
+**Hill legs fix (user, November 2, 2026; 23:02 build):** the road and some interactables looked raised above the ground beyond Quiet Hilltop and further on, and the road dipped into a camp and climbed out again in a V. **The Trail Walker > Validation > Terrain Report** (`Builds/Validation/terrain-report.txt`) measured every leg before and after.
+- **Causes:**
+  - Each leg ended wherever its hill curve happened to be, so camps sat in dips or on slopes. For example, Low Hilltop had a -33% grade arriving and +17% leaving.
+  - The ground next to the road was sunk in proportion to the slope, so on steep legs the road stood up to 0.8 m above the ground beside it.
+- **Fixes:**
+  - The hill curve eases to zero over the first and last two knots, so every camp has a level approach and departure and every leg returns to its camp height.
+  - The road clearance follows how sharply the road's height profile bends (the sag of a grid triangle over a 3 m span) plus a 6 cm gap, instead of the slope. On a straight climb the grid follows the road exactly.
+  - Hill height is 85% of the relief, so the steepest stretches are about 40% instead of almost 50%. Route costs still use the catalog relief.
+  - Interactables sit on the lowest ground under their footprint.
+- **Result:** the road now sits about 0.1 m above the ground on average on hill legs (0.24 m at worst; it was about 0.2 on average and 0.8 at worst). Every camp grade is within 3%.
+- **New Milestone 5 checks, on every leg of every region:** the ground never covers the road, the road is at most 0.25 m above the ground at its edges, and the ends are level.
+
+**Map region list (user, November 2, 2026):** the sideways page arrows are gone.
+- Tapping the region name opens a list of all regions. Each row is in its region's colour (from its environment kit: meadow, olive heather, misty forest, fern, grey-blue stone, reedy teal), with the region's map sheet as a thumbnail and its "camps reached" count. Undiscovered regions show as "Unknown lands".
+- Tapping a discovered row opens its camps. A right-arrow button (new `travel` HUD icon) on each row travels to that region's first camp once it has been reached; in the current region it returns to the first camp.
+- Tapping the title again returns to the camp page.
+
+**Plan: surface detail for gathering and craftable objects (user request, November 2, 2026; not started):** the same shader, extended to the items players pick up, carry and craft.
+1. **Map item palettes to detail types:**
+   - loose region items (`Region01`-`Region06` palettes): branches bark, pelts fur, hemp, nettle and reeds fibre, flint and limestone stone, clay and sand soil, fruit and berries skin
+   - harvest drops in `Tier01Palette`: logs bark and wood, pelts fur, meat, fish
+   - crafted items in `Tier01CraftedPalette`: tool handles wood, blades metal, clothes cloth, boots and packs leather, food
+   - balloon goods and exclusives
+   - mystery boxes: lacquer and brass
+2. **Grow the atlas to 32 tiles.** The alpha encoding changes from type x 16 to type x 8, so the shader and all palettes are re-encoded. New tiles: fish scales, plant fibre and strands, seeds and grain, brushed metal, ceramic and glazed clay, paper, stitched leather, fruit skin with pores, ash and coal, glass. Earlier types keep their meaning.
+3. **Detail scale per material:** small objects need finer texture, so item materials use about 4-6 tiles per metre instead of 1. The same mesh in the bag, the slots, the equipment panel and the world then shows the same texture.
+4. **Fix weak silhouettes while texturing**, so the texture sits on good shapes: smooth apples and berries, the rabbit pelt and meat cuts, plain log ends. Characters and rabbits keep their smoothing where it was chosen.
+5. **Review sheets per palette group**, and a device check of the open bag and crafting book with many textured items on screen.
+6. **Order:** trail pickups and harvest drops first (seen most), then crafted tools and gear (bag, equipment, crafting book), then foods, then balloon goods and mystery boxes.
+
+**Storefront shopkeepers (user, November 2, 2026; art built, storefronts not designed yet):** every storefront gets a **static NPC shown from the waist up behind its counter** (no legs are modelled), dressed for its shop, in the faceted character style. Seven keepers are built, as art only (no shop logic, dialogue or animation): **Bakery:** Baker (female), flour-white toque, bib apron over a cream shirt, a flour smudge. **Ranch:** Rancher (male), wide-brim tan hat, denim shirt, open leather vest, red neckerchief, gray beard. **Farm:** Farmer (female), straw hat with a green band, olive blouse, dungarees with a bib and brass buttons. **Mine:** Miner (male), leather helmet with a brass lamp, dark work jacket with leather shoulder pads, red kerchief, soot marks, black beard. **Fishery:** Fisher (male), navy knit beanie, cream roll-neck cable sweater, yellow oilskin bib, gray beard. **Tailor-material shop:** Tailor (female), plum waistcoat over a white shirt, measuring tape around the neck, wrist pincushion, spectacles. **Warehouse/trading house:** Trader (male), green eyeshade, white shirt with red sleeve garters, brown waistcoat with a brass watch chain, bow tie, pencil behind the ear. The lumber field is a field, not a counter, so it has no keeper for now (a forester could be added if it gets a hut). **Balloon merchant (user, November 2, 2026):** built the same way, as a waist-up keeper behind a counter. **Look:** a crimson-lacquer double-breasted coat with brass buttons, gold edging and epaulettes, a cream silk scarf and a brass balloon emblem pin (the merchant signature from section 14.1); a leather aviator cap with ear flaps and brass goggles pushed up; a handlebar moustache. Prefab: `ShopkeeperBalloonMerchant`. Source: `Tools/Art/generate_shopkeeper_meshes.py`. Prefabs: `Resources/Characters/Shopkeepers/Shopkeeper<Name>.prefab`, each with `TorsoPivot` (0.94 m) and `HeadPivot` (+0.49) for a later idle. Build with **The Trail Walker > Art > Build Shopkeepers / Capture Shopkeepers**; sheets are in `Docs/Art/Characters/Shopkeepers`. **Design notes for when the storefronts are designed:** (1) **counter height about 1.02 m**, with the keeper about 0.3-0.45 m behind its front edge; the posed hands rest on the top at about 1.03 m, so the counter must hide everything below the waist (the torso mesh stops at about 0.86 m). (2) Frame the shop view at the keeper's chest-to-hat height; the hats are the strongest theme signal. (3) Each storefront should repeat its keeper's palette and props: bakery bread racks, flour sacks and warm whites; ranch hay, fences, a cow bell and leather; farm crates, straw and green produce; mine timber props, lanterns, ore carts and dark stone; fishery nets, buoys, an ice tray and navy/yellow; tailor fabric bolts, a mannequin and spools in plum; warehouse ledgers, scales, numbered boxes and a brass till. (4) The keeper stays one fixed person per shop (not rolled like camp traders), so players recognise each shop. (5) A subtle idle (breathing, head turns) and a greeting nod when a purchase completes would be enough animation; hands stay on the counter. (6) Offer slots, stock and prices sit on the counter or a board beside the keeper, never covering the face. 
+
+**Storefront design (proposal, November 2, 2026; bakery prototype built for review):** each shop has a **street front** (the facade in the side-scrolling settlement, between the two groups of three house plots) and a **counter view** (after the player taps the shop: the keeper behind a 1.02 m counter, the three offers on the counter, themed shelves behind).
+- **Shared kit** so the street reads as one village: timber frames, stone footings, one window/door/shutter set, gable roofs facing the street, and a hanging **picture sign with no text** turned to face the camera. Each shop has its own awning colour. Fronts are about 6-7 m wide.
+- **Bakery (built):** stone-and-timber two-storey house with a jettied upper floor, green shutters, red tile roof, brick chimney with smoke, red-and-cream striped awning over an open display window of bread racks, a wheat-sheaf sign, a bench with bread baskets and flour sacks. **Counter view:** loaf shelves on the back wall, a brick oven with a glow, flour sacks and a peel. The common cash offer sits in a bread basket; the two premium gold offers sit under brass-based glass domes.
+- **All seven built (user, November 2, 2026: "focus first on the store fronts"):** street fronts and counter views for the warehouse, bakery, ranch, farm, fishery, mine and tailor-material shop, each with its keeper, three offer anchors and surface detail. The six shops after the bakery are in `Tools/Art/storefront_shops.py` (run `generate_storefront_meshes.py`). `settlement-street.png` shows the whole street in the proposed order. Offer anchors: the warehouse uses its two deposit boxes and the gold scale; the fishery uses two ice trays for the ordinary fish slots and a lobster trap for the exclusive seafood slot. The rock face uses the mottled natural-rock texture, not cut stone.
+- **As built (the original proposal, realised):**
+  - **Ranch:** red barn front with a two-slope roof, fence, hay bales, milk churns and a cowbell sign. Counter view: hanging cured meat, cheese wheels, churns.
+  - **Farm:** open market stall with a thatched roof, tilted produce crates, green awning, a scarecrow and a sprout sign. Counter view: crates of produce and herb bundles.
+  - **Mine:** timber-framed entrance cut into a rock face, an ore cart on rails, lanterns and a pickaxe sign. Counter view: ore bins, a balance scale, lantern-lit stone.
+  - **Fishery:** dock shack on stilts with nets and buoys in navy and yellow, and a fish sign. Counter view: an ice-tray counter, with a lobster-trap display for the exclusive seafood offer.
+  - **Tailor-material shop:** narrow, tall plum-trimmed house with fabric bolts and a mannequin in the window, and a spool sign. Counter view: fabric bolts on the wall and a measuring rule on the counter.
+  - **Warehouse/trading house:** the largest front, with double barn doors, a loading crane, stacked crates and a brass-scale sign. Counter view: a ledger counter with the two deposit boxes shown as crates, and a gold scale.
+  - **Lumber field (user, November 2, 2026):** like the storefronts it has an **entrance on the street** and its **own area inside**, with these differences:
+    - **Entrance:** a gate in a timber fence with a forester's sign (axe and log), seen from the street at the end of the shop row.
+    - **Area:** a separate scene or view entered through the gate, not a counter. It holds the **two rows of six massive trees per wood tier**, one section per tier (pine, birch, mesquite, oak).
+    - **Locked tiers:** their sections stay fenced off, with a gold-unlock sign.
+    - **Respawning trees:** a tree on its 72-hour respawn shows its large cut stump and a regrowth marker.
+    - **Chopping:** tapping a tree opens the existing focused chopping screen; massive trees keep the screen open after the last swing for pickup, and only Return closes it. A felled tree with drops left can be tapped again to reopen the pickup screen (for a bag that filled up; section 8.2.1, user, November 5, 2026).
+    - **No keeper or offers.** *Proposal:* a forester standing by the gate gives the one-time introduction dialog (tutorial, settlement step) and could later host the unlock purchases.
+    - **Upgrades:** the area grows by tier through its unlocked sections, not through the shop tier looks.
+    - **Art:** the new massive trees (recommendation in section 13.4) and the faceted ground kit; the gate uses the storefront kit.
+- **Assets:**
+  - source `Tools/Art/generate_storefront_meshes.py`; prefabs `Resources/Settlement/Storefronts/<Shop>Front` and `<Shop>Counter`
+  - the counter prefab includes the keeper, `OfferAnchor1-3` and a `CustomerCameraAnchor`; the front has a `SelectAnchor`
+  - menus **The Trail Walker > Art > Build Storefronts / Capture Storefronts**; review sheets in `Docs/Art/Settlement/Storefronts`
+- **Street order (delegated to Claude, user, November 2, 2026; confirmed):** between the three left and three right house plots, the street runs **warehouse, bakery, ranch, farm, fishery, mine, tailor-material shop, lumber field**. Reasoning: the most-used building (the warehouse, for selling) comes first; then the food shops, ordered from everyday bakery goods to fresh produce and fish; then the material shops (stone and ore, then cloth); and the wide lumber field at the end of the street, where its rows of massive trees have room. `settlement-street.png` shows this order.
+- **Shop upgrades by tier (user, November 2, 2026):** shops upgrade when the player reaches the **next tier's regions**: tier 2 from region 7, tier 3 from region 13 and tier 4 from region 19. Mostly visual for now (other mechanics only if the user thinks of some).
+  - *Proposal:* four looks per shop, each in its tier's materials, matching the wood tiers: pine, then birch, mesquite and oak timbers and trims, with sturdier roofs, more stock on display and richer signs at each tier.
+  - Each counter view upgrades with its front, and the keeper stays the same person.
+  - The upgrade happens once, the first time the player reaches a region of that tier, and is saved.
+  - Houses keep their own 8-level rule, separate from this.
+
+**Lumber field trees (recommendation, November 2, 2026):** make **new massive-tree models** rather than only scaling the trail trunk. The current `PineTrunkMassive` placeholder is the trail chop trunk at 2.5x (12 sides, 192 triangles), and at that size its facets look coarse and it does not read as ancient. A massive tree needs:
+- buttress roots, deep bark ridges, moss and knots, and a canopy or broken crown;
+- all four woods (pine, birch, mesquite, oak); only pine exists now;
+- a large cut stump for the 72-hour regrowth;
+- two or three trunk shapes per species, plus small lean and rotation, so the two rows of six do not look cloned.
+
+Keep from the existing art:
+- the chopping rig points (lower trunk, fall pivot, cut area, axe hint), so the current chopping interaction drives them unchanged;
+- each species' bark colours, the faceted style, and the environment library's grass, shrubs and boulders around the bases.
 
 **All six settlement shops deliver Q5:** bakery, ranch, farm, mine, fishery, and tailor materials. Ordinary cash goods and premium gold goods follow the same rule. Item identity/quantity/price may vary by offer, but quality is fixed at five and is persisted through purchase, overflow delivery, and reload. Store-bought Q5 ingredients still cannot replace another material variety in a recipe.
 
@@ -1736,6 +2432,48 @@ Exclusivity is an initial-source restriction: raw seafood does not spawn as loos
 
 These are ingredients for optional collectible cooking recipes, not mandatory inputs to region/clothing/house progression. The fishery can show an ingredient before its recipe is learned; display its recipe-book entries as locked/box-obtainable. Main progression remains achievable through branch food/normal fish recipes. Store Q5 ingredients do not pass their grade into the resulting craft under the established output-quality rule.
 
+### 13.4.2 Ranch products and premium ranch recipes (proposal, user request November 5, 2026)
+
+The ranch sells **domestic** products that no trail source gives. Like the fishery's exclusive seafood (section 13.4.1), each tier has one **ranch-exclusive meat**: a raw ingredient with source `Store` only.
+- **Where it never comes from:** loose gathering, hunting or other interactables, pet rewards, mystery-box physical rewards, and procedural NPC supply. Players may still trade what they bought.
+- **What uses it:** only optional **premium mystery-box recipes** (below), never mandatory progression.
+- **No mission:** the ranch can show a meat before its recipe is known, and that is not a reason to add a mission for it (section 9.4.2).
+- **Not hunted animals:** wild rabbit, beaver, turkey and boar stay hunted only, and the ranch never sells their meat or hides.
+
+| Exact ingredient (ID) | Material tier | Ranch stock eligibility | Proposed Q5 cash / unit |
+| --- | --- | --- | --- |
+| Chicken meat (`ranch.chicken_meat`) | 1 | Settlement and ranch unlocked (after region four) | 50 |
+| Duck meat (`ranch.duck_meat`) | 2 | A tier-two region discovered | 100 |
+| Lamb meat (`ranch.lamb_meat`) | 3 | A tier-three region discovered | 180 |
+| Beef (`ranch.beef`) | 4 | A tier-four region discovered | 300 |
+
+The existing domestic products stay: Cow milk, Goat milk and Egg (pantry ingredients). The optional Raw wool chain stays deferred. **Ranch stock:** three Q5 cash offers per settlement visit, each one full 1,000-unit stack:
+- **two dairy/egg offers** (two distinct items from Cow milk, Goat milk and Egg)
+- **one meat offer** (one eligible ranch meat; older tiers stay eligible)
+
+The usual rules apply: the refresh on leaving and returning, partial purchases at the unit price, and persisted offers and purchases. Prices are Q5 quotes, not multiplied by quality again, and get no bakery stack discount. Store Q5 ingredients do not pass their grade into the crafted dish.
+
+**Premium ranch recipes (mystery-box exclusive, eight recipes, two per tier).** They follow section 9.4.2's premium hearts by tier (tier one 8-10, two 9-10, three 10-11, four 11-12) and the premium rule of section 9.6.6: at least three distinct ingredients, one refined or from another source. Wood fuel is listed where the dish is roasted.
+
+| Recipe ID / output | Tier | Exact ingredients -> yield | Hearts per serving | Other sources needed |
+| --- | --- | --- | --- | --- |
+| `recipe.food.chicken_mushroom_pie` — Chicken mushroom pie | 1 | 1 Chicken meat + 2 Mushrooms + 1 Wheat flour -> 1 | 10 | Mushrooms 4, Wheat flour (Wheat 6 + conversion) |
+| `recipe.food.apple_glazed_chicken` — Apple-glazed chicken | 1 | 1 Chicken meat + 2 Apples + 1 Pine branch -> 1 | 9 | Apples 1 |
+| `recipe.food.honey_roast_duck` — Honey-roast duck | 2 | 1 Duck meat + 1 Honey + 2 Birch branches -> 1 | 10 | Honey 11 |
+| `recipe.food.duck_blueberry_rice` — Duck blueberry rice | 2 | 1 Duck meat + 1 Blueberries + 1 Rice -> 1 | 9 | Blueberries 9, Rice 11 |
+| `recipe.food.mint_lamb_stew` — Mint lamb stew | 3 | 2 Lamb meat + 1 Wild mint + 2 Chickpeas -> 1 | 11 | Wild mint 18, Chickpeas 15 |
+| `recipe.food.lamb_chili_flatbread` — Lamb chili flatbread | 3 | 1 Lamb meat + 1 Corn flatbread + 1 Green chili -> 1 | 10 | Corn flatbread recipe (Corn 13), Green chili 17 |
+| `recipe.food.coffee_braised_beef` — Coffee-braised beef | 4 | 1 Beef + 1 Roasted coffee + 2 Potatoes -> 1 | 12 | Roasted coffee (Coffee beans 21), Potatoes 19 |
+| `recipe.food.beef_cacao_chili` — Beef cacao chili | 4 | 1 Beef + 1 Cacao powder + 1 Green chili -> 1 | 11 | Cacao powder (Cacao beans 20), Green chili 17 |
+
+**Eligibility** (same as the other box recipes, section 14):
+- the recipe's tier is discovered
+- the ranch is reachable and stocks that meat tier
+- every other named source is discovered, with any needed conversion known or an exact shop reachable
+- no box offers the recipe before then
+
+Recipe-book entries show **Source: Balloon mystery box** and list the ranch as the meat's source. **Box pool effect:** these eight recipes join the collectible pool: 26 + 18 barrel + 8 ranch = **52** in Part 1 (Part 2 section 10.2 adds the tier 5-8 ranch recipes). The 5% per-slot recipe chance is unchanged.
+
 ### 13.5 Pet roster, pet home, and idle collection
 
 **Confirmed layout:** house level three unlocks the **Pets section of the home store** for buying companions. The **pet home to the left of the home front** opens selection among owned pets, with one active pet; a **separate home-front collection container** holds its idle materials. Buying does not auto-switch the active pet. The store shows species, price, owned state and loot-weight preview, while selection shows the active companion and collection status. These are settlement game companions, with no combat, tool uses, breeding, hunger or wear requirements.
@@ -1753,6 +2491,17 @@ These are ingredients for optional collectible cooking recipes, not mandatory in
 
 **Authored supply groups, not literal ecology:** Wood = exact discovered loose branches, never logs/planks. Stone/ore = discovered loose stone/earth/raw ore/gem IDs (e.g. Pebbles, Clay, Copper ore). Fibers = loose plant fibers only (Hemp, Flax, Cotton, etc.), not finished cloth or hunted outputs. Produce/herbs = exact loose Apples, Tea herbs, Barley, Carrots, Pumpkins, etc., excluding Seeds/Truffle. Seeds = exact Flax seeds and Sunflower seeds; no invented generic seed item. Truffle = only `ingredient.truffle`. Build explicit non-overlapping ID lists, with each item's existing source region/tier. Pelt/feather, meat, fish, farm-only dairy/Lavender, processed materials, money, recipes, equipment and fishery-exclusive seafood are excluded from this initial pet pool. Pets provide bonus gathered materials, never new ingredient identities or a source bypass.
 
+**Pet home upgrades (proposal, user request November 5, 2026):** the pet home has its own levels, and **each level admits one more active pet**. Every active pet keeps its own roll timer, its own weights and its own 16-entry collection container. Output per pet, the 30-minute roll, the eight-hour cap and the 70/30 tier roll are unchanged, so more pets means more pets working, not stronger pets. An admission slot holds one owned pet. Switching follows the existing per-pet settle-then-switch rule, and an empty slot earns nothing. Upgrades are material deposits with the house rules (escrow, cancellation through the tray, atomic completion), at **half the house amount of the same tier** (rounded to 5), using three types: planks for the pen, cloth for bedding, fittings for gates.
+
+| Pet home level | Active pets | Requires | Deposit |
+| --- | --- | --- | --- |
+| 1 | 1 | House level 3 (pets unlock) | none |
+| 2 | 2 | House level 4 | 25 Birch planks + 25 Flax cloth + 25 Copper fittings |
+| 3 | 3 | House level 6 | 40 Mesquite planks + 40 Cotton cloth + 40 Iron fittings |
+| 4 | 4 | House level 8 | 50 Oak planks + 50 Fine cotton cloth + 50 Steel fittings |
+
+With six pets in the roster, four can work at once by the end of tier four; [Part 2](PROJECT_RECOMENDATIONS_PART_2.md) section 16.5 continues to eight. The pet home's look grows with its level (kennel, fenced run, pen with shelter, small barn). Its art is part of the house set.
+
 The pet store uses a permanent owned/unowned catalog, not random three-slot stock or the settlement resource-shop visit refresh. Purchase and owned-ID registration are atomic. Pets occupy no backpack space, are selected by ID rather than equipped as an item, and are not warehouse goods. An inactive/unowned pet produces nothing.
 
 **Roll order:** snapshot pet ID/weights and discovered-source IDs at the start of each offline interval. For each completed opportunity remove empty/undiscovered groups and renormalize the remaining group weights, then choose within the group: proposed 70% highest discovered eligible resource tier/30% earlier eligible tiers, renormalizing if either tier pool is empty; equal weights across exact IDs inside the selected tier is the initial default. Never multiply group weight by the number of species/items. If no group is eligible, produce no reward and bank no future reroll. Before region 10 Pig cannot find Truffle and its other weights renormalize; discovery never relabels old rewards. Show effective as well as authored percentages so a region-7 pig's 0% effective Truffle chance is clear. Choosing a pet never unlocks a region/material/recipe, and no mission or recipe requires owning it.
@@ -1768,6 +2517,8 @@ Persist each opportunity's result once before display. An unclaimed entry remain
 ## 14. Balloon merchant and mystery boxes
 
 **Balloon frequency (confirmed October 31, 2026):** the merchant appears at **one camp in every 4-6 camps** along the route (authored per region, deterministic, never two hosts in a row); during the current testing phase it stands at every camp (placement test). At its host camps, show exactly three gold offers: one indestructible clothing item, one mystery box, and one backpack. Define explicitly whether the merchant backpack is indestructible; recommendation: yes, as special equipment at that rank. Do not infer that every gold-purchased object is indestructible.
+
+**Balloon shop interior (user, November 2, 2026):** the balloon allows interaction: the player **enters the shop and sees the counter**, with the balloon merchant shopkeeper standing behind it, waist-up like the settlement storefronts (art: `ShopkeeperBalloonMerchant`; design notes in section 13.4). The interior is a separate view, not the exterior cabin. The exterior door opening is only about 1.3 m tall, so the merchant is never shown standing in it; entering is a transition into the interior. The interior and its counter follow the same notes as the storefronts (counter top about 1.02 m; offers on the counter or a board, never over the merchant's face), dressed in crimson lacquer, brass trim and warm paper lanterns to match the cabin.
 
 **Mystery box presentation (confirmed October 31, 2026; art in progress):** the box has an **open and a close animation**, and its **colour set follows the tier of the region where the balloon merchant is found** (one colour set for camps in tier-one regions, another for tier two, and so on). The colour is presentation only; contents follow the generation rules below. The special gear meshes (section 14.1) are being made alongside it. Both wait for the shop interaction and logic (Milestone 14).
 
@@ -1795,7 +2546,7 @@ With a nonempty eligible recipe pool, five independent 5% rolls give about **22.
 
 Recipe selection/duplicate policy:
 
-- Initial collectible pool: the twenty-six optional Food/Misc recipe IDs in sections 9.4.2-9.4.3, including seafood recipes, plus the eighteen oak-barrel filling/bottling recipes in section 9.4.5 (44 total; proposal October 31, 2026). Do not silently move the mandatory apple juice/tool/clothing missions into this random pool.
+- Initial collectible pool: the twenty-six optional Food/Misc recipe IDs in sections 9.4.2-9.4.3, including seafood recipes, plus the eighteen oak-barrel filling/bottling recipes in section 9.4.5 the eight premium ranch recipes in section 13.4.2 and the seven precious-metal and gem keepsakes in section 9.5.1 (59 total; proposals October 31 and November 5, 2026). Do not silently move the mandatory apple juice/tool/clothing missions into this random pool.
 - Require discovered `RecipeUnlockTier` and reachable ingredient sources, including an unlocked fishery/catalog tier for seafood. A refined ingredient can be supplied through an already-known recipe or an eligible discovered shop catalog; it need not be in the bag at purchase. No mandatory future-region ingredient or inaccessible crafting chain.
 - Exclude already-known recipes and recipes reserved in other unclaimed purchased boxes. Reserve newly selected IDs within the current box too, so two slots cannot award the same recipe.
 - If no eligible unlearned recipe remains, convert that slot to an eligible physical material/food reward. Do not invent a useless duplicate, refund loop, or 1,000 scrolls.
@@ -1818,13 +2569,14 @@ The balloon's two equipment offers are the **special gear**: one garment (hat, b
 
 - Tier 1 special gear reaches the **tier-1 limit**.
 - From tier 2, special gear reaches **at most halfway** from the previous tier's limit to its own tier's limit. Whole-number stats (hearts, pockets, hooks, backpack width) round **down**; boots speed keeps 0.05 m/s steps.
+- The crafted **Set A** garments (section 9.6.1) use the same halfway point rounded **up**, so they match or slightly beat special gear but wear out. Set B reaches the tier limit.
 
 | Special tier | Hat hearts | Boots speed, m/s | Shirt pockets | Pants hooks | Backpack (logical units) | Regular tier limit, for comparison |
 | --- | --- | --- | --- | --- | --- | --- |
-| 1 | 4 | 1.5 | 2 | 2 | 8 x 4 | 4 / 1.5 / 2 / 2 / 8 x 4 |
-| 2 | 5 | 1.75 | 3 | 3 | 9 x 4 | 6 / 2.0 / 4 / 4 / 10 x 4 |
-| 3 | 7 | 2.25 | 5 | 5 | 11 x 4 | 9 / 2.5 / 7 / 7 / 12 x 4 |
-| 4 | 10 | 2.75 | 8 | 8 | 13 x 4 | 12 / 3.0 / 10 / 10 / 14 x 4 |
+| 1 | 4 | 2.25 | 2 | 2 | 8 x 4 | 4 / 2.25 / 2 / 2 / 8 x 4 |
+| 2 | 5 | 2.6 | 3 | 3 | 9 x 4 | 6 / 3.0 / 4 / 4 / 10 x 4 |
+| 3 | 7 | 3.35 | 5 | 5 | 11 x 4 | 9 / 3.75 / 7 / 7 / 12 x 4 |
+| 4 | 10 | 4.1 | 8 | 8 | 13 x 4 | 12 / 4.5 / 10 / 10 / 14 x 4 |
 
 **Price reasoning (gold, whole numbers):** gold now comes from the warehouse at 1 gold per 1,000 cash after every ten boxes (100 units). One cycle of a tier's best product at recipe level 10/Q5 (section 12.2 references) yields about **120 gold at tier 1** (Misc, 1,200 cash each), **360 at tier 2**, **720 at tier 3** and **1,200 at tier 4**; clothing or food cycles yield far less, and raw-material cycles almost nothing. Special prices sit at about 1.5-3 top-product cycles of their own tier, so they are a deliberate saving goal rather than an impulse buy; boots (speed) and backpacks (area) cost more because they change travel and carrying the most.
 
@@ -1837,7 +2589,7 @@ The balloon's two equipment offers are the **special gear**: one garment (hat, b
 | ID | Item | Slot | Stat | Gold | Design brief |
 | --- | --- | --- | --- | --- | --- |
 | `special.t1.hat` | Wayfarer's felt hat | Hat | 4 hearts | 150 | Wide-brim olive felt hat, crimson band with brass balloon pin, one pheasant feather |
-| `special.t1.boots` | Wayfarer's trail boots | Boots | 1.5 m/s | 200 | Ankle boots in oiled brown leather, crimson laces, brass eyelets and toe caps |
+| `special.t1.boots` | Wayfarer's trail boots | Boots | 2.25 m/s | 200 | Ankle boots in oiled brown leather, crimson laces, brass eyelets and toe caps |
 | `special.t1.shirt` | Wayfarer's waxed shirt | Shirt | 2 pockets | 150 | Oatmeal waxed-canvas shirt, two flap pockets with brass buttons, crimson collar piping |
 | `special.t1.pants` | Wayfarer's field trousers | Pants | 2 hooks | 150 | Moss-green twill, reinforced knees, leather belt with two brass tool rings |
 | `special.t1.pack` | Wayfarer's ridge pack | Backpack | 8 x 4 | 250 | Canvas rucksack with rolled blanket on top, crimson flap, brass buckles, small balloon charm |
@@ -1847,7 +2599,7 @@ The balloon's two equipment offers are the **special gear**: one garment (hat, b
 | ID | Item | Slot | Stat | Gold | Design brief |
 | --- | --- | --- | --- | --- | --- |
 | `special.t2.hat` | Heron-plume rain hat | Hat | 5 hearts | 500 | Sou'wester-style oilskin hat, crimson lining, brass rivets, grey heron plume |
-| `special.t2.boots` | Marsh-strider boots | Boots | 1.75 m/s | 650 | Tall waterproof boots, fur cuff, crimson pull tabs, brass buckles |
+| `special.t2.boots` | Marsh-strider boots | Boots | 2.6 m/s | 650 | Tall waterproof boots, fur cuff, crimson pull tabs, brass buckles |
 | `special.t2.shirt` | Lakeshore oilskin shirt | Shirt | 3 pockets | 500 | Short oilskin overshirt in deep teal, three pockets, crimson toggles with brass tips |
 | `special.t2.pants` | Boardwalk trousers | Pants | 3 hooks | 500 | Waxed slate trousers with waterproof shins, belt with three brass rings |
 | `special.t2.pack` | Taiga fur-trimmed pack | Backpack | 9 x 4 | 800 | Frame pack with fur-trimmed top, crimson oilskin cover, brass fittings |
@@ -1857,7 +2609,7 @@ The balloon's two equipment offers are the **special gear**: one garment (hat, b
 | ID | Item | Slot | Stat | Gold | Design brief |
 | --- | --- | --- | --- | --- | --- |
 | `special.t3.hat` | Dune wrap | Hat | 7 hearts | 1,100 | Sand-linen head wrap with a light veil, crimson inner fold, brass clasp |
-| `special.t3.boots` | Canyon sand boots | Boots | 2.25 m/s | 1,400 | Soft wrapped desert boots, ochre suede, crimson binding, brass ankle studs |
+| `special.t3.boots` | Canyon sand boots | Boots | 3.35 m/s | 1,400 | Soft wrapped desert boots, ochre suede, crimson binding, brass ankle studs |
 | `special.t3.shirt` | Nomad linen robe | Shirt | 5 pockets | 1,100 | Long-sleeved cream robe-shirt, crimson sash, five hidden pockets with brass toggles |
 | `special.t3.pants` | Caravan wrap trousers | Pants | 5 hooks | 1,100 | Loose terracotta trousers, wrapped calves, belt with five brass rings |
 | `special.t3.pack` | Caravan saddle pack | Backpack | 11 x 4 | 1,800 | Twin saddle-bag pack in tooled leather, crimson tassels, brass corner plates |
@@ -1867,7 +2619,7 @@ The balloon's two equipment offers are the **special gear**: one garment (hat, b
 | ID | Item | Slot | Stat | Gold | Design brief |
 | --- | --- | --- | --- | --- | --- |
 | `special.t4.hat` | Coral-shell sun hat | Hat | 10 hearts | 2,000 | Wide woven straw hat, crimson band set with small shells, brass balloon pin |
-| `special.t4.boots` | Tidewalker boots | Boots | 2.75 m/s | 2,600 | Reef boots in navy canvas and rubbered sole, crimson rope laces, brass eyelets |
+| `special.t4.boots` | Tidewalker boots | Boots | 4.1 m/s | 2,600 | Reef boots in navy canvas and rubbered sole, crimson rope laces, brass eyelets |
 | `special.t4.shirt` | Mariner's sailcloth shirt | Shirt | 8 pockets | 2,000 | White sailcloth shirt with navy trim, crimson neckerchief, eight brass-buttoned pockets |
 | `special.t4.pants` | Reef-runner trousers | Pants | 8 hooks | 2,000 | Rolled navy sailcloth trousers, rope belt with eight brass rings |
 | `special.t4.pack` | Estuary sea-chest pack | Backpack | 13 x 4 | 3,200 | Small wooden sea chest on shoulder straps, crimson lacquer lid, brass corners and lock |
@@ -2365,14 +3117,229 @@ Dependencies: 6.
 2. Implement exact-ID unlevelled material conversions, instant gatherable outputs, and per-definition MaterialTier/RecipeUnlockTier. Add the used cord/charcoal/stuffing bridges. Wrong variety or out-of-window direct input fails without costs; future-tier ingredients never leak into starter recipes.
 3. Implement nonmaterial levels 1-10 keyed by unique recipe ID, stat order/Q5 cap, and immutable output profiles. Add Q1-equivalent base pricing, finished-quality premium, and finite-gear durability premium; preserve the 1-cash basic/6,000-cash level-ten Misc anchors. Cow/goat/mixed cheese never shares mastery or substitutes ingredients.
 4. Implement category/tier/mastery timers: Food/Tool down with level, Wearable/Misc up, hours for advanced Wearable/Misc, Food/Tool always below one hour even at x1000; buffs never change time.
-5. Add reservations, atomic costs, the centered one-second stat/timer presentation with menu kept open, immediate timed-product drop into the bag, exact-once mastery at readiness, and persistent overflow delivery.
+5. Add reservations, atomic costs, the centered one-second stat/timer presentation with menu kept open, immediate timed-product drop into the bag, exact-once mastery at craft start (revised November 2, 2026), and persistent overflow delivery.
 6. Restrict tools/wearables/backpacks to x1 in both UI and domain commands; reject x10/x100/x1000 without spending materials. Keep unique single-item claims, and merge ready stackables only when output-stat profiles match.
 7. Add all nine instance-consuming Elite upgrades and earlier-tier material recipes. Reject wrong Normal family/tier/Elite-as-input, missing previous materials, exhausted/mission-owned input, or full queue without costs. Save/resume cannot return the sacrificed Normal or duplicate the Elite; output uses its own recipe snapshot.
 8. Author fixed-input examples, explicit pine tool trio, one meat/fish roast per tier, and a later bakery recipe using exact older global Wheat flour/Cow cheese. Check permitted cooking exceptions, rejected nonfood pantry use, exact wood consumption on x1/x100/x1000, no spice/fuel substitution, and the existing Food timer cap.
 
 **Exit check:** exact IDs/quantities and separate recipe mastery hold; all nine Elite upgrades use matching Normal + previous-tier advanced material once, with no ingredient-stat inheritance or extra Normal XP. Partial-wear policy is explicit, previewed; no costs on failure or duplicate items on reload. Material conversion, Q5/timer rules, stackable-only bulk, and overflow handling remain correct.
 
+**Implementation checkpoint — October 31, 2026, 18:22 build: Milestone 7 logic implemented; device tests pending.** Domain `Domain/Crafting`: 59 tier-one recipes generated from `Tier01Recipes.json` (`Tools/Crafting/generate_tier1_recipes.py`) plus three tier-two Elite test upgrades (debug Normal T2 tool + 2 pine planks / fine rabbit pelts / fine hemp cloth); exact IDs and tier window with Food pantry; mastery 1-10 from finished units; deterministic quality/durability/price (section 6.1.1; proposed wearable base 1.6/2.4/3.2/4.5 km); category/mastery timers with batch factor; x1 for tools/gear; atomic consumption lowest quality first; pending outputs placed in the bag without merging (overflow when full) with a timer badge centred on the model; outputs become ready and credit mastery once, also across app closes (device clock); 8 outstanding batches; save section `crafting`. Pending items cannot be eaten, equipped, used as tools or ingredients, or merged (selling/missions/warehouse inherit this later). Camp traders' outfits now use the saved known recipes. UI: CRAFT opens a separate menu above the bag (3 x 3 grid, RECIPES top right, AUTOFILL/CRAFT right of the grid, x1-x1000, RETURN bottom right, one-second centred presentation); debug LEARN T1 RECIPES. Automated: M7 suite 28 checks; all suites pass. Editor play test: instant log conversion and a timed x10 juice batch (pending, ready, mastery L2).
+
+**Crafting and item feedback round (user, October 31, 2026; 20:06 build installed):** Pine plank footprint 1100x550 (log-like, slightly larger than the 1000x500 log; generator override kept) and its bag picture shows the broad face tilted instead of the thin edge that read like a branch. **Trail sizes:** the reviewed sizes (regions 1-2 loose resources, tier-one harvest drops, tools) stay as they are and are the default maximum; every other stackable item's largest trail dimension at a full stack is capped at 1.05 m (about an apple/log) unless tuned. **Crafting menu:** opens on the last crafted recipe (saved), or on the first unlocked recipe on the first opening; the recipe book stays closed until its button is tapped; the book button is an icon (open book); the in-menu X and RETURN are gone: while crafting is open the bag button shows a **return icon** (U-turn arrow) above the inventory at the left and closes crafting and the bag; the panel ends above the HUD button row and the user-menu column closes when crafting opens. New icons from `Tools/Art/generate_crafting_icons.py` (book, return). **Recipe book pages (20:13 build):** category tabs like page guides with icons (Materials: log pile, Tools: axe, Clothing: shirt, Food: apple, Misc: gem); the book opens on the current recipe's page; on each page recipes craftable with the carried ingredients come first (marked "Can craft"), then the rest ("Missing ingredients"), each group by tier then name. Verified on the phone.
+
+**Recipe names (20:21 build):** the recipe book and info block show only the item name (no tier suffix).
+
+**Device results and fixes (user, October 31, 2026; 20:3x build):** passed on the phone: x10/x100/x1000 yields, x1 only for tools, missing ingredients block crafting, pending-item restrictions with the centred timer, timers across app closes, mastery increases. Batch timer clarified: one shared timer per batch by design, grown by 1 + 0.2 log2(batch) (x10 about x1.7, x1000 about x3), easy to miss with short tier-one timers. **Roasted dishes** include a full-width skewer, so the food read much smaller than the raw item: footprints enlarged keeping the model proportions (Roasted rabbit 1300x462, Roasted rainbow trout 1400x421, Roasted largemouth bass 1400x541, Roasted bluegill 1150x615, Roasted yellow perch and Herb trout 1400x467; generator overrides kept). **Debug + INGREDIENTS** in the crafting menu adds the selected recipe's exact ingredients for the chosen batch size (bag, then overflow), so every recipe can be tested without visiting regions 3-6.
+
+**Stack growth flattened and popup order (user, October 31, 2026; 20:59 build installed):** a single unit read far too small next to its full stack (for example one rabbit pelt), while the full-stack size is the intended base look. Stack growth is now `Scale(q) = 1.5 / 1.15 * (1 + 0.15 * log(q) / log(1000))`: a full 1,000 stack keeps exactly 1.5x (bag and trail unchanged), a single unit is about 1.30x instead of 1x, so stacks differ by at most about 15% per side. This supersedes the 1x-1.5x curve recommended in section 4 for the prototype. Non-stackables are unaffected. Validation fixtures and the debug bag presets (full bag, tree food) were re-spaced for the larger partial stacks. The item details popup now draws in front of the crafting and equipment menus.
+
+**Materials size review (user, October 31, 2026):** unit and full-stack sizes in the bag and as crafting requirements confirmed OK for clay cup, cured rabbit pelt, fine hemp cloth, fine rabbit leather, fine rabbit pelt, fired bricks, hemp cloth, hemp cord, hemp thread, limestone tiles, mortar, nettle cloth, nettle thread, pine charcoal, pine log, pine panel, pine plank, plant stuffing, polished pebble, rabbit leather, reed braid and wheat flour. Changed: **Pine beam** 900x300 -> 1100x550 (like the plank; generator override kept); raw **Pebbles** 480x240 -> 600x300 (slightly bigger). **Bag on app entry:** the bag and its menus (equipment, crafting, user menu) close when the app goes to the background, so a resumed app always opens with the bag closed; a cold start already opened closed. The open state is never saved. **Tools:** all tier-one tool sizes confirmed OK. **Clothing:** hemp pants, rabbit-pelt boots and rabbit-pelt hat OK; **Hemp shirt** 900x588 -> 900x780 with its model stretched vertically to match (the low model read as a folded shirt; bag picture and trail only, not the worn avatar); **Starter backpack** 1.5x, 626x900 -> 939x1350 (generator overrides kept). Remaining categories (food, misc) are under review.
+
+**Device result (user, October 31, 2026):** crafted tier-one equipment shows the correct parameters (quality, crafted durability and stats) — passed (part of remaining test 10; crafted tools harvesting with their uses still to confirm).
+
+**Food size review and premium hearts (user, October 31, 2026):** OK: apple-oat compote, berry oat cakes, cow butter, cow cheese, cow-cheese tart (product), goat cheese, herb trout, mixed-milk cheese, premium apple pie, red-berry oat porridge, all roasted fish/rabbit/mushrooms/shrimp, shrimp pie, toasted pine nuts. Reduced to about apple size (apple 420x480): **Apple juice** and **Cow cream** and **Cow yogurt** 839x900 -> 485x520, **Strawberry cow-yogurt drink** 800x900 -> 462x520, **Egg** 665x900 -> 355x480 (generator overrides kept). **Premium hearts:** Shrimp pie recovered only 3 hearts; box and store-bought recipes are premium goods (rule in section 9.4.2). Tier-one box foods now: Roasted shrimp 2 -> 8, Shrimp pie 3 -> 10, Apple-oat compote 6 -> 10, Red-berry oat porridge 6 -> 10 (Premium apple pie stays 12); higher-tier box values updated in the tables as proposals. Prices still follow the category formula and are rebalanced after the debug cleanup. **Misc:** cord charm, pine bird sculpture, pine-cone ornament, pine-cone rabbit ornament and rabbit toy OK. The tier-one size review is complete.
+
+**Milestone 7 device results (user, October 31, 2026; 15:56 build):** passed: crafted tools harvest with their uses, eight outstanding batches with the ninth refused at no cost, tier-two Elite upgrade, traders in tier-one outfits from the next visit, menu behaviour (last crafted recipe, book tabs/ordering, return button, closing with the bag). **Fix:** a pending (still crafting) tool moved to a hook, or a pending stack to a pocket, lost its visible timer; readiness itself was unaffected. Pockets and hooks now draw the centred timer badge too (over the hook loop). **Overflow output on a full bag:** covered by the Milestone 7 automated check; the device test is deferred to the real overflow-tray UI that replaces the debug CLAIM OVERFLOW button. **Milestone 7 exit check passed (16:03 build):** the user confirmed the pending timer in pockets and hooks; every Milestone 7 device test has passed (overflow device check deferred as above). Carried forward: the debug cleanup (all debug buttons and stats removed, only full-stack pickups kept, items rebalanced) happens once Milestone 8 mission recipe unlocks are tested and the crafting mastery tests begin; until then LEARN T1 RECIPES, + INGREDIENTS and + TOOL KIT stay for testing.
+
+**Milestone 7 device tests remaining (October 31, 2026):** (1) craft each available tier-one recipe once (instant materials, timed materials, tools, clothing, food, misc) and check outputs and models in the bag and on the trail; (2) x10 / x100 / x1000 batches for stackables (yield, stacks of at most 1,000, timer grows with the batch) and x1 only for tools, clothing and backpacks; (3) a shortage crafts nothing and spends nothing; ingredients from pockets and hooks count; the lowest quality is used first; (4) pending items: centred timer, cannot be eaten, equipped, used as a tool or ingredient, or merged until ready; (5) timers keep running while the app is closed and finish on reopening with mastery credited once; (6) mastery: level star and progress bar rise, quality reaches Q5 at level 5, food gets faster and clothing/misc slower with levels; (7) eight outstanding batches, a ninth refused without cost; (8) bag full: output goes to overflow (CLAIM OVERFLOW returns it); (9) tier-two Elite upgrade (+ TOOL KIT twice for the T2 Normal trio; craft planks, fine rabbit pelts and fine hemp cloth): one Normal tool + two materials -> an Elite with its own stats; (10) crafted gear equips with its crafted durability; crafted tools harvest with their uses; (11) camp traders start wearing tier-one outfits from the next camp visit after a tier-one clothing or backpack recipe is known; (12) menu behaviour: opens on the last crafted recipe, book tabs and ordering, return button, closing with the bag.
+
+**Recipe info block (user request, done in the next build):** at the top left, opposite RECIPES: the recipe's output model, name and tier, the current level as a star in the quality-star design continued to 10 (`Tools/Art/generate_level_stars.py` -> `Resources/UI/Crafting/level_1-10`; levels 1-5 equal the quality stars, 6-10 add star points), a progress bar and the units to the next level (materials show "no mastery"). The grid moved below it; output details are one line under the grid.
+
 ### Milestone 8: Four mission branches, featured resources, and route safety
+
+**Mission flow (confirmed by the user, October 31, 2026):** at the first camp, tapping the tall mission lady opens the **mission selection menu**: a stack of worn papers with recipe-book-like tab separators, one tab per branch (Gatherer, Lumberjack, Hunter, Explorer) showing that branch's next mission, its request, the reward recipe and, when not yet possible, the first missing link. Afterwards, arriving at the camp where the active mission is complete, the lady **hands the recipe over automatically** and the menu **opens by itself**; it **closes by itself** once the next mission is chosen (a PUT AWAY button appears only when no branch has an offerable mission).
+
+**Implementation checkpoint — October 31, 2026, 16:21 build: mission core.** Domain `Domain/Missions/MissionModel.cs`: 22 tier-one missions (the twelve section 11.1 starters plus the section 11.3 extensions G4-G5, L4-L5, H4, E4-E8), ten units or ten instances each; per-branch progress, one active mission, monotonic claims; eligibility = branch's next mission + requested item obtainable now + reward recipe craftable once learned, from an exact tier-one source table (featured loose items per region, axe/slingshot/rod harvest families, settlement listings unavailable until Milestone 10, recursive known recipes). Locked missions show their first missing link (for example G3 "Needs the Pine bird sculpture recipe", H4 "Rock salt is found in region 3", E8 settlement Tea herbs). Automatic delivery (`SpatialInventory.ConsumeForMission`) takes only the remaining requirement from carried ready items (bag, pockets, hooks), cheapest quoted value first; worn gear, overflow, trail items and pending crafts never count. Mission lady presence: a claimable completion, or no active mission while something is offerable (first selection and after a claim); the camp ahead shows her only if she will be there. HUD tracker pill beside the bag button (code, item, delivered/required). Save section `missions` (claimed in order, active, delivered) validated on load. New art: worn paper sheets and tab (`Tools/Art/generate_mission_paper.py`), mission scroll and branch icons (`generate_crafting_icons.py`). Automated: Milestone 8 suite 36 checks (data, featured sources vs catalog and recipe data, region-one offers, 990 left after a ten-unit mission, one active mission, claims once, cross-branch locks, prototype-region reachability of all twelve starters, tool instances, worn/pending protection, craft competition, persistence). Build tooling: the request poller refreshes and waits for compilation first and refuses to run on compile errors. Items 2 (map icons), 5 (route budgets, faint animations) and 6 (camp layouts) of this milestone are not started.
+
+**Mission device feedback (user, October 31, 2026):** the first mission build's checks passed on the phone. Changes: mission progress is shown only as the requested item's **model with a counter** (delivered/required, green when complete) in the square **above the bag button**, with no name or description; hidden while the crafting, equipment or mission menus cover it. The **recipe hand-off focuses the view on the mission lady** (like other interactions focus their target), with the hand-off card below her; the view returns afterwards and the papers open.
+
+**Speed gauge redesign (user, October 31, 2026):** the speed thermometer is now a **worn wooden ruler** with tick marks and **no numbers** (the numeric readout is removed); requested speed shows as a translucent stain up the ruler topped by a dark marker line. The ruler stands **above the mission square** (which stays above the bag button). Its **length grows with the boots tier buff** (speed cap): the full height is the maximum cap and the ruler tiles instead of stretching, so a higher cap shows more ticks. Art: `Tools/Art/generate_speed_ruler.py`.
+
+**Craft slots removed (user, October 31, 2026):** the eight-outstanding-batch limit is gone; any number of timed crafts run at once (the crafting menu shows how many are running and the next to finish). Reason: late-game players crafting many high-quality tools and gear, which have no bulk crafting, would otherwise wait on slots. Milestone 7 check updated (twelve batches at once).
+
+**Device results (user, October 31, 2026; 17:04 build):** passed: mission tracker (model and counter above the bag button), recipe hand-off focusing the view on the mission lady, wooden speed ruler above the mission square growing with the boots cap, speed caps 1.5x, mission region gate (region-two missions open after the region-one missions), and more than eight crafts running at once.
+
+**Implementation checkpoint — October 31, 2026: camp map and complete Dawn Plains (Milestone 8 item 1).** Dawn Plains now has its ten proposed camps (Dawn Meadow, Quiet Meadow, Low Meadow, Clover Bend, Lark Rise, Dew Hollow, Amber Field, Hare's Run, Willow Rest, Last Light; legs 150-240 m, alternating sides), with the river and ferry after Last Light. Camp IDs 01-03 are unchanged; saves whose segment no longer matches their camp (for example seated at Low Meadow when it was the last camp) are reseated at that camp with a drop cycle for its new leg (`SessionSaveStore.MigrateCatalogLayout`). The camp map is rebuilt as the worn themed map described in section 12.3 (`CollectionPrototype.Map.cs`; sheets from `Tools/Art/generate_region_maps.py`; campfire and ferry icons). Milestone 5 travel checks now follow the catalog's final camp and cover the layout migration. Windward Hills keeps its three test camps for now.
+
+**Map feedback (user, October 31, 2026):** the first map showed a blank white sheet (the region textures had been imported before their sprite importer existed). The sheets are now **painted maps with representative colours and shapes per region** (Dawn Plains meadow, wheat patches, groves, a stream, wildflowers and sun; Windward Hills ochre grass, brown hills, rocks and wind; Mistwood dark forest and mist; Fern Hollow ferns, round trees and a pond; Cloudstep Mountains snow peaks and clouds; Reedwater Delta channels, marsh, sand bars and reeds), with a parchment cartouche for the title, open ground along the road and a compass rose. **CLOSE is replaced by a return button with the return icon at the bottom left**, in the bag button's place; the bag, user-menu and trash buttons (and the mission square) hide while the map is open. Camp counts per tier recorded in section 6.2.2.
+
+**Dawn Plains stamina pacing (user, October 31, 2026):** at the 12 hearts/km opening drain, the first two legs keep their lengths and cost less than the starter's 3 hearts (Dawn Meadow -> Quiet Meadow 150 m = 1.8 hearts, Quiet Meadow -> Low Meadow 180 m = 2.16 hearts): G1 is claimed at Quiet Meadow and the G2 apple delivery unlocks apple juice at Low Meadow. From Low Meadow on, every leg costs at least half a heart more than 3, so food is needed: 300, 310, 320, 330, 340, 350, 360 m (3.6-4.3 hearts). **Resources:** every leg's drop roll now contains each of the region's three featured items at least once (deterministic; a missing item replaces the first point of the most common one), so the opening legs always offer apples; one 1,000-apple pickup covers the ten for G2 and leaves 990 for juice (3 apples each). Shared `RouteBudget` (12 hearts/km, starter 3 hearts, 26-heart leg ceiling) in the domain; Milestone 8 checks cover the opening/food-leg split, the 26-heart ceiling and featured items on every leg and cycle. Note: a player who takes Hunter H1 before G1/G2 reaches the first food leg before juice is unlocked; the opening flow assumes the Gatherer start. (Resolved November 2, 2026: G1 is now forced as the first mission.)
+
+**Apples are edible (user, October 31, 2026):** Apples become raw food worth **1 heart**, eaten manually from the bag (EAT) to help with stamina on the longer legs; like other raw food they are **never eaten automatically** to prevent fainting (only prepared food is). They remain the G2 mission item and the apple juice ingredient.
+
+**Session close — October 31, 2026 (18:47 build installed).** Device-confirmed: legs from Low Meadow on need more than the starter's 3 hearts (the player fainted before the camp and the faint mechanic applied); apples are edible by hand and help recovery; the painted camp map, return button and hidden HUD; the complete ten-camp Dawn Plains. Milestone 8 state:
+- **Done:** mission core (22 tier-one missions, four branches, papers UI, automatic delivery, hand-off with view focus, tracker, mission region gate, persistence); item 1 (worn painted region maps with featured icons, campfire camp buttons by road side, inactive undiscovered camps); complete Dawn Plains with stamina pacing and guaranteed featured items per leg; speed caps 1.5x and wooden speed ruler; craft-slot limit removed; apples edible.
+- **Decided, to implement next session (user, October 31, 2026):** **G1 is the first mission**: the very first selection offers only Gatherer G1 (pine branches -> Pine log), so the opening always runs G1 -> G2 -> apple juice before the first food leg. Other branches open after G1 by the usual rules.
+- **Remaining Milestone 8 items:** item 2 extras (map indicators are in; full 24-slot featured data validation exists for tier one only); item 5 route safety (faint/recovery/wake animations, reload checks that faint loss cannot reroll or double, HUD/map/departure route information from the same data); item 6 layouts (~~Windward Hills to its 12 planned camps~~ done November 2, 2026; streaming for larger regions, map scrolling past about 12 camps).
+- **Implemented (November 2, 2026):** G1 is the first mission. `MissionState.Offerable` locks every other branch with "Opens after the first mission (G1 Pine branches)" until G1 is claimed; saves already holding another active or claimed mission keep it. Milestone 8 checks updated (first selection offers only G1, H1 refused before G1, legacy active mission kept, H1 opens after G1); all Milestone 1-8 checks pass. Device check pending.
+- **Debug cleanup, first pass (user, November 2, 2026):** crafting now supplies real gear and tools, so the camp world removes R4 TEST GEAR, ADD SPARE GEAR, + TOOL KIT and the MIXED, FULL BAG and TREE FOOD fixtures (the older collection/survival scenes, which have no crafting, keep theirs; item definitions stay so older saves load). Kept for upcoming tests: EMPTY, RESET SAVE, TARGET T1-T4, BACK TO CAMP, EAT SELECTED, TEST EMPTY (faint tests, item 5), CLAIM OVERFLOW, EXPIRE SLOT / EXPIRE ALL, LEARN T1 RECIPES, + INGREDIENTS, +1,000 CASH and +1 GOLD (ferry tolls until Milestone 9). **New debug UNLOCK CAMPS** (the old + TOOL KIT spot) marks every camp of the current region as reached, so the map can travel to any of them; other regions, discovery, drop cycles and the player position are unchanged, and it is saved. Milestone 5 checks cover it; all Milestone 1-8 checks pass. Device check pending.
+- **Next steps:** ~~make G1 the first mission~~ (done), ~~plan and build Windward Hills (12 camps)~~ (done), ~~item 5~~ (done November 2, device round pending); commit after Milestone 8 (user's request), then the debug cleanup and mastery tests.
+
+**Windward Hills layout (approved by the user and implemented, November 2, 2026):** grows the region from three test camps to its planned **12 camps** (section 6.2.2), following the Dawn Plains approach.
+- **Camps and IDs:** the three existing camps keep their IDs and become camps 1-3: Dawn Hilltop (`camp.02.01`, left), Quiet Hilltop (`camp.02.03`, now right), Low Hilltop (`camp.02.02`, now left; no longer final). Sides strictly alternate so neighbouring camp tabs never overlap on the 12-camp map (two same-side neighbours would overlap at this spacing). Nine new hill names (no Knoll/Ridge/Hollow, which are other regions' landmarks), continuing the alternation: 4 Windy Crest, 5 Heather Brow, 6 Gorse Saddle, 7 Cairn Top, 8 Shepherd's Fold, 9 Weathervane, 10 Stone Gate, 11 Kestrel Point, 12 Far Lookout (final camp; river and ferry to region 3 follow it). `segment.02.01` and `segment.02.03` keep their IDs, a new `segment.02.02` joins Low Hilltop to Windy Crest, and `segment.02.river` moves to Far Lookout. `SessionSaveStore.MigrateCatalogLayout` already reseats saves whose segment no longer matches (for example seated at Low Hilltop facing the old river); the paid region-two toll is kept.
+- **Pacing (12 hearts/km, unchanged rate):** the ferry landing stays 120 m (1.44 hearts). Region 2 is the first region of the "regions 2-6: 350-600 m, 3.5-6 hearts" band, so every leg needs food from the start and lengths climb steadily: 360, 370, 380, 390, 400, 410, 420, 440, 460, 480, 500 m = 4.32 / 4.44 / 4.56 / 4.68 / 4.80 / 4.92 / 5.04 / 5.28 / 5.52 / 5.76 / 6.00 hearts. Total 4,610 m and about 55 hearts; about 51 minutes of walking at the starter 1.5 m/s or 34 minutes with rank-one boots. All legs stay far below the 26-heart ceiling.
+- **Relief (implemented):** 4, 8, 6, 7, 10, 12, 8, 9, 12, 8, 5 m per leg, steepest out of Gorse Saddle and Weathervane. The automated road-clearance check passes on every Windward leg.
+- **Food stocking is intended (user, November 2, 2026):** Dawn Plains offers plenty of food to farm, and the player is expected to plan and prioritise stacking food there to cross the following regions. This is why stacks hold 1,000 (the reference game used 10 per stack and the bag filled very fast). Do not add region-two food sources to make the crossing easier.
+- **Food check:** with the starter 3-heart cap, a 6-heart leg needs at least 3 hearts eaten on the way (1/3 heart per second delivery). Region 2 has no apples, so the player relies on carried apples and apple juice (1 heart each; a 1,000-apple pickup minus G2 gives 330 juices) and, after Explorer E2, roasted rabbit (2 hearts; rabbits spawn in all tier-one regions). The region-two missions fit this order: L1 Flint -> pine axe, E1 Hemp -> hemp cloth, L2 logs -> pine bird, G3 pine bird -> rabbit hat (4-heart cap), E2 rabbit meat -> roasted rabbit.
+- **Featured items and interactables:** each leg keeps Hemp fiber, Flint and Pine cones at least once per drop roll (shared rule); legs of 300 m or more get 3+ fishing points (Largemouth bass, Yellow perch) and 3+ animal spawns.
+- **Map:** 12 camps sit at the limit noted for item 6; check the painted Windward Hills sheet for spacing and add scrolling only if the camp buttons crowd.
+- **Checks (implemented):** Milestone 8: 12 camps on alternating sides with the river after Far Lookout; every leg 4.32-6.0 hearts, rising, above the starter 3 hearts, with relief. Milestone 5: the walk through all twelve camps to Far Lookout, the old Low Hilltop river save reseated facing Windy Crest with its toll kept, road clearance on every leg, and the interactable count check now follows the layout rule (legs from 450 m get a fourth animal spawn, from 500 m a fourth fishing point). All Milestone 1-8 checks pass. **Device check pending:** the 12-camp painted map, the hill legs, and pacing with carried food.
+
+**Implementation checkpoint — November 2, 2026, 17:44 build: Milestone 8 code complete (device round pending).** Installed on the nubia NX769J.
+- **Item 2, region plan as data:** `Domain/Travel/RegionPlan.cs` holds all 24 regions (name, tier, three featured IDs, rolled camp count) from section 6.2.2. Tier 2-4 IDs are names only (no runtime loot, recipes or art); they follow the existing ID patterns (`material.`, `ingredient.`, `food.`, `animal.<species>.pelt/hide/feathers`). Checks: 24 regions x 3, 18 distinct per tier, 72 overall, camp counts inside each tier's range, the branch and pelt-family entry in every tier (tier three: turkey feathers), authored regions matching the plan, tier-one mission sources matching exactly, and only branch + pelt overlapping interaction rewards in tier one.
+- **Item 5, route safety:** `RouteBudget.Simulate` walks a leg on the real stamina model (fixed-rate delivery, no reserve beyond the cap, standing still while food arrives on an empty meter). Checks: every authored leg and ferry landing is walkable from a full 3-heart meter with 1-heart juices without stopping; opening legs need no food and every leg above 3 hearts fails without food; three starter hearts last exactly 250 m; the 26-heart leg (1,300 m at 20 hearts/km) works with 12 hearts plus three 6-heart meals and finishes near 4 hearts, fails with two meals, and from a 6-heart start needs a fourth meal; speed does not change food need; a restart while fainted returns to camp still fainted with the loss neither rolled nor charged again. **Faint presentation** (`CollectionPrototype.Faint.cs`, `FollowCameraRig.Collapse`): after the loss is committed and saved, the view sinks to the ground with a tilt (1.2 s), the lost entries slip out as their item icons with quantities and fade, the view breathes under a translucent shade while hearts refill, then rises again (1.5 s, "Waking up..."); input stays locked until the wake ends and walking still needs a fresh upward swipe. A reload while fainted shows the collapsed view directly without replaying the loss; seated at a camp the view only slumps halfway. **Route information from the same data:** a parchment route card above the bag button. Seated: next camp, distance, heart cost, your hearts, carried food hearts and a verdict from the simulator ("No food needed", "OK: about N servings on the way", or a red "Not enough food"); it warns only and never locks departure or eats food. Walking: metres and hearts to the next camp. The camp map shows each camp's next leg (metres and hearts) or "River and ferry ahead". Hidden while the bag, a menu, the toll dialog, a harvest or a faint is showing.
+- **Item 6, layouts:** Windward Hills complete (12 camps, see above). Streaming is structural: each scene builds only the previous, current and next legs, so region size does not grow the scene. Map space: with strictly alternating sides, same-side tabs stay apart up to the 20-camp maximum, so the sheet needs no scrolling (checked for all 24 planned counts). Tier-three turkey feathers are recorded as the confirmed shared source.
+- **Mission lady reminder:** done; she appears only by the `LadyPresent` rule (first selection, claimable completion, next selection).
+- **Automated:** Milestone 1-8 suites pass (M1 34, M2 57, M3 13, M4 persistence 26, M5 79, M6 23, M7 28, M8 67).
+
+**Session checkpoint (November 2, 2026, end of day; resume testing from here).** Installed on the phone: the **23:28 development build**, with the save kept (adds statistics tracking to the 23:07 build). All automated suites pass: M1 34, M2 57, M3 13, M4 persistence 26, M5 83, M6 23, M7 31, M8 74.
+
+Done today, beyond the Milestone 8 code:
+- debug AUTO SORT
+- the faceted character redesign: player, camp NPCs with a hair and beard roll, the mission lady, the ferryman, seven storefront shopkeepers and the balloon merchant
+- surface detail textures
+- a reshaped trail pine trunk
+- the river ferry art
+- all seven storefronts (art only)
+- the camp-ground fix
+- the hill-leg fix (level camp approaches, road on the ground)
+- the map region list with travel arrows
+- mastery counted at craft start
+
+**Device checks still pending, in addition to the seven Milestone 8 items below:**
+1. **AUTO SORT:**
+   - fills stacks to 1,000 and repacks the bag
+   - refuses while an item is held
+   - leaves pending items alone
+2. **New characters in camps:**
+   - traders show varied hair styles, and men a beard or none
+   - skin tones and outfits are right
+   - the mission lady and the ferryman look right
+   - the equipment-panel avatar is the new player
+3. **Surface detail (first impressions approved):** watch the frame rate while walking and look for flicker or textures that look wrong.
+4. **Ferry:** dock, raft and cable at the end of a region and at the far-bank landing.
+5. **Camp ground (Windward Hills):** clearings sit on the ground at every camp, with no floating edges.
+6. **Hill legs (23:02 build):**
+   - the road dips no more than a little at camps (no V)
+   - the road meets the ground on climbs and descents
+   - no floating trees or rabbits on slopes
+   - a saved position mid-leg may shift a few metres, because leg shapes changed
+7. **Map:**
+   - tapping the region name opens the region list; rows have their region colours and thumbnails
+   - tapping a row opens its camps
+   - the right arrow travels to that region's first camp only once that camp has been reached
+   - tapping the title returns to the camp view
+   - the list's layout on the phone is unchecked
+8. **Crafting mastery:** two back-to-back crafts of the same timed recipe; the second shows the higher level at once.
+
+**Floating pickups fix (user, November 5, 2026: on the 23:28 build the resources looked like they floated, seen from a camp):**
+- **Cause:** loose pickups lie 1.9 m from the road centre, just past the road's edge (1.7 m), but their model was rested 2 cm above the *road* height. The redrawn terrain sits below the road beside it (6 cm base gap plus the bend clearance, more on crests and at the camp clearings, which are levelled 0.1 m below the camp), so pickups hung up to 0.25 m above the ground. Pickups saved under the old leg shapes also kept their old height.
+- **Fix:** a collider-free height lookup over the drawn terrain mesh (`Travel/TerrainHeightField.cs`, kept by `MovementPrototype.Ground`; a kept collider would block the touch raycasts). Each pickup's model rests 2 cm above the lowest ground under its footprint, as trees and rabbits do. This covers trail drops, harvest rewards, player-dropped items and saved positions, whatever height was saved. Scenes without a styled terrain keep the old road-height rule.
+- **New Milestone 5 check:** on every leg of every region, with the camp clearings, the lookup matches a real collider at both pickup spots every 2 m and never misses the ground. All Milestone 1-8 suites pass. **Device (user, November 5, 2026; 21:24 build):** confirmed at the problem camp, the previous camp and the leg between them; pickups sit on the ground and touching them works. The rest of the region is still to walk.
+
+**Loose-resource surface detail, review (November 5, 2026):** another tool implemented step A of the item surface-detail plan (`Docs/PROJECT_HANDOFF.md#loose-resources-2026-11-05`): detail on all 18 tier-one loose resources, the 32-tile atlas (alpha now type x 8 + 4), rounder fruit, a hide-shaped pelt, rounder mushroom caps, an isolated Mushrooms palette and the real mushrooms in the region 4 preview. Testing was left to Claude:
+- **Passed:** all Milestone 1-8 suites. All 25 detail palettes use the new encoding; none are left in the old format. Palettes import uncompressed, point-filtered and without mipmaps, so the type survives on Android. The storefront street renders the same as before the migration (under 0.002% of pixels differ, by at most 12 of 255 levels). All six resource sheets were recaptured into `Docs/Art/Region0N`, and all 18 bag pictures render their models.
+- **Fixed:** every mushroom stem had a red side. The shared cylinder helper shades every third side one palette slot darker, and the stem slot 27 (cream) became 26 (red). The stems now use slot 28, which stays cream; detail covers slots 27-28. Only Mushrooms was regenerated. `RoastedMushrooms` uses the same stem code but is only rewritten by the full crafted-items generator, so it keeps the red side until that generator runs.
+- **Notes for the user:** the pelt's bag picture is a thin edge-on sliver, as before, because it is a front view of a flat hide; a tilt like the plank's (`ResourceVisualTuning.IconRotation`) would show its new shape. The detail atlas is now 2048x1024 and uncompressed, about 11 MB of texture memory with mipmaps (double before); a single-channel format would cut it to a quarter if the phone memory check asks for it.
+- **Device results (user, November 5, 2026; 21:24 build installed, save kept):** partial round, covering the camp where pickups floated, the previous camp and the leg between them. Passed so far: resources rest on the ground; resource looks are right on the trail and in the bag; pickups work; no noticeable frame-rate drop yet. **Still to check:** the rest of the region (other legs and camps, hill legs), region 4 mushrooms and the pelt up close, frame rate with a full open bag and many textured items, and whether the other scenery looks unchanged.
+
+**Device report and fixes (user, November 7, 2026; 20:15 build installed, save kept):**
+- **Stuck at Stone Gate, "Invalid session header" (fixed):** the phone save held 1,012 item entries, 979 of them uncollected loot from the 19 walked legs (45-70 piles each). Save validation caps a save at 1,024 entries, so the next leg's pickups pushed it over: every later save failed and the arrival was undone, sending the player back to Stone Gate. Those leftovers can never be seen again (only the current leg is shown, and returning to a leg's start camp re-rolls it), so arriving on a leg (every drop roll) and loading a save now drop the world items of every other leg (`SpatialInventory.RemoveWorldItemsExcept`). The existing save is cleaned on its next load. New Milestone 5 checks: leftovers of other legs go, carried items stay; a simulated 25-leg walk peaks at 70 world entries (1,750 before the fix).
+- **Equipment swaps kept emptying pockets and hooks (fixed):** equipping over an occupied slot took the old item off first, which re-applied the default gear's pocket/hook counts (usually zero) and pushed their contents into the bag or overflow. A swap now changes capacity once, with the new item's counts: contents stay when the new count is equal or greater, and only the contents of removed slots move. New equipment checks for equal, greater and fewer slots.
+- **Auto-eat (changed):** carried prepared food is eaten at **0.1 hearts**, without stopping the walker (`StaminaState.AutoEatThreshold`, retried at most once a second while no food is carried). Reaching zero with no prepared food still stops the player and leads to fainting. New checks for the threshold, camp exclusion and food already being delivered.
+- All Milestone 1-8 checks pass (equipment and stamina model: 61). **Device (user, November 7, 2026; 20:15 build): all three checks passed** (past Stone Gate with no more "Invalid session header", gear swaps keep pocket/hook contents, auto-eat at 0.1 hearts without stopping) and the player reached the end of region 2 (Windward Hills). Mission catalog 3 needs **no save reset**: the save's catalog-2 claims and active mission migrate, and each branch continues with its first unclaimed mission in the new order.
+- **Milestone 8 device round closed (user, November 7, 2026):** all outstanding device checks passed (AUTO SORT, characters and equipment avatar, surface detail and frame rate, ferry, Windward Hills camp ground and hill legs, map region list, back-to-back crafting mastery, item models and tilted bag pictures). **Deferred:** the faceted rabbit's hop, graze and look-around animations are reviewed as play continues into the regions after 2, where rabbits still appear. Milestone 8 is complete; committed on main as requested.
+
+**Return button everywhere (user, November 5, 2026):** every menu and interaction closes with the **return icon button in the bag button's place**, never a CLOSE, X or PUT AWAY text button. Implemented:
+- **Bag, equipment and crafting** (shown with the bag): the bag button shows the return icon whenever the bag is open and closes the bag together with its menu. It stays on top of the equipment panel, over its empty lower-left corner. The equipment X and CLOSE buttons are gone, and TAKE OFF is centred on the bottom row.
+- **Item details:** no CLOSE button. The return button closes the details first; they still close by themselves after a while. EAT and EQUIP are centred.
+- **Map and mission papers:** one shared return button (`ShowScreenReturn`) in the bag button's place hides the bag and user-menu buttons and disappears with its menu, however the menu closes. The papers show it only when no mission can be chosen (it replaces PUT AWAY); otherwise they still close only by choosing.
+- **Interactions (harvest screens):** the RETURN text button is replaced by the return square in the closed bag button's place.
+- **Rule for new menus:** use the bag button (menus shown with the bag) or `ShowScreenReturn` (full-screen menus); no text close buttons.
+- **Unchanged, a choice rather than a close:** the ferry toll dialog keeps PAY / NOT NOW.
+
+**Equipment menu cleanup and fitted tier-one wearables (user, November 5, 2026):**
+- **Buttons removed:** the camp world's equipment menu has no EXPIRE SLOT, EXPIRE ALL or TAKE OFF. Gear is equipped and taken off by dragging between the bag and the slots, expiry follows real wear, and the return button closes the menu. The avatar stage extends into the freed space. The older test scenes without crafting keep these buttons for their checks.
+- **Avatar showed no worn clothing:** the equipment avatar only placed the hat and backpack item models at their anchors; shirts, pants and boots had been left for the equipment redesign, so equipping the tier-one pants changed nothing.
+- **Fixed with the first fitted set (user chose the tier-one set now):** hemp shirt (rolled sleeves, two chest pockets), hemp pants (belt with buckle and two tool loops) and rabbit-pelt boots (fur cuff) on both player bodies, built from the shared faceted parts in the standing pose and coloured like the crafted item models. Equipping swaps the shell in and hides the base tunic or trousers it replaces. Debug test gear borrows its slot's tier-one shell. Hat and backpack keep their item models for now. Details and the rebuild steps are in `Docs/Art/Characters/PlayerDefault/player-avatar-designs.txt`; the review sheet is `tier1-wearables.png`.
+- **New Milestone 5 check:** every tier-one shirt, pants and boots item (and its debug stand-in) has a fitted shell with meshes on both bodies.
+- **Still to do (equipment redesign):** a fitted hat that hides the hair under it, a backpack fitted to the back, and later tiers' sets.
+
+**Tier-one item art pass (another tool, November 5, 2026; review and integration by Claude the same day; 23:42 build installed, save kept):** `Docs/PROJECT_HANDOFF.md#tier-one-items`.
+- **Delivered:**
+  - 71 redesigned tier-one item meshes on their existing paths and GUIDs (harvest drops, materials, tools, wearable displays, foods, Misc and store inputs), each fitted to its previous size, so footprints, stacks and trail sizes are unchanged
+  - 25 semantic surface profiles, so unrelated items that share a colour no longer share a texture
+  - a material pass on the tier-one merchant items and the tier-one mystery box
+  - the **fitted rabbit-pelt hat and starter backpack** for both bodies, with eight hat-compatible hair variants (`Docs/Art/Characters/Tier01Accessories`)
+- **Review:** the foods have real rims and toppings, the fish keep their species colours, and tools, gear and toys read clearly.
+- **Integrated by Claude:**
+  - **Avatar binding:** `EquipmentAvatarView` attaches the fitted hat at `HatAnchor` and the backpack at `BackpackAnchor` (identity transform, from `Tier01AccessoriesArtMap.json`). While the hat is worn, the saved hairstyle shows as its hat-compatible variant in the saved colour, and the original hair returns when the hat comes off; the saved appearance never changes. Items without fitted art keep the earlier item-model attachment.
+  - **Bag pictures:** the raw rabbit pelt, cured and fine rabbit pelt, rabbit leather, fine rabbit leather and limestone tiles showed only an edge, so they now use the plank's tilt (presentation only; footprints unchanged).
+  - **Pelt and leather footprints (user, November 6, 2026):** with the tilt, the raw rabbit pelt draws almost square (about 1.1:1) and the four processed hides about 1.4:1, so each sat small inside its old strip footprint. The raw rabbit pelt is now **480 x 480** (apple-like, was 850 x 300) and cured/fine rabbit pelt and rabbit/fine rabbit leather are **600 x 420** (were 900 x 300). Trail sizes are unchanged (`ResourceVisualTuning.TrailScale` compensates); saved bag items that no longer fit move to overflow through the existing footprint migration. All Milestone 1-8 suites pass; not yet checked on the phone.
+  - **Fishing ponds on hills (user, November 6, 2026):** on the leg after Gorse Saddle the fishing pond looked half buried during fishing: it was seated on the lowest ground within 0.45 m of its centre, but the ground fell 1-1.6 m across its 3.1 x 2.4 m footprint. The terrain now levels a disc under every shown leg's fishing pond (6.2 m flat, fading out by 9.5 m, road band untouched), the same way camp clearings are levelled, so each pond rests flat with its whole rim visible. Probe: every pond on segments 02.05/02.06 now has 0.00 m ground spread under it; before/after render checked. All Milestone 1-8 suites pass; not yet checked on the phone.
+  - **New Milestone 5 check:** the hat and backpack have fitted meshes on both bodies, and hat hair exists for all four styles on both bodies. All Milestone 1-8 suites pass.
+- **Open:**
+  - in the art sheet's side views the fitted **backpack hangs a few centimetres behind the back**; it should rest against the shirt (an art fix in its generator)
+  - the older balloon special worn geometry is not refitted to the faceted bodies (a separate art batch)
+  - nothing is skinned or animated yet
+- **Device check pending:**
+  - the equipment avatar with the hat and backpack, on both bodies and all four hairstyles
+  - the hair returning when the hat comes off
+  - the new item models on the trail and in the bag (with the icon cache refreshed)
+  - the six tilted bag pictures
+  - frame time with a full bag
+
+**Decisions recorded at the end of the session (user, November 2, 2026):**
+- **Shop street order:** delegated to Claude and set as warehouse, bakery, ranch, farm, fishery, mine, tailor-material shop, lumber field (section 13.4).
+- **Shops upgrade** when the player reaches the next tier's regions. Mostly visual (section 13.4).
+- **Tutorial outline confirmed:** gathering on a stretch before the first camp; the first mission received automatically with an explanation of mission tasks; crafting shown after the first mission is completed, with enough materials granted for one item if needed; and short keeper dialogs introducing each shop on the first settlement visit (testing-only HUD notes above).
+- **Statistics page:** pending until phase 1 (24 regions) is complete, and likely to be data-rich. The counters are tracked in the save from the 23:28 build on (see the testing-only HUD notes).
+- **Lumber field:** a street entrance (gated fence) leading to its own area with the tier sections of massive trees, unlike the shops' counter views (section 13.4).
+
+**Still open:** nothing blocking. The tutorial and the shop upgrades are designs for later milestones, not current work.
+
+**Next work, in order:**
+1. Finish the device round above.
+2. **Commit Milestone 8** (the user asked for a commit after the Milestone 8 round). It is all uncommitted, including the untracked art folders, `Tools/Art` and `Docs/Art`. The revision-3 character sources are backed up only in the session scratchpad, so committing protects this work.
+3. The rest of the debug cleanup and the crafting mastery tests.
+4. The item surface-detail plan (pickups and drops first).
+5. The new massive lumber-field trees.
+6. The equipment redesign (fitted hats, shirts, pants, boots and backpacks on the faceted bodies).
+7. The 8 house-level exteriors and the player-home interiors, organised as one set.
+
+**Milestone 8 device test list (one round for everything since the 18:47 build of October 31):**
+1. **G1 first:** RESET SAVE; at Dawn Meadow the papers offer only Gatherer G1; the other three tabs say "Opens after the first mission (G1 Pine branches)". After claiming G1, H1 opens; the region-two branches open after the region-one missions.
+2. **Debug panel:** MIXED, FULL BAG, TREE FOOD, ADD SPARE GEAR and + TOOL KIT are gone; the equipment panel has no R4 TEST GEAR (EXPIRE SLOT / EXPIRE ALL on the top row). The remaining debug buttons still work.
+3. **UNLOCK CAMPS:** at a camp, tap it, open the map: every camp of the current region is selectable and travel works; other regions stay as they were; it survives closing and reopening the app.
+4. **Windward Hills:** cross the ferry; 12 camps (Dawn Hilltop ... Far Lookout) on alternating sides; hill legs look right (road above the terrain on the steeper legs out of Gorse Saddle and Weathervane); the 12-camp map is readable, with each tab's "Next leg ... m · ... hearts" line; the river and ferry come after Far Lookout. An old save at Low Hilltop facing the river is reseated there facing Windy Crest.
+5. **Route card:** seated, the card shows the next leg and a verdict that matches reality (with food carried it says OK; with no food on a food leg it turns red); walking, metres and hearts to the next camp count down; it hides with the bag, menus, map, toll dialog and harvests.
+6. **Faint animations:** with TEST EMPTY and no prepared food on a leg, the view sinks, the 2-4 lost entries slip out with their icons and amounts, the shade and "Recovering..." text show, then "Waking up..." and the view rises; touches do nothing until it stands, and walking needs a new upward swipe. Close the app while fainted and reopen: back at the camp, still recovering, the same loss count, nothing else lost, the view slumped halfway.
+7. **Pacing with carried food:** walk a few Windward legs eating juices or roasted rabbit; legs take about 4-6 hearts as the card says.
+
+**Debug AUTO SORT (user, November 2, 2026):** a camp-world debug button (the old TREE FOOD spot) that tidies the backpack until the gravity- and collision-controlled bag exists. It tops up stacks of the same ready item to 1,000, keeps every unit and quality, leaves pending (still crafting) items as they are, and repacks the bag largest-first, grouped by category and item, with the deterministic bottom-left placement. It is all or nothing: it refuses while an item is held, and if the repacked layout would not fit nothing moves. Pockets, hooks and overflow are untouched. Four Milestone 8 checks cover it. Device check pending (with the next build).
+
+**Testing-only HUD text, to remove once testing is over (user decision, November 2, 2026):** the route card above the bag (next camp, remaining distance, heart cost, verdict), the action/feedback messages, and all the text along the upper edge (title, status lines) are testing aids. The camp map will show **only the camp name** (no leg length or heart cost). In the finished game the **hearts are the only stamina measure, shown visually, with no text or numbers**. The other values (distance travelled and similar) move to the player info as statistics. **The statistics page stays a pending decision until the whole of phase 1 (24 regions) is complete** (user, November 2, 2026). If it is added, it will most likely hold a lot of data: distance travelled, items gathered per item, interaction counts per interactable type (trees chopped, animals hunted, fish caught), items crafted per recipe, current tier, house level, and historic totals plus current balances of cash and gold. **Tracking implemented (user, November 2, 2026; 23:28 build):** the save now keeps `PlayerStatistics` (section `statistics` in the session snapshot; older saves start at zero): walked trail distance, units gathered per item ID (only what a pickup actually took), units and craft actions per recipe, completed harvests per interactable kind (tree, animal, fishing), cash and gold earned and spent (debug grants and tolls for now; trading, the warehouse and shops add to them when they exist), and faints. Current tier, house level, camps reached, missions claimed and current balances are derived from their own state and not duplicated. No page shows the data yet; three Milestone 8 checks cover the counters, the save round trip and older saves. Sources to hook later: the warehouse and trading (cash/gold earned), shops (spent), the house level, and pet rewards. Until testing ends, all of this stays as is. The route simulator and its checks stay, because they validate the leg budgets.
+
+**Tutorial (user, November 2, 2026; outline confirmed, not built yet):** a tutorial stretch comes **before the first camp**. The 250 m tutorial leg in section 4 was only an earlier example; the stretch's length is set when it is built.
+1. **Gathering:** the tutorial stretch teaches the main gathering mechanic: swiping pickups into the bag, holding and dragging, and the speed gesture with stop and resume.
+2. **First mission, automatic:** the first mission (G1, Pine branches) is received automatically during the stretch, with a short explanation of how mission tasks work. Carried items count toward the task and are claimed with the mission lady. The first mission paper does not need to be picked by hand.
+3. **Crafting, after the first mission is completed:** the crafting mechanic is shown with the recipe the mission unlocks. If the player does not carry enough materials, the tutorial **grants exactly enough for one item**, so the first craft can always be done. One craft only, not a stockpile.
+4. **Settlement:** on the first visit, each shop gets a **small tutorial dialog** from its keeper that introduces what it does. The warehouse, bakery, ranch, farm, fishery, mine, tailor-material shop and lumber field each show theirs once, at first entry, and can be skipped.
+- *Delegated defaults (proposals):*
+  - Each step runs once and is saved, so a reload never repeats it.
+  - Dialogs are short (one or two lines) and can be skipped.
+  - The tutorial grant is recorded so it can never be claimed twice.
+  - Debug tools keep working during the tutorial.
+  - The tutorial counts as region one: its pickups are Dawn Plains items.
+
+**Character art direction, faceted study (user, November 2, 2026):** the user approved a new style for the player and NPC avatars. It is based on user-supplied style references (`Docs/Art/Characters/References`), which are used for style only; no characters or art are copied. The style: flat facets instead of smoothed spheres and tubes; a boxy head with a squared jaw, slab brows, small dark eyes and a wedge nose; flat swept hair locks; natural slim proportions; and clothing as separate shells (collars, hems, cuffs). The source is `Tools/Art/faceted_character_kit.py` and `generate_faceted_avatar_study.py`, which output to `Assets/_Game/Art/Characters/FacetedStudy`. Review sheets are rendered by **The Trail Walker > Art > Faceted Avatar Study** into `Docs/Art/Characters/FacetedStudy`. The male study figure is about 2,000 triangles; the current avatar is about 11,000. User feedback applied: the chin is shorter (the head read too tall); **facial hair is either a full beard in the hair colour or none (no stubble)**; the hips and legs are fuller (the lower body read too thin on male figures). **Camp NPCs: each NPC rolls its own details (beard or none, hairstyle, skin tone, hair colour) from the base male and female designs.** Equipment items (hats, shirts, pants, boots, backpacks) will be redesigned to match, as shells fitted to the same body landmarks. Next steps: the female base and the remaining hairstyles; one full equipment set as a sample; the seated NPC version with the random appearance roll; then replacing the live player, NPC and equipment-panel avatars. The live avatars stay unchanged until then.
+
+**Faceted redesign applied (user, November 2, 2026):** the user approved the study ("the general design is good") and noted that the beard floated slightly in front of the face; the beard now sits flush on the jaw. The new style is now live for the **default player avatars** (male and female; four hair styles Crop, Sweep, Bob and Tied on both; six skin tones; five hair colours; the equipment-panel avatar uses them), the **random camp NPCs**, the **mission lady** (four pose studies) and the **ferryman**. Every character shares one skeleton and parts library, `Tools/Art/faceted_people.py`: hips pivot 0.88 m standing or 0.50 m seated, torso +0.06, head +0.49, upper arm 0.29, forearm 0.25, thigh 0.38, shin 0.40, ankle 0.10. All character importers now use flat normals. **Camp NPC roll:** besides body, skin, hair colour, clothing set, backpack and idle phase, each trader now rolls a **hair style (any of the four)** and, **for men only, a full beard or none**. This comes from its own hash stream, so the earlier fields keep their values. It is checked in Milestone 5. Every NPC prefab carries all four hair styles and the beard, and the camp shows the rolled ones. Rebuild: run the generators (`generate_player_avatar_meshes.py`, `generate_camp_npc_meshes.py`, `generate_special_npc_meshes.py`), then **The Trail Walker > Art > Build Default Player Avatars / Rebuild Common Camp NPC Meshes / Rebuild Mission Lady and Ferryman Meshes**, each with its Capture menu. Review sheets are in `Docs/Art/Characters/{PlayerDefault,CampCommon,CampSpecial}`. Revision-3 sources are backed up outside the project. Hats and backpacks in the equipment panel are still the item display models; fitted wearables come with the equipment redesign.
+
+**Speed caps raised 1.5x (user, October 31, 2026):** starter 1.5 m/s (was 1.0), +0.75 m/s per boots rank (was 0.5), rank-four maximum 4.5 m/s (was 3.0); section 4 table updated. Special boots keep the halfway rule (0.05 m/s steps, rounded down): 2.25 / 2.6 / 3.35 / 4.1 m/s (section 14.1). Stamina drain is per metre, so heart costs per leg are unchanged; legs simply take less time. Checks updated (equipment capabilities, migration clamp to the starter cap).
+
+**Mission region gate (user, October 31, 2026):** missions no longer show as locked because their items come from a region the player has not reached. They open by **mission region**: region-one missions first (in the prototype G1, H1, G2); once no region-one mission is left to offer, the **region-two missions open even before the player reaches region two** (L1 Flint, E1 Hemp, then the branches that follow), and so on. The gate only moves forward and is saved (`missions.region`), so **there is always a mission to choose** (and, with the papers closing only on a selection, always an active mission) while any remain. Recipe, tool and settlement dependencies still lock individual missions with their reason (for example G3 needs the Pine bird sculpture recipe; E8 needs settlement Tea herbs). Locked text for later regions: "Opens after the region N missions". This replaces the earlier source-discovery lock in section 11 for ordinary progression.
 
 **Reminder (October 31, 2026):** implement the mission lady appearance rule in section 12.1 (starting camp for the first selection, then only at the camp where the active mission completes, for the recipe hand-off and next selection); remove her every-camp test placement.
 
@@ -2383,7 +3350,7 @@ Dependencies: 7.
 3. Verify automatic mission consumption/claims, ten starter units and proposed 50/100/up-to-150 later quantities, four clothing assignments, worn-gear protection, and x1-only tools. Test competition between Normal-tool mission contributions and Elite upgrade reservations.
 4. Play the new region-one introduction: branches -> log unlock, apples -> juice unlock, accessible camp crafts and enough stamina before food; region two introduces Flint/Hemp fiber and longer legs requiring food.
 5. Simulate lower-tier route budgets and the maximum 26-heart leg with twelve hearts plus ordinary food. Add faint/recovery/loss/wake animations and restart/reload checks; show HUD/map/departure information from the same data.
-6. Validate 10-14 early and up-to-24 later camp layouts with streaming; author one active-tier representative before scaling to full region content. Confirm tier-three feathers as the approved shared source.
+6. Validate camp layouts per the confirmed counts (tier one 10-14, tier two 12-16, tier three 14-18, tier four 16-20 camps per region, random within the range; section 6.2.2) with streaming; author one active-tier representative before scaling to full region content. Confirm tier-three feathers as the approved shared source.
 
 **Exit check:** four independent branch sequences persist; first twelve rewards match the table and are achievable; G1/G2 unlock usable food in region one; inaccessible dependencies show locked branches rather than active impossible missions. Three map icons match loose spawns, 18 distinct IDs/tier and only permitted overlaps hold. Ten-unit missions leave 990; tool-instance missions/gear protection remain correct. No leg exceeds 26 hearts; opening legs work without food, advanced ones work with ordinary meals, and faint loss cannot reroll/double on reload.
 
@@ -2442,14 +3409,14 @@ Dependencies: 11 and wallets from 9.
 Dependencies: 12.
 
 1. Build one tier with six independent trees in two rows and gold-tier unlock.
-2. Implement section 8.2's massive-tree Normal/Elite action curves, +2 ceiling, Elite faster at/below own tier, Elite drop buff even at eligible +1/+2, x50 manifests, type piles, and 72-hour respawns. Use the section 8.2.1 cutting mechanic; finishing keeps the focused screen open, rewards spawn there for pickup, and only Return closes it.
+2. Implement section 8.2's massive-tree Normal/Elite action curves, +2 ceiling, Elite faster at/below own tier, Elite drop buff even at eligible +1/+2, x50 manifests, type piles, and 72-hour respawns. Use the section 8.2.1 cutting mechanic; finishing keeps the focused screen open, rewards spawn there for pickup, and only Return closes it. Tapping a felled tree that still has pending drops reopens that pickup screen with exactly the remaining piles (no re-roll), until they are collected or expire.
 3. Add simulated time/expiry warnings, then expand only to four active wood tiers (24 tree records). Leave the other four tiers in the design backlog.
 
 **Exit check:** all six timers are independent, x50 rewards remain full stacks, leaving/reentering preserves pending quantities, advancing time respawns only eligible trees and expires only their old rewards, and rendering stays capped.
 
 ### Milestone 14: Settlement shops and balloon merchant
 
-**Reminders (October 31, 2026):** place the balloon merchant at one camp in every 4-6 camps (section 14) and remove its every-camp placement test; implement the special gear list and stat/price rules in section 14.1; wire the mystery box art (open/close animation, colour set by the tier of the host camp's region).
+**Reminders (November 2, 2026):** build the seven storefronts' tier looks (shops upgrade, mostly visually, when the player first reaches a tier-2, tier-3 and tier-4 region), and lay the street out in the confirmed order between the house plots (section 13.4). **Reminders (October 31, 2026):** place the balloon merchant at one camp in every 4-6 camps (section 14) and remove its every-camp placement test; implement the special gear list and stat/price rules in section 14.1; wire the mystery box art (open/close animation, colour set by the tier of the host camp's region).
 
 Dependencies: 13.
 
@@ -2471,7 +3438,7 @@ Dependencies: 14.
 1. Add the level-three home-store pet purchase section, left-front pet-home selection, separate reward container, and Dog/Pig definitions first; then author the six-pet roster and previews.
 2. Implement capped offline rewards, pet switching, and exact-once reconciliation.
 3. Populate the remaining furniture levels using the evenly distributed buff table.
-4. Add decorative neighbor-house variants with no simulation.
+4. Add the neighbour houses per the November 2, 2026 rule in section 13: six plots (three left and three right of the shops and lumber field), the player picking one on first discovery, and five neighbours advancing one level each time their saved 1-3 region count runs out (rerolled after each upgrade). They share the player's 8 level exteriors; no simulation beyond the level.
 
 **Exit check:** no pet access before level three in normal play, one offline interval pays once, switching pets cannot duplicate time, backward clock movement yields zero negative progress, first-purchase buffs remain capped.
 
@@ -2504,6 +3471,118 @@ Development builds keep all debug tools and 1,000-unit pickups before and after 
 
 Dependencies: mechanics-and-limits audit accepted for the implemented test scope; debug tools and 1,000-unit pickups remain enabled.
 
+**Tier 2-4 content plan (proposal, user request November 5, 2026):** the recipes in section 9.6 (two equipment sets per tier, Beeswax, 21 new Food and 10 new Misc, varied fish dishes) and the missions in section 11.6 (8 tier-one bridge missions plus 68 / 69 / 67; every tier 2-4 recipe is a mission reward) are the content this milestone authors as each tier's regions are built. Implementation steps:
+- explicit capability values on wearables (Set A sits between ranks)
+- mission data for tiers 2-4 plus the bridge missions in tier one
+- the Boar tusk harvest output
+- the section 11.6.5 checks
+- fitted art for every garment through the player wearables pipeline
+
+Resolved by the user (November 5, 2026): fish are collection missions with varied dishes from tier two (section 9.6.5), and every recipe is placed as a mission; any later shop or box recipe must be premium (section 9.6.6). The tier-one bridge missions can be added earlier, with the rest of tier one, because they only use tier-one items.
+
+**Tier-two environment kits built (November 6, 2026; art library, regions not yet authored):** 120 decorative meshes, 20 per region 7-12, with the tier-one kit contract (readable meshes, one 32-colour palette material per region, surface detail, separate shadow groups, catalog records).
+- **Theme and naming:** follow sections 6.2 and 6.2.6. Every tree is a **birch** (tier two's wood), the beaver appears as scenery (lodge, dam), names use each region's landmark word, and no piece imitates a loose pickup.
+- **Signature pieces by region:**
+  - **Whispering Marsh:** boardwalk, beaver lodge, cattails, lily-pad water.
+  - **Amber Riverbanks:** stepped river terrace, beaver dam, golden birches.
+  - **Bluewater Basin:** pond basin, lily pond.
+  - **Sunlit Uplands:** birch grove, sandstone outcrops, wooded hollow.
+  - **Mirror Lakes:** islands and mirror water.
+  - **Frostveil Taiga:** snow-capped birches and rocks, snow banks, ice-edge water.
+- **New category "Structure":** the boardwalk, lodge and dam are placed by route authoring only and are never scattered.
+- **Scenery lookup:** `SceneryScatter.Kit` now also searches the Tier02 library, so regions 7-12 are dressed from their own kit when they are built.
+- **Source and output:** `Tools/Art/generate_tier02_environment_kits.py`; notes in `Docs/Art/Environment/Tier02/environment-library-notes.txt`; renders in `Docs/Art/Environment/Tier02/Region07..12`.
+- **Checks:** new Milestone 5 check; all Milestone 1-8 suites pass.
+- **Not done:** region 7-12 routes, camps and device checks.
+
+**Tier-two camp props (November 6, 2026):** tier-two camps (regions 7-12) use the existing **BirchLogSeat** and a new **burning birch campfire**. Tier-one camps keep the static burned-wood fire.
+- **The fire:** a teepee of birch logs (white bark with dark birch marks, charring to glowing tips), an ember bed, a river-stone ring, and split logs waiting as fuel.
+- **Flames:** layered faceted flames, opaque, drawn unlit without shadows, with a light flicker (`CampfireFlicker`). No particles or lights.
+- **Selection:** `CampAssembly.Campfire` now picks the fire by region from the camp prop catalog's new `Campfires` list, the same way seats are picked.
+- **Source and notes:** `Tools/Art/generate_tier02_camp_meshes.py`; menus **Build / Capture Tier 2 Camp**; notes and renders in `Docs/Art/Environment/CampProps/Tier02`.
+- **Checks:** new Milestone 5 check; all suites pass.
+- **Device check pending:** when the first tier-two camp exists.
+
+**Tier-two loose resources designed (November 6, 2026; art only, no item definitions yet):** 18 meshes, three per region 7-12, for the region IDs in `RegionPlan.cs`. They use the tier-one loose-resource contract: per-region 16-colour palette with surface detail, flat normals, prefabs in `Resources/Region07..12`.
+- **Designs (each distinct from its tier-one neighbour):**
+  - **Whispering Marsh:** birch branch with lenticels around the bark, round-stretched beaver pelt, blackberry drupelet clusters.
+  - **Amber Riverbanks:** tied flax strands, copper ore with green bloom and nuggets, carrots.
+  - **Bluewater Basin:** long-awned barley, quartz points, crowned blueberries.
+  - **Sunlit Uplands:** strata sandstone, warty truffle with a cut face, flax-seed heap.
+  - **Mirror Lakes:** drooping rice panicle, ribbed tomatoes, two-faced honeycomb.
+  - **Frostveil Taiga:** tin ore with dark crystals, yellow-ochre clods, tied cattail fibre with seed heads.
+- **Size:** 108-1,240 triangles each.
+- **Source and notes:** `Tools/Art/generate_tier02_loose_resources.py`; `Assets/_Game/Editor/Tier02ResourceAssets.cs` (importer plus the menus **Rebuild Tier 2 Resource Prefabs / Capture Tier 2 Resource Previews**); notes in `Docs/Art/Tier02/loose-resource-designs.txt`; renders in `Docs/Art/Region07..12/resource-meshes-unity-v1.png`.
+- **Checks:** new Milestone 5 check ("three designed tier-two loose-resource prefabs per region"); Milestone 5 passes.
+- **Pending, with tier-two content:**
+  - item definitions and the Region07+ pickup visual binding
+  - bag footprints, taken from each region's `ResourceManifest.json`
+  - the beaver pelt joining the tilted-icon set
+  - spawn tables
+  - device checks
+
+**Tier-two batch 25 delivered (November 7, 2026; passive art):** Honey-roast duck, Duck blueberry rice now have packed native source, OBJ/palettes, passive Unity prefabs/materials, reviewed multiviews and fresh-import validation. 866 earlier meshes and shared atlas preserved. Canonical bindings and current gameplay/device tests remain pending; no recipes/stats/footprints/saves changed. [Single handoff](Docs/PROJECT_HANDOFF.md#batch-25). Progress 25/45 art batches; source coverage 78/82, 4 designs remaining. Batch 25 completed for this request under the established one-batch default. Evidence and handoff are updated; batch 26 is the next planned packet.
+
+**Tier-two batch 24 delivered (November 7, 2026; passive art):** Painted birch bird, Fishing charm, Beeswax candle, Sandstone owl now have packed native source, OBJ/palettes, passive Unity prefabs/materials, reviewed multiviews and fresh-import validation. 862 earlier meshes and shared atlas preserved. Canonical bindings and current gameplay/device tests remain pending; no recipes/stats/footprints/saves changed. [Single handoff](Docs/PROJECT_HANDOFF.md#batch-24). Progress 24/45 art batches; source coverage 76/82, 6 designs remaining. Batch 24 completed for this request under the established one-batch default. Evidence and handoff are updated; batch 25 is the next planned packet.
+
+**Tier-two batch 23 delivered (November 7, 2026; passive art):** Copper pendant, Birch beaver sculpture, Beaver toy, Lavender pouch now have packed native source, OBJ/palettes, passive Unity prefabs/materials, reviewed multiviews and fresh-import validation. 858 earlier meshes and shared atlas preserved. Canonical bindings and current gameplay/device tests remain pending; no recipes/stats/footprints/saves changed. [Single handoff](Docs/PROJECT_HANDOFF.md#batch-23). Progress 23/45 art batches; source coverage 72/82, 10 designs remaining. Batch 23 completed for this request under the established one-batch default. Evidence and handoff are updated; batch 24 is the next planned packet.
+
+**Tier-two batch 22 delivered (November 7, 2026; passive art):** Pike barley cakes, Walleye-barley soup, Carp rice bowl, Pike rice bowl, Catfish-tomato stew now have packed native source, OBJ/palettes, passive Unity prefabs/materials, reviewed multiviews and fresh-import validation. 853 earlier meshes and shared atlas preserved. Canonical bindings and current gameplay/device tests remain pending; no recipes/stats/footprints/saves changed. [Single handoff](Docs/PROJECT_HANDOFF.md#batch-22). Progress 22/45 art batches; source coverage 68/82, 14 designs remaining. Batch 22 completed for this request under the established one-batch default. Evidence and handoff are updated; batch 23 is the next planned packet.
+
+**Tier-two batch 21 delivered (November 7, 2026; passive art):** Blackberry-glazed beaver, Beaver-carrot stew, Rabbit barley soup, Beaver mushroom pot, Creamy truffle-barley pot now have packed native source, OBJ/palettes, passive Unity prefabs/materials, reviewed multiviews and fresh-import validation. 848 earlier meshes and shared atlas preserved. Canonical bindings and current gameplay/device tests remain pending; no recipes/stats/footprints/saves changed. [Single handoff](Docs/PROJECT_HANDOFF.md#batch-21). Progress 21/45 art batches; source coverage 63/82, 19 designs remaining. This continuation request was handled as the next bounded packet, batch 21, following the established one-batch default. Batch 21 is complete; batch 22 is the next planned packet.
+
+**Tier-two batch 20 delivered (November 7, 2026; passive art):** Bottled honey tea, Carrot soup, Barley bread, Tomato rice bowl, Honey-glazed carrots now have packed native source, OBJ/palettes, passive Unity prefabs/materials, reviewed multiviews and fresh-import validation. 791 earlier meshes and shared atlas preserved. Canonical bindings and current gameplay/device tests remain pending; no recipes/stats/footprints/saves changed. [Single handoff](Docs/PROJECT_HANDOFF.md#batch-20). Progress 20/45 art batches; source coverage 58/82, 24 designs remaining. User authorized batch 20 only. Work stopped after completing this batch and updating the handoff; do not start batch 21 until requested.
+
+**Tier-two batch 19 delivered (November 7, 2026; passive art):** Blackberry juice, Birch sap milk drink, Blueberry jam, Honey herbal tea, Honey oat drink now have packed native source, OBJ/palettes, passive Unity prefabs/materials, reviewed multiviews and fresh-import validation. 786 earlier meshes and shared atlas preserved. Canonical bindings and current gameplay/device tests remain pending; no recipes/stats/footprints/saves changed. [Single handoff](Docs/PROJECT_HANDOFF.md#batch-19). Progress 19/45 art batches; source coverage 53/82, 29 designs remaining. Stopped after batch 19 at the user's request; batch 20 has not started. Resume only when requested.
+
+**Tier-two batch 18 delivered (November 7, 2026; passive art):** Taiga frame pack now have packed native source, OBJ/palettes, passive Unity prefabs/materials, reviewed multiviews and fresh-import validation. 783 earlier meshes and shared atlas preserved. Canonical bindings and current gameplay/device tests remain pending; no recipes/stats/footprints/saves changed. [Single handoff](Docs/PROJECT_HANDOFF.md#batch-18). Progress 18/45 art batches; source coverage 48/82, 34 designs remaining. Continue sequentially until told to stop.
+
+**Tier-two batch 17 delivered (November 7, 2026; passive art):** Taiga waxed shirt, Taiga trousers now have packed native source, OBJ/palettes, passive Unity prefabs/materials, reviewed multiviews and fresh-import validation. 777 earlier meshes and shared atlas preserved. Canonical bindings and current gameplay/device tests remain pending; no recipes/stats/footprints/saves changed. [Single handoff](Docs/PROJECT_HANDOFF.md#batch-17). Progress 17/45 art batches; source coverage 47/82, 35 designs remaining. Continue sequentially until told to stop.
+
+**Tier-two batch 16 delivered (November 7, 2026; passive art):** Taiga fur hat, Taiga boots now have packed native source, OBJ/palettes, passive Unity prefabs/materials, reviewed multiviews and fresh-import validation. 771 earlier meshes and shared atlas preserved. Canonical bindings and current gameplay/device tests remain pending; no recipes/stats/footprints/saves changed. [Single handoff](Docs/PROJECT_HANDOFF.md#batch-16). Progress 16/45 art batches; source coverage 45/82, 37 designs remaining. Continue sequentially until told to stop.
+
+**Tier-two batch 15 delivered (November 7, 2026; passive art):** Marsh pack now have packed native source, OBJ/palettes, passive Unity prefabs/materials, reviewed multiviews and fresh-import validation. 768 earlier meshes and shared atlas preserved. Canonical bindings and current gameplay/device tests remain pending; no recipes/stats/footprints/saves changed. [Single handoff](Docs/PROJECT_HANDOFF.md#batch-15). Progress 15/45 art batches; source coverage 43/82, 39 designs remaining. Continue sequentially until told to stop.
+
+**Tier-two batch 14 delivered (November 7, 2026; passive art):** Flax work shirt, Flax trousers now have packed native source, OBJ/palettes, passive Unity prefabs/materials, reviewed multiviews and fresh-import validation. 762 earlier meshes and shared atlas preserved. Canonical bindings and current gameplay/device tests remain pending; no recipes/stats/footprints/saves changed. [Single handoff](Docs/PROJECT_HANDOFF.md#batch-14). Progress 14/45 art batches; source coverage 42/82, 40 designs remaining. Continue sequentially until told to stop.
+
+**Tier-two batch 13 delivered (November 7, 2026; passive art):** Beaver-fur cap, Marsh boots now have packed native source, OBJ/palettes, passive Unity prefabs/materials, reviewed multiviews and fresh-import validation. 756 earlier meshes and shared atlas preserved. Canonical bindings and current gameplay/device tests remain pending; no recipes/stats/footprints/saves changed. [Single handoff](Docs/PROJECT_HANDOFF.md#batch-13). Progress 13/45 art batches; source coverage 40/82, 42 designs remaining. Continue sequentially until told to stop.
+
+**Tier-two batch 12 delivered (November 7, 2026; passive art):** Normal birch rod, Elite birch rod now have packed native source, OBJ/palettes, passive Unity prefabs/materials, reviewed multiviews and fresh-import validation. 754 earlier meshes and shared atlas preserved. Canonical bindings and current gameplay/device tests remain pending; no recipes/stats/footprints/saves changed. [Single handoff](Docs/PROJECT_HANDOFF.md#batch-12). Progress 12/45 art batches; source coverage 38/82, 44 designs remaining. Continue sequentially until told to stop.
+
+**Tier-two batch 11 delivered (November 7, 2026; passive art):** Normal birch slingshot, Elite birch slingshot now have packed native source, OBJ/palettes, passive Unity prefabs/materials, reviewed multiviews and fresh-import validation. 752 earlier meshes and shared atlas preserved. Canonical bindings and current gameplay/device tests remain pending; no recipes/stats/footprints/saves changed. [Single handoff](Docs/PROJECT_HANDOFF.md#batch-11). Progress 11/45 art batches; source coverage 36/82, 46 designs remaining. Continue sequentially until told to stop.
+
+**Tier-two batch 10 delivered (November 7, 2026; passive art):** Normal birch axe, Elite birch axe now have packed native source, OBJ/palettes, passive Unity prefabs/materials, reviewed multiviews and fresh-import validation. 750 earlier meshes and shared atlas preserved. Canonical bindings and current gameplay/device tests remain pending; no recipes/stats/footprints/saves changed. [Single handoff](Docs/PROJECT_HANDOFF.md#batch-10). Progress 10/45 art batches; source coverage 34/82, 48 designs remaining. Continue sequentially until told to stop.
+
+**Tier-two batch 09 delivered (November 7, 2026; passive art):** Barley flour, Flax oil, Beeswax now have packed native source, OBJ/palettes, passive Unity prefabs/materials, reviewed multiviews and fresh-import validation. 747 earlier meshes and shared atlas preserved. Canonical bindings and current gameplay/device tests remain pending; no recipes/stats/footprints/saves changed. [Single handoff](Docs/PROJECT_HANDOFF.md#batch-09). Progress 9/45 art batches; source coverage 32/82, 50 designs remaining. Continue sequentially until told to stop.
+
+**Tier-two batch 08 delivered (November 7, 2026; passive Material art):** Glass, Glass bottle, Glass panels, Cut quartz and Sandstone tiles have packed Blender source, isolated OBJ/palettes, Unity art prefabs/materials and reviewed views. Native/fresh-import geometry and bounds checks and selective Build/Capture passed; all 742 earlier source meshes and the shared atlas were preserved. Glass uses the existing opaque faceted treatment; sandstone uses mineral grain. Canonical IDs, live binding and current gameplay/device tests remain with the other tool. Preserve earlier-tier Pine charcoal, exact bottle identity and panels as Material. No recipe/timer/value/footprint/save changes. [Single project handoff](Docs/PROJECT_HANDOFF.md#batch-08). Source-mesh coverage: 29/82, with 53 remaining; batches 01-08 art complete, 37 packets planned. Batch 09 (Barley flour, Flax oil, Beeswax) has not started.
+
+**Tier-two batch 07 delivered (November 6, 2026; passive Material art):** Copper ingot, Copper fittings and Tin ingot have packed Blender source, isolated OBJ/palettes, Unity art prefabs/materials and reviewed views. Native/fresh-import geometry and bounds checks and selective Build/Capture passed; all 739 earlier source meshes and the shared atlas were preserved. Canonical IDs, live binding and current gameplay/device tests remain with the other tool. Both ingots retain earlier-tier Pine charcoal; fittings consume one Copper ingot for three outputs, despite the T2-L4 Copper ore unlock request. No recipe/timer/value/footprint/save changes. [Single project handoff](Docs/PROJECT_HANDOFF.md#batch-07). Source-mesh coverage: 24/82, with 58 remaining; batches 01-07 art complete, 38 packets planned. Batch 08 has not started.
+
+**Tier-two batch 06 delivered (November 6, 2026; passive Material art):** Flax cloth, Flax cord, Flax stuffing, Fine flax cloth and Cattail cord have packed Blender source, isolated OBJ/palettes, Unity art prefabs/materials and reviewed views. Native/fresh-import geometry checks and selective Build/Capture passed; 734 earlier meshes and the shared atlas were preserved. Canonical IDs, live recipe binding and current gameplay/device tests remain with the other tool. T2-E4 unlocks stuffing by requesting cord, while the recipe consumes raw Flax fiber; Fine flax cloth retains its Hemp thread prerequisite. No recipe/timer/value/footprint/save changes. [Single project handoff](Docs/PROJECT_HANDOFF.md#batch-06). Source-mesh coverage: 21/82, with 61 remaining; batches 01-06 art complete, 39 packets planned. Batch 07 has not started.
+
+**Tier-two batch 05 delivered (November 6, 2026; passive Material art):** Beaver leather, Cured beaver pelt, Fine beaver pelt and Fine beaver leather now have native Blender source, isolated OBJ/palettes, Unity art prefabs/materials and reviewed views. Native/fresh-import checks and selective Build/Capture passed. IDs, live refinements and output bindings remain pending with the other tool; existing recipes, timers, values, footprints, saves, earlier source meshes and the shared atlas were preserved. [Single project handoff](Docs/PROJECT_HANDOFF.md#batch-05). Recipe-output source-mesh coverage is 16/82, with 66 remaining; batches 01-05 are art complete and 40 packets remain planned. Batch 06 has not started.
+
+**Tier-two batch 04 delivered (November 6, 2026; passive Material art):** Birch plank, Birch beam, Birch charcoal and Birch panel now have native Blender source, isolated OBJ/palettes, Unity art prefabs/materials and reviewed views. Native/fresh-import checks and selective Build/Capture passed. Canonical item/recipe IDs and live bindings remain pending with the other tool; existing recipes, timers, values, footprints, saves, earlier source meshes and the shared atlas were preserved. [Single project handoff](Docs/PROJECT_HANDOFF.md#batch-04). Current recipe-output mesh coverage is 12/82, with 70 remaining; batches 01-04 are art complete and 41 packets remain planned. Batch 05 has not started.
+
+**Tier-two batch 03 delivered (November 6, 2026; passive art):** Lavender, raw Crab and Duck meat now have native Blender source, isolated OBJ/palette assets, Unity art prefabs/materials and reviewed previews. Native/fresh-import checks and selective Build/Capture passed. Farm/fishery/ranch source gates and live bindings remain pending with the other tool; only Duck meat has the authored design ID `ranch.duck_meat`, not a newly registered runtime item. Existing meshes, atlas, recipes, stats, source logic, footprints and save data were preserved. Details: [single project handoff](Docs/PROJECT_HANDOFF.md#batch-03). Batches 01-03 are art complete; 42 packets remain planned. Batch 04 has not started.
+
+**Tier-two batch 02 and consolidated handoff (November 6, 2026):** Common carp, Northern pike, Channel catfish and Walleye now have distinct passive raw-fish meshes, isolated palettes, native Blender source and Unity art prefabs/materials. Native/fresh-import checks and selective Unity Build/Capture passed; source IDs, live bindings and gameplay/device tests remain pending. All seven former text handoffs plus this delivery are maintained in [one project handoff](Docs/PROJECT_HANDOFF.md#batch-02), with historical dates and limitations preserved; original handoff files are routing pointers. The batch schedule marks 01/02 art complete and the other 43 packets planned. Batch 03 has not started. No recipes, stats, sources, footprints, save data, earlier source meshes or shared atlas changed.
+
+**Tier-two batch 01 delivered (November 6, 2026; passive art only):** [45 restartable production batches](Docs/Art/Tier02/tier2-production-batches-2026-11-06.md) now bound the work for daily usage. Batch 01 supplies Birch log, Birch sap and Raw beaver meat with native Blender source, three OBJ/palette assets, three Unity prefabs/materials and reviewed previews. See [batch 01 handoff](Docs/PROJECT_HANDOFF.md#batch-01). Native/fresh-import geometry checks and selective Unity Build/Capture passed; runtime binding and phone/gameplay testing remain pending with the other tool. Birch sap retains its existing ID; log/meat IDs remain unresolved. Current recipe-output coverage is eight of 82 with source meshes, leaving 74 to design. Batch 02 (four raw fish) has not started.
+
+**Remaining tier-two design preparation (November 6, 2026; inventory/planning only):** [remaining item and shop design plan](Docs/Art/Tier02/remaining-tier2-design-plan-2026-11-06.md), with a reproducible mesh inventory and output-by-output coverage. Source inspection found 18 loose-resource meshes with prefabs, 120 regional scenery meshes, seven existing optional output meshes and five special merchant items with fifteen item/worn representations. The 68 main-mission output designs comprise 25 Materials, six Tools, ten Wearables, nineteen Food and eight Misc; no dedicated output meshes were found for those names. Including the separate truffle side recipe, eleven box recipes and two bakery recipes gives 82 output targets, seven with existing meshes and 75 still needing designs. Raw harvest/store inputs, twelve house-level-3/4 furniture types and common companion art are separately planned; furniture-study proxies and merchant gear do not complete crafted items. Preserve existing assets/GUIDs, exact identities and all current gameplay values. Stale exclusive-art hearts, Roasted crab premium eligibility, appended T2-G21/T2-H13 execution positions and the truffle side-mission identity require the other tool's logic review. No art/runtime changes, Unity tests or device validation are claimed by this preparation; pet-home model work stays deferred per the session-close decision.
+
+**Session close (November 6, 2026):** the tier-two art library for regions 7-12 now has three parts: environment kits, the camp (birch fire and seats), and the loose resources. Regions 7-12 themselves (routes, camps, item data) are not authored yet.
+
+Decisions taken at session close (user, November 6, 2026):
+- **Part 1 barrel drinks:** left to Claude. Both proposals are adopted: bottles give 11-12 hearts, and filling recipes get the barrel exception (sections 9.0.1 and 9.4.5).
+- **Gems:** every gem has a cut or polished version, used by the better recipes. Part 1 adds Polished lapis (mission T4-G22). Part 2 adds nine processed gems with missions, used by its keepsakes and Set B garments (Part 2 sections 10.3, 13.1, 14.1 and 15).
+- **Pet home models:** deferred until Part 2 work is close; not needed now.
+- **Spanish plan files:** updated with the plan decisions, without the testing and art-build checkpoints.
+
+Still open: the fitted backpack hangs a few centimetres behind the back.
+
 1. Validate the initial 24 regions' three-item tables (72 IDs) and four defined resource tiers using representative segments; incrementally author 10-24-camp test templates with reused kits/streaming. These regions are the base, not a final content ceiling. Track higher-tier materials/regions/recipes as pending definition and implementation; do not invent their rules or declare the product complete.
 2. Populate the defined active-tier fixed-ID recipes needed for testing. Preserve exact ingredients, existing test quantities/timers, separate milk variants, and exact cup/bottle inputs. Furniture remains store-only; house upgrades use their defined named materials. Record missing definitions rather than inventing balance changes to close gaps.
 3. Exercise recipe/mission/source dependencies, fishing pairs/habitats, <=26-heart legs, food/fainting, price calculations, wear, and stock using the current MechanicsTest profile. Record Normal-tool consumption, prior-tier refinement, house reserves, and x1 workload. Treat results as correctness/coverage evidence, not a final economy or pacing assessment.
@@ -2519,14 +3598,79 @@ Dependencies: documented base-content test coverage and known limitations from M
 1. Improve prototype readability with consistent placeholders, quality icons, timers, resource hit targets, audio, and effects where they support testing. Final production art is not an exit requirement.
 2. Test reduced motion, adjustable text/UI scale, alternative tap-to-collect, and readable trade details. Preserve the confirmed exclusive 15-second duration and Return cancellation rule.
 3. Implement/test audio, graphics, controls, and language settings with stable localization keys.
-4. Test device aspect ratios, interruptions, low storage, save migration, graphics API compatibility, and sustained performance using local development builds with debug tools retained.
-5. Package local development APKs, test scenarios, captures, and known-issue reports for repeatable device testing. Do not begin store SDK/signing preparation, release bundles, deployment, publishing, debug-grant removal, or rebalancing without an explicit future prompt requesting the relevant phase.
+4. Remove the testing-only HUD text (route card, action messages, upper-edge text, leg details on the map tabs) per the November 2, 2026 decision in Milestone 8: hearts stay as the only, purely visual, stamina measure; travel numbers go to player statistics (statistics page in the options still undecided). Build the tutorial per its confirmed outline (Milestone 8 notes, November 2, 2026): gathering on a stretch before the first camp, the automatic first mission with mission-task help, crafting after the first mission (one item's materials granted if short), and the one-time shop introduction dialogs in the settlement.
+5. Test device aspect ratios, interruptions, low storage, save migration, graphics API compatibility, and sustained performance using local development builds with debug tools retained.
+6. Package local development APKs, test scenarios, captures, and known-issue reports for repeatable device testing. Do not begin store SDK/signing preparation, release bundles, deployment, publishing, debug-grant removal, or rebalancing without an explicit future prompt requesting the relevant phase.
 
 **Exit check:** a usable development test build, recoverable test saves, documented device coverage, and an updated defect/content-definition backlog. Continue debug/testing iterations; no automatic transition to balancing, final-product completion, or deployment.
 
 ### Immediate next implementation task
 
-**Current (October 31, 2026):** Milestones 0-5 have passed their exit checks. Next is Milestone 6: the three harvesting families (tree chopping, hunting, fishing) using the confirmed interaction designs in sections 8.2.1-8.2.3, with queued drops. Original guidance kept for reference: Begin with milestones 0 and 1 only: build to Android, then forward-only path movement, avatar speed gestures, independent 360-degree camera orbit, and the distinct stop/resume rules. Next implement milestone 2's full-stack spatial pickups, including reachable resources behind the avatar. Do not start by authoring the full recipe catalog, all regions, or a complete settlement UI.
+**Implemented (Claude, November 7, 2026, 16:21 build; not installed): steps 1-6 and the APK.**
+- **Recipes:** `Tier01Recipes.json` (patched), `Tools/Art/tier01_recipe_specs.py` and the regenerated `Tier1Recipes.cs` now have 63 tier-one recipes: four new fish dishes and four retired roasts. Cured rabbit pelt takes Animal fat and Fine rabbit leather takes Nettle thread, and every unlock label names its mission. Regenerating also restored the L6-L8 labels that had been hand-edited in the C# file.
+- **Retired roasts:** `RecipeDefinition.Retired` keeps the four roasts registered. The debug LEARN T1 RECIPES skips them.
+- **Items:** the four dish items are added by hand to `Tier1CraftedItems.cs`, with their species' roast footprint and prefab as stand-ins. Its art generator was not rerun, because that would rebuild every mesh and overwrite the hand-tuned sizes.
+- **Missions:** mission catalog 3 has 50 missions in the section 11.6.1.1 order (Hunter H8 before H6). E5 asks for Bone, with Pine branches kept for an E5 accepted under catalogs 1-2.
+- **Save migration:** the save gains `claimCatalogs` and `activeCatalog` (schema still 3). Catalog 0-2 saves convert from `legacyClaims`/`activeLegacy`, and the mission UI and delivery use the per-state request.
+- **Checks:** all Milestone 1-8 suites pass (M7 36 checks, M8 108). New checks cover the dishes and retired roasts, both new inputs, a pending roast batch surviving reload, the 27 gatherable IDs each having a mission, material uses, settlement-last order, G7/G8 in region 2, and migrations of the region-2 round shapes. Those shapes are E5 active with Pine branches delivered, nothing active, H4 active, the November 6 phone save with E6 active, and E8 claimed before its move, plus eight forged-data rejections and a JSON round trip.
+- **APK:** `Builds/Android/TheTrailWalker-Milestone5-Development.apk`, SHA-256 `d8eced2c0828e060...`, 95.4 MB against 76.5 MB for the 12:08 build on the phone. The size difference was not investigated; it likely comes from art imported since November 6.
+- **Waiting for the phone:** step 8, the backup, the pulled-save migration check and the install. Step 9, the dish art, waits for the other tool.
+
+**Original plan (November 7, 2026): tier-one coverage and variety update.** It applies the November 7 design changes that touch tier one (sections 9.2, 9.4.1 and 11.6.1.1). Tiers 2-8 are not in code yet, so their revised dishes, requests and house deposits are picked up when those tiers are built. House-deposit changes wait for Milestone 11.
+
+*Constraints:*
+- The phone is disconnected.
+- A region-2 test round is in progress on the current build and its save.
+- So all work and checks happen in the Editor first. The APK is built but **not installed** until the phone is back and the tester is at a safe stopping point.
+- The update must keep the tester's save and progress. The only change the tester will see in region 2 is listed in step 7.
+
+1. **Recipe data** (`Tools/Art/tier01_recipe_specs.py` / `Tools/Crafting/generate_tier1_recipes.py` -> `Tier01Recipes.json`, `Tier1Recipes.cs`):
+   - add the four fish dishes (Trout mushroom skillet, Salt-baked bass, Pine-nut bluegill, Apple-stuffed perch; Food, 2 hearts, tier-one timers)
+   - Cured rabbit pelt becomes 2 Rabbit pelts + 1 Animal fat
+   - Fine rabbit leather becomes 2 Rabbit leather + 1 Nettle thread
+   - set the unlock-source text of every recipe to its mission code (no "branch placement pending" left except Goat cheese, Mixed-milk cheese and the box/bakery recipes)
+2. **Retired roasts:** add a `Retired` flag to `RecipeDefinition` and keep the four plain fish roasts in `RecipeBook`. `CraftingState.Restore` drops batches whose recipe ID is unknown, so deleting them could strand pending roast crafts and mastery in test saves. Retired recipes:
+   - are never a mission reward and are skipped by the debug LEARN T1 RECIPES
+   - stay craftable only for a save that already knows them
+   - keep their items as legacy food
+3. **Items** (`Tier1CraftedItems.cs`): four new food items. Until the dish art exists, each uses its species' roast model and footprint as a stand-in (step 9).
+4. **Mission catalog 3** (`MissionModel.cs`):
+   - add the five bridge missions G6, H5, H6, E9 and E10 (design-only so far; H5 requests Animal fat) and the 20 coverage missions, in the section 11.6.1.1 branch order
+   - E5 requests Bone
+   - E8 moves to the end of the Explorer branch, keeping its order relative to all older missions
+   - Index and the paper position follow the new order
+5. **Save migration** (save schema stays 3; new fields are optional):
+   - **Per-claim catalog:** the single `legacyClaims` prefix becomes a per-claim catalog list. A catalog-1 save converts as its first `legacyClaims` claims -> 1 and the rest -> its saved catalog.
+   - **Active mission:** the active mission records the catalog it was accepted under. It validates against that catalog's order and may finish before newly inserted predecessors, as in the catalog-2 migration.
+   - **E5's old request:** an E5 accepted under catalog 1-2 keeps its old request (Pine branches) and its delivered count. Mission definitions carry the request per catalog where it changed.
+   - Nothing is granted and claims are never inferred. Migration runs once on load and is saved with catalog 3.
+6. **Editor checks** (Milestone 7 and 8 suites, run through `Temp/Milestone5.request`):
+   - recipe counts and inputs, and the retired roasts excluded from LEARN T1 RECIPES and from mission rewards
+   - every tier-one loose and harvest source has a mission (section 11.6.5 check)
+   - every tier-one Material has a recipe or deposit use
+   - branch order, region gate and settlement-last placement
+   - migrations: catalog 1 -> 3 and 2 -> 3, using saves shaped like the tester's region-2 state (claims through G4/L3/H3/E4, E5 active with some Pine branches delivered, H4 active, nothing active); the Nov 6 phone save shape (L4 claimed, E6 active); E8 claimed before the move
+   - forged or out-of-order claims rejected
+   - a pending roast batch and its known recipe surviving reload
+   - All Milestone 1-8 suites must pass; then build the development APK.
+7. **What the region-2 tester will see after installing:**
+   - The Gatherer branch offers **G7 (10 Pine cones -> Pine-cone ornament)** after G4, then **G8 (10 Pine nuts -> Toasted pine nuts)** once a pine axe is known or carried.
+   - **E5 asks for 10 Bone** (from rabbits), unless E5 was already accepted: then it finishes on Pine branches.
+   - Nothing else changes before region 3. The new regions 3-6 missions only appear as the mission region advances.
+   - Missions that need ranch milk or farm Tea herbs stay locked ("sold at a settlement") at the end of their branches until Milestone 10.
+8. **Install procedure (when the phone is back):**
+   - At a camp, force-stop the app.
+   - Back up `PrototypeSession/` with `adb pull` to an ignored folder under `Builds/Android/`.
+   - Run the pulled `session-v3.json` through the Editor save validation and migration before installing.
+   - Install over the existing app, keeping its data, and confirm the claims and active mission are kept.
+   - Device list: G7/G8 offers and pickup delivery in region 2; E5 Bone (or legacy Pine branches); paper positions; reload during an active migrated mission; the four fish dishes crafting from debug ingredients; Cured rabbit pelt and Fine rabbit leather with their new inputs; no lost pending crafts.
+9. **Art (other tool, when the user resumes art work):** models for the four fish dishes, replacing the stand-ins. Request: `Docs/Art/tier1-fish-dishes-art-request-2026-11-07.txt`. Not blocking.
+
+*Not in this update:* tier 2-8 recipes and missions (not implemented yet); house deposits (Milestone 11); settlement listings (Milestone 10); Goat cheese and Mixed-milk cheese placement (open decision). The Spanish plans are not synced.
+
+**Current (November 2, 2026, end of day):** Milestone 8 is complete in code, and its device round, together with the checks from the same day's art and terrain work, is pending on the 23:28 build. See "Session checkpoint (November 2, 2026, end of day)" in the Milestone 8 notes for the full test list, open decisions and the next work in order. After the device round, commit Milestone 8.
+
+**Earlier (October 31, 2026):** Milestones 0-5 have passed their exit checks. Next is Milestone 6: the three harvesting families (tree chopping, hunting, fishing) using the confirmed interaction designs in sections 8.2.1-8.2.3, with queued drops. Original guidance kept for reference: Begin with milestones 0 and 1 only: build to Android, then forward-only path movement, avatar speed gestures, independent 360-degree camera orbit, and the distinct stop/resume rules. Next implement milestone 2's full-stack spatial pickups, including reachable resources behind the avatar. Do not start by authoring the full recipe catalog, all regions, or a complete settlement UI.
 
 ## 19. Verification and mechanics-limit matrix
 
@@ -2561,7 +3705,7 @@ Use focused EditMode tests for deterministic rules and PlayMode/device tests for
 | Warehouse | All sellable categories, two partial ten-unit exact-ID boxes, mixed profile/condition values, 100% cash/no extras, 10,000 cash -> 10 gold on tenth box, integer remainder carry, exact-once reload, unique-instance escrow |
 | Shops/boxes | Fishery two distinct fish + one exclusive, Q5/cash, <=1,000 stock/slot/reset; source filtering and no reroll/refill on reopen/reload. Six typed box slots, physical Q5 vs mastery-one recipe grant, learned/reserved/within-box duplicates excluded, no eligible recipe fallback, recipe became-known-before-claim fallback, full-bag learning, exact-once claims, no raw exclusive/unknown finished-product backdoor, main progression never random-gated |
 | Travel | One-time toll, forbidden region destination, repeated scene load, interrupted transition, correct return camp |
-| Settlement | Eight grid sizes, six furniture types/level, duplicate purchase buff, one horizontal chest container up to 48 x 6, 12 shelf entries |
+| Settlement | Eight grid sizes, six furniture types/level, buff only while placed and once per type (duplicates add none), stored pieces give none, every chest a separate horizontal container (up to 48 x 6) opened above the player inventory, hold-to-move bird's-eye placement without overlap, purchase placed at the nearest free space or sent to storage, all owned types fit at every level, 12 shelf entries |
 | Timers | Craft completion, 72-hour independent trees, pet cap, device clock forward/back, repeated resume |
 | Save recovery | Missing definition, older schema, corrupt primary, newer unsupported schema, interruption at each critical transaction |
 | Performance | 24 live bundles plus huge pending queue, full bag/large horizontal storage, x1000 crafts, all tree records, 20 scene round trips |
@@ -2582,7 +3726,7 @@ The developer answered the earlier questions; these decisions supersede conflict
 2. **Placement:** free placement only, fixed orientation, no item rotation.
 3. **Durability:** tier-one level-one Normal axe 10, slingshot 6, rod 10 uses. Add ten per tier within each family. Elite has exactly twice the same-tier Normal baseline; only tiers 2-4 have Elite. Existing mastery/quality/eligible furniture layers apply afterward. Harvest action counts remain the section-8.2 starting proposal.
 4. **NPC prices/profiles:** discounts toward the shredder are enabled; use the proposed 110%-to-80% curve. NPC-generated gear is creation level one, random Q1-Q5, with no furniture buffs. Player listings retain their actual profile; normal shops remain Q5. Item furniture buffs belong only to player-crafted goods.
-5. **Pending products/overflow — delegated default:** bag-owned timed products with a timer badge; retain eight outstanding records. Reserve valid bag space without rearranging items; route genuine overflow visibly to the persistent tray. One owner and one completion/mastery credit across reloads.
+5. **Pending products/overflow — delegated default:** bag-owned timed products with a timer badge; no limit on outstanding records (October 31, 2026). Reserve valid bag space without rearranging items; route genuine overflow visibly to the persistent tray. One owner and one completion/mastery credit across reloads.
 6. **Missions:** exact item ID and quantity only, with no quality/durability/mastery threshold. Preserve ready/available ownership checks and worn-gear protection; partially used tools of the required ID count.
 7. **Chests:** one horizontal scrolling free-placement container like the backpack, no pages. Proposed tier dimensions: 6/12/24/48 wide by six high; virtualize offscreen views.
 8. **Warehouse:** any ready sellable item, including unique gear. Two boxes, ten units/instances per exact ID. Pay full quoted cash with no extra/furniture bonus, then 1 gold per 1,000 cash of the last ten boxes' paid cash (revised October 31, 2026 from 3%): 10,000 cash -> 10 gold. Carry the integer cash remainder. Mixed profiles per ID and condition-adjusted used-gear quotes are delegated valuation defaults, not mission filters.

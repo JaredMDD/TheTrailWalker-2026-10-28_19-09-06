@@ -1,0 +1,153 @@
+{
+  "Revision": 1,
+  "Batch": 19,
+  "Scope": "5 passive Food art outputs; no gameplay value or shared shader changes.",
+  "BlenderVersion": "5.2.3 LTS",
+  "Items": [
+    {
+      "Name": "BlackberryJuice",
+      "Model": "BlackberryJuice",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/BlackberryJuice.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/BlackberryJuicePalette.png",
+      "PrefabPath": "Tier02/Food/BlackberryJuice",
+      "Triangles": 1188,
+      "BoundsMin": [
+        -0.2575,
+        -0.34,
+        -0.2575
+      ],
+      "BoundsMax": [
+        0.2575,
+        0.354,
+        0.2575
+      ],
+      "DisplayName": "Blackberry juice",
+      "ItemId": "",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-G2",
+      "MissionRegion": 7,
+      "IngredientBrief": "3 Blackberries -> 1",
+      "Role": "Food",
+      "Representation": "display",
+      "VesselPolicy": "Illustrative serving vessel; no extra recipe input or container output",
+      "BindingStatus": "Passive Food art; live IDs/bindings and gameplay pending"
+    },
+    {
+      "Name": "BirchSapMilkDrink",
+      "Model": "BirchSapMilkDrink",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/BirchSapMilkDrink.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/BirchSapMilkDrinkPalette.png",
+      "PrefabPath": "Tier02/Food/BirchSapMilkDrink",
+      "Triangles": 916,
+      "BoundsMin": [
+        -0.2575,
+        -0.34,
+        -0.2575
+      ],
+      "BoundsMax": [
+        0.388459,
+        0.354,
+        0.2575
+      ],
+      "DisplayName": "Birch sap milk drink",
+      "ItemId": "item.birch_sap_milk_drink",
+      "RecipeId": "recipe.food.birch_sap_milk_drink",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-G3",
+      "MissionRegion": 7,
+      "IngredientBrief": "2 Birch sap + 1 Cow milk -> 1",
+      "Role": "Food",
+      "Representation": "display",
+      "VesselPolicy": "Illustrative serving vessel; no extra recipe input or container output",
+      "BindingStatus": "Passive Food art; live IDs/bindings and gameplay pending"
+    },
+    {
+      "Name": "BlueberryJam",
+      "Model": "BlueberryJam",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/BlueberryJam.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/BlueberryJamPalette.png",
+      "PrefabPath": "Tier02/Food/BlueberryJam",
+      "Triangles": 1500,
+      "BoundsMin": [
+        -0.3,
+        -0.25,
+        -0.316542
+      ],
+      "BoundsMax": [
+        0.3,
+        0.24,
+        0.3
+      ],
+      "DisplayName": "Blueberry jam",
+      "ItemId": "",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-G5",
+      "MissionRegion": 9,
+      "IngredientBrief": "3 Blueberries -> 1",
+      "Role": "Food",
+      "Representation": "display",
+      "VesselPolicy": "Illustrative serving vessel; no extra recipe input or container output",
+      "BindingStatus": "Passive Food art; live IDs/bindings and gameplay pending"
+    },
+    {
+      "Name": "HoneyHerbalTea",
+      "Model": "HoneyHerbalTea",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/HoneyHerbalTea.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/HoneyHerbalTeaPalette.png",
+      "PrefabPath": "Tier02/Food/HoneyHerbalTea",
+      "Triangles": 940,
+      "BoundsMin": [
+        -0.3193,
+        -0.2,
+        -0.3193
+      ],
+      "BoundsMax": [
+        0.441153,
+        0.214,
+        0.3193
+      ],
+      "DisplayName": "Honey herbal tea",
+      "ItemId": "",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-G15",
+      "MissionRegion": 11,
+      "IngredientBrief": "1 Tea herb + 1 Honey + 1 Water -> 1",
+      "Role": "Food",
+      "Representation": "display",
+      "VesselPolicy": "Illustrative serving vessel; no extra recipe input or container output",
+      "BindingStatus": "Passive Food art; live IDs/bindings and gameplay pending"
+    },
+    {
+      "Name": "HoneyOatDrink",
+      "Model": "HoneyOatDrink",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/HoneyOatDrink.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/HoneyOatDrinkPalette.png",
+      "PrefabPath": "Tier02/Food/HoneyOatDrink",
+      "Triangles": 1724,
+      "BoundsMin": [
+        -0.2575,
+        -0.34,
+        -0.2575
+      ],
+      "BoundsMax": [
+        0.2575,
+        0.354,
+        0.2575
+      ],
+      "DisplayName": "Honey oat drink",
+      "ItemId": "",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-G16",
+      "MissionRegion": 11,
+      "IngredientBrief": "1 Oats + 1 Honey + 1 Cow milk -> 1",
+      "Role": "Food",
+      "Representation": "display",
+      "VesselPolicy": "Illustrative serving vessel; no extra recipe input or container output",
+      "BindingStatus": "Passive Food art; live IDs/bindings and gameplay pending"
+    }
+  ]
+}

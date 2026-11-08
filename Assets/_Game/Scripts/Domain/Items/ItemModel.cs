@@ -62,7 +62,8 @@ namespace TheTrailWalker.Domain.Items
         public int HighestQuality => pile.Count > 0 ? pile[pile.Count - 1].Quality : initial.Quality;
         public ItemProfile Profile => pile.Count > 0 ? pile[0].Profile : initial.Profile;
         public string QualityLabel => Quality == HighestQuality ? "Q" + Quality : $"Q{Quality}-Q{HighestQuality}";
-        public bool Ready { get; }
+        // False while a timed craft is pending (section 10); set ready once by the inventory when its batch finishes.
+        public bool Ready { get; internal set; }
         public int Quantity { get; private set; }
         public ItemOwner Owner { get; internal set; }
         public int X { get; internal set; }
@@ -84,7 +85,8 @@ namespace TheTrailWalker.Domain.Items
             if (definition.GearSlot.HasValue && profile.MaxDurability > 0 && profile.Durability > 0) { HasWearRemaining = true; WearRemaining = profile.Durability; }
         }
         // Stacks combine by item ID and readiness only; quality and price profile live inside the pile.
-        public bool CanMerge(ItemEntry other) => other != this && Definition.Stackable && other.Definition.Stackable && Definition.Id == other.Definition.Id && Ready == other.Ready;
+        // Pending (timed) outputs never merge, not even with another pending batch of the same item (section 10).
+        public bool CanMerge(ItemEntry other) => other != this && Definition.Stackable && other.Definition.Stackable && Definition.Id == other.Definition.Id && Ready && other.Ready;
         internal void AddPortion(int quality, ItemProfile profile, int quantity)
         {
             for (int i = 0; i < pile.Count; i++)
@@ -119,7 +121,12 @@ namespace TheTrailWalker.Domain.Items
             foreach (PilePortion portion in portions) AddPortion(portion.Quality, portion.Profile, portion.Quantity);
             return true;
         }
-        public static double Scale(int quantity) => quantity <= 0 || quantity > 1000 ? throw new ArgumentOutOfRangeException(nameof(quantity)) : 1 + 0.5 * Math.Log(quantity) / Math.Log(1000);
+        // Stack size factor (revised October 31, 2026, user): the full 1,000 stack keeps its confirmed 1.5x size, but stacks
+        // grow far less with quantity (growth 0.15 instead of 0.5), so a single item is about 1.3x the base footprint
+        // instead of 1.0x and small stacks no longer look tiny next to full ones.
+        public const double StackGrowth = 0.15;
+        public static double Scale(int quantity) => quantity <= 0 || quantity > 1000 ? throw new ArgumentOutOfRangeException(nameof(quantity))
+            : 1.5 / (1 + StackGrowth) * (1 + StackGrowth * Math.Log(quantity) / Math.Log(1000));
         public int WidthFor(int quantity) => Definition.Stackable ? (int)Math.Ceiling(Definition.Width * Scale(quantity)) : Definition.Width;
         public int HeightFor(int quantity) => Definition.Stackable ? (int)Math.Ceiling(Definition.Height * Scale(quantity)) : Definition.Height;
         public int Width => WidthFor(Quantity);
@@ -156,8 +163,11 @@ namespace TheTrailWalker.Domain.Items
         public static readonly ItemDefinition AcornBiscuits = new ItemDefinition("item.acorn_biscuits", "Acorn biscuits", 800, 800, foodHearts: 5, preparedFood: true);
         // Region loose resources used by the Milestone 5 test world (section 6.2.2). Footprints of the six meshed region-1/2
         // resources follow their mesh proportions (front view), keeping the earlier largest dimension, minimum 300 units.
-        public static readonly ItemDefinition RabbitPelt = new ItemDefinition("animal.rabbit.pelt", "Rabbit pelt", 850, 300);
-        public static readonly ItemDefinition Apples = new ItemDefinition("food.apples", "Apples", 420, 480, category: ItemCategory.RawIngredient);
+        // Rabbit pelt (user, November 6, 2026): the reworked hide is drawn tilted and reads almost square (about 1.1:1), so the
+        // old 850 x 300 strip left a small picture in a wide slot; it now takes an apple-like, near-square footprint.
+        public static readonly ItemDefinition RabbitPelt = new ItemDefinition("animal.rabbit.pelt", "Rabbit pelt", 480, 480);
+        // Raw food (user, October 31, 2026): one heart, eaten manually to help with stamina; never auto-eaten at zero stamina.
+        public static readonly ItemDefinition Apples = new ItemDefinition("food.apples", "Apples", 420, 480, foodHearts: 1);
         public static readonly ItemDefinition Flint = new ItemDefinition("material.flint", "Flint", 480, 306);
         public static readonly ItemDefinition PineCone = new ItemDefinition("material.pine_cone", "Pine cone", 413, 480);
         // Mistwood loose resources. Front footprints follow the authored Region 3 mesh proportions.
@@ -178,7 +188,7 @@ namespace TheTrailWalker.Domain.Items
         public static readonly ItemDefinition YellowPerch = new ItemDefinition("fish.yellow_perch", "Yellow perch", 1100, 427, category: ItemCategory.RawIngredient);
         // Cloudstep Mountains loose resources. Red berries reuse the existing Berries ID above.
         public static readonly ItemDefinition Oats = new ItemDefinition("ingredient.oats", "Oats", 652, 850, category: ItemCategory.RawIngredient);
-        public static readonly ItemDefinition Pebbles = new ItemDefinition("material.pebbles", "Pebbles", 480, 240);
+        public static readonly ItemDefinition Pebbles = new ItemDefinition("material.pebbles", "Pebbles", 600, 300); // slightly bigger (user, October 31, 2026)
         // Reedwater Delta loose resources; Wheat is the raw grain, not crafted Wheat flour.
         public static readonly ItemDefinition Reeds = new ItemDefinition("material.reeds", "Reeds", 672, 850);
         public static readonly ItemDefinition Wheat = new ItemDefinition("ingredient.wheat", "Wheat", 422, 850, category: ItemCategory.RawIngredient);

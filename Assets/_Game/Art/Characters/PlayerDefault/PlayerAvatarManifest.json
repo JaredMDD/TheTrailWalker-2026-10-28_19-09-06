@@ -1,0 +1,548 @@
+{
+  "wearables": [
+    {
+      "itemId": "item.hemp_shirt",
+      "part": "HempShirt"
+    },
+    {
+      "itemId": "item.hemp_pants",
+      "part": "HempPants"
+    },
+    {
+      "itemId": "item.rabbit_boots",
+      "part": "RabbitBoots"
+    }
+  ],
+  "revision": 2,
+  "style": "faceted",
+  "units": "metres",
+  "forward": "+Z",
+  "up": "+Y",
+  "headOrigin": [
+    0,
+    1.43,
+    0
+  ],
+  "bodyVariants": [
+    "Male",
+    "Female"
+  ],
+  "skinColors": [
+    "#F2CCAA",
+    "#D6A477",
+    "#BA8055",
+    "#966140",
+    "#6E432E",
+    "#452B20"
+  ],
+  "hairColors": [
+    "#241C17",
+    "#513522",
+    "#8D4E30",
+    "#B99A60",
+    "#858176"
+  ],
+  "hairStyles": [
+    "Crop",
+    "Sweep",
+    "Bob",
+    "Tied"
+  ],
+  "defaultHair": {
+    "Male": "Sweep",
+    "Female": "Tied"
+  },
+  "parts": [
+    {
+      "name": "MaleHead",
+      "vertices": 153,
+      "triangles": 263,
+      "materials": [
+        "Skin",
+        "Lips",
+        "Brows"
+      ],
+      "boundsMin": [
+        -0.089533,
+        0.02,
+        -0.108
+      ],
+      "boundsMax": [
+        0.089533,
+        0.27,
+        0.139429
+      ]
+    },
+    {
+      "name": "MaleEyes",
+      "vertices": 16,
+      "triangles": 24,
+      "materials": [
+        "Pupil"
+      ],
+      "boundsMin": [
+        -0.0435,
+        0.1415,
+        0.104267
+      ],
+      "boundsMax": [
+        0.0435,
+        0.1505,
+        0.110267
+      ]
+    },
+    {
+      "name": "MaleSkin",
+      "vertices": 398,
+      "triangles": 712,
+      "materials": [
+        "Skin"
+      ],
+      "boundsMin": [
+        -0.319084,
+        0.0,
+        -0.06198
+      ],
+      "boundsMax": [
+        0.319084,
+        1.482297,
+        0.178
+      ]
+    },
+    {
+      "name": "MaleBaseShirt",
+      "vertices": 205,
+      "triangles": 376,
+      "materials": [
+        "BaseShirt"
+      ],
+      "boundsMin": [
+        -0.282903,
+        0.86,
+        -0.122
+      ],
+      "boundsMax": [
+        0.282903,
+        1.432,
+        0.131
+      ]
+    },
+    {
+      "name": "MaleBasePants",
+      "vertices": 274,
+      "triangles": 528,
+      "materials": [
+        "BasePants"
+      ],
+      "boundsMin": [
+        -0.186845,
+        0.084,
+        -0.119
+      ],
+      "boundsMax": [
+        0.186845,
+        1.05,
+        0.11
+      ]
+    },
+    {
+      "name": "MaleHairCrop",
+      "vertices": 113,
+      "triangles": 192,
+      "materials": [
+        "Hair"
+      ],
+      "boundsMin": [
+        -0.087,
+        0.105,
+        -0.114
+      ],
+      "boundsMax": [
+        0.087,
+        0.288,
+        0.1
+      ]
+    },
+    {
+      "name": "MaleHairSweep",
+      "vertices": 145,
+      "triangles": 240,
+      "materials": [
+        "Hair"
+      ],
+      "boundsMin": [
+        -0.089,
+        0.095,
+        -0.116
+      ],
+      "boundsMax": [
+        0.089,
+        0.29,
+        0.123945
+      ]
+    },
+    {
+      "name": "MaleHairBob",
+      "vertices": 129,
+      "triangles": 220,
+      "materials": [
+        "Hair"
+      ],
+      "boundsMin": [
+        -0.096573,
+        0.05,
+        -0.119
+      ],
+      "boundsMax": [
+        0.096573,
+        0.291,
+        0.1228
+      ]
+    },
+    {
+      "name": "MaleHairTied",
+      "vertices": 129,
+      "triangles": 228,
+      "materials": [
+        "Hair"
+      ],
+      "boundsMin": [
+        -0.087,
+        0.033416,
+        -0.172438
+      ],
+      "boundsMax": [
+        0.087,
+        0.288,
+        0.1
+      ]
+    },
+    {
+      "name": "FemaleHead",
+      "vertices": 153,
+      "triangles": 263,
+      "materials": [
+        "Skin",
+        "Lips",
+        "Brows"
+      ],
+      "boundsMin": [
+        -0.085571,
+        0.026,
+        -0.103
+      ],
+      "boundsMax": [
+        0.085571,
+        0.262,
+        0.129756
+      ]
+    },
+    {
+      "name": "FemaleEyes",
+      "vertices": 32,
+      "triangles": 48,
+      "materials": [
+        "Pupil"
+      ],
+      "boundsMin": [
+        -0.04818,
+        0.1425,
+        0.100071
+      ],
+      "boundsMax": [
+        0.04818,
+        0.15744,
+        0.106571
+      ]
+    },
+    {
+      "name": "FemaleSkin",
+      "vertices": 398,
+      "triangles": 712,
+      "materials": [
+        "Skin"
+      ],
+      "boundsMin": [
+        -0.302084,
+        0.0,
+        -0.056982
+      ],
+      "boundsMax": [
+        0.302084,
+        1.482047,
+        0.178
+      ]
+    },
+    {
+      "name": "FemaleBaseShirt",
+      "vertices": 205,
+      "triangles": 376,
+      "materials": [
+        "BaseShirt"
+      ],
+      "boundsMin": [
+        -0.265903,
+        0.86,
+        -0.132
+      ],
+      "boundsMax": [
+        0.265903,
+        1.419,
+        0.136
+      ]
+    },
+    {
+      "name": "FemaleBasePants",
+      "vertices": 274,
+      "triangles": 528,
+      "materials": [
+        "BasePants"
+      ],
+      "boundsMin": [
+        -0.19,
+        0.084,
+        -0.124
+      ],
+      "boundsMax": [
+        0.19,
+        1.045,
+        0.114
+      ]
+    },
+    {
+      "name": "FemaleHairCrop",
+      "vertices": 113,
+      "triangles": 192,
+      "materials": [
+        "Hair"
+      ],
+      "boundsMin": [
+        -0.0835,
+        0.101889,
+        -0.109
+      ],
+      "boundsMax": [
+        0.0835,
+        0.28,
+        0.096
+      ]
+    },
+    {
+      "name": "FemaleHairSweep",
+      "vertices": 145,
+      "triangles": 240,
+      "materials": [
+        "Hair"
+      ],
+      "boundsMin": [
+        -0.085,
+        0.092185,
+        -0.111
+      ],
+      "boundsMax": [
+        0.085,
+        0.282,
+        0.123889
+      ]
+    },
+    {
+      "name": "FemaleHairBob",
+      "vertices": 129,
+      "triangles": 220,
+      "materials": [
+        "Hair"
+      ],
+      "boundsMin": [
+        -0.092388,
+        0.048519,
+        -0.119
+      ],
+      "boundsMax": [
+        0.092388,
+        0.283,
+        0.122766
+      ]
+    },
+    {
+      "name": "FemaleHairTied",
+      "vertices": 129,
+      "triangles": 228,
+      "materials": [
+        "Hair"
+      ],
+      "boundsMin": [
+        -0.083,
+        0.032336,
+        -0.172437
+      ],
+      "boundsMax": [
+        0.083,
+        0.28,
+        0.096
+      ]
+    },
+    {
+      "name": "MaleWearHempShirt",
+      "vertices": 269,
+      "triangles": 480,
+      "materials": [
+        "HempShirtDark",
+        "HempShirt",
+        "PeltLeather",
+        "PeltLeatherDark",
+        "Brass"
+      ],
+      "boundsMin": [
+        -0.299719,
+        0.86,
+        -0.122
+      ],
+      "boundsMax": [
+        0.299719,
+        1.432,
+        0.154667
+      ]
+    },
+    {
+      "name": "MaleWearHempPants",
+      "vertices": 338,
+      "triangles": 616,
+      "materials": [
+        "HempPants",
+        "HempPantsDark",
+        "PeltLeather",
+        "Brass",
+        "PeltLeatherDark"
+      ],
+      "boundsMin": [
+        -0.215805,
+        0.084,
+        -0.128073
+      ],
+      "boundsMax": [
+        0.215805,
+        1.05,
+        0.144805
+      ]
+    },
+    {
+      "name": "MaleWearRabbitBoots",
+      "vertices": 282,
+      "triangles": 456,
+      "materials": [
+        "PeltLeather",
+        "PeltFur",
+        "PeltSole",
+        "PeltLeatherDark"
+      ],
+      "boundsMin": [
+        -0.172,
+        0.0,
+        -0.097
+      ],
+      "boundsMax": [
+        0.172,
+        0.212,
+        0.203
+      ]
+    },
+    {
+      "name": "FemaleWearHempShirt",
+      "vertices": 269,
+      "triangles": 480,
+      "materials": [
+        "HempShirtDark",
+        "HempShirt",
+        "PeltLeather",
+        "PeltLeatherDark",
+        "Brass"
+      ],
+      "boundsMin": [
+        -0.282719,
+        0.86,
+        -0.132
+      ],
+      "boundsMax": [
+        0.282719,
+        1.419,
+        0.153
+      ]
+    },
+    {
+      "name": "FemaleWearHempPants",
+      "vertices": 338,
+      "triangles": 616,
+      "materials": [
+        "HempPants",
+        "HempPantsDark",
+        "PeltLeather",
+        "Brass",
+        "PeltLeatherDark"
+      ],
+      "boundsMin": [
+        -0.217024,
+        0.084,
+        -0.132951
+      ],
+      "boundsMax": [
+        0.217024,
+        1.045,
+        0.143146
+      ]
+    },
+    {
+      "name": "FemaleWearRabbitBoots",
+      "vertices": 282,
+      "triangles": 456,
+      "materials": [
+        "PeltLeather",
+        "PeltFur",
+        "PeltSole",
+        "PeltLeatherDark"
+      ],
+      "boundsMin": [
+        -0.172,
+        0.0,
+        -0.097
+      ],
+      "boundsMax": [
+        0.172,
+        0.212,
+        0.203
+      ]
+    }
+  ],
+  "scope": "Static modular art only. No selection, persistence, gameplay, skin weights or animation.",
+  "anchors": {
+    "Hat": [
+      0,
+      1.43,
+      0
+    ],
+    "Backpack": [
+      0,
+      1.14,
+      -0.2
+    ],
+    "Shirt": [
+      0,
+      0.95,
+      0
+    ],
+    "Pants": [
+      0,
+      0.89,
+      0
+    ],
+    "LeftBoot": [
+      -0.1,
+      0.1,
+      0
+    ],
+    "RightBoot": [
+      0.1,
+      0.1,
+      0
+    ]
+  }
+}

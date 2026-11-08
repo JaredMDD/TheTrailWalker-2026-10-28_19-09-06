@@ -65,10 +65,10 @@ namespace TheTrailWalker.Editor
             // Device case: a small Q3 stack wedged against a neighbour must still be filled by a Q1 pickup.
             var wedged = new SpatialInventory();
             ItemEntry milk = wedged.AddWorld("milk-q3", PrototypeItems.BirchSapMilkDrink, 3, 3); Put(wedged, milk, 1300, 0);
-            ItemEntry neighbour = wedged.AddWorld("cakes", PrototypeItems.MesquitePodCakes, 5, 4); Put(wedged, neighbour, 2150, 0);
+            ItemEntry neighbour = wedged.AddWorld("cakes", PrototypeItems.MesquitePodCakes, 5, 4); Put(wedged, neighbour, 2300, 0);
             ItemEntry milkPickup = wedged.AddWorld("milk-q1", PrototypeItems.BirchSapMilkDrink, 1000, 1); wedged.Reserve(milkPickup, 13);
             Check(wedged.TryQuickStore(milkPickup, 13, out _) && milk.Quantity == 1000 && milk.Pile[0].Quality == 1 && milk.HighestQuality == 3 && milkPickup.Quantity == 3 && milkPickup.Owner == ItemOwner.Backpack
-                && neighbour.X == 2150 && neighbour.Y == 0 && !SpatialInventory.Overlaps(milk.X, milk.Y, milk.Width, milk.Height, neighbour.X, neighbour.Y, neighbour.Width, neighbour.Height),
+                && neighbour.X == 2300 && neighbour.Y == 0 && !SpatialInventory.Overlaps(milk.X, milk.Y, milk.Width, milk.Height, neighbour.X, neighbour.Y, neighbour.Width, neighbour.Height),
                 "A stack that cannot grow in place moves to free space and is filled; neighbours stay put");
             wedged.Release(milkPickup, 13);
         }
@@ -94,8 +94,8 @@ namespace TheTrailWalker.Editor
             var almost = bag.AddWorld("almost", PrototypeItems.Berries, 999);
             var full = bag.AddWorld("full", PrototypeItems.Berries, 1000);
             int berryWidth = PrototypeItems.Berries.Width;
-            Check(one.Width == berryWidth && full.Width == (int)Math.Ceiling(berryWidth * 1.5) && almost.Width <= full.Width, "Quantities 1/999/1000 share bounded linear growth");
-            Check(Math.Abs(ItemEntry.Scale(1000) - 1.5) < 0.000001, "Full stack scale exactly 1.5, area at most 2.25");
+            Check(one.Width == (int)Math.Ceiling(berryWidth * ItemEntry.Scale(1)) && full.Width == (int)Math.Ceiling(berryWidth * 1.5) && one.Width < almost.Width && almost.Width <= full.Width, "Quantities 1/999/1000 share bounded growth up to the 1.5x full stack");
+            Check(Math.Abs(ItemEntry.Scale(1000) - 1.5) < 0.000001 && Math.Abs(ItemEntry.Scale(1) - 1.5 / 1.15) < 0.000001 && ItemEntry.Scale(1) < ItemEntry.Scale(10) && ItemEntry.Scale(10) < ItemEntry.Scale(1000), "Full stack scale exactly 1.5 (area at most 2.25); single items about 1.3x; size still grows with quantity");
             Check(Rejects(() => bag.AddWorld("one", PrototypeItems.Stone, 1)), "Duplicate identity rejected");
             Check(bag.Reserve(one, 1) && !bag.Reserve(one, 2), "Two fingers cannot reserve one item");
             Check(!bag.TryQuickStore(one, 2, out _) && one.Owner == ItemOwner.World, "Wrong pointer cannot transfer");
@@ -131,7 +131,7 @@ namespace TheTrailWalker.Editor
             var source = partialBag.AddWorld("source", PrototypeItems.Berries, 1000); partialBag.Reserve(source, 4);
             Check(partialBag.TryQuickStore(source, 4, out _) && target.Quantity == 1000 && source.Quantity == 999 && source.Owner == ItemOwner.Backpack, "A pickup tops up the partial stack and stores the rest as a new stack");
             partialBag.Release(source, 4);
-            var small = new SpatialInventory(PrototypeItems.Berries.Width * 5 / 4, PrototypeItems.Berries.Height * 5 / 4); var smallTarget = small.AddWorld("tiny-target", PrototypeItems.Berries, 1); Put(small, smallTarget, 0, 0);
+            var small = new SpatialInventory(PrototypeItems.Berries.Width * 7 / 5, PrototypeItems.Berries.Height * 7 / 5); var smallTarget = small.AddWorld("tiny-target", PrototypeItems.Berries, 1); Put(small, smallTarget, 0, 0);
             var largeSource = small.AddWorld("large-source", PrototypeItems.Berries, 999); small.Reserve(largeSource, 1);
             Check(small.TryMerge(largeSource, smallTarget, 1, out _) && smallTarget.Quantity > 1 && smallTarget.Quantity < 1000 && smallTarget.Quantity + largeSource.Quantity == 1000 && small.Fits(smallTarget, smallTarget.Quantity, smallTarget.X, smallTarget.Y),
                 "A stack with no room to grow is topped up only as far as it fits; quantities are conserved");
@@ -147,7 +147,10 @@ namespace TheTrailWalker.Editor
             var touchSource = touchBag.AddWorld("touch-source", PrototypeItems.Berries, 1); touchBag.Reserve(touchSource, 1);
             Check(touchBag.TryPlace(touchSource, 1, touchTarget.Width, 0, true, out _) && touchTarget.Quantity == 2, "Touching compatible footprints merge");
             var fullBag = new SpatialInventory();
-            for (int y = 0; y < 4; y++) for (int x = 0; x < 6; x++) Put(fullBag, fullBag.AddWorld(x + ":" + y, PrototypeItems.Stone, 1, 5), x * 1000, y * 1000);
+            int cell = (int)Math.Ceiling(PrototypeItems.Stone.Width * ItemEntry.Scale(1)); for (int y = 0; (y + 1) * cell <= fullBag.Height; y++) for (int x = 0; (x + 1) * cell <= fullBag.Width; x++) Put(fullBag, fullBag.AddWorld(x + ":" + y, PrototypeItems.Stone, 1, 5), x * cell, y * cell);
+            // Single stones are now ~1.3x base, so single berries fill the strip the stone grid leaves (no room for a 1,000-branch stack).
+            int nut = (int)Math.Ceiling(PrototypeItems.Berries.Height * ItemEntry.Scale(1)); int stripX = fullBag.Width / cell * cell;
+            for (int y = 0; (y + 1) * nut <= fullBag.Height && stripX + nut <= fullBag.Width; y++) Put(fullBag, fullBag.AddWorld("strip:" + y, PrototypeItems.Berries, 1, 5), stripX, y * nut);
             var refused = fullBag.AddWorld("refused", PrototypeItems.Branch, 1000); fullBag.Reserve(refused, 1);
             Check(!fullBag.TryQuickStore(refused, 1, out _) && refused.Owner == ItemOwner.World && refused.Quantity == 1000, "Full bag rejection preserves full world stack");
             var busy = new SpatialInventory(); var busyTarget = busy.AddWorld("busy-target", PrototypeItems.Berries, 1); Put(busy, busyTarget, 0, 0);

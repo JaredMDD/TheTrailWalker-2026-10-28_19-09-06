@@ -23,19 +23,19 @@ namespace TheTrailWalker.Editor
             checks = 0;
             string directory = Path.Combine("Builds", "Validation", "Milestone4-" + Guid.NewGuid().ToString("N"));
             var oldStore = new SessionSaveStore(directory, new Clock());
-            var old = new SessionSnapshot { distance = 10, speedCap = 1.6f, requestedSpeed = 1.2f, inventoryResume = 1.2f, inventoryOpen = true, yaw = 100 };
+            var old = new SessionSnapshot { distance = 10, speedCap = 2.4f, requestedSpeed = 1.8f, inventoryResume = 1.8f, inventoryOpen = true, yaw = 100 };
             old.items.Add(new SavedItem { id = "stone", definitionId = PrototypeItems.Stone.Id, owner = "Backpack", quantity = 1000, quality = 3, ready = true, x = 0, y = 0, unitValue = 100 });
             oldStore.Save(old);
             byte[] original = File.ReadAllBytes(oldStore.MainPath);
             SessionSnapshot upgraded = SessionSaveStore.MigrateV1(old, 158);
             Check(upgraded.version == 2 && upgraded.survival.maximum == 3 && upgraded.survival.hearts == 3, "old profile migrates to starter stamina");
-            Check(Math.Abs(upgraded.speedCap - 1f) < 0.0001 && Math.Abs(upgraded.requestedSpeed - 1f) < 0.0001 && Math.Abs(upgraded.inventoryResume - 1f) < 0.0001, "migration clamps speed to starter equipment");
+            Check(Math.Abs(upgraded.speedCap - TheTrailWalker.Domain.MovementState.StarterSpeedCap) < 0.0001 && Math.Abs(upgraded.requestedSpeed - TheTrailWalker.Domain.MovementState.StarterSpeedCap) < 0.0001 && Math.Abs(upgraded.inventoryResume - TheTrailWalker.Domain.MovementState.StarterSpeedCap) < 0.0001, "migration clamps speed to starter equipment");
             Check(upgraded.inventoryOpen && upgraded.yaw == old.yaw && upgraded.distance == old.distance && upgraded.items[0].id == "stone" && upgraded.items[0].quantity == 1000, "migration preserves position, pause, yaw and ownership");
             var newStore = new SessionSaveStore(directory, new Clock(), 2);
             newStore.Save(upgraded);
             Check(Convert.ToBase64String(File.ReadAllBytes(oldStore.MainPath)) == Convert.ToBase64String(original), "new schema does not overwrite original version 1 profile");
             Check(newStore.Load(158, out var restored, out _) == LoadStatus.Loaded && restored.version == 2, "new schema roundtrip");
-            Check(oldStore.Load(158, out var prior, out _) == LoadStatus.Loaded && prior.version == 1 && prior.requestedSpeed == 1.2f, "version 1 profile remains usable by previous build");
+            Check(oldStore.Load(158, out var prior, out _) == LoadStatus.Loaded && prior.version == 1 && prior.requestedSpeed == 1.8f, "version 1 profile remains usable by previous build");
 
             restored.survival.gear.Add(new SavedGear { id = "debug-shirt", slot = "Shirt", rank = 4, quality = 5, remainingDistance = 100 });
             restored.survival.gear.Add(new SavedGear { id = "debug-pants", slot = "Pants", rank = 4, quality = 5, remainingDistance = 100 });

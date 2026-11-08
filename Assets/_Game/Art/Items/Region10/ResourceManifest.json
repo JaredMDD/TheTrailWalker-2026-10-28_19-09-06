@@ -1,0 +1,59 @@
+{
+  "Region": 10,
+  "Models": [
+    {
+      "Name": "Sandstone",
+      "Triangles": 108,
+      "BoundsMin": [
+        -0.4508,
+        -0.27,
+        -0.3204
+      ],
+      "BoundsMax": [
+        0.4469,
+        0.245,
+        0.3196
+      ],
+      "ProposedFootprint": [
+        480,
+        275
+      ]
+    },
+    {
+      "Name": "Truffle",
+      "Triangles": 924,
+      "BoundsMin": [
+        -0.3776,
+        -0.3445,
+        -0.345
+      ],
+      "BoundsMax": [
+        0.3849,
+        0.3445,
+        0.3671
+      ],
+      "ProposedFootprint": [
+        480,
+        434
+      ]
+    },
+    {
+      "Name": "FlaxSeeds",
+      "Triangles": 952,
+      "BoundsMin": [
+        -0.464,
+        -0.13,
+        -0.3487
+      ],
+      "BoundsMax": [
+        0.46,
+        0.135,
+        0.3515
+      ],
+      "ProposedFootprint": [
+        700,
+        201
+      ]
+    }
+  ]
+}

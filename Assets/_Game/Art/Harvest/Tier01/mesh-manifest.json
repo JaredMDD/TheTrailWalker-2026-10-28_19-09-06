@@ -1,0 +1,254 @@
+[
+  {
+    "name": "PineTrunkLower",
+    "triangles": 170,
+    "bounds_min": [
+      -0.610039569897426,
+      -0.01,
+      -0.583080072775301
+    ],
+    "bounds_max": [
+      0.6305220828229,
+      0.65,
+      0.6598572843649756
+    ],
+    "front_footprint": null
+  },
+  {
+    "name": "PineTrunkUpper",
+    "triangles": 316,
+    "bounds_min": [
+      -0.41250238522470883,
+      0,
+      -0.325681577601258
+    ],
+    "bounds_max": [
+      0.3536400619802117,
+      2.185,
+      0.3595752874310514
+    ],
+    "front_footprint": null
+  },
+  {
+    "name": "RabbitBody",
+    "vertices": 58,
+    "triangles": 112,
+    "palette": "RabbitPalette.png"
+  },
+  {
+    "name": "RabbitHead",
+    "vertices": 87,
+    "triangles": 148,
+    "palette": "RabbitPalette.png"
+  },
+  {
+    "name": "RabbitEar",
+    "vertices": 50,
+    "triangles": 92,
+    "palette": "RabbitPalette.png"
+  },
+  {
+    "name": "RabbitFrontFoot",
+    "vertices": 34,
+    "triangles": 60,
+    "palette": "RabbitPalette.png"
+  },
+  {
+    "name": "RabbitHindFoot",
+    "vertices": 58,
+    "triangles": 108,
+    "palette": "RabbitPalette.png"
+  },
+  {
+    "name": "RabbitTail",
+    "vertices": 42,
+    "triangles": 80,
+    "palette": "RabbitPalette.png"
+  },
+  {
+    "name": "FishingPool",
+    "triangles": 268,
+    "bounds_min": [
+      -1.5,
+      -0.06,
+      -1.1893182750993854
+    ],
+    "bounds_max": [
+      1.6245448267190432,
+      0.38094216306066236,
+      1.1893182750993854
+    ],
+    "front_footprint": null
+  },
+  {
+    "name": "FishingRipples",
+    "triangles": 288,
+    "bounds_min": [
+      -0.535,
+      0.026,
+      -0.34775000000000006
+    ],
+    "bounds_max": [
+      0.535,
+      0.026,
+      0.34775000000000006
+    ],
+    "front_footprint": null
+  },
+  {
+    "name": "PineLog",
+    "triangles": 40,
+    "bounds_min": [
+      -0.661550784330351,
+      -0.32999999999999996,
+      -0.4277539216517549
+    ],
+    "bounds_max": [
+      0.6596856090476131,
+      0.32999999999999996,
+      0.4184280452380653
+    ],
+    "front_footprint": null
+  },
+  {
+    "name": "PineNuts",
+    "triangles": 144,
+    "bounds_min": [
+      -0.3,
+      -0.3,
+      -0.11
+    ],
+    "bounds_max": [
+      0.3,
+      0.3,
+      0.105
+    ],
+    "front_footprint": null
+  },
+  {
+    "name": "RawRabbitMeat",
+    "triangles": 128,
+    "bounds_min": [
+      -0.3709120413551099,
+      -0.22,
+      -0.185
+    ],
+    "bounds_max": [
+      0.3709120413551099,
+      0.24,
+      0.1809016994374948
+    ],
+    "front_footprint": [
+      900,
+      558
+    ]
+  },
+  {
+    "name": "Bone",
+    "triangles": 140,
+    "bounds_min": [
+      -0.3363222638479041,
+      -0.112,
+      -0.05234736500609498
+    ],
+    "bounds_max": [
+      0.3436121593216773,
+      0.112,
+      0.05234736500609498
+    ],
+    "front_footprint": [
+      700,
+      300
+    ]
+  },
+  {
+    "name": "AnimalFat",
+    "triangles": 96,
+    "bounds_min": [
+      -0.31,
+      -0.18,
+      -0.2
+    ],
+    "bounds_max": [
+      0.31,
+      0.18,
+      0.2
+    ],
+    "front_footprint": [
+      650,
+      377
+    ]
+  },
+  {
+    "name": "RainbowTrout",
+    "triangles": 302,
+    "bounds_min": [
+      -0.56,
+      -0.175,
+      -0.12000000000000001
+    ],
+    "bounds_max": [
+      0.39,
+      0.19375,
+      0.12000000000000001
+    ],
+    "front_footprint": [
+      1100,
+      427
+    ]
+  },
+  {
+    "name": "LargemouthBass",
+    "triangles": 182,
+    "bounds_min": [
+      -0.56,
+      -0.238,
+      -0.12000000000000001
+    ],
+    "bounds_max": [
+      0.39,
+      0.2635,
+      0.12000000000000001
+    ],
+    "front_footprint": [
+      1100,
+      581
+    ]
+  },
+  {
+    "name": "Bluegill",
+    "triangles": 230,
+    "bounds_min": [
+      -0.56,
+      -0.32899999999999996,
+      -0.13
+    ],
+    "bounds_max": [
+      0.39,
+      0.36424999999999996,
+      0.13
+    ],
+    "front_footprint": [
+      900,
+      657
+    ]
+  },
+  {
+    "name": "YellowPerch",
+    "triangles": 182,
+    "bounds_min": [
+      -0.56,
+      -0.175,
+      -0.12000000000000001
+    ],
+    "bounds_max": [
+      0.39,
+      0.19375,
+      0.12000000000000001
+    ],
+    "front_footprint": [
+      1100,
+      427
+    ]
+  }
+]

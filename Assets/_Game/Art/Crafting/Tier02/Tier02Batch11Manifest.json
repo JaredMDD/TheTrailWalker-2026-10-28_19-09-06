@@ -1,0 +1,60 @@
+{
+  "Revision": 1,
+  "Batch": 11,
+  "Scope": "2 passive Tool art outputs; no gameplay value or shared shader changes.",
+  "BlenderVersion": "5.2.3 LTS",
+  "Items": [
+    {
+      "Name": "NormalBirchSlingshot",
+      "Model": "NormalBirchSlingshot",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/NormalBirchSlingshot.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/NormalBirchSlingshotPalette.png",
+      "PrefabPath": "Tier02/Tools/NormalBirchSlingshot",
+      "Triangles": 2328,
+      "BoundsMin": [
+        -0.3,
+        -0.43,
+        -0.195071
+      ],
+      "BoundsMax": [
+        0.29895,
+        0.397871,
+        0.066
+      ],
+      "DisplayName": "Normal birch slingshot",
+      "ItemId": "",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-H1",
+      "MissionRegion": 7,
+      "IngredientBrief": "2 Birch branches + 1 Raw beaver pelt + 1 Hemp cord -> 1",
+      "Role": "Tool"
+    },
+    {
+      "Name": "EliteBirchSlingshot",
+      "Model": "EliteBirchSlingshot",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/EliteBirchSlingshot.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/EliteBirchSlingshotPalette.png",
+      "PrefabPath": "Tier02/Tools/EliteBirchSlingshot",
+      "Triangles": 2908,
+      "BoundsMin": [
+        -0.3,
+        -0.43,
+        -0.195071
+      ],
+      "BoundsMax": [
+        0.29895,
+        0.397871,
+        0.08
+      ],
+      "DisplayName": "Elite birch slingshot",
+      "ItemId": "",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-H6",
+      "MissionRegion": 8,
+      "IngredientBrief": "1 Normal birch slingshot + 2 Fine rabbit pelts -> 1",
+      "Role": "Tool"
+    }
+  ]
+}

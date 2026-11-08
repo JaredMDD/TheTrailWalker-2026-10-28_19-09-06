@@ -1,0 +1,133 @@
+{
+  "Revision": 1,
+  "Batch": 8,
+  "Scope": "Five passive Material assets; no gameplay values or shared shader changes.",
+  "BlenderVersion": "5.2.3 LTS",
+  "Items": [
+    {
+      "Name": "Glass",
+      "Model": "Glass",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/Glass.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/GlassPalette.png",
+      "PrefabPath": "Tier02/Materials/Glass",
+      "Triangles": 130,
+      "BoundsMin": [
+        -0.424352,
+        -0.311176,
+        -0.162
+      ],
+      "BoundsMax": [
+        0.402827,
+        0.435647,
+        0.1375
+      ],
+      "DisplayName": "Glass",
+      "ItemId": "",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive Material art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-G6",
+      "MissionRegion": 9,
+      "IngredientBrief": "3 Quartz + 1 Pine charcoal -> 2"
+    },
+    {
+      "Name": "GlassBottle",
+      "Model": "GlassBottle",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/GlassBottle.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/GlassBottlePalette.png",
+      "PrefabPath": "Tier02/Materials/GlassBottle",
+      "Triangles": 912,
+      "BoundsMin": [
+        -0.25,
+        -0.48,
+        -0.205
+      ],
+      "BoundsMax": [
+        0.25,
+        0.465,
+        0.205
+      ],
+      "DisplayName": "Glass bottle",
+      "ItemId": "",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive Material art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-G17",
+      "MissionRegion": 12,
+      "IngredientBrief": "2 Glass -> 1"
+    },
+    {
+      "Name": "GlassPanels",
+      "Model": "GlassPanels",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/GlassPanels.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/GlassPanelsPalette.png",
+      "PrefabPath": "Tier02/Materials/GlassPanels",
+      "Triangles": 160,
+      "BoundsMin": [
+        -0.472711,
+        -0.484848,
+        -0.036
+      ],
+      "BoundsMax": [
+        0.477711,
+        0.474848,
+        0.061
+      ],
+      "DisplayName": "Glass panels",
+      "ItemId": "",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive Material art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-L17",
+      "MissionRegion": 12,
+      "IngredientBrief": "3 Glass -> 1"
+    },
+    {
+      "Name": "CutQuartz",
+      "Model": "CutQuartz",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/CutQuartz.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/CutQuartzPalette.png",
+      "PrefabPath": "Tier02/Materials/CutQuartz",
+      "Triangles": 112,
+      "BoundsMin": [
+        -0.39,
+        -0.31,
+        -0.17
+      ],
+      "BoundsMax": [
+        0.39,
+        0.31,
+        0.24
+      ],
+      "DisplayName": "Cut quartz",
+      "ItemId": "",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive Material art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-G7",
+      "MissionRegion": 9,
+      "IngredientBrief": "2 Quartz -> 1"
+    },
+    {
+      "Name": "SandstoneTiles",
+      "Model": "SandstoneTiles",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/SandstoneTiles.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/SandstoneTilesPalette.png",
+      "PrefabPath": "Tier02/Materials/SandstoneTiles",
+      "Triangles": 164,
+      "BoundsMin": [
+        -0.4398,
+        -0.341264,
+        -0.0855
+      ],
+      "BoundsMax": [
+        0.442417,
+        0.32391,
+        0.1
+      ],
+      "DisplayName": "Sandstone tiles",
+      "ItemId": "",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive Material art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-L9",
+      "MissionRegion": 10,
+      "IngredientBrief": "3 Sandstone -> 2"
+    }
+  ]
+}

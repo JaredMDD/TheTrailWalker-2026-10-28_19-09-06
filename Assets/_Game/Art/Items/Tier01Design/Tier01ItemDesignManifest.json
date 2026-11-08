@@ -1,0 +1,1800 @@
+{
+  "Revision": 1,
+  "Scope": "Tier-one art only. No recipe/stat/terrain changes. Mushrooms retained from loose-item pass.",
+  "Items": [
+    {
+      "ItemId": "fish.yellow_perch",
+      "Name": "Yellow Perch",
+      "Model": "YellowPerch",
+      "Key": "YellowPerch",
+      "Category": "Harvest",
+      "SourcePath": "Assets/_Game/Art/Harvest/Tier01/YellowPerch.obj",
+      "PrefabPath": "Tier01/Drops/YellowPerch",
+      "RecipeId": "",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/RawFishYellowPerchPalette.png",
+      "PaletteFamily": "RawFishYellowPerch",
+      "BoundsMin": [
+        -0.56,
+        -0.175,
+        -0.12
+      ],
+      "BoundsMax": [
+        0.39,
+        0.19375,
+        0.12
+      ],
+      "Triangles": 446
+    },
+    {
+      "ItemId": "fish.bluegill",
+      "Name": "Bluegill",
+      "Model": "Bluegill",
+      "Key": "Bluegill",
+      "Category": "Harvest",
+      "SourcePath": "Assets/_Game/Art/Harvest/Tier01/Bluegill.obj",
+      "PrefabPath": "Tier01/Drops/Bluegill",
+      "RecipeId": "",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/RawFishYellowPerchPalette.png",
+      "PaletteFamily": "RawFishYellowPerch",
+      "BoundsMin": [
+        -0.56,
+        -0.329,
+        -0.13
+      ],
+      "BoundsMax": [
+        0.39,
+        0.36425,
+        0.13
+      ],
+      "Triangles": 542
+    },
+    {
+      "ItemId": "fish.largemouth_bass",
+      "Name": "Largemouth Bass",
+      "Model": "LargemouthBass",
+      "Key": "LargemouthBass",
+      "Category": "Harvest",
+      "SourcePath": "Assets/_Game/Art/Harvest/Tier01/LargemouthBass.obj",
+      "PrefabPath": "Tier01/Drops/LargemouthBass",
+      "RecipeId": "",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/RawFishLargemouthBassPalette.png",
+      "PaletteFamily": "RawFishLargemouthBass",
+      "BoundsMin": [
+        -0.56,
+        -0.238,
+        -0.12
+      ],
+      "BoundsMax": [
+        0.39,
+        0.2635,
+        0.12
+      ],
+      "Triangles": 446
+    },
+    {
+      "ItemId": "fish.rainbow_trout",
+      "Name": "Rainbow Trout",
+      "Model": "RainbowTrout",
+      "Key": "RainbowTrout",
+      "Category": "Harvest",
+      "SourcePath": "Assets/_Game/Art/Harvest/Tier01/RainbowTrout.obj",
+      "PrefabPath": "Tier01/Drops/RainbowTrout",
+      "RecipeId": "",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/RawFishRainbowTroutPalette.png",
+      "PaletteFamily": "RawFishRainbowTrout",
+      "BoundsMin": [
+        -0.56,
+        -0.175,
+        -0.12
+      ],
+      "BoundsMax": [
+        0.39,
+        0.19375,
+        0.12
+      ],
+      "Triangles": 590
+    },
+    {
+      "ItemId": "ingredient.animal_fat",
+      "Name": "Animal Fat",
+      "Model": "AnimalFat",
+      "Key": "AnimalFat",
+      "Category": "Harvest",
+      "SourcePath": "Assets/_Game/Art/Harvest/Tier01/AnimalFat.obj",
+      "PrefabPath": "Tier01/Drops/AnimalFat",
+      "RecipeId": "",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/HarvestOrganicPalette.png",
+      "PaletteFamily": "HarvestOrganic",
+      "BoundsMin": [
+        -0.31,
+        -0.18,
+        -0.2
+      ],
+      "BoundsMax": [
+        0.31,
+        0.18,
+        0.2
+      ],
+      "Triangles": 300
+    },
+    {
+      "ItemId": "material.bone",
+      "Name": "Bone",
+      "Model": "Bone",
+      "Key": "Bone",
+      "Category": "Harvest",
+      "SourcePath": "Assets/_Game/Art/Harvest/Tier01/Bone.obj",
+      "PrefabPath": "Tier01/Drops/Bone",
+      "RecipeId": "",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/HarvestOrganicPalette.png",
+      "PaletteFamily": "HarvestOrganic",
+      "BoundsMin": [
+        -0.336322,
+        -0.112,
+        -0.052347
+      ],
+      "BoundsMax": [
+        0.343612,
+        0.112,
+        0.052347
+      ],
+      "Triangles": 360
+    },
+    {
+      "ItemId": "animal.rabbit.meat",
+      "Name": "Raw Rabbit Meat",
+      "Model": "RawRabbitMeat",
+      "Key": "RawRabbitMeat",
+      "Category": "Harvest",
+      "SourcePath": "Assets/_Game/Art/Harvest/Tier01/RawRabbitMeat.obj",
+      "PrefabPath": "Tier01/Drops/RawRabbitMeat",
+      "RecipeId": "",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/HarvestOrganicPalette.png",
+      "PaletteFamily": "HarvestOrganic",
+      "BoundsMin": [
+        -0.370912,
+        -0.22,
+        -0.185
+      ],
+      "BoundsMax": [
+        0.370912,
+        0.24,
+        0.180902
+      ],
+      "Triangles": 528
+    },
+    {
+      "ItemId": "ingredient.pine_nuts",
+      "Name": "Pine Nuts",
+      "Model": "PineNuts",
+      "Key": "PineNuts",
+      "Category": "Harvest",
+      "SourcePath": "Assets/_Game/Art/Harvest/Tier01/PineNuts.obj",
+      "PrefabPath": "Tier01/Drops/PineNuts",
+      "RecipeId": "",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/HarvestNutsPalette.png",
+      "PaletteFamily": "HarvestNuts",
+      "BoundsMin": [
+        -0.3,
+        -0.3,
+        -0.11
+      ],
+      "BoundsMax": [
+        0.3,
+        0.3,
+        0.105
+      ],
+      "Triangles": 396
+    },
+    {
+      "ItemId": "material.pine_log",
+      "Name": "Pine Log",
+      "Model": "PineLog",
+      "Key": "PineLog",
+      "Category": "Harvest",
+      "SourcePath": "Assets/_Game/Art/Harvest/Tier01/PineLog.obj",
+      "PrefabPath": "Tier01/Drops/PineLog",
+      "RecipeId": "",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/HarvestTimberPalette.png",
+      "PaletteFamily": "HarvestTimber",
+      "BoundsMin": [
+        -0.661551,
+        -0.33,
+        -0.427754
+      ],
+      "BoundsMax": [
+        0.659686,
+        0.33,
+        0.418428
+      ],
+      "Triangles": 512
+    },
+    {
+      "ItemId": "item.pine_plank",
+      "Name": "Pine plank",
+      "Model": "PinePlank",
+      "Key": "pine_plank",
+      "Category": "Material",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/PinePlank.obj",
+      "PrefabPath": "Tier01/Crafted/PinePlank",
+      "RecipeId": "recipe.material.pine_plank",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/TimberPalette.png",
+      "PaletteFamily": "Timber",
+      "BoundsMin": [
+        -0.5,
+        -0.065,
+        -0.14875
+      ],
+      "BoundsMax": [
+        0.5,
+        0.065,
+        0.14875
+      ],
+      "Triangles": 1100
+    },
+    {
+      "ItemId": "item.pine_charcoal",
+      "Name": "Pine charcoal",
+      "Model": "PineCharcoal",
+      "Key": "pine_charcoal",
+      "Category": "Material",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/PineCharcoal.obj",
+      "PrefabPath": "Tier01/Crafted/PineCharcoal",
+      "RecipeId": "recipe.material.pine_charcoal",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/CharcoalPalette.png",
+      "PaletteFamily": "Charcoal",
+      "BoundsMin": [
+        -0.364752,
+        -0.195,
+        -0.252755
+      ],
+      "BoundsMax": [
+        0.364752,
+        0.195,
+        0.252755
+      ],
+      "Triangles": 156
+    },
+    {
+      "ItemId": "item.hemp_cord",
+      "Name": "Hemp cord",
+      "Model": "HempCord",
+      "Key": "hemp_cord",
+      "Category": "Material",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/HempCord.obj",
+      "PrefabPath": "Tier01/Crafted/HempCord",
+      "RecipeId": "recipe.material.hemp_cord",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/FibrePalette.png",
+      "PaletteFamily": "Fibre",
+      "BoundsMin": [
+        -0.368274,
+        -0.268129,
+        -0.414744
+      ],
+      "BoundsMax": [
+        0.368274,
+        0.268129,
+        0.414744
+      ],
+      "Triangles": 1904
+    },
+    {
+      "ItemId": "item.hemp_thread",
+      "Name": "Hemp thread",
+      "Model": "HempThread",
+      "Key": "hemp_thread",
+      "Category": "Material",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/HempThread.obj",
+      "PrefabPath": "Tier01/Crafted/HempThread",
+      "RecipeId": "recipe.material.hemp_thread",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/FibrePalette.png",
+      "PaletteFamily": "Fibre",
+      "BoundsMin": [
+        -0.22,
+        -0.325,
+        -0.209232
+      ],
+      "BoundsMax": [
+        0.22,
+        0.325,
+        0.209232
+      ],
+      "Triangles": 1528
+    },
+    {
+      "ItemId": "item.nettle_thread",
+      "Name": "Nettle thread",
+      "Model": "NettleThread",
+      "Key": "nettle_thread",
+      "Category": "Material",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/NettleThread.obj",
+      "PrefabPath": "Tier01/Crafted/NettleThread",
+      "RecipeId": "recipe.material.nettle_thread",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/FibrePalette.png",
+      "PaletteFamily": "Fibre",
+      "BoundsMin": [
+        -0.22,
+        -0.325,
+        -0.209232
+      ],
+      "BoundsMax": [
+        0.22,
+        0.325,
+        0.209232
+      ],
+      "Triangles": 1528
+    },
+    {
+      "ItemId": "item.hemp_cloth",
+      "Name": "Hemp cloth",
+      "Model": "HempCloth",
+      "Key": "hemp_cloth",
+      "Category": "Material",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/HempCloth.obj",
+      "PrefabPath": "Tier01/Crafted/HempCloth",
+      "RecipeId": "recipe.material.hemp_cloth",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/TextilesPalette.png",
+      "PaletteFamily": "Textiles",
+      "BoundsMin": [
+        -0.375,
+        -0.14875,
+        -0.2225
+      ],
+      "BoundsMax": [
+        0.375,
+        0.14875,
+        0.2225
+      ],
+      "Triangles": 360
+    },
+    {
+      "ItemId": "item.nettle_cloth",
+      "Name": "Nettle cloth",
+      "Model": "NettleCloth",
+      "Key": "nettle_cloth",
+      "Category": "Material",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/NettleCloth.obj",
+      "PrefabPath": "Tier01/Crafted/NettleCloth",
+      "RecipeId": "recipe.material.nettle_cloth",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/TextilesPalette.png",
+      "PaletteFamily": "Textiles",
+      "BoundsMin": [
+        -0.375,
+        -0.14875,
+        -0.2225
+      ],
+      "BoundsMax": [
+        0.375,
+        0.14875,
+        0.2225
+      ],
+      "Triangles": 360
+    },
+    {
+      "ItemId": "item.fine_hemp_cloth",
+      "Name": "Fine hemp cloth",
+      "Model": "FineHempCloth",
+      "Key": "fine_hemp_cloth",
+      "Category": "Material",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/FineHempCloth.obj",
+      "PrefabPath": "Tier01/Crafted/FineHempCloth",
+      "RecipeId": "recipe.material.fine_hemp_cloth",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/TextilesPalette.png",
+      "PaletteFamily": "Textiles",
+      "BoundsMin": [
+        -0.375,
+        -0.160915,
+        -0.230196
+      ],
+      "BoundsMax": [
+        0.375,
+        0.160915,
+        0.230196
+      ],
+      "Triangles": 2760
+    },
+    {
+      "ItemId": "item.cured_rabbit_pelt",
+      "Name": "Cured rabbit pelt",
+      "Model": "CuredRabbitPelt",
+      "Key": "cured_rabbit_pelt",
+      "Category": "Material",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/CuredRabbitPelt.obj",
+      "PrefabPath": "Tier01/Crafted/CuredRabbitPelt",
+      "RecipeId": "recipe.material.cured_rabbit_pelt",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/ProcessedHidePalette.png",
+      "PaletteFamily": "ProcessedHide",
+      "BoundsMin": [
+        -0.433472,
+        -0.055,
+        -0.321317
+      ],
+      "BoundsMax": [
+        0.433472,
+        0.055,
+        0.321317
+      ],
+      "Triangles": 412
+    },
+    {
+      "ItemId": "item.fine_rabbit_pelt",
+      "Name": "Fine rabbit pelt",
+      "Model": "FineRabbitPelt",
+      "Key": "fine_rabbit_pelt",
+      "Category": "Material",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/FineRabbitPelt.obj",
+      "PrefabPath": "Tier01/Crafted/FineRabbitPelt",
+      "RecipeId": "recipe.material.fine_rabbit_pelt",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/ProcessedHidePalette.png",
+      "PaletteFamily": "ProcessedHide",
+      "BoundsMin": [
+        -0.433472,
+        -0.055,
+        -0.321317
+      ],
+      "BoundsMax": [
+        0.433472,
+        0.055,
+        0.321317
+      ],
+      "Triangles": 1308
+    },
+    {
+      "ItemId": "item.rabbit_leather",
+      "Name": "Rabbit leather",
+      "Model": "RabbitLeather",
+      "Key": "rabbit_leather",
+      "Category": "Material",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/RabbitLeather.obj",
+      "PrefabPath": "Tier01/Crafted/RabbitLeather",
+      "RecipeId": "recipe.material.rabbit_leather",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/LeatherPalette.png",
+      "PaletteFamily": "Leather",
+      "BoundsMin": [
+        -0.433472,
+        -0.0625,
+        -0.321317
+      ],
+      "BoundsMax": [
+        0.433472,
+        0.0625,
+        0.321317
+      ],
+      "Triangles": 316
+    },
+    {
+      "ItemId": "item.fine_rabbit_leather",
+      "Name": "Fine rabbit leather",
+      "Model": "FineRabbitLeather",
+      "Key": "fine_rabbit_leather",
+      "Category": "Material",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/FineRabbitLeather.obj",
+      "PrefabPath": "Tier01/Crafted/FineRabbitLeather",
+      "RecipeId": "recipe.material.fine_rabbit_leather",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/LeatherPalette.png",
+      "PaletteFamily": "Leather",
+      "BoundsMin": [
+        -0.433472,
+        -0.0625,
+        -0.321317
+      ],
+      "BoundsMax": [
+        0.433472,
+        0.0625,
+        0.321317
+      ],
+      "Triangles": 1212
+    },
+    {
+      "ItemId": "item.plant_stuffing",
+      "Name": "Plant stuffing",
+      "Model": "PlantStuffing",
+      "Key": "plant_stuffing",
+      "Category": "Material",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/PlantStuffing.obj",
+      "PrefabPath": "Tier01/Crafted/PlantStuffing",
+      "RecipeId": "recipe.material.plant_stuffing",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/FibrePalette.png",
+      "PaletteFamily": "Fibre",
+      "BoundsMin": [
+        -0.309934,
+        -0.14,
+        -0.269761
+      ],
+      "BoundsMax": [
+        0.309934,
+        0.14,
+        0.269761
+      ],
+      "Triangles": 420
+    },
+    {
+      "ItemId": "item.pine_beam",
+      "Name": "Pine beam",
+      "Model": "PineBeam",
+      "Key": "pine_beam",
+      "Category": "Material",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/PineBeam.obj",
+      "PrefabPath": "Tier01/Crafted/PineBeam",
+      "RecipeId": "recipe.material.pine_beam",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/TimberPalette.png",
+      "PaletteFamily": "Timber",
+      "BoundsMin": [
+        -0.55,
+        -0.152321,
+        -0.157321
+      ],
+      "BoundsMax": [
+        0.55,
+        0.152321,
+        0.157321
+      ],
+      "Triangles": 1508
+    },
+    {
+      "ItemId": "item.pine_panel",
+      "Name": "Pine panel",
+      "Model": "PinePanel",
+      "Key": "pine_panel",
+      "Category": "Material",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/PinePanel.obj",
+      "PrefabPath": "Tier01/Crafted/PinePanel",
+      "RecipeId": "recipe.material.pine_panel",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/TimberPalette.png",
+      "PaletteFamily": "Timber",
+      "BoundsMin": [
+        -0.39,
+        -0.325,
+        -0.065
+      ],
+      "BoundsMax": [
+        0.39,
+        0.325,
+        0.065
+      ],
+      "Triangles": 864
+    },
+    {
+      "ItemId": "item.limestone_tiles",
+      "Name": "Limestone tiles",
+      "Model": "LimestoneTiles",
+      "Key": "limestone_tiles",
+      "Category": "Material",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/LimestoneTiles.obj",
+      "PrefabPath": "Tier01/Crafted/LimestoneTiles",
+      "RecipeId": "recipe.material.limestone_tiles",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/MineralPalette.png",
+      "PaletteFamily": "Mineral",
+      "BoundsMin": [
+        -0.34,
+        -0.09,
+        -0.18
+      ],
+      "BoundsMax": [
+        0.34,
+        0.09,
+        0.18
+      ],
+      "Triangles": 180
+    },
+    {
+      "ItemId": "item.polished_pebble",
+      "Name": "Polished pebble",
+      "Model": "PolishedPebble",
+      "Key": "polished_pebble",
+      "Category": "Material",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/PolishedPebble.obj",
+      "PrefabPath": "Tier01/Crafted/PolishedPebble",
+      "RecipeId": "recipe.material.polished_pebble",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/MineralPalette.png",
+      "PaletteFamily": "Mineral",
+      "BoundsMin": [
+        -0.266296,
+        -0.22,
+        -0.152169
+      ],
+      "BoundsMax": [
+        0.266296,
+        0.22,
+        0.152169
+      ],
+      "Triangles": 224
+    },
+    {
+      "ItemId": "item.fired_bricks",
+      "Name": "Fired bricks",
+      "Model": "FiredBricks",
+      "Key": "fired_bricks",
+      "Category": "Material",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/FiredBricks.obj",
+      "PrefabPath": "Tier01/Crafted/FiredBricks",
+      "RecipeId": "recipe.material.fired_bricks",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/PotteryPalette.png",
+      "PaletteFamily": "Pottery",
+      "BoundsMin": [
+        -0.34,
+        -0.17,
+        -0.18
+      ],
+      "BoundsMax": [
+        0.34,
+        0.17,
+        0.18
+      ],
+      "Triangles": 540
+    },
+    {
+      "ItemId": "item.clay_cup",
+      "Name": "Clay cup",
+      "Model": "ClayCup",
+      "Key": "clay_cup",
+      "Category": "Material",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/ClayCup.obj",
+      "PrefabPath": "Tier01/Crafted/ClayCup",
+      "RecipeId": "recipe.material.clay_cup",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/PotteryPalette.png",
+      "PaletteFamily": "Pottery",
+      "BoundsMin": [
+        -0.324861,
+        -0.2425,
+        -0.24
+      ],
+      "BoundsMax": [
+        0.324861,
+        0.2425,
+        0.24
+      ],
+      "Triangles": 644
+    },
+    {
+      "ItemId": "ingredient.wheat_flour",
+      "Name": "Wheat flour",
+      "Model": "WheatFlour",
+      "Key": "wheat_flour",
+      "Category": "Material",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/WheatFlour.obj",
+      "PrefabPath": "Tier01/Crafted/WheatFlour",
+      "RecipeId": "recipe.material.wheat_flour",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/FlourPalette.png",
+      "PaletteFamily": "Flour",
+      "BoundsMin": [
+        -0.4,
+        -0.1975,
+        -0.3
+      ],
+      "BoundsMax": [
+        0.4,
+        0.1975,
+        0.3
+      ],
+      "Triangles": 292
+    },
+    {
+      "ItemId": "item.reed_braid",
+      "Name": "Reed braid",
+      "Model": "ReedBraid",
+      "Key": "reed_braid",
+      "Category": "Material",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/ReedBraid.obj",
+      "PrefabPath": "Tier01/Crafted/ReedBraid",
+      "RecipeId": "recipe.material.reed_braid",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/FibrePalette.png",
+      "PaletteFamily": "Fibre",
+      "BoundsMin": [
+        -0.070327,
+        -0.418258,
+        -0.067432
+      ],
+      "BoundsMax": [
+        0.070327,
+        0.418258,
+        0.067432
+      ],
+      "Triangles": 1490
+    },
+    {
+      "ItemId": "item.mortar",
+      "Name": "Mortar",
+      "Model": "Mortar",
+      "Key": "mortar",
+      "Category": "Material",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/Mortar.obj",
+      "PrefabPath": "Tier01/Crafted/Mortar",
+      "RecipeId": "recipe.material.mortar",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/MineralPalette.png",
+      "PaletteFamily": "Mineral",
+      "BoundsMin": [
+        -0.4,
+        -0.1975,
+        -0.3
+      ],
+      "BoundsMax": [
+        0.4,
+        0.1975,
+        0.3
+      ],
+      "Triangles": 322
+    },
+    {
+      "ItemId": "tool.pine_axe.normal",
+      "Name": "Pine axe",
+      "Model": "PineAxeNormal",
+      "Key": "pine_axe_normal",
+      "Category": "Tool",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/PineAxeNormal.obj",
+      "PrefabPath": "Tier01/Crafted/PineAxeNormal",
+      "RecipeId": "recipe.tool.pine_axe_normal",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/PineToolsPalette.png",
+      "PaletteFamily": "PineTools",
+      "BoundsMin": [
+        -0.282211,
+        -0.53237,
+        -0.064578
+      ],
+      "BoundsMax": [
+        0.282211,
+        0.53237,
+        0.064578
+      ],
+      "Triangles": 372
+    },
+    {
+      "ItemId": "item.pine_slingshot_normal",
+      "Name": "Pine slingshot",
+      "Model": "PineSlingshotNormal",
+      "Key": "pine_slingshot_normal",
+      "Category": "Tool",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/PineSlingshotNormal.obj",
+      "PrefabPath": "Tier01/Crafted/PineSlingshotNormal",
+      "RecipeId": "recipe.tool.pine_slingshot_normal",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/PineToolsPalette.png",
+      "PaletteFamily": "PineTools",
+      "BoundsMin": [
+        -0.279175,
+        -0.404138,
+        -0.111366
+      ],
+      "BoundsMax": [
+        0.279175,
+        0.404138,
+        0.111366
+      ],
+      "Triangles": 908
+    },
+    {
+      "ItemId": "item.pine_rod_normal",
+      "Name": "Pine rod",
+      "Model": "PineRodNormal",
+      "Key": "pine_rod_normal",
+      "Category": "Tool",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/PineRodNormal.obj",
+      "PrefabPath": "Tier01/Crafted/PineRodNormal",
+      "RecipeId": "recipe.tool.pine_rod_normal",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/PineToolsPalette.png",
+      "PaletteFamily": "PineTools",
+      "BoundsMin": [
+        -0.298385,
+        -0.779323,
+        -0.019053
+      ],
+      "BoundsMax": [
+        0.298385,
+        0.779323,
+        0.019053
+      ],
+      "Triangles": 314
+    },
+    {
+      "ItemId": "item.rabbit_hat",
+      "Name": "Rabbit-pelt hat",
+      "Model": "RabbitHat",
+      "Key": "rabbit_hat",
+      "Category": "Wearable",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/RabbitHat.obj",
+      "PrefabPath": "Tier01/Crafted/RabbitHat",
+      "RecipeId": "recipe.wearable.rabbit_hat",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/PeltGearPalette.png",
+      "PaletteFamily": "PeltGear",
+      "BoundsMin": [
+        -0.395,
+        -0.3175,
+        -0.270893
+      ],
+      "BoundsMax": [
+        0.395,
+        0.3175,
+        0.270893
+      ],
+      "Triangles": 904
+    },
+    {
+      "ItemId": "item.rabbit_boots",
+      "Name": "Rabbit-pelt boots",
+      "Model": "RabbitBoots",
+      "Key": "rabbit_boots",
+      "Category": "Wearable",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/RabbitBoots.obj",
+      "PrefabPath": "Tier01/Crafted/RabbitBoots",
+      "RecipeId": "recipe.wearable.rabbit_boots",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/PeltGearPalette.png",
+      "PaletteFamily": "PeltGear",
+      "BoundsMin": [
+        -0.385,
+        -0.2825,
+        -0.142397
+      ],
+      "BoundsMax": [
+        0.385,
+        0.2825,
+        0.142397
+      ],
+      "Triangles": 592
+    },
+    {
+      "ItemId": "item.hemp_shirt",
+      "Name": "Hemp shirt",
+      "Model": "HempShirt",
+      "Key": "hemp_shirt",
+      "Category": "Wearable",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/HempShirt.obj",
+      "PrefabPath": "Tier01/Crafted/HempShirt",
+      "RecipeId": "recipe.wearable.hemp_shirt",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/TextileGearPalette.png",
+      "PaletteFamily": "TextileGear",
+      "BoundsMin": [
+        -0.52,
+        -0.34,
+        -0.122
+      ],
+      "BoundsMax": [
+        0.52,
+        0.34,
+        0.122
+      ],
+      "Triangles": 1020
+    },
+    {
+      "ItemId": "item.hemp_pants",
+      "Name": "Hemp pants",
+      "Model": "HempPants",
+      "Key": "hemp_pants",
+      "Category": "Wearable",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/HempPants.obj",
+      "PrefabPath": "Tier01/Crafted/HempPants",
+      "RecipeId": "recipe.wearable.hemp_pants",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/TextileGearPalette.png",
+      "PaletteFamily": "TextileGear",
+      "BoundsMin": [
+        -0.31,
+        -0.4,
+        -0.13366
+      ],
+      "BoundsMax": [
+        0.31,
+        0.4,
+        0.13366
+      ],
+      "Triangles": 1196
+    },
+    {
+      "ItemId": "item.starter_backpack",
+      "Name": "Starter backpack",
+      "Model": "StarterBackpack",
+      "Key": "starter_backpack",
+      "Category": "Wearable",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/StarterBackpack.obj",
+      "PrefabPath": "Tier01/Crafted/StarterBackpack",
+      "RecipeId": "recipe.wearable.starter_backpack",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/TextileGearPalette.png",
+      "PaletteFamily": "TextileGear",
+      "BoundsMin": [
+        -0.3,
+        -0.431513,
+        -0.216789
+      ],
+      "BoundsMax": [
+        0.3,
+        0.431513,
+        0.216789
+      ],
+      "Triangles": 1160
+    },
+    {
+      "ItemId": "item.apple_juice",
+      "Name": "Apple juice",
+      "Model": "AppleJuice",
+      "Key": "apple_juice",
+      "Category": "Food",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/AppleJuice.obj",
+      "PrefabPath": "Tier01/Crafted/AppleJuice",
+      "RecipeId": "recipe.food.apple_juice",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/JuiceVesselsPalette.png",
+      "PaletteFamily": "JuiceVessels",
+      "BoundsMin": [
+        -0.24,
+        -0.2575,
+        -0.24
+      ],
+      "BoundsMax": [
+        0.24,
+        0.2575,
+        0.24
+      ],
+      "Triangles": 496
+    },
+    {
+      "ItemId": "item.roasted_mushrooms",
+      "Name": "Roasted mushrooms",
+      "Model": "RoastedMushrooms",
+      "Key": "roasted_mushrooms",
+      "Category": "Food",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/RoastedMushrooms.obj",
+      "PrefabPath": "Tier01/Crafted/RoastedMushrooms",
+      "RecipeId": "recipe.food.roasted_mushrooms",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/PreparedFoodPalette.png",
+      "PaletteFamily": "PreparedFood",
+      "BoundsMin": [
+        -0.4,
+        -0.225,
+        -0.223148
+      ],
+      "BoundsMax": [
+        0.4,
+        0.225,
+        0.223148
+      ],
+      "Triangles": 588
+    },
+    {
+      "ItemId": "item.berry_oat_cakes",
+      "Name": "Berry oat cakes",
+      "Model": "BerryOatCakes",
+      "Key": "berry_oat_cakes",
+      "Category": "Food",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/BerryOatCakes.obj",
+      "PrefabPath": "Tier01/Crafted/BerryOatCakes",
+      "RecipeId": "recipe.food.berry_oat_cakes",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/PreparedFoodPalette.png",
+      "PaletteFamily": "PreparedFood",
+      "BoundsMin": [
+        -0.36,
+        -0.1025,
+        -0.243254
+      ],
+      "BoundsMax": [
+        0.36,
+        0.1025,
+        0.243254
+      ],
+      "Triangles": 728
+    },
+    {
+      "ItemId": "item.roasted_rabbit",
+      "Name": "Roasted rabbit",
+      "Model": "RoastedRabbit",
+      "Key": "roasted_rabbit",
+      "Category": "Food",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/RoastedRabbit.obj",
+      "PrefabPath": "Tier01/Crafted/RoastedRabbit",
+      "RecipeId": "recipe.food.roasted_rabbit",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/PreparedFoodPalette.png",
+      "PaletteFamily": "PreparedFood",
+      "BoundsMin": [
+        -0.48,
+        -0.17,
+        -0.190211
+      ],
+      "BoundsMax": [
+        0.48,
+        0.17,
+        0.190211
+      ],
+      "Triangles": 372
+    },
+    {
+      "ItemId": "item.herb_trout",
+      "Name": "Herb trout",
+      "Model": "HerbTrout",
+      "Key": "herb_trout",
+      "Category": "Food",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/HerbTrout.obj",
+      "PrefabPath": "Tier01/Crafted/HerbTrout",
+      "RecipeId": "recipe.food.herb_trout",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/PreparedFoodPalette.png",
+      "PaletteFamily": "PreparedFood",
+      "BoundsMin": [
+        -0.65,
+        -0.194375,
+        -0.134375
+      ],
+      "BoundsMax": [
+        0.65,
+        0.194375,
+        0.134375
+      ],
+      "Triangles": 758
+    },
+    {
+      "ItemId": "item.roasted_rainbow_trout",
+      "Name": "Roasted rainbow trout",
+      "Model": "RoastedRainbowTrout",
+      "Key": "roasted_rainbow_trout",
+      "Category": "Food",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/RoastedRainbowTrout.obj",
+      "PrefabPath": "Tier01/Crafted/RoastedRainbowTrout",
+      "RecipeId": "recipe.food.roasted_rainbow_trout",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/PreparedFoodPalette.png",
+      "PaletteFamily": "PreparedFood",
+      "BoundsMin": [
+        -0.65,
+        -0.194375,
+        -0.130825
+      ],
+      "BoundsMax": [
+        0.65,
+        0.194375,
+        0.130825
+      ],
+      "Triangles": 686
+    },
+    {
+      "ItemId": "item.roasted_largemouth_bass",
+      "Name": "Roasted largemouth bass",
+      "Model": "RoastedLargemouthBass",
+      "Key": "roasted_largemouth_bass",
+      "Category": "Food",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/RoastedLargemouthBass.obj",
+      "PrefabPath": "Tier01/Crafted/RoastedLargemouthBass",
+      "RecipeId": "recipe.food.roasted_largemouth_bass",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/PreparedFoodPalette.png",
+      "PaletteFamily": "PreparedFood",
+      "BoundsMin": [
+        -0.65,
+        -0.25075,
+        -0.130825
+      ],
+      "BoundsMax": [
+        0.65,
+        0.25075,
+        0.130825
+      ],
+      "Triangles": 542
+    },
+    {
+      "ItemId": "item.roasted_bluegill",
+      "Name": "Roasted bluegill",
+      "Model": "RoastedBluegill",
+      "Key": "roasted_bluegill",
+      "Category": "Food",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/RoastedBluegill.obj",
+      "PrefabPath": "Tier01/Crafted/RoastedBluegill",
+      "RecipeId": "recipe.food.roasted_bluegill",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/PreparedFoodPalette.png",
+      "PaletteFamily": "PreparedFood",
+      "BoundsMin": [
+        -0.65,
+        -0.346625,
+        -0.135825
+      ],
+      "BoundsMax": [
+        0.65,
+        0.346625,
+        0.135825
+      ],
+      "Triangles": 638
+    },
+    {
+      "ItemId": "item.roasted_yellow_perch",
+      "Name": "Roasted yellow perch",
+      "Model": "RoastedYellowPerch",
+      "Key": "roasted_yellow_perch",
+      "Category": "Food",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/RoastedYellowPerch.obj",
+      "PrefabPath": "Tier01/Crafted/RoastedYellowPerch",
+      "RecipeId": "recipe.food.roasted_yellow_perch",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/PreparedFoodPalette.png",
+      "PaletteFamily": "PreparedFood",
+      "BoundsMin": [
+        -0.65,
+        -0.194375,
+        -0.130825
+      ],
+      "BoundsMax": [
+        0.65,
+        0.194375,
+        0.130825
+      ],
+      "Triangles": 542
+    },
+    {
+      "ItemId": "item.strawberry_cow_yogurt_drink",
+      "Name": "Strawberry cow-yogurt drink",
+      "Model": "StrawberryCowYogurtDrink",
+      "Key": "strawberry_cow_yogurt_drink",
+      "Category": "Food",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/StrawberryCowYogurtDrink.obj",
+      "PrefabPath": "Tier01/Crafted/StrawberryCowYogurtDrink",
+      "RecipeId": "recipe.food.strawberry_cow_yogurt_drink",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/JuiceVesselsPalette.png",
+      "PaletteFamily": "JuiceVessels",
+      "BoundsMin": [
+        -0.24,
+        -0.27,
+        -0.24
+      ],
+      "BoundsMax": [
+        0.24,
+        0.27,
+        0.24
+      ],
+      "Triangles": 636
+    },
+    {
+      "ItemId": "item.cow_cheese_tart",
+      "Name": "Cow-cheese tart",
+      "Model": "CowCheeseTart",
+      "Key": "cow_cheese_tart",
+      "Category": "Food",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/CowCheeseTart.obj",
+      "PrefabPath": "Tier01/Crafted/CowCheeseTart",
+      "RecipeId": "recipe.food.cow_cheese_tart",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/PreparedFoodPalette.png",
+      "PaletteFamily": "PreparedFood",
+      "BoundsMin": [
+        -0.398709,
+        -0.145,
+        -0.394193
+      ],
+      "BoundsMax": [
+        0.398709,
+        0.145,
+        0.394193
+      ],
+      "Triangles": 1188
+    },
+    {
+      "ItemId": "ingredient.cow_cream",
+      "Name": "Cow cream",
+      "Model": "CowCream",
+      "Key": "cow_cream",
+      "Category": "Food",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/CowCream.obj",
+      "PrefabPath": "Tier01/Crafted/CowCream",
+      "RecipeId": "recipe.food.cow_cream",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/PreparedFoodPalette.png",
+      "PaletteFamily": "PreparedFood",
+      "BoundsMin": [
+        -0.24,
+        -0.2575,
+        -0.24
+      ],
+      "BoundsMax": [
+        0.24,
+        0.2575,
+        0.24
+      ],
+      "Triangles": 1072
+    },
+    {
+      "ItemId": "ingredient.cow_butter",
+      "Name": "Cow butter",
+      "Model": "CowButter",
+      "Key": "cow_butter",
+      "Category": "Food",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/CowButter.obj",
+      "PrefabPath": "Tier01/Crafted/CowButter",
+      "RecipeId": "recipe.food.cow_butter",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/PreparedFoodPalette.png",
+      "PaletteFamily": "PreparedFood",
+      "BoundsMin": [
+        -0.23,
+        -0.12,
+        -0.145
+      ],
+      "BoundsMax": [
+        0.23,
+        0.12,
+        0.145
+      ],
+      "Triangles": 228
+    },
+    {
+      "ItemId": "ingredient.cow_cheese",
+      "Name": "Cow cheese",
+      "Model": "CowCheese",
+      "Key": "cow_cheese",
+      "Category": "Food",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/CowCheese.obj",
+      "PrefabPath": "Tier01/Crafted/CowCheese",
+      "RecipeId": "recipe.food.cow_cheese",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/PreparedFoodPalette.png",
+      "PaletteFamily": "PreparedFood",
+      "BoundsMin": [
+        -0.32,
+        -0.13,
+        -0.32
+      ],
+      "BoundsMax": [
+        0.32,
+        0.13,
+        0.32
+      ],
+      "Triangles": 116
+    },
+    {
+      "ItemId": "ingredient.goat_cheese",
+      "Name": "Goat cheese",
+      "Model": "GoatCheese",
+      "Key": "goat_cheese",
+      "Category": "Food",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/GoatCheese.obj",
+      "PrefabPath": "Tier01/Crafted/GoatCheese",
+      "RecipeId": "recipe.food.goat_cheese",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/PreparedFoodPalette.png",
+      "PaletteFamily": "PreparedFood",
+      "BoundsMin": [
+        -0.32,
+        -0.13,
+        -0.32
+      ],
+      "BoundsMax": [
+        0.32,
+        0.13,
+        0.32
+      ],
+      "Triangles": 880
+    },
+    {
+      "ItemId": "ingredient.mixed_milk_cheese",
+      "Name": "Mixed-milk cheese",
+      "Model": "MixedMilkCheese",
+      "Key": "mixed_milk_cheese",
+      "Category": "Food",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/MixedMilkCheese.obj",
+      "PrefabPath": "Tier01/Crafted/MixedMilkCheese",
+      "RecipeId": "recipe.food.mixed_milk_cheese",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/PreparedFoodPalette.png",
+      "PaletteFamily": "PreparedFood",
+      "BoundsMin": [
+        -0.32,
+        -0.1425,
+        -0.32
+      ],
+      "BoundsMax": [
+        0.32,
+        0.1425,
+        0.32
+      ],
+      "Triangles": 528
+    },
+    {
+      "ItemId": "ingredient.cow_yogurt",
+      "Name": "Cow yogurt",
+      "Model": "CowYogurt",
+      "Key": "cow_yogurt",
+      "Category": "Food",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/CowYogurt.obj",
+      "PrefabPath": "Tier01/Crafted/CowYogurt",
+      "RecipeId": "recipe.food.cow_yogurt",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/PreparedFoodPalette.png",
+      "PaletteFamily": "PreparedFood",
+      "BoundsMin": [
+        -0.24,
+        -0.2575,
+        -0.24
+      ],
+      "BoundsMax": [
+        0.24,
+        0.2575,
+        0.24
+      ],
+      "Triangles": 728
+    },
+    {
+      "ItemId": "item.toasted_pine_nuts",
+      "Name": "Toasted pine nuts",
+      "Model": "ToastedPineNuts",
+      "Key": "toasted_pine_nuts",
+      "Category": "Food",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/ToastedPineNuts.obj",
+      "PrefabPath": "Tier01/Crafted/ToastedPineNuts",
+      "RecipeId": "recipe.food.toasted_pine_nuts",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/PreparedFoodPalette.png",
+      "PaletteFamily": "PreparedFood",
+      "BoundsMin": [
+        -0.163886,
+        -0.09,
+        -0.250047
+      ],
+      "BoundsMax": [
+        0.163886,
+        0.09,
+        0.250047
+      ],
+      "Triangles": 976
+    },
+    {
+      "ItemId": "item.roasted_shrimp",
+      "Name": "Roasted shrimp",
+      "Model": "RoastedShrimp",
+      "Key": "roasted_shrimp",
+      "Category": "Food",
+      "SourcePath": "Assets/_Game/Art/Crafting/BalloonExclusive/RoastedShrimp.obj",
+      "PrefabPath": "BalloonExclusive/Items/RoastedShrimp",
+      "RecipeId": "recipe.food.roasted_shrimp",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/PreparedFoodPalette.png",
+      "PaletteFamily": "PreparedFood",
+      "BoundsMin": [
+        -0.442794,
+        -0.249601,
+        -0.0807
+      ],
+      "BoundsMax": [
+        0.442794,
+        0.249601,
+        0.0807
+      ],
+      "Triangles": 604
+    },
+    {
+      "ItemId": "item.shrimp_pie",
+      "Name": "Shrimp pie",
+      "Model": "ShrimpPie",
+      "Key": "shrimp_pie",
+      "Category": "Food",
+      "SourcePath": "Assets/_Game/Art/Crafting/BalloonExclusive/ShrimpPie.obj",
+      "PrefabPath": "BalloonExclusive/Items/ShrimpPie",
+      "RecipeId": "recipe.food.shrimp_pie",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/PreparedFoodPalette.png",
+      "PaletteFamily": "PreparedFood",
+      "BoundsMin": [
+        -0.398709,
+        -0.200106,
+        -0.394193
+      ],
+      "BoundsMax": [
+        0.398709,
+        0.200106,
+        0.394193
+      ],
+      "Triangles": 1612
+    },
+    {
+      "ItemId": "item.apple_oat_compote",
+      "Name": "Apple-oat compote",
+      "Model": "AppleOatCompote",
+      "Key": "apple_oat_compote",
+      "Category": "Food",
+      "SourcePath": "Assets/_Game/Art/Crafting/BalloonExclusive/AppleOatCompote.obj",
+      "PrefabPath": "BalloonExclusive/Items/AppleOatCompote",
+      "RecipeId": "recipe.food.apple_oat_compote",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/PreparedFoodPalette.png",
+      "PaletteFamily": "PreparedFood",
+      "BoundsMin": [
+        -0.36,
+        -0.1825,
+        -0.36
+      ],
+      "BoundsMax": [
+        0.36,
+        0.1825,
+        0.36
+      ],
+      "Triangles": 1048
+    },
+    {
+      "ItemId": "item.red_berry_oat_porridge",
+      "Name": "Red-berry oat porridge",
+      "Model": "RedBerryOatPorridge",
+      "Key": "red_berry_oat_porridge",
+      "Category": "Food",
+      "SourcePath": "Assets/_Game/Art/Crafting/BalloonExclusive/RedBerryOatPorridge.obj",
+      "PrefabPath": "BalloonExclusive/Items/RedBerryOatPorridge",
+      "RecipeId": "recipe.food.red_berry_oat_porridge",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/PreparedFoodPalette.png",
+      "PaletteFamily": "PreparedFood",
+      "BoundsMin": [
+        -0.36,
+        -0.1825,
+        -0.36
+      ],
+      "BoundsMax": [
+        0.36,
+        0.1825,
+        0.36
+      ],
+      "Triangles": 1076
+    },
+    {
+      "ItemId": "item.premium_apple_pie",
+      "Name": "Premium apple pie",
+      "Model": "PremiumApplePie",
+      "Key": "premium_apple_pie",
+      "Category": "Food",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/PremiumApplePie.obj",
+      "PrefabPath": "Tier01/Crafted/PremiumApplePie",
+      "RecipeId": "recipe.food.premium_apple_pie",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/PreparedFoodPalette.png",
+      "PaletteFamily": "PreparedFood",
+      "BoundsMin": [
+        -0.398709,
+        -0.1545,
+        -0.394193
+      ],
+      "BoundsMax": [
+        0.398709,
+        0.1545,
+        0.394193
+      ],
+      "Triangles": 1544
+    },
+    {
+      "ItemId": "item.pine_bird",
+      "Name": "Pine bird sculpture",
+      "Model": "PineBird",
+      "Key": "pine_bird",
+      "Category": "Misc",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/PineBird.obj",
+      "PrefabPath": "Tier01/Crafted/PineBird",
+      "RecipeId": "recipe.misc.pine_bird",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/TimberPalette.png",
+      "PaletteFamily": "Timber",
+      "BoundsMin": [
+        -0.341859,
+        -0.2875,
+        -0.157569
+      ],
+      "BoundsMax": [
+        0.341859,
+        0.2875,
+        0.157569
+      ],
+      "Triangles": 408
+    },
+    {
+      "ItemId": "item.cord_charm",
+      "Name": "Cord charm",
+      "Model": "CordCharm",
+      "Key": "cord_charm",
+      "Category": "Misc",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/CordCharm.obj",
+      "PrefabPath": "Tier01/Crafted/CordCharm",
+      "RecipeId": "recipe.misc.cord_charm",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/TimberPalette.png",
+      "PaletteFamily": "Timber",
+      "BoundsMin": [
+        -0.244915,
+        -0.436733,
+        -0.100159
+      ],
+      "BoundsMax": [
+        0.244915,
+        0.436733,
+        0.100159
+      ],
+      "Triangles": 1248
+    },
+    {
+      "ItemId": "item.rabbit_toy",
+      "Name": "Rabbit toy",
+      "Model": "RabbitToy",
+      "Key": "rabbit_toy",
+      "Category": "Misc",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/RabbitToy.obj",
+      "PrefabPath": "Tier01/Crafted/RabbitToy",
+      "RecipeId": "recipe.misc.rabbit_toy",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/ToyMiscPalette.png",
+      "PaletteFamily": "ToyMisc",
+      "BoundsMin": [
+        -0.270546,
+        -0.49,
+        -0.161285
+      ],
+      "BoundsMax": [
+        0.270546,
+        0.49,
+        0.161285
+      ],
+      "Triangles": 836
+    },
+    {
+      "ItemId": "item.pinecone_ornament",
+      "Name": "Pine-cone ornament",
+      "Model": "PineconeOrnament",
+      "Key": "pinecone_ornament",
+      "Category": "Misc",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/PineconeOrnament.obj",
+      "PrefabPath": "Tier01/Crafted/PineconeOrnament",
+      "RecipeId": "recipe.misc.pinecone_ornament",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/WoodenMiscPalette.png",
+      "PaletteFamily": "WoodenMisc",
+      "BoundsMin": [
+        -0.27,
+        -0.44867,
+        -0.178827
+      ],
+      "BoundsMax": [
+        0.27,
+        0.44867,
+        0.178827
+      ],
+      "Triangles": 1640
+    },
+    {
+      "ItemId": "item.pinecone_rabbit",
+      "Name": "Pine-cone rabbit ornament",
+      "Model": "PineconeRabbit",
+      "Key": "pinecone_rabbit",
+      "Category": "Misc",
+      "SourcePath": "Assets/_Game/Art/Crafting/BalloonExclusive/PineconeRabbit.obj",
+      "PrefabPath": "BalloonExclusive/Items/PineconeRabbit",
+      "RecipeId": "recipe.misc.pinecone_rabbit",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/ToyMiscPalette.png",
+      "PaletteFamily": "ToyMisc",
+      "BoundsMin": [
+        -0.25,
+        -0.48,
+        -0.196064
+      ],
+      "BoundsMax": [
+        0.25,
+        0.48,
+        0.196064
+      ],
+      "Triangles": 1494
+    },
+    {
+      "ItemId": "food.milk.cow",
+      "Name": "Cow milk",
+      "Model": "CowMilk",
+      "Key": "cow_milk",
+      "Category": "External",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/CowMilk.obj",
+      "PrefabPath": "Tier01/Crafted/CowMilk",
+      "RecipeId": "",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/CowMilkPalette.png",
+      "PaletteFamily": "CowMilk",
+      "BoundsMin": [
+        -0.356858,
+        -0.36,
+        -0.27
+      ],
+      "BoundsMax": [
+        0.356858,
+        0.36,
+        0.27
+      ],
+      "Triangles": 972
+    },
+    {
+      "ItemId": "food.milk.goat",
+      "Name": "Goat milk",
+      "Model": "GoatMilk",
+      "Key": "goat_milk",
+      "Category": "External",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/GoatMilk.obj",
+      "PrefabPath": "Tier01/Crafted/GoatMilk",
+      "RecipeId": "",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/GoatMilkPalette.png",
+      "PaletteFamily": "GoatMilk",
+      "BoundsMin": [
+        -0.356858,
+        -0.36,
+        -0.282278
+      ],
+      "BoundsMax": [
+        0.356858,
+        0.36,
+        0.282278
+      ],
+      "Triangles": 984
+    },
+    {
+      "ItemId": "ingredient.egg",
+      "Name": "Egg",
+      "Model": "Egg",
+      "Key": "egg",
+      "Category": "External",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/Egg.obj",
+      "PrefabPath": "Tier01/Crafted/Egg",
+      "RecipeId": "",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/RawEggPalette.png",
+      "PaletteFamily": "RawEgg",
+      "BoundsMin": [
+        -0.17,
+        -0.23,
+        -0.16168
+      ],
+      "BoundsMax": [
+        0.17,
+        0.23,
+        0.16168
+      ],
+      "Triangles": 160
+    },
+    {
+      "ItemId": "ingredient.shrimp",
+      "Name": "Shrimp",
+      "Model": "Shrimp",
+      "Key": "shrimp",
+      "Category": "External",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier01/Shrimp.obj",
+      "PrefabPath": "Tier01/Crafted/Shrimp",
+      "RecipeId": "",
+      "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/RawEggPalette.png",
+      "PaletteFamily": "RawEgg",
+      "BoundsMin": [
+        -0.442794,
+        -0.249601,
+        -0.062315
+      ],
+      "BoundsMax": [
+        0.442794,
+        0.249601,
+        0.062315
+      ],
+      "Triangles": 484
+    }
+  ],
+  "PaletteFamilies": [
+    {
+      "Name": "RawFishYellowPerch",
+      "Path": "Assets/_Game/Art/Items/Tier01Design/Palettes/RawFishYellowPerchPalette.png",
+      "DetailScale": 5,
+      "DetailStrength": 0.5
+    },
+    {
+      "Name": "RawFishLargemouthBass",
+      "Path": "Assets/_Game/Art/Items/Tier01Design/Palettes/RawFishLargemouthBassPalette.png",
+      "DetailScale": 5,
+      "DetailStrength": 0.5
+    },
+    {
+      "Name": "RawFishRainbowTrout",
+      "Path": "Assets/_Game/Art/Items/Tier01Design/Palettes/RawFishRainbowTroutPalette.png",
+      "DetailScale": 5,
+      "DetailStrength": 0.5
+    },
+    {
+      "Name": "HarvestOrganic",
+      "Path": "Assets/_Game/Art/Items/Tier01Design/Palettes/HarvestOrganicPalette.png",
+      "DetailScale": 5,
+      "DetailStrength": 0.5
+    },
+    {
+      "Name": "HarvestNuts",
+      "Path": "Assets/_Game/Art/Items/Tier01Design/Palettes/HarvestNutsPalette.png",
+      "DetailScale": 5,
+      "DetailStrength": 0.5
+    },
+    {
+      "Name": "HarvestTimber",
+      "Path": "Assets/_Game/Art/Items/Tier01Design/Palettes/HarvestTimberPalette.png",
+      "DetailScale": 5,
+      "DetailStrength": 0.5
+    },
+    {
+      "Name": "Timber",
+      "Path": "Assets/_Game/Art/Items/Tier01Design/Palettes/TimberPalette.png",
+      "DetailScale": 5,
+      "DetailStrength": 0.5
+    },
+    {
+      "Name": "Charcoal",
+      "Path": "Assets/_Game/Art/Items/Tier01Design/Palettes/CharcoalPalette.png",
+      "DetailScale": 5,
+      "DetailStrength": 0.5
+    },
+    {
+      "Name": "Fibre",
+      "Path": "Assets/_Game/Art/Items/Tier01Design/Palettes/FibrePalette.png",
+      "DetailScale": 5,
+      "DetailStrength": 0.5
+    },
+    {
+      "Name": "Textiles",
+      "Path": "Assets/_Game/Art/Items/Tier01Design/Palettes/TextilesPalette.png",
+      "DetailScale": 5,
+      "DetailStrength": 0.5
+    },
+    {
+      "Name": "ProcessedHide",
+      "Path": "Assets/_Game/Art/Items/Tier01Design/Palettes/ProcessedHidePalette.png",
+      "DetailScale": 5,
+      "DetailStrength": 0.5
+    },
+    {
+      "Name": "Leather",
+      "Path": "Assets/_Game/Art/Items/Tier01Design/Palettes/LeatherPalette.png",
+      "DetailScale": 5,
+      "DetailStrength": 0.5
+    },
+    {
+      "Name": "Mineral",
+      "Path": "Assets/_Game/Art/Items/Tier01Design/Palettes/MineralPalette.png",
+      "DetailScale": 5,
+      "DetailStrength": 0.5
+    },
+    {
+      "Name": "Pottery",
+      "Path": "Assets/_Game/Art/Items/Tier01Design/Palettes/PotteryPalette.png",
+      "DetailScale": 5,
+      "DetailStrength": 0.5
+    },
+    {
+      "Name": "Flour",
+      "Path": "Assets/_Game/Art/Items/Tier01Design/Palettes/FlourPalette.png",
+      "DetailScale": 5,
+      "DetailStrength": 0.5
+    },
+    {
+      "Name": "PineTools",
+      "Path": "Assets/_Game/Art/Items/Tier01Design/Palettes/PineToolsPalette.png",
+      "DetailScale": 5,
+      "DetailStrength": 0.5
+    },
+    {
+      "Name": "PeltGear",
+      "Path": "Assets/_Game/Art/Items/Tier01Design/Palettes/PeltGearPalette.png",
+      "DetailScale": 5,
+      "DetailStrength": 0.5
+    },
+    {
+      "Name": "TextileGear",
+      "Path": "Assets/_Game/Art/Items/Tier01Design/Palettes/TextileGearPalette.png",
+      "DetailScale": 5,
+      "DetailStrength": 0.5
+    },
+    {
+      "Name": "JuiceVessels",
+      "Path": "Assets/_Game/Art/Items/Tier01Design/Palettes/JuiceVesselsPalette.png",
+      "DetailScale": 5,
+      "DetailStrength": 0.5
+    },
+    {
+      "Name": "PreparedFood",
+      "Path": "Assets/_Game/Art/Items/Tier01Design/Palettes/PreparedFoodPalette.png",
+      "DetailScale": 5,
+      "DetailStrength": 0.5
+    },
+    {
+      "Name": "ToyMisc",
+      "Path": "Assets/_Game/Art/Items/Tier01Design/Palettes/ToyMiscPalette.png",
+      "DetailScale": 5,
+      "DetailStrength": 0.5
+    },
+    {
+      "Name": "WoodenMisc",
+      "Path": "Assets/_Game/Art/Items/Tier01Design/Palettes/WoodenMiscPalette.png",
+      "DetailScale": 5,
+      "DetailStrength": 0.5
+    },
+    {
+      "Name": "CowMilk",
+      "Path": "Assets/_Game/Art/Items/Tier01Design/Palettes/CowMilkPalette.png",
+      "DetailScale": 5,
+      "DetailStrength": 0.5
+    },
+    {
+      "Name": "GoatMilk",
+      "Path": "Assets/_Game/Art/Items/Tier01Design/Palettes/GoatMilkPalette.png",
+      "DetailScale": 5,
+      "DetailStrength": 0.5
+    },
+    {
+      "Name": "RawEgg",
+      "Path": "Assets/_Game/Art/Items/Tier01Design/Palettes/RawEggPalette.png",
+      "DetailScale": 5,
+      "DetailStrength": 0.5
+    }
+  ],
+  "OwningSourceHashes": {
+    "Assets/_Game/Art/Crafting/Tier01/Tier01Recipes.json": "8c0ea21617c003a16e2880610c8c8aa9189a0b828a08c526a65d9377bdae524c",
+    "Assets/_Game/Art/Crafting/BalloonExclusive/BalloonExclusiveManifest.json": "1c4e75dc3854970d20460108546076c7add94894c2f8587de7d210eceb778bb3",
+    "Assets/_Game/Scripts/Domain/Items/ItemModel.cs": "13c19081a091bbdf4fc6bf2f128bf4c51692bba4d1bed067e485610d1b95fdc6",
+    "Assets/_Game/Scripts/Domain/Items/Tier1CraftedItems.cs": "4b140a388e3fb274d881f8a1f98305fd9da73b7a5f14ec58c780cabfcd6f5419",
+    "Assets/_Game/Scripts/Domain/Crafting/Tier1Recipes.cs": "1bd2aa9e0da2e16b50221e37bd09aea15246f74df040ef81198ad3778a37d709"
+  },
+  "RecipeRows": 59,
+  "PreservedMushrooms": "Tier01/Crafted/Mushrooms"
+}

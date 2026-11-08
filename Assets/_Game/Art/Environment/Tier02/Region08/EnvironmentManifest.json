@@ -1,0 +1,452 @@
+{
+  "Number": 8,
+  "Name": "Amber Riverbanks",
+  "PaletteSize": 32,
+  "TrailColorRGB": [
+    150,
+    110,
+    70
+  ],
+  "Models": [
+    {
+      "Id": "env.tier02.region08.RiverbankBirch",
+      "Name": "RiverbankBirch",
+      "Category": "Tree",
+      "Triangles": 616,
+      "BoundsMin": [
+        -1.523604264283827,
+        0.0,
+        -1.2967985721996986
+      ],
+      "BoundsMax": [
+        1.3939340844116637,
+        6.336,
+        1.2526854718980254
+      ],
+      "FootprintRadius": 1.937,
+      "CastsShadows": true,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 9.94,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region08/RiverbankBirch"
+    },
+    {
+      "Id": "env.tier02.region08.AmberBirch",
+      "Name": "AmberBirch",
+      "Category": "Tree",
+      "Triangles": 616,
+      "BoundsMin": [
+        -1.182720418232136,
+        -0.009505789896235847,
+        -1.2387450554934376
+      ],
+      "BoundsMax": [
+        1.4905662697471076,
+        4.949999999999999,
+        1.052578621440443
+      ],
+      "FootprintRadius": 1.76,
+      "CastsShadows": true,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 9.76,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region08/AmberBirch"
+    },
+    {
+      "Id": "env.tier02.region08.RiverbankBirchSapling",
+      "Name": "RiverbankBirchSapling",
+      "Category": "Tree",
+      "Triangles": 616,
+      "BoundsMin": [
+        -0.41208840994507057,
+        0.0,
+        -0.4583007026283013
+      ],
+      "BoundsMax": [
+        0.5592667343516442,
+        2.1780000000000004,
+        0.4768783257941746
+      ],
+      "FootprintRadius": 0.674,
+      "CastsShadows": true,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 8.67,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region08/RiverbankBirchSapling"
+    },
+    {
+      "Id": "env.tier02.region08.AmberWillowShrub",
+      "Name": "AmberWillowShrub",
+      "Category": "Shrub",
+      "Triangles": 340,
+      "BoundsMin": [
+        -1.2314251992447112,
+        -0.027188928620469628,
+        -1.3969316870686725
+      ],
+      "BoundsMax": [
+        1.0,
+        0.984,
+        0.9782593811086445
+      ],
+      "FootprintRadius": 1.629,
+      "CastsShadows": true,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 4.63,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region08/AmberWillowShrub"
+    },
+    {
+      "Id": "env.tier02.region08.RiverScrub",
+      "Name": "RiverScrub",
+      "Category": "Shrub",
+      "Triangles": 340,
+      "BoundsMin": [
+        -0.8004263795090623,
+        -0.02829689094695217,
+        -0.9080055965946372
+      ],
+      "BoundsMax": [
+        0.6500000000000001,
+        0.574,
+        0.635868597720619
+      ],
+      "FootprintRadius": 1.059,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 4.06,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region08/RiverScrub"
+    },
+    {
+      "Id": "env.tier02.region08.AmberGrass",
+      "Name": "AmberGrass",
+      "Category": "GroundCover",
+      "Triangles": 24,
+      "BoundsMin": [
+        -0.21689786476401426,
+        0,
+        -0.3990919481175511
+      ],
+      "BoundsMax": [
+        0.44261424422876305,
+        0.7998634080074846,
+        0.329730640985984
+      ],
+      "FootprintRadius": 0.491,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.49,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region08/AmberGrass"
+    },
+    {
+      "Id": "env.tier02.region08.RiverbankFlowers",
+      "Name": "RiverbankFlowers",
+      "Category": "GroundCover",
+      "Triangles": 504,
+      "BoundsMin": [
+        -0.37933531638312296,
+        0,
+        -0.39683601516937944
+      ],
+      "BoundsMax": [
+        0.4074785071991792,
+        0.3807090815606172,
+        0.28559895295947174
+      ],
+      "FootprintRadius": 0.521,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.52,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region08/RiverbankFlowers"
+    },
+    {
+      "Id": "env.tier02.region08.TerraceReeds",
+      "Name": "TerraceReeds",
+      "Category": "GroundCover",
+      "Triangles": 468,
+      "BoundsMin": [
+        -0.5566818965250587,
+        -0.0010542132368925108,
+        -0.35333921582878886
+      ],
+      "BoundsMax": [
+        0.6679233730714033,
+        1.5538920369643312,
+        0.3487091396673157
+      ],
+      "FootprintRadius": 0.706,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.71,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region08/TerraceReeds"
+    },
+    {
+      "Id": "env.tier02.region08.RiverPebbleCluster",
+      "Name": "RiverPebbleCluster",
+      "Category": "Rock",
+      "Triangles": 280,
+      "BoundsMin": [
+        -1.2294125998975518,
+        0,
+        -0.8742793571667146
+      ],
+      "BoundsMax": [
+        1.2138784604808368,
+        0.30590437306762064,
+        0.903047603901276
+      ],
+      "FootprintRadius": 1.511,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 4.51,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region08/RiverPebbleCluster"
+    },
+    {
+      "Id": "env.tier02.region08.SandstoneRiverRock",
+      "Name": "SandstoneRiverRock",
+      "Category": "Rock",
+      "Triangles": 56,
+      "BoundsMin": [
+        -1.427627431696304,
+        0,
+        -1.0476167624693205
+      ],
+      "BoundsMax": [
+        1.2076041243177937,
+        1.03,
+        1.092168681397206
+      ],
+      "FootprintRadius": 1.697,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 4.7,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region08/SandstoneRiverRock"
+    },
+    {
+      "Id": "env.tier02.region08.BeaverDam",
+      "Name": "BeaverDam",
+      "Category": "Structure",
+      "Triangles": 856,
+      "BoundsMin": [
+        -2.1504709513848965,
+        -0.22500000000000003,
+        -0.55
+      ],
+      "BoundsMax": [
+        2.2296696022420144,
+        1.031275802783748,
+        0.55
+      ],
+      "FootprintRadius": 2.258,
+      "CastsShadows": true,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 6.26,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region08/BeaverDam"
+    },
+    {
+      "Id": "env.tier02.region08.RiverDriftwood",
+      "Name": "RiverDriftwood",
+      "Category": "Deadwood",
+      "Triangles": 56,
+      "BoundsMin": [
+        -1.1,
+        0.0,
+        -0.12802500789158705
+      ],
+      "BoundsMax": [
+        1.1,
+        0.3820298951173433,
+        0.35767796114028955
+      ],
+      "FootprintRadius": 1.126,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 4.13,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region08/RiverDriftwood"
+    },
+    {
+      "Id": "env.tier02.region08.RiverTerraceStep",
+      "Name": "RiverTerraceStep",
+      "Category": "Terrain",
+      "Triangles": 192,
+      "BoundsMin": [
+        -5.0,
+        0.0,
+        -5.0
+      ],
+      "BoundsMax": [
+        5.0,
+        1.6,
+        5.0
+      ],
+      "FootprintRadius": 7.071,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 10.07,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier02/Region08/RiverTerraceStep"
+    },
+    {
+      "Id": "env.tier02.region08.RiverTerraceBank",
+      "Name": "RiverTerraceBank",
+      "Category": "Terrain",
+      "Triangles": 160,
+      "BoundsMin": [
+        -4.0,
+        0.0,
+        -4.0
+      ],
+      "BoundsMax": [
+        4.0,
+        0.72,
+        4.0
+      ],
+      "FootprintRadius": 5.657,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 8.66,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier02/Region08/RiverTerraceBank"
+    },
+    {
+      "Id": "env.tier02.region08.AmberBankCut",
+      "Name": "AmberBankCut",
+      "Category": "Terrain",
+      "Triangles": 160,
+      "BoundsMin": [
+        -3.0,
+        0.0,
+        -5.0
+      ],
+      "BoundsMax": [
+        3.0,
+        1.2999999940366638,
+        5.0
+      ],
+      "FootprintRadius": 5.831,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 8.83,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier02/Region08/AmberBankCut"
+    },
+    {
+      "Id": "env.tier02.region08.RiverbankGroundPatch",
+      "Name": "RiverbankGroundPatch",
+      "Category": "Terrain",
+      "Triangles": 72,
+      "BoundsMin": [
+        -3.0,
+        0,
+        -3.0
+      ],
+      "BoundsMax": [
+        3.0,
+        0,
+        3.0
+      ],
+      "FootprintRadius": 4.243,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 7.24,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier02/Region08/RiverbankGroundPatch"
+    },
+    {
+      "Id": "env.tier02.region08.RiverSandbar",
+      "Name": "RiverSandbar",
+      "Category": "Terrain",
+      "Triangles": 72,
+      "BoundsMin": [
+        -3.0,
+        0,
+        -3.0
+      ],
+      "BoundsMax": [
+        3.0,
+        0,
+        3.0
+      ],
+      "FootprintRadius": 4.243,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 7.24,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier02/Region08/RiverSandbar"
+    },
+    {
+      "Id": "env.tier02.region08.RiverWaterTile",
+      "Name": "RiverWaterTile",
+      "Category": "Water",
+      "Triangles": 72,
+      "BoundsMin": [
+        -4.0,
+        0,
+        -8.0
+      ],
+      "BoundsMax": [
+        4.0,
+        0,
+        8.0
+      ],
+      "FootprintRadius": 8.944,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 11.94,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier02/Region08/RiverWaterTile"
+    },
+    {
+      "Id": "env.tier02.region08.RiverbankTrailShoulder",
+      "Name": "RiverbankTrailShoulder",
+      "Category": "Terrain",
+      "Triangles": 72,
+      "BoundsMin": [
+        -3.0,
+        0,
+        -3.0
+      ],
+      "BoundsMax": [
+        3.0,
+        0,
+        3.0
+      ],
+      "FootprintRadius": 4.243,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 7.24,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier02/Region08/RiverbankTrailShoulder"
+    },
+    {
+      "Id": "env.tier02.region08.RiverbankClearingPatch",
+      "Name": "RiverbankClearingPatch",
+      "Category": "Terrain",
+      "Triangles": 72,
+      "BoundsMin": [
+        -4.0,
+        0,
+        -4.0
+      ],
+      "BoundsMax": [
+        4.0,
+        0,
+        4.0
+      ],
+      "FootprintRadius": 5.657,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 8.66,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier02/Region08/RiverbankClearingPatch"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4455635b7350f64dad8fb6718a7fbaa, type: 3}
+  m_Name: SpecialNpcArtCatalog
+  m_EditorClassIdentifier: Assembly-CSharp::TheTrailWalker.SpecialNpcArtCatalog
+  MissionLadySideways: {fileID: 1865058332078977288, guid: 93e17c010e120b546adf54aa330777fa, type: 3}
+  MissionLadyFacing: {fileID: 3627703329470794097, guid: ba656ebd6d17b454cabfe92cd16ebdf0, type: 3}
+  MissionLadyRecipeHeld: {fileID: 1632626356559034849, guid: f54e2a5d4ca250f479af61c449a84b60, type: 3}
+  MissionLadyOffering: {fileID: 2283005343695716569, guid: 26f62773decc6944293f3dc94542b11b, type: 3}
+  FerrymanStatic: {fileID: 6721517036451366508, guid: 896518550e60bfc45badb822e93bfb7d, type: 3}
+  RecipeDisplayProp: {fileID: 1232928977254158945, guid: 679f5056a7e8e894f830978cbdbf282d, type: 3}
+  WoodenOar: {fileID: 1186423163720103666, guid: 71d99a5eae7d45842bc39a578a979a07, type: 3}
+  PoseIntent: ART ONLY. Mission lady begins sideways. Future interaction can rotate
+    FacingPivot toward the player for completion/new-mission selection, then transition
+    recipe-held to extended-arm offering pose. RecipeGripAnchor follows the wrist.
+    No Animator, animation clip, trigger, reward/learning transaction or live scene
+    replacement is implemented. Ferryman is static. Parchment is a display prop,
+    never a recipe inventory stack.

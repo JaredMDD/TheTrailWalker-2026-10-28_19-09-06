@@ -150,6 +150,79 @@ namespace TheTrailWalker.Domain.Inventory
             item.Owner = target; item.X = index; item.Y = 0; Revision++; reason = "Stored in " + (hook ? "hook" : "pocket"); return true;
         }
 
+        // ---------------------------------------------------------------- crafting (Milestone 7)
+
+        // Carried and usable as an ingredient: ready, in the backpack, a pocket or on a hook, and not held by a gesture.
+        private bool IsIngredientSource(ItemEntry item) => item.Ready && item.Quantity > 0 && !reservations.ContainsKey(item.Id)
+            && (item.Owner == ItemOwner.Backpack || item.Owner == ItemOwner.Pocket || item.Owner == ItemOwner.Hook);
+
+        public long CountIngredient(string itemId)
+        {
+            long total = 0;
+            foreach (ItemEntry item in entries) if (item.Definition.Id == itemId && IsIngredientSource(item)) total += item.Quantity;
+            return total;
+        }
+
+        // Consumes exact item IDs and quantities atomically, lowest-quality stacks and portions first; nothing is taken
+        // unless every requirement is met (section 9.0 and 10).
+        public bool TryConsumeIngredients(IReadOnlyList<KeyValuePair<string, long>> needs)
+        {
+            foreach (var need in needs) if (need.Value < 0 || CountIngredient(need.Key) < need.Value) return false;
+            foreach (var need in needs)
+            {
+                long left = need.Value;
+                var sources = entries.FindAll(e => e.Definition.Id == need.Key && IsIngredientSource(e));
+                sources.Sort((a, b) => a.Quality != b.Quality ? a.Quality.CompareTo(b.Quality) : a.Quantity.CompareTo(b.Quantity));
+                foreach (ItemEntry source in sources)
+                {
+                    if (left <= 0) break;
+                    int take = (int)Math.Min(left, source.Quantity);
+                    source.TakeLowest(take); left -= take;
+                    if (source.Quantity == 0) source.Owner = ItemOwner.Consumed;
+                }
+            }
+            Revision++;
+            return true;
+        }
+
+        // Mission delivery (section 11.5): takes up to maxUnits of one exact item ID from carried, ready, unheld items
+        // (backpack, pockets, hooks; worn gear, overflow, the trail and pending crafts never count), cheapest quoted value
+        // first, then lowest quality. Only the remaining requirement is taken (10 from a 1,000 stack leaves 990).
+        public int ConsumeForMission(string itemId, int maxUnits)
+        {
+            if (string.IsNullOrEmpty(itemId) || maxUnits <= 0) return 0;
+            var sources = entries.FindAll(e => e.Definition.Id == itemId && IsIngredientSource(e));
+            sources.Sort((a, b) => a.Profile.UnitValue != b.Profile.UnitValue ? a.Profile.UnitValue.CompareTo(b.Profile.UnitValue)
+                : a.Quality != b.Quality ? a.Quality.CompareTo(b.Quality) : a.Quantity.CompareTo(b.Quantity));
+            int taken = 0;
+            foreach (ItemEntry source in sources)
+            {
+                if (taken >= maxUnits) break;
+                int take = Math.Min(maxUnits - taken, source.Quantity);
+                source.TakeLowest(take); taken += take;
+                if (source.Quantity == 0) source.Owner = ItemOwner.Consumed;
+            }
+            if (taken > 0) Revision++;
+            return taken;
+        }
+
+        // A crafted output goes into free backpack space without merging (pending batches never merge); false when full.
+        public bool TryStoreCrafted(ItemEntry item)
+        {
+            const int token = int.MinValue + 7;
+            if (!Owns(item) || item.Owner != ItemOwner.World || !Reserve(item, token)) return false;
+            bool placed = TryPlaceFree(item, token, out _);
+            Release(item, token);
+            return placed;
+        }
+
+        // A finished batch output becomes ready (it can then be eaten, equipped, used or merged by the usual rules).
+        public bool MarkReady(ItemEntry item)
+        {
+            if (!Owns(item) || item.Ready || item.Owner == ItemOwner.Consumed) return false;
+            item.Ready = true; Revision++; return true;
+        }
+
         // Hooks hold any tool, one per hook (user, October 31, 2026): unique items that are not wearables.
         public static bool IsTool(ItemDefinition definition) => definition != null && !definition.Stackable && !definition.GearSlot.HasValue;
 
@@ -169,7 +242,7 @@ namespace TheTrailWalker.Domain.Inventory
         public bool TryUseTool(ItemEntry tool, out bool broke)
         {
             broke = false;
-            if (!Owns(tool) || tool.Definition.Stackable || tool.Definition.GearSlot.HasValue || (tool.Owner != ItemOwner.Backpack && tool.Owner != ItemOwner.Hook)
+            if (!Owns(tool) || !tool.Ready || tool.Definition.Stackable || tool.Definition.GearSlot.HasValue || (tool.Owner != ItemOwner.Backpack && tool.Owner != ItemOwner.Hook)
                 || tool.Profile.MaxDurability <= 0 || tool.Profile.Durability <= 0 || reservations.ContainsKey(tool.Id)) return false;
             ItemProfile used = tool.Profile;
             int left = used.Durability - 1;
@@ -212,6 +285,21 @@ namespace TheTrailWalker.Domain.Inventory
             foreach (ItemEntry item in entries)
             {
                 if (item.Owner != ItemOwner.World || item.SegmentId != segmentId || reservations.ContainsKey(item.Id)) continue;
+                item.Owner = ItemOwner.Consumed; item.Clear(); removed++;
+            }
+            if (removed > 0) Revision++;
+            return removed;
+        }
+        // Only the current leg's world items can ever be seen or picked up: every other leg is re-rolled (RemoveWorldItems)
+        // before the player can stand on it again. Leftovers from walked legs are therefore dead data, and keeping them made
+        // saves grow by ~50-70 entries per leg until they broke the 1,024-entry save cap (user report, November 7, 2026:
+        // "Invalid session header" and no progress past Stone Gate, 979 stale world entries on 19 legs).
+        public int RemoveWorldItemsExcept(string currentSegmentId)
+        {
+            int removed = 0;
+            foreach (ItemEntry item in entries)
+            {
+                if (item.Owner != ItemOwner.World || item.SegmentId == null || item.SegmentId == currentSegmentId || reservations.ContainsKey(item.Id)) continue;
                 item.Owner = ItemOwner.Consumed; item.Clear(); removed++;
             }
             if (removed > 0) Revision++;
@@ -353,6 +441,75 @@ namespace TheTrailWalker.Domain.Inventory
             { placement.Item.Owner = placement.Owner; placement.Item.X = placement.X; placement.Item.Y = placement.Y; }
             Width = width; Height = height; PocketCount = pockets; HookCount = hooks; Revision++;
             reason = "Capacity updated; unplaced items moved to overflow"; return true;
+        }
+        // Debug auto sort (user, November 2, 2026; stands in until the gravity/collision bag exists): tops up compatible
+        // stacks to 1,000, then repacks the backpack largest-first with the deterministic bottom-left placement, grouped
+        // by category and item. All or nothing: the plan runs against a shadow layout and nothing changes if it fails.
+        public bool AutoSort(out string reason)
+        {
+            reason = "Release held items before sorting";
+            if (reservations.Count != 0) return false;
+            var stored = entries.FindAll(e => e.Owner == ItemOwner.Backpack);
+            if (stored.Count == 0) { reason = "Backpack is empty"; return false; }
+            // Planned quantities: each ready stackable group fills its largest stacks first.
+            var planned = new Dictionary<ItemEntry, int>();
+            var groups = new Dictionary<string, List<ItemEntry>>();
+            foreach (ItemEntry e in stored)
+            {
+                if (!e.Definition.Stackable || !e.Ready) { planned[e] = e.Quantity; continue; }
+                if (!groups.TryGetValue(e.Definition.Id, out var g)) groups[e.Definition.Id] = g = new List<ItemEntry>();
+                g.Add(e);
+            }
+            foreach (var g in groups.Values)
+            {
+                g.Sort((a, b) => b.Quantity != a.Quantity ? b.Quantity.CompareTo(a.Quantity) : string.CompareOrdinal(a.Id, b.Id));
+                long left = 0; foreach (ItemEntry e in g) left += e.Quantity;
+                foreach (ItemEntry e in g) { int q = (int)Math.Min(1000, left); planned[e] = q; left -= q; }
+            }
+            var order = new List<ItemEntry>(); foreach (var pair in planned) if (pair.Value > 0) order.Add(pair.Key);
+            order.Sort((a, b) =>
+            {
+                int c = b.HeightFor(planned[b]).CompareTo(a.HeightFor(planned[a])); if (c != 0) return c;
+                c = a.Definition.Category.CompareTo(b.Definition.Category); if (c != 0) return c;
+                c = string.CompareOrdinal(a.Definition.Id, b.Definition.Id); if (c != 0) return c;
+                return string.CompareOrdinal(a.Id, b.Id);
+            });
+            var spots = new Dictionary<ItemEntry, (int x, int y)>();
+            var shadow = new List<(int x, int y, int w, int h)>();
+            foreach (ItemEntry e in order)
+            {
+                int w = e.WidthFor(planned[e]), h = e.HeightFor(planned[e]);
+                var xs = new SortedSet<int> { 0 }; var ys = new SortedSet<int> { 0 };
+                foreach (var s in shadow) { xs.Add(s.x + s.w); ys.Add(s.y + s.h); }
+                bool found = false;
+                foreach (int y in ys)
+                {
+                    foreach (int x in xs)
+                    {
+                        if (x > Width - w || y > Height - h) continue;
+                        bool clear = true; foreach (var s in shadow) if (Overlaps(x, y, w, h, s.x, s.y, s.w, s.h)) { clear = false; break; }
+                        if (!clear) continue;
+                        spots[e] = (x, y); shadow.Add((x, y, w, h)); found = true; break;
+                    }
+                    if (found) break;
+                }
+                if (!found) { reason = "Could not repack the bag; nothing was moved"; return false; }
+            }
+            // Apply: merges first (sources drain into the planned targets), then positions.
+            int merged = 0;
+            foreach (var g in groups.Values)
+                for (int t = 0; t < g.Count; t++)
+                    for (int s = g.Count - 1; s > t && g[t].Quantity < planned[g[t]]; s--)
+                    {
+                        // Only entries at or past the partial stack hold surplus; each source keeps its own planned share.
+                        int give = Math.Min(planned[g[t]] - g[t].Quantity, g[s].Quantity - planned[g[s]]);
+                        if (give <= 0) continue;
+                        g[s].MoveLowestTo(g[t], give); merged++;
+                        if (g[s].Quantity == 0) g[s].Owner = ItemOwner.Consumed;
+                    }
+            foreach (var pair in spots) { pair.Key.X = pair.Value.x; pair.Key.Y = pair.Value.y; }
+            Revision++;
+            reason = merged > 0 ? $"Bag sorted; {merged} stack{(merged == 1 ? "" : "s")} combined" : "Bag sorted"; return true;
         }
         private static bool FitsPlanned(ItemEntry item, int x, int y, int width, int height, List<Placement> placements)
         {

@@ -1,0 +1,178 @@
+{
+  "Revision": 1,
+  "Batch": 14,
+  "Scope": "6 passive Wearable art outputs; no gameplay value or shared shader changes.",
+  "BlenderVersion": "5.2.3 LTS",
+  "Items": [
+    {
+      "Name": "FlaxWorkShirt",
+      "Model": "FlaxWorkShirt",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/FlaxWorkShirt.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/FlaxWorkShirtPalette.png",
+      "PrefabPath": "Tier02/Wearables/FlaxWorkShirt",
+      "Triangles": 3536,
+      "BoundsMin": [
+        -0.434054,
+        -0.370409,
+        -0.195265
+      ],
+      "BoundsMax": [
+        0.434054,
+        0.370409,
+        0.195265
+      ],
+      "DisplayName": "Flax work shirt",
+      "ItemId": "item.flax_work_shirt",
+      "RecipeId": "recipe.wearable.flax_work_shirt",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-H7",
+      "MissionRegion": 8,
+      "IngredientBrief": "3 Flax cloth + 1 Beaver leather -> 1",
+      "Role": "Wearable",
+      "Representation": "display"
+    },
+    {
+      "Name": "FlaxTrousers",
+      "Model": "FlaxTrousers",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/FlaxTrousers.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/FlaxTrousersPalette.png",
+      "PrefabPath": "Tier02/Wearables/FlaxTrousers",
+      "Triangles": 2368,
+      "BoundsMin": [
+        -0.200507,
+        -0.44436,
+        -0.10994
+      ],
+      "BoundsMax": [
+        0.200507,
+        0.44436,
+        0.10994
+      ],
+      "DisplayName": "Flax trousers",
+      "ItemId": "item.flax_trousers",
+      "RecipeId": "recipe.wearable.flax_trousers",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-E3",
+      "MissionRegion": 8,
+      "IngredientBrief": "3 Flax cloth + 1 Copper fittings -> 1",
+      "Role": "Wearable",
+      "Representation": "display"
+    },
+    {
+      "Name": "MaleWearFlaxWorkShirt",
+      "Model": "MaleWearFlaxWorkShirt",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/MaleWearFlaxWorkShirt.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/MaleWearFlaxWorkShirtPalette.png",
+      "PrefabPath": "Tier02/Wearables/MaleWearFlaxWorkShirt",
+      "Triangles": 3536,
+      "BoundsMin": [
+        -0.299348,
+        0.9,
+        -0.128
+      ],
+      "BoundsMax": [
+        0.299348,
+        1.410908,
+        0.141331
+      ],
+      "DisplayName": "Flax work shirt (Male fitted)",
+      "ItemId": "item.flax_work_shirt",
+      "RecipeId": "recipe.wearable.flax_work_shirt",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-H7",
+      "MissionRegion": 8,
+      "IngredientBrief": "3 Flax cloth + 1 Beaver leather -> 1",
+      "Role": "Wearable",
+      "Representation": "worn",
+      "Body": "Male",
+      "Anchor": "Body-root metre coordinates; runtime skinning/binding pending"
+    },
+    {
+      "Name": "MaleWearFlaxTrousers",
+      "Model": "MaleWearFlaxTrousers",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/MaleWearFlaxTrousers.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/MaleWearFlaxTrousersPalette.png",
+      "PrefabPath": "Tier02/Wearables/MaleWearFlaxTrousers",
+      "Triangles": 2368,
+      "BoundsMin": [
+        -0.194661,
+        0.084,
+        -0.124
+      ],
+      "BoundsMax": [
+        0.241223,
+        1.05,
+        0.115
+      ],
+      "DisplayName": "Flax trousers (Male fitted)",
+      "ItemId": "item.flax_trousers",
+      "RecipeId": "recipe.wearable.flax_trousers",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-E3",
+      "MissionRegion": 8,
+      "IngredientBrief": "3 Flax cloth + 1 Copper fittings -> 1",
+      "Role": "Wearable",
+      "Representation": "worn",
+      "Body": "Male",
+      "Anchor": "Body-root metre coordinates; runtime skinning/binding pending"
+    },
+    {
+      "Name": "FemaleWearFlaxWorkShirt",
+      "Model": "FemaleWearFlaxWorkShirt",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/FemaleWearFlaxWorkShirt.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/FemaleWearFlaxWorkShirtPalette.png",
+      "PrefabPath": "Tier02/Wearables/FemaleWearFlaxWorkShirt",
+      "Triangles": 3528,
+      "BoundsMin": [
+        -0.282348,
+        0.9,
+        -0.138
+      ],
+      "BoundsMax": [
+        0.282348,
+        1.400238,
+        0.14658
+      ],
+      "DisplayName": "Flax work shirt (Female fitted)",
+      "ItemId": "item.flax_work_shirt",
+      "RecipeId": "recipe.wearable.flax_work_shirt",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-H7",
+      "MissionRegion": 8,
+      "IngredientBrief": "3 Flax cloth + 1 Beaver leather -> 1",
+      "Role": "Wearable",
+      "Representation": "worn",
+      "Body": "Female",
+      "Anchor": "Body-root metre coordinates; runtime skinning/binding pending"
+    },
+    {
+      "Name": "FemaleWearFlaxTrousers",
+      "Model": "FemaleWearFlaxTrousers",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/FemaleWearFlaxTrousers.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/FemaleWearFlaxTrousersPalette.png",
+      "PrefabPath": "Tier02/Wearables/FemaleWearFlaxTrousers",
+      "Triangles": 2392,
+      "BoundsMin": [
+        -0.197385,
+        0.084,
+        -0.129
+      ],
+      "BoundsMax": [
+        0.249223,
+        1.045,
+        0.119
+      ],
+      "DisplayName": "Flax trousers (Female fitted)",
+      "ItemId": "item.flax_trousers",
+      "RecipeId": "recipe.wearable.flax_trousers",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-E3",
+      "MissionRegion": 8,
+      "IngredientBrief": "3 Flax cloth + 1 Copper fittings -> 1",
+      "Role": "Wearable",
+      "Representation": "worn",
+      "Body": "Female",
+      "Anchor": "Body-root metre coordinates; runtime skinning/binding pending"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "Scope": "Passive Taiga pack; no gameplay changes",
+  "BackpackAnchor": [
+    0,
+    1.14,
+    -0.2
+  ],
+  "Items": {
+    "TaigaFramePack": {
+      "Representation": "display",
+      "Body": "",
+      "ItemId": "item.taiga_frame_pack",
+      "RecipeId": "recipe.wearable.taiga_frame_pack",
+      "Anchor": "Centered display",
+      "BindingStatus": "Passive art only; no live equipment/weights/capacity changes"
+    },
+    "MaleWearTaigaFramePack": {
+      "Representation": "worn",
+      "Body": "Male",
+      "ItemId": "item.taiga_frame_pack",
+      "RecipeId": "recipe.wearable.taiga_frame_pack",
+      "Anchor": "BackpackAnchor local; parent (0,1.14,-.20); identity TRS",
+      "BindingStatus": "Passive art only; no live equipment/weights/capacity changes"
+    },
+    "FemaleWearTaigaFramePack": {
+      "Representation": "worn",
+      "Body": "Female",
+      "ItemId": "item.taiga_frame_pack",
+      "RecipeId": "recipe.wearable.taiga_frame_pack",
+      "Anchor": "BackpackAnchor local; parent (0,1.14,-.20); identity TRS",
+      "BindingStatus": "Passive art only; no live equipment/weights/capacity changes"
+    }
+  },
+  "FrameInterpretation": "Stitched laminated-leather soft back structure; no wood or metal",
+  "SupportSources": [
+    "Assets/_Game/Art/Crafting/Tier02/MaleWearTaigaWaxedShirt.obj",
+    "Assets/_Game/Art/Crafting/Tier02/FemaleWearTaigaWaxedShirt.obj"
+  ],
+  "DocumentarySetBOnly": {
+    "logical_bag_units": [
+      10,
+      4
+    ]
+  },
+  "Pending": "Live binding, dynamic straps/weights, capacity/content/save/device validation"
+}

@@ -1,0 +1,452 @@
+{
+  "Number": 6,
+  "Name": "Reedwater Delta",
+  "PaletteSize": 32,
+  "TrailColorRGB": [
+    128,
+    107,
+    69
+  ],
+  "Models": [
+    {
+      "Id": "env.tier01.region06.DeltaPine",
+      "Name": "DeltaPine",
+      "Category": "Tree",
+      "Triangles": 184,
+      "BoundsMin": [
+        -1.2543819625963035,
+        -0.016853925196242802,
+        -1.3102487156237623
+      ],
+      "BoundsMax": [
+        1.3374101074622569,
+        5.3,
+        1.193513344660869
+      ],
+      "FootprintRadius": 1.802,
+      "CastsShadows": true,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 9.8,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region06/DeltaPine"
+    },
+    {
+      "Id": "env.tier01.region06.DeltaPineSapling",
+      "Name": "DeltaPineSapling",
+      "Category": "Tree",
+      "Triangles": 184,
+      "BoundsMin": [
+        -0.49887619532146044,
+        -0.016853925196242802,
+        -0.5330203995912549
+      ],
+      "BoundsMax": [
+        0.4753413126367088,
+        2.3,
+        0.5233282161755229
+      ],
+      "FootprintRadius": 0.719,
+      "CastsShadows": true,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 8.72,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region06/DeltaPineSapling"
+    },
+    {
+      "Id": "env.tier01.region06.DeltaShrub",
+      "Name": "DeltaShrub",
+      "Category": "Shrub",
+      "Triangles": 340,
+      "BoundsMin": [
+        -0.9235688994335334,
+        -0.027188928620469625,
+        -1.0476987653015044
+      ],
+      "BoundsMax": [
+        0.75,
+        0.738,
+        0.7336945358314834
+      ],
+      "FootprintRadius": 1.222,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 4.22,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region06/DeltaShrub"
+    },
+    {
+      "Id": "env.tier01.region06.LowMarshBush",
+      "Name": "LowMarshBush",
+      "Category": "Shrub",
+      "Triangles": 340,
+      "BoundsMin": [
+        -0.7388551195468267,
+        -0.029755259344119444,
+        -0.8381590122412035
+      ],
+      "BoundsMax": [
+        0.6000000000000001,
+        0.45100000000000007,
+        0.5869556286651867
+      ],
+      "FootprintRadius": 0.978,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.98,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region06/LowMarshBush"
+    },
+    {
+      "Id": "env.tier01.region06.TallReedClump",
+      "Name": "TallReedClump",
+      "Category": "GroundCover",
+      "Triangles": 468,
+      "BoundsMin": [
+        -0.6213006200598366,
+        -0.0007959983839909733,
+        -0.4067770252395419
+      ],
+      "BoundsMax": [
+        0.502191970370276,
+        2.038518740877034,
+        0.45892336186434873
+      ],
+      "FootprintRadius": 0.709,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.71,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region06/TallReedClump"
+    },
+    {
+      "Id": "env.tier01.region06.ShortReedClump",
+      "Name": "ShortReedClump",
+      "Category": "GroundCover",
+      "Triangles": 468,
+      "BoundsMin": [
+        -0.6279342106143531,
+        -0.001426378912316454,
+        -0.3854232123427523
+      ],
+      "BoundsMax": [
+        0.44850862753085863,
+        1.233015993188048,
+        0.44878466693470803
+      ],
+      "FootprintRadius": 0.681,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.68,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region06/ShortReedClump"
+    },
+    {
+      "Id": "env.tier01.region06.BentReedClump",
+      "Name": "BentReedClump",
+      "Category": "GroundCover",
+      "Triangles": 468,
+      "BoundsMin": [
+        -0.5780041634207,
+        -0.004419619566698205,
+        -0.3881665757191293
+      ],
+      "BoundsMax": [
+        0.8501839467618677,
+        1.6997664889700033,
+        0.3959358750564856
+      ],
+      "FootprintRadius": 0.815,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.81,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region06/BentReedClump"
+    },
+    {
+      "Id": "env.tier01.region06.MarshGrass",
+      "Name": "MarshGrass",
+      "Category": "GroundCover",
+      "Triangles": 24,
+      "BoundsMin": [
+        -0.20282138989173293,
+        0,
+        -0.3006485912841386
+      ],
+      "BoundsMax": [
+        0.47919074904448045,
+        0.799642083968837,
+        0.43265964243419225
+      ],
+      "FootprintRadius": 0.501,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.5,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region06/MarshGrass"
+    },
+    {
+      "Id": "env.tier01.region06.SedgeTuft",
+      "Name": "SedgeTuft",
+      "Category": "GroundCover",
+      "Triangles": 24,
+      "BoundsMin": [
+        -0.24356118872266477,
+        0,
+        -0.2604681706918691
+      ],
+      "BoundsMax": [
+        0.3493088034996614,
+        1.0532796805962423,
+        0.30757627986205727
+      ],
+      "FootprintRadius": 0.411,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.41,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region06/SedgeTuft"
+    },
+    {
+      "Id": "env.tier01.region06.DeltaDriftwood",
+      "Name": "DeltaDriftwood",
+      "Category": "Deadwood",
+      "Triangles": 56,
+      "BoundsMin": [
+        -1.0,
+        0.0,
+        -0.12802500789158705
+      ],
+      "BoundsMax": [
+        1.0,
+        0.3820298951173433,
+        0.35767796114028955
+      ],
+      "FootprintRadius": 1.029,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 4.03,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region06/DeltaDriftwood"
+    },
+    {
+      "Id": "env.tier01.region06.DeltaStoneCluster",
+      "Name": "DeltaStoneCluster",
+      "Category": "Rock",
+      "Triangles": 280,
+      "BoundsMin": [
+        -1.1702373231226795,
+        0,
+        -0.8156314941109442
+      ],
+      "BoundsMax": [
+        1.1340547370256067,
+        0.3492102094008584,
+        0.8341748363234696
+      ],
+      "FootprintRadius": 1.417,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 4.42,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region06/DeltaStoneCluster"
+    },
+    {
+      "Id": "env.tier01.region06.MudBank",
+      "Name": "MudBank",
+      "Category": "Terrain",
+      "Triangles": 160,
+      "BoundsMin": [
+        -4.0,
+        0.0,
+        -4.0
+      ],
+      "BoundsMax": [
+        4.0,
+        0.39,
+        4.0
+      ],
+      "FootprintRadius": 5.657,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 8.66,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier01/Region06/MudBank"
+    },
+    {
+      "Id": "env.tier01.region06.LowMudIsland",
+      "Name": "LowMudIsland",
+      "Category": "Terrain",
+      "Triangles": 160,
+      "BoundsMin": [
+        -5.0,
+        0.0,
+        -4.0
+      ],
+      "BoundsMax": [
+        5.0,
+        0.45,
+        4.0
+      ],
+      "FootprintRadius": 6.403,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 9.4,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier01/Region06/LowMudIsland"
+    },
+    {
+      "Id": "env.tier01.region06.RiverBankCut",
+      "Name": "RiverBankCut",
+      "Category": "Terrain",
+      "Triangles": 160,
+      "BoundsMin": [
+        -3.0,
+        0.0,
+        -5.0
+      ],
+      "BoundsMax": [
+        3.0,
+        1.0999999949541002,
+        5.0
+      ],
+      "FootprintRadius": 5.831,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 8.83,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier01/Region06/RiverBankCut"
+    },
+    {
+      "Id": "env.tier01.region06.DeltaGroundPatch",
+      "Name": "DeltaGroundPatch",
+      "Category": "Terrain",
+      "Triangles": 72,
+      "BoundsMin": [
+        -3.0,
+        0,
+        -3.0
+      ],
+      "BoundsMax": [
+        3.0,
+        0,
+        3.0
+      ],
+      "FootprintRadius": 4.243,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 7.24,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier01/Region06/DeltaGroundPatch"
+    },
+    {
+      "Id": "env.tier01.region06.SandbankPatch",
+      "Name": "SandbankPatch",
+      "Category": "Terrain",
+      "Triangles": 72,
+      "BoundsMin": [
+        -3.0,
+        0,
+        -3.0
+      ],
+      "BoundsMax": [
+        3.0,
+        0,
+        3.0
+      ],
+      "FootprintRadius": 4.243,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 7.24,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier01/Region06/SandbankPatch"
+    },
+    {
+      "Id": "env.tier01.region06.SandyTrailShoulder",
+      "Name": "SandyTrailShoulder",
+      "Category": "Terrain",
+      "Triangles": 72,
+      "BoundsMin": [
+        -3.0,
+        0,
+        -3.0
+      ],
+      "BoundsMax": [
+        3.0,
+        0,
+        3.0
+      ],
+      "FootprintRadius": 4.243,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 7.24,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier01/Region06/SandyTrailShoulder"
+    },
+    {
+      "Id": "env.tier01.region06.ShallowWaterTile",
+      "Name": "ShallowWaterTile",
+      "Category": "Water",
+      "Triangles": 72,
+      "BoundsMin": [
+        -4.0,
+        0,
+        -4.0
+      ],
+      "BoundsMax": [
+        4.0,
+        0,
+        4.0
+      ],
+      "FootprintRadius": 5.657,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 8.66,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier01/Region06/ShallowWaterTile"
+    },
+    {
+      "Id": "env.tier01.region06.RiverWaterTile",
+      "Name": "RiverWaterTile",
+      "Category": "Water",
+      "Triangles": 72,
+      "BoundsMin": [
+        -4.0,
+        0,
+        -8.0
+      ],
+      "BoundsMax": [
+        4.0,
+        0,
+        8.0
+      ],
+      "FootprintRadius": 8.944,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 11.94,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier01/Region06/RiverWaterTile"
+    },
+    {
+      "Id": "env.tier01.region06.DeltaClearingPatch",
+      "Name": "DeltaClearingPatch",
+      "Category": "Terrain",
+      "Triangles": 72,
+      "BoundsMin": [
+        -4.0,
+        0,
+        -4.0
+      ],
+      "BoundsMax": [
+        4.0,
+        0,
+        4.0
+      ],
+      "FootprintRadius": 5.657,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 8.66,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier01/Region06/DeltaClearingPatch"
+    }
+  ]
+}

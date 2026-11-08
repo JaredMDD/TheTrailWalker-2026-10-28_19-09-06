@@ -1,0 +1,604 @@
+{
+  "revision": 1,
+  "units": "metres",
+  "up": "+Y",
+  "forward": "+Z",
+  "headAnchor": [
+    0,
+    1.43,
+    0
+  ],
+  "backpackAnchor": [
+    0,
+    1.14,
+    -0.2
+  ],
+  "parts": [
+    {
+      "name": "DisplayRabbitHat",
+      "role": "display",
+      "body": "",
+      "style": "",
+      "frame": "centered loose study; no live item replacement",
+      "prefab": "Assets/_Game/Resources/Characters/Tier01Accessories/Parts/DisplayRabbitHat.prefab",
+      "vertices": 200,
+      "triangles": 344,
+      "materials": [
+        "PeltLeather",
+        "PeltLeatherDark",
+        "PeltFur"
+      ],
+      "boundsMin": [
+        -0.1165,
+        -0.085631,
+        -0.1285
+      ],
+      "boundsMax": [
+        0.1165,
+        0.085631,
+        0.1285
+      ]
+    },
+    {
+      "name": "DisplayStarterBackpack",
+      "role": "display",
+      "body": "",
+      "style": "",
+      "frame": "centered loose study; no live item replacement",
+      "prefab": "Assets/_Game/Resources/Characters/Tier01Accessories/Parts/DisplayStarterBackpack.prefab",
+      "vertices": 436,
+      "triangles": 764,
+      "materials": [
+        "FrameWood",
+        "FrameEnd",
+        "HempShirt",
+        "PeltLeatherDark",
+        "PeltLeather",
+        "Brass"
+      ],
+      "boundsMin": [
+        -0.2105,
+        -0.218984,
+        -0.272229
+      ],
+      "boundsMax": [
+        0.2105,
+        0.218984,
+        0.272229
+      ]
+    },
+    {
+      "name": "MaleWearRabbitHat",
+      "role": "wornHat",
+      "body": "Male",
+      "style": "",
+      "frame": "HatAnchor local; identity TRS",
+      "prefab": "Assets/_Game/Resources/Characters/Tier01Accessories/Parts/MaleWearRabbitHat.prefab",
+      "vertices": 200,
+      "triangles": 344,
+      "materials": [
+        "PeltLeather",
+        "PeltLeatherDark",
+        "PeltFur"
+      ],
+      "boundsMin": [
+        -0.1165,
+        0.117738,
+        -0.132
+      ],
+      "boundsMax": [
+        0.1165,
+        0.289,
+        0.125
+      ]
+    },
+    {
+      "name": "MaleWearStarterBackpack",
+      "role": "wornBackpack",
+      "body": "Male",
+      "style": "",
+      "frame": "BackpackAnchor local; identity TRS",
+      "prefab": "Assets/_Game/Resources/Characters/Tier01Accessories/Parts/MaleWearStarterBackpack.prefab",
+      "vertices": 436,
+      "triangles": 764,
+      "materials": [
+        "FrameWood",
+        "FrameEnd",
+        "HempShirt",
+        "PeltLeatherDark",
+        "PeltLeather",
+        "Brass"
+      ],
+      "boundsMin": [
+        -0.2105,
+        -0.145,
+        -0.2035
+      ],
+      "boundsMax": [
+        0.2105,
+        0.292968,
+        0.340957
+      ]
+    },
+    {
+      "name": "MaleHatHairCrop",
+      "role": "hatHair",
+      "body": "Male",
+      "style": "Crop",
+      "frame": "HeadAnchor/HairAnchor local",
+      "prefab": "Assets/_Game/Resources/Characters/Tier01Accessories/Parts/MaleHatHairCrop.prefab",
+      "vertices": 272,
+      "triangles": 96,
+      "materials": [
+        "Hair"
+      ],
+      "boundsMin": [
+        -0.087,
+        0.105,
+        -0.114
+      ],
+      "boundsMax": [
+        0.087,
+        0.191,
+        0.083135
+      ]
+    },
+    {
+      "name": "MaleHatHairSweep",
+      "role": "hatHair",
+      "body": "Male",
+      "style": "Sweep",
+      "frame": "HeadAnchor/HairAnchor local",
+      "prefab": "Assets/_Game/Resources/Characters/Tier01Accessories/Parts/MaleHatHairSweep.prefab",
+      "vertices": 280,
+      "triangles": 108,
+      "materials": [
+        "Hair"
+      ],
+      "boundsMin": [
+        -0.089,
+        0.095,
+        -0.116
+      ],
+      "boundsMax": [
+        0.089,
+        0.193975,
+        0.117509
+      ]
+    },
+    {
+      "name": "MaleHatHairBob",
+      "role": "hatHair",
+      "body": "Male",
+      "style": "Bob",
+      "frame": "HeadAnchor/HairAnchor local",
+      "prefab": "Assets/_Game/Resources/Characters/Tier01Accessories/Parts/MaleHatHairBob.prefab",
+      "vertices": 420,
+      "triangles": 156,
+      "materials": [
+        "Hair"
+      ],
+      "boundsMin": [
+        -0.096549,
+        0.05,
+        -0.119
+      ],
+      "boundsMax": [
+        0.096549,
+        0.191,
+        0.084189
+      ]
+    },
+    {
+      "name": "MaleHatHairTied",
+      "role": "hatHair",
+      "body": "Male",
+      "style": "Tied",
+      "frame": "HeadAnchor/HairAnchor local",
+      "prefab": "Assets/_Game/Resources/Characters/Tier01Accessories/Parts/MaleHatHairTied.prefab",
+      "vertices": 422,
+      "triangles": 150,
+      "materials": [
+        "Hair"
+      ],
+      "boundsMin": [
+        -0.087,
+        0.033416,
+        -0.172438
+      ],
+      "boundsMax": [
+        0.087,
+        0.191,
+        0.083135
+      ]
+    },
+    {
+      "name": "MaleSeatedUpperSkinStudy",
+      "role": "poseStudy",
+      "body": "Male",
+      "style": "",
+      "frame": "upper root; translate down .38 for seated review",
+      "prefab": "Assets/_Game/Resources/Characters/Tier01Accessories/Parts/MaleSeatedUpperSkinStudy.prefab",
+      "vertices": 250,
+      "triangles": 456,
+      "materials": [
+        "Skin"
+      ],
+      "boundsMin": [
+        -0.319084,
+        0.668794,
+        -0.06198
+      ],
+      "boundsMax": [
+        0.319084,
+        1.482297,
+        0.106069
+      ]
+    },
+    {
+      "name": "MaleSeatedHempPantsStudy",
+      "role": "poseStudy",
+      "body": "Male",
+      "style": "",
+      "frame": "root; seated hips .50",
+      "prefab": "Assets/_Game/Resources/Characters/Tier01Accessories/Parts/MaleSeatedHempPantsStudy.prefab",
+      "vertices": 338,
+      "triangles": 616,
+      "materials": [
+        "HempPants",
+        "HempPantsDark",
+        "PeltLeather",
+        "Brass",
+        "PeltLeatherDark"
+      ],
+      "boundsMin": [
+        -0.215805,
+        0.084,
+        -0.128073
+      ],
+      "boundsMax": [
+        0.215805,
+        0.67,
+        0.454824
+      ]
+    },
+    {
+      "name": "MaleSeatedRabbitBootsStudy",
+      "role": "poseStudy",
+      "body": "Male",
+      "style": "",
+      "frame": "root; seated feet forward .38",
+      "prefab": "Assets/_Game/Resources/Characters/Tier01Accessories/Parts/MaleSeatedRabbitBootsStudy.prefab",
+      "vertices": 282,
+      "triangles": 456,
+      "materials": [
+        "PeltLeather",
+        "PeltFur",
+        "PeltSole",
+        "PeltLeatherDark"
+      ],
+      "boundsMin": [
+        -0.172,
+        0.0,
+        0.283
+      ],
+      "boundsMax": [
+        0.172,
+        0.212,
+        0.583
+      ]
+    },
+    {
+      "name": "FemaleWearRabbitHat",
+      "role": "wornHat",
+      "body": "Female",
+      "style": "",
+      "frame": "HatAnchor local; identity TRS",
+      "prefab": "Assets/_Game/Resources/Characters/Tier01Accessories/Parts/FemaleWearRabbitHat.prefab",
+      "vertices": 200,
+      "triangles": 344,
+      "materials": [
+        "PeltLeather",
+        "PeltLeatherDark",
+        "PeltFur"
+      ],
+      "boundsMin": [
+        -0.1165,
+        0.114114,
+        -0.132
+      ],
+      "boundsMax": [
+        0.1165,
+        0.280437,
+        0.125
+      ]
+    },
+    {
+      "name": "FemaleWearStarterBackpack",
+      "role": "wornBackpack",
+      "body": "Female",
+      "style": "",
+      "frame": "BackpackAnchor local; identity TRS",
+      "prefab": "Assets/_Game/Resources/Characters/Tier01Accessories/Parts/FemaleWearStarterBackpack.prefab",
+      "vertices": 436,
+      "triangles": 764,
+      "materials": [
+        "FrameWood",
+        "FrameEnd",
+        "HempShirt",
+        "PeltLeatherDark",
+        "PeltLeather",
+        "Brass"
+      ],
+      "boundsMin": [
+        -0.1965,
+        -0.145,
+        -0.2035
+      ],
+      "boundsMax": [
+        0.1965,
+        0.279968,
+        0.341219
+      ]
+    },
+    {
+      "name": "FemaleHatHairCrop",
+      "role": "hatHair",
+      "body": "Female",
+      "style": "Crop",
+      "frame": "HeadAnchor/HairAnchor local",
+      "prefab": "Assets/_Game/Resources/Characters/Tier01Accessories/Parts/FemaleHatHairCrop.prefab",
+      "vertices": 272,
+      "triangles": 96,
+      "materials": [
+        "Hair"
+      ],
+      "boundsMin": [
+        -0.0835,
+        0.101889,
+        -0.109
+      ],
+      "boundsMax": [
+        0.0835,
+        0.185341,
+        0.077143
+      ]
+    },
+    {
+      "name": "FemaleHatHairSweep",
+      "role": "hatHair",
+      "body": "Female",
+      "style": "Sweep",
+      "frame": "HeadAnchor/HairAnchor local",
+      "prefab": "Assets/_Game/Resources/Characters/Tier01Accessories/Parts/FemaleHatHairSweep.prefab",
+      "vertices": 280,
+      "triangles": 108,
+      "materials": [
+        "Hair"
+      ],
+      "boundsMin": [
+        -0.085,
+        0.092185,
+        -0.111
+      ],
+      "boundsMax": [
+        0.085,
+        0.188347,
+        0.117509
+      ]
+    },
+    {
+      "name": "FemaleHatHairBob",
+      "role": "hatHair",
+      "body": "Female",
+      "style": "Bob",
+      "frame": "HeadAnchor/HairAnchor local",
+      "prefab": "Assets/_Game/Resources/Characters/Tier01Accessories/Parts/FemaleHatHairBob.prefab",
+      "vertices": 420,
+      "triangles": 156,
+      "materials": [
+        "Hair"
+      ],
+      "boundsMin": [
+        -0.092364,
+        0.048519,
+        -0.119
+      ],
+      "boundsMax": [
+        0.092364,
+        0.185341,
+        0.077967
+      ]
+    },
+    {
+      "name": "FemaleHatHairTied",
+      "role": "hatHair",
+      "body": "Female",
+      "style": "Tied",
+      "frame": "HeadAnchor/HairAnchor local",
+      "prefab": "Assets/_Game/Resources/Characters/Tier01Accessories/Parts/FemaleHatHairTied.prefab",
+      "vertices": 422,
+      "triangles": 150,
+      "materials": [
+        "Hair"
+      ],
+      "boundsMin": [
+        -0.083,
+        0.032336,
+        -0.172437
+      ],
+      "boundsMax": [
+        0.083,
+        0.185341,
+        0.077143
+      ]
+    },
+    {
+      "name": "FemaleSeatedUpperSkinStudy",
+      "role": "poseStudy",
+      "body": "Female",
+      "style": "",
+      "frame": "upper root; translate down .38 for seated review",
+      "prefab": "Assets/_Game/Resources/Characters/Tier01Accessories/Parts/FemaleSeatedUpperSkinStudy.prefab",
+      "vertices": 250,
+      "triangles": 456,
+      "materials": [
+        "Skin"
+      ],
+      "boundsMin": [
+        -0.302084,
+        0.653794,
+        -0.056982
+      ],
+      "boundsMax": [
+        0.302084,
+        1.482047,
+        0.106069
+      ]
+    },
+    {
+      "name": "FemaleSeatedHempPantsStudy",
+      "role": "poseStudy",
+      "body": "Female",
+      "style": "",
+      "frame": "root; seated hips .50",
+      "prefab": "Assets/_Game/Resources/Characters/Tier01Accessories/Parts/FemaleSeatedHempPantsStudy.prefab",
+      "vertices": 338,
+      "triangles": 616,
+      "materials": [
+        "HempPants",
+        "HempPantsDark",
+        "PeltLeather",
+        "Brass",
+        "PeltLeatherDark"
+      ],
+      "boundsMin": [
+        -0.217024,
+        0.084,
+        -0.132951
+      ],
+      "boundsMax": [
+        0.217024,
+        0.665,
+        0.454824
+      ]
+    },
+    {
+      "name": "FemaleSeatedRabbitBootsStudy",
+      "role": "poseStudy",
+      "body": "Female",
+      "style": "",
+      "frame": "root; seated feet forward .38",
+      "prefab": "Assets/_Game/Resources/Characters/Tier01Accessories/Parts/FemaleSeatedRabbitBootsStudy.prefab",
+      "vertices": 282,
+      "triangles": 456,
+      "materials": [
+        "PeltLeather",
+        "PeltFur",
+        "PeltSole",
+        "PeltLeatherDark"
+      ],
+      "boundsMin": [
+        -0.172,
+        0.0,
+        0.283
+      ],
+      "boundsMax": [
+        0.172,
+        0.212,
+        0.583
+      ]
+    }
+  ],
+  "materials": [
+    {
+      "name": "HempShirt",
+      "hex": "#BDA978"
+    },
+    {
+      "name": "HempShirtDark",
+      "hex": "#806444"
+    },
+    {
+      "name": "HempPants",
+      "hex": "#8A784D"
+    },
+    {
+      "name": "HempPantsDark",
+      "hex": "#584A36"
+    },
+    {
+      "name": "PeltLeather",
+      "hex": "#A7845A"
+    },
+    {
+      "name": "PeltLeatherDark",
+      "hex": "#774D2B"
+    },
+    {
+      "name": "PeltFur",
+      "hex": "#E2D0A2"
+    },
+    {
+      "name": "PeltSole",
+      "hex": "#4F311E"
+    },
+    {
+      "name": "Brass",
+      "hex": "#B8913A"
+    },
+    {
+      "name": "FrameWood",
+      "hex": "#9E6D3F"
+    },
+    {
+      "name": "FrameEnd",
+      "hex": "#CCA66B"
+    },
+    {
+      "name": "Hair",
+      "hex": "#513522"
+    },
+    {
+      "name": "Skin",
+      "hex": "#BA8055"
+    }
+  ],
+  "references": [
+    {
+      "path": "Tools/Art/faceted_people.py",
+      "sha256": "4677e169865b419729466c6937c771589839e0d4d0b135c707f965cb5a0be940"
+    },
+    {
+      "path": "Tools/Art/generate_player_avatar_meshes.py",
+      "sha256": "a1da6e99f56937865207dcaa613d274bf0648d4e1bf30e6297b698047adf4b00"
+    },
+    {
+      "path": "Tools/Art/faceted_character_kit.py",
+      "sha256": "18e59d2e4f6b3cdbca3acb24c58d6104937ad86556855146f75a7f35910e2310"
+    },
+    {
+      "path": "Assets/_Game/Art/Characters/PlayerDefault/MaleSkin.obj",
+      "sha256": "a2f4af1f2d385781d86b68999ae68d01333fbea2bb5e4536b6c3759aa15e5e94"
+    },
+    {
+      "path": "Assets/_Game/Art/Characters/PlayerDefault/FemaleSkin.obj",
+      "sha256": "f9a82a59e59dafa1743f5083b0208da0769c517a18c1023dce78516eff07f409"
+    }
+  ],
+  "itemIds": [
+    "item.rabbit_hat",
+    "item.starter_backpack"
+  ],
+  "liveFootprints": [
+    [
+      900,
+      723
+    ],
+    [
+      939,
+      1350
+    ]
+  ],
+  "status": "Source generated only; parent must import/build/capture; binding and deformation unimplemented."
+}

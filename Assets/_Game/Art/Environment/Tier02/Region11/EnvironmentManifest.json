@@ -1,0 +1,452 @@
+{
+  "Number": 11,
+  "Name": "Mirror Lakes",
+  "PaletteSize": 32,
+  "TrailColorRGB": [
+    151,
+    123,
+    79
+  ],
+  "Models": [
+    {
+      "Id": "env.tier02.region11.LakeshoreBirch",
+      "Name": "LakeshoreBirch",
+      "Category": "Tree",
+      "Triangles": 616,
+      "BoundsMin": [
+        -1.0782553005141482,
+        0.0,
+        -1.3083972876512533
+      ],
+      "BoundsMax": [
+        1.097834632680908,
+        6.138,
+        1.29059240441575
+      ],
+      "FootprintRadius": 1.695,
+      "CastsShadows": true,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 9.69,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region11/LakeshoreBirch"
+    },
+    {
+      "Id": "env.tier02.region11.IslandBirch",
+      "Name": "IslandBirch",
+      "Category": "Tree",
+      "Triangles": 616,
+      "BoundsMin": [
+        -0.3195537094874286,
+        -0.01619165817821462,
+        -0.7225555866997315
+      ],
+      "BoundsMax": [
+        1.1802853739463155,
+        4.356000000000001,
+        0.8054908774846774
+      ],
+      "FootprintRadius": 1.071,
+      "CastsShadows": true,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 9.07,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region11/IslandBirch"
+    },
+    {
+      "Id": "env.tier02.region11.LakeBirchSapling",
+      "Name": "LakeBirchSapling",
+      "Category": "Tree",
+      "Triangles": 616,
+      "BoundsMin": [
+        -0.532860014143198,
+        0.0,
+        -0.5168538161651144
+      ],
+      "BoundsMax": [
+        0.554302962180561,
+        2.3760000000000003,
+        0.533697003076575
+      ],
+      "FootprintRadius": 0.756,
+      "CastsShadows": true,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 8.76,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region11/LakeBirchSapling"
+    },
+    {
+      "Id": "env.tier02.region11.ShoreShrub",
+      "Name": "ShoreShrub",
+      "Category": "Shrub",
+      "Triangles": 340,
+      "BoundsMin": [
+        -0.9235688994335334,
+        -0.0260178110496567,
+        -1.0476987653015044
+      ],
+      "BoundsMax": [
+        0.75,
+        0.8200000000000001,
+        0.7336945358314834
+      ],
+      "FootprintRadius": 1.222,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 4.22,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region11/ShoreShrub"
+    },
+    {
+      "Id": "env.tier02.region11.LowShoreBush",
+      "Name": "LowShoreBush",
+      "Category": "Shrub",
+      "Triangles": 340,
+      "BoundsMin": [
+        -0.6772838595845911,
+        -0.029824058372994417,
+        -0.76831242788777
+      ],
+      "BoundsMax": [
+        0.55,
+        0.41000000000000003,
+        0.5380426596097545
+      ],
+      "FootprintRadius": 0.896,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.9,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region11/LowShoreBush"
+    },
+    {
+      "Id": "env.tier02.region11.LakeReeds",
+      "Name": "LakeReeds",
+      "Category": "GroundCover",
+      "Triangles": 468,
+      "BoundsMin": [
+        -0.6402356326683414,
+        -0.0010579499537965661,
+        -0.3631638940278376
+      ],
+      "BoundsMax": [
+        0.5262206714435124,
+        1.5674920260742262,
+        0.07285129455221188
+      ],
+      "FootprintRadius": 0.623,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.62,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region11/LakeReeds"
+    },
+    {
+      "Id": "env.tier02.region11.ShoreSedge",
+      "Name": "ShoreSedge",
+      "Category": "GroundCover",
+      "Triangles": 24,
+      "BoundsMin": [
+        -0.29018365122277945,
+        0,
+        -0.2836430777223394
+      ],
+      "BoundsMax": [
+        0.30021205941388607,
+        0.7973693959965725,
+        0.3287004992112801
+      ],
+      "FootprintRadius": 0.425,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.43,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region11/ShoreSedge"
+    },
+    {
+      "Id": "env.tier02.region11.LakeshoreGrass",
+      "Name": "LakeshoreGrass",
+      "Category": "GroundCover",
+      "Triangles": 24,
+      "BoundsMin": [
+        -0.348171842780175,
+        0,
+        -0.3595256405960191
+      ],
+      "BoundsMax": [
+        0.3831079568042527,
+        0.5285701197295257,
+        0.37208356506078905
+      ],
+      "FootprintRadius": 0.517,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.52,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region11/LakeshoreGrass"
+    },
+    {
+      "Id": "env.tier02.region11.ShoreFlowers",
+      "Name": "ShoreFlowers",
+      "Category": "GroundCover",
+      "Triangles": 504,
+      "BoundsMin": [
+        -0.4447351125697756,
+        0,
+        -0.36961733931611085
+      ],
+      "BoundsMax": [
+        0.40792162485993766,
+        0.32847351527410057,
+        0.3301841178375005
+      ],
+      "FootprintRadius": 0.552,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.55,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region11/ShoreFlowers"
+    },
+    {
+      "Id": "env.tier02.region11.ShorePebbleCluster",
+      "Name": "ShorePebbleCluster",
+      "Category": "Rock",
+      "Triangles": 280,
+      "BoundsMin": [
+        -1.2769754962931072,
+        0,
+        -0.8902277957823297
+      ],
+      "BoundsMax": [
+        1.2569893993513896,
+        0.2395138419743592,
+        0.8532309914919562
+      ],
+      "FootprintRadius": 1.538,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 4.54,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region11/ShorePebbleCluster"
+    },
+    {
+      "Id": "env.tier02.region11.LakeBoulder",
+      "Name": "LakeBoulder",
+      "Category": "Rock",
+      "Triangles": 56,
+      "BoundsMin": [
+        -1.4324375404018355,
+        0,
+        -1.074738731173679
+      ],
+      "BoundsMax": [
+        1.4537835560889514,
+        1.236,
+        0.998819739795663
+      ],
+      "FootprintRadius": 1.777,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 4.78,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region11/LakeBoulder"
+    },
+    {
+      "Id": "env.tier02.region11.LakeDriftwood",
+      "Name": "LakeDriftwood",
+      "Category": "Deadwood",
+      "Triangles": 56,
+      "BoundsMin": [
+        -1.2,
+        0.0,
+        -0.12802500789158705
+      ],
+      "BoundsMax": [
+        1.2,
+        0.3820298951173433,
+        0.35767796114028955
+      ],
+      "FootprintRadius": 1.224,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 4.22,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region11/LakeDriftwood"
+    },
+    {
+      "Id": "env.tier02.region11.IslandMound",
+      "Name": "IslandMound",
+      "Category": "Terrain",
+      "Triangles": 160,
+      "BoundsMin": [
+        -5.0,
+        0.0,
+        -4.0
+      ],
+      "BoundsMax": [
+        5.0,
+        1.3,
+        4.0
+      ],
+      "FootprintRadius": 6.403,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 9.4,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier02/Region11/IslandMound"
+    },
+    {
+      "Id": "env.tier02.region11.LakeshoreBank",
+      "Name": "LakeshoreBank",
+      "Category": "Terrain",
+      "Triangles": 160,
+      "BoundsMin": [
+        -4.0,
+        0.0,
+        -4.0
+      ],
+      "BoundsMax": [
+        4.0,
+        0.48,
+        4.0
+      ],
+      "FootprintRadius": 5.657,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 8.66,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier02/Region11/LakeshoreBank"
+    },
+    {
+      "Id": "env.tier02.region11.DistantLakeIsland",
+      "Name": "DistantLakeIsland",
+      "Category": "Terrain",
+      "Triangles": 160,
+      "BoundsMin": [
+        -14.0,
+        0.0,
+        -10.0
+      ],
+      "BoundsMax": [
+        14.0,
+        4.0,
+        10.0
+      ],
+      "FootprintRadius": 17.205,
+      "CastsShadows": false,
+      "DistantOnly": true,
+      "RecommendedRoadClearance": 20.2,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier02/Region11/DistantLakeIsland"
+    },
+    {
+      "Id": "env.tier02.region11.MirrorLakeTile",
+      "Name": "MirrorLakeTile",
+      "Category": "Water",
+      "Triangles": 72,
+      "BoundsMin": [
+        -4.0,
+        0,
+        -8.0
+      ],
+      "BoundsMax": [
+        4.0,
+        0,
+        8.0
+      ],
+      "FootprintRadius": 8.944,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 11.94,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier02/Region11/MirrorLakeTile"
+    },
+    {
+      "Id": "env.tier02.region11.CalmWaterTile",
+      "Name": "CalmWaterTile",
+      "Category": "Water",
+      "Triangles": 72,
+      "BoundsMin": [
+        -4.0,
+        0,
+        -4.0
+      ],
+      "BoundsMax": [
+        4.0,
+        0,
+        4.0
+      ],
+      "FootprintRadius": 5.657,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 8.66,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier02/Region11/CalmWaterTile"
+    },
+    {
+      "Id": "env.tier02.region11.LakeshoreSandPatch",
+      "Name": "LakeshoreSandPatch",
+      "Category": "Terrain",
+      "Triangles": 72,
+      "BoundsMin": [
+        -3.0,
+        0,
+        -3.0
+      ],
+      "BoundsMax": [
+        3.0,
+        0,
+        3.0
+      ],
+      "FootprintRadius": 4.243,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 7.24,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier02/Region11/LakeshoreSandPatch"
+    },
+    {
+      "Id": "env.tier02.region11.LakeshoreTrailShoulder",
+      "Name": "LakeshoreTrailShoulder",
+      "Category": "Terrain",
+      "Triangles": 72,
+      "BoundsMin": [
+        -3.0,
+        0,
+        -3.0
+      ],
+      "BoundsMax": [
+        3.0,
+        0,
+        3.0
+      ],
+      "FootprintRadius": 4.243,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 7.24,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier02/Region11/LakeshoreTrailShoulder"
+    },
+    {
+      "Id": "env.tier02.region11.LakeshoreClearingPatch",
+      "Name": "LakeshoreClearingPatch",
+      "Category": "Terrain",
+      "Triangles": 72,
+      "BoundsMin": [
+        -4.0,
+        0,
+        -4.0
+      ],
+      "BoundsMax": [
+        4.0,
+        0,
+        4.0
+      ],
+      "FootprintRadius": 5.657,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 8.66,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier02/Region11/LakeshoreClearingPatch"
+    }
+  ]
+}

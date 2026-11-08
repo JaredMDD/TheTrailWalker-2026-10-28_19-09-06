@@ -1,0 +1,452 @@
+{
+  "Number": 5,
+  "Name": "Cloudstep Mountains",
+  "PaletteSize": 32,
+  "TrailColorRGB": [
+    146,
+    136,
+    103
+  ],
+  "Models": [
+    {
+      "Id": "env.tier01.region05.AlpinePine",
+      "Name": "AlpinePine",
+      "Category": "Tree",
+      "Triangles": 184,
+      "BoundsMin": [
+        -0.8968137052817418,
+        -0.016853925196242802,
+        -0.9241304582453893
+      ],
+      "BoundsMax": [
+        1.0915728423520747,
+        5.5,
+        0.9707280706314037
+      ],
+      "FootprintRadius": 1.373,
+      "CastsShadows": true,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 9.37,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region05/AlpinePine"
+    },
+    {
+      "Id": "env.tier01.region05.StuntedPine",
+      "Name": "StuntedPine",
+      "Category": "Tree",
+      "Triangles": 184,
+      "BoundsMin": [
+        -0.42897955268845533,
+        -0.016853925196242802,
+        -0.5790987120144186
+      ],
+      "BoundsMax": [
+        0.7486283067315599,
+        2.5,
+        0.5655890586684398
+      ],
+      "FootprintRadius": 0.821,
+      "CastsShadows": true,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 8.82,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region05/StuntedPine"
+    },
+    {
+      "Id": "env.tier01.region05.MountainWindPine",
+      "Name": "MountainWindPine",
+      "Category": "Tree",
+      "Triangles": 184,
+      "BoundsMin": [
+        -0.42902844733972856,
+        -0.03262168456868642,
+        -0.7344419296659995
+      ],
+      "BoundsMax": [
+        1.0569829766946035,
+        4.2,
+        0.6633424486413226
+      ],
+      "FootprintRadius": 1.02,
+      "CastsShadows": true,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 9.02,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region05/MountainWindPine"
+    },
+    {
+      "Id": "env.tier01.region05.AlpineShrub",
+      "Name": "AlpineShrub",
+      "Category": "Shrub",
+      "Triangles": 340,
+      "BoundsMin": [
+        -0.7388551195468267,
+        -0.029755259344119444,
+        -0.8381590122412035
+      ],
+      "BoundsMax": [
+        0.6000000000000001,
+        0.45100000000000007,
+        0.5869556286651867
+      ],
+      "FootprintRadius": 0.978,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.98,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region05/AlpineShrub"
+    },
+    {
+      "Id": "env.tier01.region05.CushionPlant",
+      "Name": "CushionPlant",
+      "Category": "Shrub",
+      "Triangles": 340,
+      "BoundsMin": [
+        -0.6157125996223556,
+        -0.03165705018998414,
+        -0.6984658435343363
+      ],
+      "BoundsMax": [
+        0.5,
+        0.20500000000000002,
+        0.48912969055432226
+      ],
+      "FootprintRadius": 0.815,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.81,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region05/CushionPlant"
+    },
+    {
+      "Id": "env.tier01.region05.MountainGrass",
+      "Name": "MountainGrass",
+      "Category": "GroundCover",
+      "Triangles": 24,
+      "BoundsMin": [
+        -0.30553319635103693,
+        0,
+        -0.2518315043841851
+      ],
+      "BoundsMax": [
+        0.5286416624441769,
+        0.34847498872502225,
+        0.32544804989942805
+      ],
+      "FootprintRadius": 0.507,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.51,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region05/MountainGrass"
+    },
+    {
+      "Id": "env.tier01.region05.AlpineDryGrass",
+      "Name": "AlpineDryGrass",
+      "Category": "GroundCover",
+      "Triangles": 24,
+      "BoundsMin": [
+        -0.39794991792499324,
+        0,
+        -0.3051151875622797
+      ],
+      "BoundsMax": [
+        0.4185326072286373,
+        0.4893626170074245,
+        0.2875122288110155
+      ],
+      "FootprintRadius": 0.504,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.5,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region05/AlpineDryGrass"
+    },
+    {
+      "Id": "env.tier01.region05.AlpineWildflowers",
+      "Name": "AlpineWildflowers",
+      "Category": "GroundCover",
+      "Triangles": 504,
+      "BoundsMin": [
+        -0.3240269129252369,
+        0,
+        -0.39070851022329833
+      ],
+      "BoundsMax": [
+        0.4482726957728901,
+        0.2722566780062401,
+        0.3524873862125762
+      ],
+      "FootprintRadius": 0.536,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.54,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region05/AlpineWildflowers"
+    },
+    {
+      "Id": "env.tier01.region05.MountainBoulder",
+      "Name": "MountainBoulder",
+      "Category": "Rock",
+      "Triangles": 56,
+      "BoundsMin": [
+        -1.40287403761902,
+        0,
+        -1.0697583064429443
+      ],
+      "BoundsMax": [
+        1.3301547517185222,
+        1.545,
+        0.9793207571167907
+      ],
+      "FootprintRadius": 1.708,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 4.71,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region05/MountainBoulder"
+    },
+    {
+      "Id": "env.tier01.region05.ScreeCluster",
+      "Name": "ScreeCluster",
+      "Category": "Rock",
+      "Triangles": 280,
+      "BoundsMin": [
+        -1.7562624737755859,
+        0,
+        -1.2573429702883474
+      ],
+      "BoundsMax": [
+        1.7056687004109032,
+        0.5134907945683772,
+        1.2976140189930068
+      ],
+      "FootprintRadius": 2.151,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 5.15,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region05/ScreeCluster"
+    },
+    {
+      "Id": "env.tier01.region05.RockSpire",
+      "Name": "RockSpire",
+      "Category": "Rock",
+      "Triangles": 56,
+      "BoundsMin": [
+        -1.0085801135485382,
+        0,
+        -0.8763192264929952
+      ],
+      "BoundsMax": [
+        1.0211445875584235,
+        4.12,
+        0.7883681570983034
+      ],
+      "FootprintRadius": 1.313,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 4.31,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region05/RockSpire"
+    },
+    {
+      "Id": "env.tier01.region05.LayeredRockLedge",
+      "Name": "LayeredRockLedge",
+      "Category": "Rock",
+      "Triangles": 56,
+      "BoundsMin": [
+        -2.9702959718756583,
+        0,
+        -1.8922216645048255
+      ],
+      "BoundsMax": [
+        2.631349032670836,
+        1.236,
+        1.7721126485008905
+      ],
+      "FootprintRadius": 3.347,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 6.35,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region05/LayeredRockLedge"
+    },
+    {
+      "Id": "env.tier01.region05.MountainCliffFace",
+      "Name": "MountainCliffFace",
+      "Category": "Terrain",
+      "Triangles": 160,
+      "BoundsMin": [
+        -5.0,
+        0.0,
+        -7.0
+      ],
+      "BoundsMax": [
+        5.0,
+        6.999999967889728,
+        7.0
+      ],
+      "FootprintRadius": 8.602,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 11.6,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier01/Region05/MountainCliffFace"
+    },
+    {
+      "Id": "env.tier01.region05.ScreeSlope",
+      "Name": "ScreeSlope",
+      "Category": "Terrain",
+      "Triangles": 160,
+      "BoundsMin": [
+        -5.0,
+        0.0,
+        -6.0
+      ],
+      "BoundsMax": [
+        5.0,
+        4.0,
+        6.0
+      ],
+      "FootprintRadius": 7.81,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 10.81,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier01/Region05/ScreeSlope"
+    },
+    {
+      "Id": "env.tier01.region05.MountainRidgePeak",
+      "Name": "MountainRidgePeak",
+      "Category": "Terrain",
+      "Triangles": 160,
+      "BoundsMin": [
+        -9.0,
+        0.0,
+        -12.0
+      ],
+      "BoundsMax": [
+        9.0,
+        12.0,
+        12.0
+      ],
+      "FootprintRadius": 15.0,
+      "CastsShadows": false,
+      "DistantOnly": true,
+      "RecommendedRoadClearance": 18.0,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier01/Region05/MountainRidgePeak"
+    },
+    {
+      "Id": "env.tier01.region05.DistantMountainRidge",
+      "Name": "DistantMountainRidge",
+      "Category": "Terrain",
+      "Triangles": 160,
+      "BoundsMin": [
+        -20.0,
+        0.0,
+        -24.0
+      ],
+      "BoundsMax": [
+        20.0,
+        18.0,
+        24.0
+      ],
+      "FootprintRadius": 31.241,
+      "CastsShadows": false,
+      "DistantOnly": true,
+      "RecommendedRoadClearance": 34.24,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier01/Region05/DistantMountainRidge"
+    },
+    {
+      "Id": "env.tier01.region05.MountainGroundPatch",
+      "Name": "MountainGroundPatch",
+      "Category": "Terrain",
+      "Triangles": 72,
+      "BoundsMin": [
+        -3.0,
+        0,
+        -3.0
+      ],
+      "BoundsMax": [
+        3.0,
+        0,
+        3.0
+      ],
+      "FootprintRadius": 4.243,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 7.24,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier01/Region05/MountainGroundPatch"
+    },
+    {
+      "Id": "env.tier01.region05.RockyTrailShoulder",
+      "Name": "RockyTrailShoulder",
+      "Category": "Terrain",
+      "Triangles": 72,
+      "BoundsMin": [
+        -3.0,
+        0,
+        -3.0
+      ],
+      "BoundsMax": [
+        3.0,
+        0,
+        3.0
+      ],
+      "FootprintRadius": 4.243,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 7.24,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier01/Region05/RockyTrailShoulder"
+    },
+    {
+      "Id": "env.tier01.region05.SwitchbackBank",
+      "Name": "SwitchbackBank",
+      "Category": "Terrain",
+      "Triangles": 160,
+      "BoundsMin": [
+        -4.0,
+        0.0,
+        -4.0
+      ],
+      "BoundsMax": [
+        4.0,
+        1.5,
+        4.0
+      ],
+      "FootprintRadius": 5.657,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 8.66,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier01/Region05/SwitchbackBank"
+    },
+    {
+      "Id": "env.tier01.region05.MountainClearingPatch",
+      "Name": "MountainClearingPatch",
+      "Category": "Terrain",
+      "Triangles": 72,
+      "BoundsMin": [
+        -4.0,
+        0,
+        -4.0
+      ],
+      "BoundsMax": [
+        4.0,
+        0,
+        4.0
+      ],
+      "FootprintRadius": 5.657,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 8.66,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier01/Region05/MountainClearingPatch"
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "Region": 12,
+  "Models": [
+    {
+      "Name": "TinOre",
+      "Triangles": 368,
+      "BoundsMin": [
+        -0.4528,
+        -0.28,
+        -0.4162
+      ],
+      "BoundsMax": [
+        0.4217,
+        0.292,
+        0.4162
+      ],
+      "ProposedFootprint": [
+        480,
+        314
+      ]
+    },
+    {
+      "Name": "YellowOchre",
+      "Triangles": 320,
+      "BoundsMin": [
+        -0.411,
+        -0.272,
+        -0.287
+      ],
+      "BoundsMax": [
+        0.4006,
+        0.231,
+        0.2863
+      ],
+      "ProposedFootprint": [
+        480,
+        297
+      ]
+    },
+    {
+      "Name": "CattailFiber",
+      "Triangles": 520,
+      "BoundsMin": [
+        -0.4763,
+        -0.08,
+        -0.091
+      ],
+      "BoundsMax": [
+        0.4794,
+        0.16,
+        0.091
+      ],
+      "ProposedFootprint": [
+        1000,
+        251
+      ]
+    }
+  ]
+}

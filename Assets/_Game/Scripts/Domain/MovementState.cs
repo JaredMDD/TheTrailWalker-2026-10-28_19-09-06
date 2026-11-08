@@ -13,7 +13,7 @@ namespace TheTrailWalker.Domain
     public sealed class MovementState
     {
         // Starter cap (no boots) and highest boots cap (rank-four boots), raised October 30, 2026.
-        public const float StarterSpeedCap = 1f, MaximumSpeedCap = 3f;
+        public const float StarterSpeedCap = 1.5f, MaximumSpeedCap = 4.5f; // raised 1.5x (user, October 31, 2026)
         public float Distance { get; private set; }
         public float RequestedSpeed { get; private set; }
         public float SpeedCap { get; private set; } = StarterSpeedCap;

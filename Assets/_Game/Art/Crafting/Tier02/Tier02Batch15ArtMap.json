@@ -1,0 +1,45 @@
+{
+  "Scope": "Passive Marsh pack art; no gameplay changes",
+  "BackpackAnchor": [
+    0,
+    1.14,
+    -0.2
+  ],
+  "Items": {
+    "MarshPack": {
+      "Representation": "display",
+      "Body": "",
+      "ItemId": "item.marsh_pack",
+      "RecipeId": "recipe.wearable.marsh_pack",
+      "Anchor": "Centered inventory display",
+      "BindingStatus": "Passive art only; runtime equipment/strap weighting and phone tests pending"
+    },
+    "MaleWearMarshPack": {
+      "Representation": "worn",
+      "Body": "Male",
+      "ItemId": "item.marsh_pack",
+      "RecipeId": "recipe.wearable.marsh_pack",
+      "Anchor": "BackpackAnchor local; parent at (0,1.14,-0.20); identity TRS",
+      "BindingStatus": "Passive art only; runtime equipment/strap weighting and phone tests pending"
+    },
+    "FemaleWearMarshPack": {
+      "Representation": "worn",
+      "Body": "Female",
+      "ItemId": "item.marsh_pack",
+      "RecipeId": "recipe.wearable.marsh_pack",
+      "Anchor": "BackpackAnchor local; parent at (0,1.14,-0.20); identity TRS",
+      "BindingStatus": "Passive art only; runtime equipment/strap weighting and phone tests pending"
+    }
+  },
+  "SupportSources": [
+    "Assets/_Game/Art/Crafting/Tier02/MaleWearFlaxWorkShirt.obj",
+    "Assets/_Game/Art/Crafting/Tier02/FemaleWearFlaxWorkShirt.obj"
+  ],
+  "DocumentarySetAOnly": {
+    "logical_bag_units": [
+      9,
+      4
+    ]
+  },
+  "Pending": "Live binding, dynamic strap attachment/weights, saved inventory migration and current device tests"
+}

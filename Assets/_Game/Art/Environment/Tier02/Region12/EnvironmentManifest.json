@@ -1,0 +1,452 @@
+{
+  "Number": 12,
+  "Name": "Frostveil Taiga",
+  "PaletteSize": 32,
+  "TrailColorRGB": [
+    110,
+    96,
+    78
+  ],
+  "Models": [
+    {
+      "Id": "env.tier02.region12.FrostBirch",
+      "Name": "FrostBirch",
+      "Category": "Tree",
+      "Triangles": 616,
+      "BoundsMin": [
+        -1.2461167393409194,
+        0.0,
+        -1.2164415159184312
+      ],
+      "BoundsMax": [
+        1.0808823713970646,
+        5.9399999999999995,
+        1.1213965310801741
+      ],
+      "FootprintRadius": 1.649,
+      "CastsShadows": true,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 9.65,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region12/FrostBirch"
+    },
+    {
+      "Id": "env.tier02.region12.SnowCappedBirch",
+      "Name": "SnowCappedBirch",
+      "Category": "Tree",
+      "Triangles": 812,
+      "BoundsMin": [
+        -1.191697044529124,
+        0.0,
+        -0.9955698635228281
+      ],
+      "BoundsMax": [
+        0.9958495229042065,
+        5.3999999999999995,
+        1.014694976176707
+      ],
+      "FootprintRadius": 1.485,
+      "CastsShadows": true,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 9.49,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region12/SnowCappedBirch"
+    },
+    {
+      "Id": "env.tier02.region12.TaigaBirchSapling",
+      "Name": "TaigaBirchSapling",
+      "Category": "Tree",
+      "Triangles": 616,
+      "BoundsMin": [
+        -0.3801601576582626,
+        0.0,
+        -0.5374052499754809
+      ],
+      "BoundsMax": [
+        0.5559939895350255,
+        2.1780000000000004,
+        0.4900843440272544
+      ],
+      "FootprintRadius": 0.695,
+      "CastsShadows": true,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 8.7,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region12/TaigaBirchSapling"
+    },
+    {
+      "Id": "env.tier02.region12.FrostShrub",
+      "Name": "FrostShrub",
+      "Category": "Shrub",
+      "Triangles": 340,
+      "BoundsMin": [
+        -0.8619976394712978,
+        -0.026431779276026964,
+        -0.9778521809480707
+      ],
+      "BoundsMax": [
+        0.7,
+        0.738,
+        0.6847815667760512
+      ],
+      "FootprintRadius": 1.141,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 4.14,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region12/FrostShrub"
+    },
+    {
+      "Id": "env.tier02.region12.LowTaigaShrub",
+      "Name": "LowTaigaShrub",
+      "Category": "Shrub",
+      "Triangles": 340,
+      "BoundsMin": [
+        -0.6772838595845911,
+        -0.0306440907617588,
+        -0.76831242788777
+      ],
+      "BoundsMax": [
+        0.55,
+        0.369,
+        0.5380426596097545
+      ],
+      "FootprintRadius": 0.896,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.9,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region12/LowTaigaShrub"
+    },
+    {
+      "Id": "env.tier02.region12.FrostGrass",
+      "Name": "FrostGrass",
+      "Category": "GroundCover",
+      "Triangles": 24,
+      "BoundsMin": [
+        -0.4350310508837058,
+        0,
+        -0.37059410119664415
+      ],
+      "BoundsMax": [
+        0.36141110545299904,
+        0.5104229427318404,
+        0.2590993509195842
+      ],
+      "FootprintRadius": 0.508,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.51,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region12/FrostGrass"
+    },
+    {
+      "Id": "env.tier02.region12.ThawSedge",
+      "Name": "ThawSedge",
+      "Category": "GroundCover",
+      "Triangles": 24,
+      "BoundsMin": [
+        -0.34022003184304256,
+        0,
+        -0.2055311537778859
+      ],
+      "BoundsMax": [
+        0.3793674861536297,
+        0.7148242336532964,
+        0.31240181163293324
+      ],
+      "FootprintRadius": 0.443,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.44,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region12/ThawSedge"
+    },
+    {
+      "Id": "env.tier02.region12.ThawCattails",
+      "Name": "ThawCattails",
+      "Category": "GroundCover",
+      "Triangles": 384,
+      "BoundsMin": [
+        -0.4208722758946581,
+        -0.0007537589585570531,
+        -0.3843782822484458
+      ],
+      "BoundsMax": [
+        0.6051214642248319,
+        1.276565946958658,
+        0.3598297089318671
+      ],
+      "FootprintRadius": 0.634,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.63,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region12/ThawCattails"
+    },
+    {
+      "Id": "env.tier02.region12.SnowCappedBoulder",
+      "Name": "SnowCappedBoulder",
+      "Category": "Rock",
+      "Triangles": 88,
+      "BoundsMin": [
+        -1.3914802022308757,
+        0,
+        -1.0926417310062233
+      ],
+      "BoundsMax": [
+        1.114214823855837,
+        1.296,
+        1.083309931073409
+      ],
+      "FootprintRadius": 1.659,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 4.66,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region12/SnowCappedBoulder"
+    },
+    {
+      "Id": "env.tier02.region12.FrostRockCluster",
+      "Name": "FrostRockCluster",
+      "Category": "Rock",
+      "Triangles": 280,
+      "BoundsMin": [
+        -1.4418217509043278,
+        0,
+        -1.0257882639087876
+      ],
+      "BoundsMax": [
+        1.410355280086974,
+        0.48397197507689055,
+        1.0091665876196805
+      ],
+      "FootprintRadius": 1.752,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 4.75,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region12/FrostRockCluster"
+    },
+    {
+      "Id": "env.tier02.region12.SnowCoveredLog",
+      "Name": "SnowCoveredLog",
+      "Category": "Deadwood",
+      "Triangles": 92,
+      "BoundsMin": [
+        -1.2,
+        0.0,
+        -0.17726539554219745
+      ],
+      "BoundsMax": [
+        1.2,
+        0.43202989511734335,
+        0.35767796114028955
+      ],
+      "FootprintRadius": 1.229,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 4.23,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region12/SnowCoveredLog"
+    },
+    {
+      "Id": "env.tier02.region12.TaigaSnowBank",
+      "Name": "TaigaSnowBank",
+      "Category": "Terrain",
+      "Triangles": 160,
+      "BoundsMin": [
+        -4.0,
+        0.0,
+        -4.0
+      ],
+      "BoundsMax": [
+        4.0,
+        0.6,
+        4.0
+      ],
+      "FootprintRadius": 5.657,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 8.66,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier02/Region12/TaigaSnowBank"
+    },
+    {
+      "Id": "env.tier02.region12.TaigaSnowMound",
+      "Name": "TaigaSnowMound",
+      "Category": "Terrain",
+      "Triangles": 160,
+      "BoundsMin": [
+        -6.0,
+        0.0,
+        -5.0
+      ],
+      "BoundsMax": [
+        6.0,
+        1.5,
+        5.0
+      ],
+      "FootprintRadius": 7.81,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 10.81,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier02/Region12/TaigaSnowMound"
+    },
+    {
+      "Id": "env.tier02.region12.DistantTaigaRidge",
+      "Name": "DistantTaigaRidge",
+      "Category": "Terrain",
+      "Triangles": 160,
+      "BoundsMin": [
+        -16.0,
+        0.0,
+        -14.0
+      ],
+      "BoundsMax": [
+        16.0,
+        7.0,
+        14.0
+      ],
+      "FootprintRadius": 21.26,
+      "CastsShadows": false,
+      "DistantOnly": true,
+      "RecommendedRoadClearance": 24.26,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier02/Region12/DistantTaigaRidge"
+    },
+    {
+      "Id": "env.tier02.region12.TaigaSnowPatch",
+      "Name": "TaigaSnowPatch",
+      "Category": "Terrain",
+      "Triangles": 72,
+      "BoundsMin": [
+        -3.0,
+        0,
+        -3.0
+      ],
+      "BoundsMax": [
+        3.0,
+        0,
+        3.0
+      ],
+      "FootprintRadius": 4.243,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 7.24,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier02/Region12/TaigaSnowPatch"
+    },
+    {
+      "Id": "env.tier02.region12.ThawedMudPatch",
+      "Name": "ThawedMudPatch",
+      "Category": "Terrain",
+      "Triangles": 72,
+      "BoundsMin": [
+        -3.0,
+        0,
+        -3.0
+      ],
+      "BoundsMax": [
+        3.0,
+        0,
+        3.0
+      ],
+      "FootprintRadius": 4.243,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 7.24,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier02/Region12/ThawedMudPatch"
+    },
+    {
+      "Id": "env.tier02.region12.ThawWaterTile",
+      "Name": "ThawWaterTile",
+      "Category": "Water",
+      "Triangles": 72,
+      "BoundsMin": [
+        -4.0,
+        0,
+        -4.0
+      ],
+      "BoundsMax": [
+        4.0,
+        0,
+        4.0
+      ],
+      "FootprintRadius": 5.657,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 8.66,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier02/Region12/ThawWaterTile"
+    },
+    {
+      "Id": "env.tier02.region12.IceEdgeWaterTile",
+      "Name": "IceEdgeWaterTile",
+      "Category": "Water",
+      "Triangles": 72,
+      "BoundsMin": [
+        -4.0,
+        0,
+        -4.0
+      ],
+      "BoundsMax": [
+        4.0,
+        0,
+        4.0
+      ],
+      "FootprintRadius": 5.657,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 8.66,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier02/Region12/IceEdgeWaterTile"
+    },
+    {
+      "Id": "env.tier02.region12.TaigaTrailShoulder",
+      "Name": "TaigaTrailShoulder",
+      "Category": "Terrain",
+      "Triangles": 72,
+      "BoundsMin": [
+        -3.0,
+        0,
+        -3.0
+      ],
+      "BoundsMax": [
+        3.0,
+        0,
+        3.0
+      ],
+      "FootprintRadius": 4.243,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 7.24,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier02/Region12/TaigaTrailShoulder"
+    },
+    {
+      "Id": "env.tier02.region12.TaigaClearingPatch",
+      "Name": "TaigaClearingPatch",
+      "Category": "Terrain",
+      "Triangles": 72,
+      "BoundsMin": [
+        -4.0,
+        0,
+        -4.0
+      ],
+      "BoundsMax": [
+        4.0,
+        0,
+        4.0
+      ],
+      "FootprintRadius": 5.657,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 8.66,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier02/Region12/TaigaClearingPatch"
+    }
+  ]
+}

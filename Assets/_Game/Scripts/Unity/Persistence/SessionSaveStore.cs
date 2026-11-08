@@ -35,6 +35,47 @@ namespace TheTrailWalker.Persistence
         // Milestone 6 (optional, older saves load without it): interactables harvested in their segment's current drop
         // cycle, as "segmentId|cycle|anchorId". Entries from older cycles are ignored and dropped on the next save.
         public List<string> harvested = new List<string>();
+        // Milestone 7 (optional): known recipes, mastery units and outstanding timed batches.
+        public SavedCrafting crafting;
+        // Milestone 8 (optional): claimed missions in claim order, the active mission and its delivered units.
+        public SavedMissions missions;
+        // Statistics (optional, November 2, 2026): counters for the possible statistics page; older saves start at zero.
+        public SavedStatistics statistics;
+    }
+    [Serializable] public sealed class SavedCount { public string key; public long value; }
+    [Serializable] public sealed class SavedStatistics
+    {
+        public double distanceMetres; public long cashEarned, cashSpent, goldEarned, goldSpent; public int faints;
+        public List<SavedCount> gathered = new List<SavedCount>(), craftedUnits = new List<SavedCount>(), crafts = new List<SavedCount>(), interactions = new List<SavedCount>();
+    }
+    [Serializable] public sealed class SavedMissions
+    {
+        public List<string> claimed = new List<string>();
+        public string active; // null or empty: no active mission
+        public int delivered;
+        public int region; // unlocked mission region (0 in older saves: region 1)
+        // Mission catalog (0 in older saves: the original book). legacyClaims: how many leading claims were made under the
+        // original order; activeLegacy: the active mission was accepted under it (see MissionState.Restore).
+        public int catalog;
+        public int legacyClaims;
+        public bool activeLegacy;
+        // Catalog 3 (November 7, 2026): the catalog each claim was made under (parallel to claimed) and the catalog the active
+        // mission was accepted under (0 without one). Older saves leave them empty and use legacyClaims/activeLegacy.
+        public List<int> claimCatalogs = new List<int>();
+        public int activeCatalog;
+    }
+    [Serializable] public sealed class SavedCrafting
+    {
+        public List<string> known = new List<string>(); // in learning order
+        public List<SavedMastery> mastery = new List<SavedMastery>();
+        public string lastRecipe; // the last crafted recipe opens the crafting menu
+        public List<SavedBatch> batches = new List<SavedBatch>();
+    }
+    [Serializable] public sealed class SavedMastery { public string recipeId; public long units; }
+    [Serializable] public sealed class SavedBatch
+    {
+        public string id, recipeId, startedUtc, readyAtUtc; public int executions, outputUnits, level, quality, maxDurability; public long unitValue; public bool credited, masteryCredited;
+        public List<string> itemIds = new List<string>();
     }
     [Serializable] public sealed class SavedTravel
     {
@@ -232,14 +273,43 @@ namespace TheTrailWalker.Persistence
                 if (envelope.version != 1 || string.IsNullOrEmpty(envelope.payload) || envelope.sha256 != Hash(envelope.payload)) throw new InvalidDataException("Checksum mismatch");
                 snapshot = JsonUtility.FromJson<SessionSnapshot>(envelope.payload);
                 if (snapshot != null && snapshot.version > latestSchema) { snapshot = null; message = "Save uses a newer schema version."; return LoadStatus.Unsupported; }
+                MigrateCatalogLayout(snapshot);
                 Validate(snapshot, length, out _); return LoadStatus.Loaded;
             }
             catch (Exception e) when (e is IOException || e is UnauthorizedAccessException || e is ArgumentException || e is InvalidDataException || e is FormatException || e is InvalidOperationException)
             { snapshot = null; message = e.Message; return LoadStatus.Invalid; }
         }
+        // When the authored camp layout changes (Dawn Plains grew from three to ten camps, October 31, 2026), a save whose
+        // segment no longer matches its camp is seated back at that camp with a drop cycle for its new outgoing leg.
+        // Carried items, progress and paid tolls are untouched.
+        public static void MigrateCatalogLayout(SessionSnapshot data)
+        {
+            if (data == null || data.version != 3 || data.travel == null || data.travel.cycles == null) return;
+            TravelCatalog catalog = TravelCatalog.Prototype();
+            CampDefinition camp = catalog.Camp(data.travel.campId);
+            if (camp == null) return;
+            SegmentDefinition outgoing = catalog.Outgoing(camp.Id);
+            SegmentDefinition expected = data.travel.farBank ? catalog.LandingInto(catalog.Region(camp.RegionId).NextRegionId) : outgoing;
+            bool landingMoved = data.travel.farBank && (expected == null || expected.FromCampId != camp.Id);
+            if (!landingMoved && expected != null && data.segmentId == expected.Id) return;
+            data.segmentId = outgoing.Id; data.travel.seated = true; data.travel.farBank = false;
+            data.distance = 0; data.requestedSpeed = 0; data.inventoryResume = 0; data.camp = false;
+            if (!data.travel.cycles.Exists(c => c != null && c.segmentId == outgoing.Id)) data.travel.cycles.Add(new SavedCycle { segmentId = outgoing.Id, cycle = 1 });
+        }
         public static void Validate(SessionSnapshot data, float pathLength, out SpatialInventory inventory)
         {
-            if (data == null || data.version < 1 || data.version > 3 || (data.version < 3 && data.segmentId != "prototype.trail.1") || data.items == null || data.items.Count > 1024 || (data.harvested != null && (data.harvested.Count > 512 || data.harvested.Exists(h => string.IsNullOrEmpty(h) || h.Split('|').Length != 3))) || float.IsNaN(data.yaw) || float.IsInfinity(data.yaw) || data.distance > pathLength) throw new InvalidDataException("Invalid session header");
+            if (data == null || data.version < 1 || data.version > 3 || (data.version < 3 && data.segmentId != "prototype.trail.1") || data.items == null || data.items.Count > 1024 || (data.harvested != null && (data.harvested.Count > 512 || data.harvested.Exists(h => string.IsNullOrEmpty(h) || h.Split('|').Length != 3))) ||
+                (data.crafting != null && (data.crafting.known == null || data.crafting.mastery == null || data.crafting.batches == null || data.crafting.batches.Count > 4096
+                    || data.crafting.mastery.Exists(m => m == null || string.IsNullOrEmpty(m.recipeId) || m.units < 0)
+                    || data.crafting.batches.Exists(b => b == null || string.IsNullOrEmpty(b.id) || string.IsNullOrEmpty(b.recipeId) || b.executions < 1 || b.outputUnits < 1 || b.itemIds == null
+                        || !DateTime.TryParse(b.readyAtUtc, null, System.Globalization.DateTimeStyles.RoundtripKind, out _)))) || float.IsNaN(data.yaw) || float.IsInfinity(data.yaw) || data.distance > pathLength) throw new InvalidDataException("Invalid session header");
+            if (data.missions != null)
+            {
+                if (data.missions.claimed == null || data.missions.claimed.Count > 256) throw new InvalidDataException("Invalid session data");
+                try { TheTrailWalker.Domain.Missions.MissionState.Restore(data.missions.claimed, string.IsNullOrEmpty(data.missions.active) ? null : data.missions.active, data.missions.delivered, data.missions.region,
+                    data.missions.catalog, data.missions.legacyClaims, data.missions.activeLegacy, data.missions.claimCatalogs, data.missions.activeCatalog); }
+                catch (ArgumentException e) { throw new InvalidDataException("Invalid mission progress: " + e.Message); }
+            }
             var movement = new MovementState(); movement.Restore(data.distance, data.requestedSpeed, data.speedCap, data.inventoryResume, data.inventoryOpen, data.postHarvest, data.camp);
             if (data.camp != (data.distance >= pathLength) && pathLength != float.MaxValue) throw new InvalidDataException("Invalid camp position");
             TravelCatalog catalog = TravelCatalog.Prototype();

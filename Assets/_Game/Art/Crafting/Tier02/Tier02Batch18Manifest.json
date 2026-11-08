@@ -1,0 +1,98 @@
+{
+  "Revision": 1,
+  "Batch": 18,
+  "Scope": "3 passive Wearable art outputs; no gameplay value or shared shader changes.",
+  "BlenderVersion": "5.2.3 LTS",
+  "Items": [
+    {
+      "Name": "TaigaFramePack",
+      "Model": "TaigaFramePack",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/TaigaFramePack.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/TaigaFramePackPalette.png",
+      "PrefabPath": "Tier02/Wearables/TaigaFramePack",
+      "Triangles": 2472,
+      "BoundsMin": [
+        -0.306,
+        -0.354584,
+        -0.295394
+      ],
+      "BoundsMax": [
+        0.306,
+        0.354584,
+        0.295394
+      ],
+      "DisplayName": "Taiga frame pack",
+      "ItemId": "item.taiga_frame_pack",
+      "RecipeId": "recipe.wearable.taiga_frame_pack",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-E16",
+      "MissionRegion": 12,
+      "IngredientBrief": "3 Fine flax cloth + 2 Fine beaver leather + 2 Cattail cord -> 1",
+      "Role": "Wearable",
+      "Representation": "display",
+      "Body": "",
+      "Anchor": "Centered display",
+      "BindingStatus": "Passive art only; no live equipment/weights/capacity changes"
+    },
+    {
+      "Name": "MaleWearTaigaFramePack",
+      "Model": "MaleWearTaigaFramePack",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/MaleWearTaigaFramePack.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/MaleWearTaigaFramePackPalette.png",
+      "PrefabPath": "Tier02/Wearables/MaleWearTaigaFramePack",
+      "Triangles": 3632,
+      "BoundsMin": [
+        -0.310705,
+        -0.194,
+        -0.256721
+      ],
+      "BoundsMax": [
+        0.310623,
+        0.260803,
+        0.328714
+      ],
+      "DisplayName": "Taiga frame pack (Male fitted)",
+      "ItemId": "item.taiga_frame_pack",
+      "RecipeId": "recipe.wearable.taiga_frame_pack",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-E16",
+      "MissionRegion": 12,
+      "IngredientBrief": "3 Fine flax cloth + 2 Fine beaver leather + 2 Cattail cord -> 1",
+      "Role": "Wearable",
+      "Representation": "worn",
+      "Body": "Male",
+      "Anchor": "BackpackAnchor local; parent (0,1.14,-.20); identity TRS",
+      "BindingStatus": "Passive art only; no live equipment/weights/capacity changes"
+    },
+    {
+      "Name": "FemaleWearTaigaFramePack",
+      "Model": "FemaleWearTaigaFramePack",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/FemaleWearTaigaFramePack.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/FemaleWearTaigaFramePackPalette.png",
+      "PrefabPath": "Tier02/Wearables/FemaleWearTaigaFramePack",
+      "Triangles": 3632,
+      "BoundsMin": [
+        -0.289946,
+        -0.194,
+        -0.256721
+      ],
+      "BoundsMax": [
+        0.289907,
+        0.243058,
+        0.329879
+      ],
+      "DisplayName": "Taiga frame pack (Female fitted)",
+      "ItemId": "item.taiga_frame_pack",
+      "RecipeId": "recipe.wearable.taiga_frame_pack",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-E16",
+      "MissionRegion": 12,
+      "IngredientBrief": "3 Fine flax cloth + 2 Fine beaver leather + 2 Cattail cord -> 1",
+      "Role": "Wearable",
+      "Representation": "worn",
+      "Body": "Female",
+      "Anchor": "BackpackAnchor local; parent (0,1.14,-.20); identity TRS",
+      "BindingStatus": "Passive art only; no live equipment/weights/capacity changes"
+    }
+  ]
+}

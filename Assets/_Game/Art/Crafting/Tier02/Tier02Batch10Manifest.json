@@ -1,0 +1,60 @@
+{
+  "Revision": 1,
+  "Batch": 10,
+  "Scope": "2 passive Tool art outputs; no gameplay value or shared shader changes.",
+  "BlenderVersion": "5.2.3 LTS",
+  "Items": [
+    {
+      "Name": "NormalBirchAxe",
+      "Model": "NormalBirchAxe",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/NormalBirchAxe.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/NormalBirchAxePalette.png",
+      "PrefabPath": "Tier02/Tools/NormalBirchAxe",
+      "Triangles": 2108,
+      "BoundsMin": [
+        -0.22,
+        -0.601059,
+        -0.105
+      ],
+      "BoundsMax": [
+        0.425,
+        0.565,
+        0.105
+      ],
+      "DisplayName": "Normal birch axe",
+      "ItemId": "",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-L3",
+      "MissionRegion": 8,
+      "IngredientBrief": "2 Birch branches + 1 Copper ingot + 1 Hemp cord -> 1",
+      "Role": "Tool"
+    },
+    {
+      "Name": "EliteBirchAxe",
+      "Model": "EliteBirchAxe",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/EliteBirchAxe.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/EliteBirchAxePalette.png",
+      "PrefabPath": "Tier02/Tools/EliteBirchAxe",
+      "Triangles": 2292,
+      "BoundsMin": [
+        -0.22,
+        -0.601059,
+        -0.105
+      ],
+      "BoundsMax": [
+        0.425,
+        0.565,
+        0.105
+      ],
+      "DisplayName": "Elite birch axe",
+      "ItemId": "",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "T2-L7",
+      "MissionRegion": 9,
+      "IngredientBrief": "1 Normal birch axe + 2 Pine planks -> 1",
+      "Role": "Tool"
+    }
+  ]
+}

@@ -1,0 +1,452 @@
+{
+  "Number": 9,
+  "Name": "Bluewater Basin",
+  "PaletteSize": 32,
+  "TrailColorRGB": [
+    151,
+    123,
+    79
+  ],
+  "Models": [
+    {
+      "Id": "env.tier02.region09.BasinBirch",
+      "Name": "BasinBirch",
+      "Category": "Tree",
+      "Triangles": 616,
+      "BoundsMin": [
+        -1.100992524024966,
+        0.0,
+        -1.1400638708109905
+      ],
+      "BoundsMax": [
+        1.170445212411116,
+        5.9399999999999995,
+        1.171848004946439
+      ],
+      "FootprintRadius": 1.621,
+      "CastsShadows": true,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 9.62,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region09/BasinBirch"
+    },
+    {
+      "Id": "env.tier02.region09.TwinBasinBirch",
+      "Name": "TwinBasinBirch",
+      "Category": "Tree",
+      "Triangles": 1232,
+      "BoundsMin": [
+        -1.6897111658979562,
+        -0.0030216683743185062,
+        -0.6654047345072903
+      ],
+      "BoundsMax": [
+        1.7681112075799754,
+        4.7484566332816,
+        1.6074723653600282
+      ],
+      "FootprintRadius": 2.069,
+      "CastsShadows": true,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 10.07,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region09/TwinBasinBirch"
+    },
+    {
+      "Id": "env.tier02.region09.BasinBirchSapling",
+      "Name": "BasinBirchSapling",
+      "Category": "Tree",
+      "Triangles": 616,
+      "BoundsMin": [
+        -0.40677582186122957,
+        0.0,
+        -0.4732584602083587
+      ],
+      "BoundsMax": [
+        0.5365832509264977,
+        2.4749999999999996,
+        0.45953989913040116
+      ],
+      "FootprintRadius": 0.663,
+      "CastsShadows": true,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 8.66,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region09/BasinBirchSapling"
+    },
+    {
+      "Id": "env.tier02.region09.PondsideShrub",
+      "Name": "PondsideShrub",
+      "Category": "Shrub",
+      "Triangles": 340,
+      "BoundsMin": [
+        -0.9235688994335334,
+        -0.02488856378225743,
+        -1.0476987653015044
+      ],
+      "BoundsMax": [
+        0.75,
+        0.9020000000000001,
+        0.7336945358314834
+      ],
+      "FootprintRadius": 1.222,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 4.22,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region09/PondsideShrub"
+    },
+    {
+      "Id": "env.tier02.region09.LowBasinShrub",
+      "Name": "LowBasinShrub",
+      "Category": "Shrub",
+      "Triangles": 340,
+      "BoundsMin": [
+        -0.7388551195468267,
+        -0.03050834853979492,
+        -0.8381590122412035
+      ],
+      "BoundsMax": [
+        0.6000000000000001,
+        0.41000000000000003,
+        0.5869556286651867
+      ],
+      "FootprintRadius": 0.978,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.98,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region09/LowBasinShrub"
+    },
+    {
+      "Id": "env.tier02.region09.PondReeds",
+      "Name": "PondReeds",
+      "Category": "GroundCover",
+      "Triangles": 468,
+      "BoundsMin": [
+        -0.4581458112317266,
+        -0.0010558199285636816,
+        -0.4011839490775636
+      ],
+      "BoundsMax": [
+        0.6820063318028263,
+        1.6279509804647483,
+        0.4265999945913886
+      ],
+      "FootprintRadius": 0.704,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.7,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region09/PondReeds"
+    },
+    {
+      "Id": "env.tier02.region09.PondSedge",
+      "Name": "PondSedge",
+      "Category": "GroundCover",
+      "Triangles": 24,
+      "BoundsMin": [
+        -0.4354774902864734,
+        0,
+        -0.2731964030254754
+      ],
+      "BoundsMax": [
+        0.3139801056476982,
+        0.8720949633180488,
+        0.3465659078291402
+      ],
+      "FootprintRadius": 0.486,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.49,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region09/PondSedge"
+    },
+    {
+      "Id": "env.tier02.region09.BasinGrass",
+      "Name": "BasinGrass",
+      "Category": "GroundCover",
+      "Triangles": 24,
+      "BoundsMin": [
+        -0.416508164074206,
+        0,
+        -0.35698379335326846
+      ],
+      "BoundsMax": [
+        0.47129546601721606,
+        0.5585575554559127,
+        0.41819695086903524
+      ],
+      "FootprintRadius": 0.589,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.59,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region09/BasinGrass"
+    },
+    {
+      "Id": "env.tier02.region09.BasinWildflowers",
+      "Name": "BasinWildflowers",
+      "Category": "GroundCover",
+      "Triangles": 504,
+      "BoundsMin": [
+        -0.32493780122342275,
+        0,
+        -0.3745299411695049
+      ],
+      "BoundsMax": [
+        0.5126053641570293,
+        0.32422418287959054,
+        0.4820830810552968
+      ],
+      "FootprintRadius": 0.599,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.6,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region09/BasinWildflowers"
+    },
+    {
+      "Id": "env.tier02.region09.BlueStoneCluster",
+      "Name": "BlueStoneCluster",
+      "Category": "Rock",
+      "Triangles": 280,
+      "BoundsMin": [
+        -1.3598290991945454,
+        0,
+        -0.9536252179226681
+      ],
+      "BoundsMax": [
+        1.3009528996603068,
+        0.5018262858096104,
+        0.9760345972696449
+      ],
+      "FootprintRadius": 1.643,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 4.64,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region09/BlueStoneCluster"
+    },
+    {
+      "Id": "env.tier02.region09.PondEdgeBoulder",
+      "Name": "PondEdgeBoulder",
+      "Category": "Rock",
+      "Triangles": 56,
+      "BoundsMin": [
+        -1.1658687679224646,
+        0,
+        -0.9621031195768809
+      ],
+      "BoundsMax": [
+        1.3077507439225435,
+        1.03,
+        0.8803260514708289
+      ],
+      "FootprintRadius": 1.542,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 4.54,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region09/PondEdgeBoulder"
+    },
+    {
+      "Id": "env.tier02.region09.BasinRootLog",
+      "Name": "BasinRootLog",
+      "Category": "Deadwood",
+      "Triangles": 136,
+      "BoundsMin": [
+        -1.5095885992840934,
+        -0.010879034161213351,
+        -0.5337839018448859
+      ],
+      "BoundsMax": [
+        1.0,
+        0.3913209920472754,
+        0.657146253576982
+      ],
+      "FootprintRadius": 1.389,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 4.39,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier02/Region09/BasinRootLog"
+    },
+    {
+      "Id": "env.tier02.region09.PondBasin",
+      "Name": "PondBasin",
+      "Category": "Terrain",
+      "Triangles": 160,
+      "BoundsMin": [
+        -5.0,
+        -0.9,
+        -5.0
+      ],
+      "BoundsMax": [
+        5.0,
+        0.0,
+        5.0
+      ],
+      "FootprintRadius": 7.071,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 10.07,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier02/Region09/PondBasin"
+    },
+    {
+      "Id": "env.tier02.region09.BasinBank",
+      "Name": "BasinBank",
+      "Category": "Terrain",
+      "Triangles": 160,
+      "BoundsMin": [
+        -4.0,
+        0.0,
+        -3.0
+      ],
+      "BoundsMax": [
+        4.0,
+        0.6,
+        3.0
+      ],
+      "FootprintRadius": 5.0,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 8.0,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier02/Region09/BasinBank"
+    },
+    {
+      "Id": "env.tier02.region09.BasinRise",
+      "Name": "BasinRise",
+      "Category": "Terrain",
+      "Triangles": 160,
+      "BoundsMin": [
+        -6.0,
+        0.0,
+        -5.0
+      ],
+      "BoundsMax": [
+        6.0,
+        1.6,
+        5.0
+      ],
+      "FootprintRadius": 7.81,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 10.81,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier02/Region09/BasinRise"
+    },
+    {
+      "Id": "env.tier02.region09.PondWaterTile",
+      "Name": "PondWaterTile",
+      "Category": "Water",
+      "Triangles": 72,
+      "BoundsMin": [
+        -4.0,
+        0,
+        -4.0
+      ],
+      "BoundsMax": [
+        4.0,
+        0,
+        4.0
+      ],
+      "FootprintRadius": 5.657,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 8.66,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier02/Region09/PondWaterTile"
+    },
+    {
+      "Id": "env.tier02.region09.LilyPondTile",
+      "Name": "LilyPondTile",
+      "Category": "Water",
+      "Triangles": 252,
+      "BoundsMin": [
+        -4.0,
+        0,
+        -4.0
+      ],
+      "BoundsMax": [
+        4.0,
+        0.085,
+        4.0
+      ],
+      "FootprintRadius": 5.657,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 8.66,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier02/Region09/LilyPondTile"
+    },
+    {
+      "Id": "env.tier02.region09.BasinGroundPatch",
+      "Name": "BasinGroundPatch",
+      "Category": "Terrain",
+      "Triangles": 72,
+      "BoundsMin": [
+        -3.0,
+        0,
+        -3.0
+      ],
+      "BoundsMax": [
+        3.0,
+        0,
+        3.0
+      ],
+      "FootprintRadius": 4.243,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 7.24,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier02/Region09/BasinGroundPatch"
+    },
+    {
+      "Id": "env.tier02.region09.BasinTrailShoulder",
+      "Name": "BasinTrailShoulder",
+      "Category": "Terrain",
+      "Triangles": 72,
+      "BoundsMin": [
+        -3.0,
+        0,
+        -3.0
+      ],
+      "BoundsMax": [
+        3.0,
+        0,
+        3.0
+      ],
+      "FootprintRadius": 4.243,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 7.24,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier02/Region09/BasinTrailShoulder"
+    },
+    {
+      "Id": "env.tier02.region09.BasinClearingPatch",
+      "Name": "BasinClearingPatch",
+      "Category": "Terrain",
+      "Triangles": 72,
+      "BoundsMin": [
+        -4.0,
+        0,
+        -4.0
+      ],
+      "BoundsMax": [
+        4.0,
+        0,
+        4.0
+      ],
+      "FootprintRadius": 5.657,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 8.66,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier02/Region09/BasinClearingPatch"
+    }
+  ]
+}

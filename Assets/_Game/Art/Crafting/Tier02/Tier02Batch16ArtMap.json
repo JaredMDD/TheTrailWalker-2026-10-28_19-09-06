@@ -1,0 +1,68 @@
+{
+  "Scope": "Passive Taiga hat/boots; no gameplay changes",
+  "HeadAnchor": [
+    0,
+    1.43,
+    0
+  ],
+  "BootAnkles": [
+    [
+      -0.1,
+      0.1,
+      0
+    ],
+    [
+      0.1,
+      0.1,
+      0
+    ]
+  ],
+  "Items": {
+    "MaleWearTaigaFurHat": {
+      "Representation": "worn",
+      "Body": "Male",
+      "Anchor": "HeadAnchor local; (0,1.43,0)",
+      "ItemId": "item.taiga_fur_hat",
+      "RecipeId": "recipe.wearable.taiga_fur_hat",
+      "BindingStatus": "Passive art; live binding, weights and dynamic validation pending"
+    },
+    "MaleWearTaigaBoots": {
+      "Representation": "worn",
+      "Body": "Male",
+      "Anchor": "BodyRoot; split ankle/foot ownership during integration",
+      "ItemId": "item.taiga_boots",
+      "RecipeId": "recipe.wearable.taiga_boots",
+      "BindingStatus": "Passive art; live binding, weights and dynamic validation pending"
+    },
+    "FemaleWearTaigaFurHat": {
+      "Representation": "worn",
+      "Body": "Female",
+      "Anchor": "HeadAnchor local; (0,1.43,0)",
+      "ItemId": "item.taiga_fur_hat",
+      "RecipeId": "recipe.wearable.taiga_fur_hat",
+      "BindingStatus": "Passive art; live binding, weights and dynamic validation pending"
+    },
+    "FemaleWearTaigaBoots": {
+      "Representation": "worn",
+      "Body": "Female",
+      "Anchor": "BodyRoot; split ankle/foot ownership during integration",
+      "ItemId": "item.taiga_boots",
+      "RecipeId": "recipe.wearable.taiga_boots",
+      "BindingStatus": "Passive art; live binding, weights and dynamic validation pending"
+    },
+    "TaigaFurHat": {
+      "Representation": "display",
+      "ItemId": "item.taiga_fur_hat",
+      "RecipeId": "recipe.wearable.taiga_fur_hat",
+      "BindingStatus": "Passive art; live binding, weights and dynamic validation pending"
+    },
+    "TaigaBoots": {
+      "Representation": "display",
+      "ItemId": "item.taiga_boots",
+      "RecipeId": "recipe.wearable.taiga_boots",
+      "BindingStatus": "Passive art; live binding, weights and dynamic validation pending"
+    }
+  },
+  "HairReuse": "Existing Tier01Accessories {Body}HatHair{Crop,Sweep,Bob,Tied}; preserve saved style/palette",
+  "Pending": "Live binding, per-foot ownership/weights, animation, current save/device tests"
+}

@@ -1,0 +1,108 @@
+{
+  "Revision": 1,
+  "Batch": 5,
+  "Scope": "Four passive Material output assets; no recipes/stats/sources/footprints changed.",
+  "BlenderVersion": "5.2.3 LTS",
+  "Items": [
+    {
+      "Name": "BeaverLeather",
+      "Model": "BeaverLeather",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/BeaverLeather.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/BeaverLeatherPalette.png",
+      "PrefabPath": "Tier02/Materials/BeaverLeather",
+      "Triangles": 760,
+      "BoundsMin": [
+        -0.429261,
+        -0.296872,
+        -0.094178
+      ],
+      "BoundsMax": [
+        0.4576,
+        0.29219,
+        0.04
+      ],
+      "DisplayName": "Beaver leather",
+      "ItemId": "",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive Material art; canonical item/recipe IDs and live binding unresolved",
+      "MissionCode": "T2-H3",
+      "MissionRegion": 7,
+      "IngredientBrief": "2 Raw beaver pelts + 1 Rock salt -> 1"
+    },
+    {
+      "Name": "CuredBeaverPelt",
+      "Model": "CuredBeaverPelt",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/CuredBeaverPelt.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/CuredBeaverPeltPalette.png",
+      "PrefabPath": "Tier02/Materials/CuredBeaverPelt",
+      "Triangles": 640,
+      "BoundsMin": [
+        -0.458529,
+        -0.348056,
+        -0.060211
+      ],
+      "BoundsMax": [
+        0.4888,
+        0.342568,
+        0.026
+      ],
+      "DisplayName": "Cured beaver pelt",
+      "ItemId": "",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive Material art; canonical item/recipe IDs and live binding unresolved",
+      "MissionCode": "T2-H4",
+      "MissionRegion": 7,
+      "IngredientBrief": "2 Raw beaver pelts + 1 Rock salt -> 1"
+    },
+    {
+      "Name": "FineBeaverPelt",
+      "Model": "FineBeaverPelt",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/FineBeaverPelt.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/FineBeaverPeltPalette.png",
+      "PrefabPath": "Tier02/Materials/FineBeaverPelt",
+      "Triangles": 1528,
+      "BoundsMin": [
+        -0.467289,
+        -0.345281,
+        -0.061722
+      ],
+      "BoundsMax": [
+        0.47953,
+        0.341197,
+        0.026
+      ],
+      "DisplayName": "Fine beaver pelt",
+      "ItemId": "",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive Material art; canonical item/recipe IDs and live binding unresolved",
+      "MissionCode": "T2-H5",
+      "MissionRegion": 8,
+      "IngredientBrief": "2 Cured beaver pelts + 1 Hemp thread -> 1"
+    },
+    {
+      "Name": "FineBeaverLeather",
+      "Model": "FineBeaverLeather",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/FineBeaverLeather.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/FineBeaverLeatherPalette.png",
+      "PrefabPath": "Tier02/Materials/FineBeaverLeather",
+      "Triangles": 1240,
+      "BoundsMin": [
+        -0.43428,
+        -0.29174,
+        -0.083
+      ],
+      "BoundsMax": [
+        0.44572,
+        0.288282,
+        0.026
+      ],
+      "DisplayName": "Fine beaver leather",
+      "ItemId": "",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive Material art; canonical item/recipe IDs and live binding unresolved",
+      "MissionCode": "T2-H11",
+      "MissionRegion": 11,
+      "IngredientBrief": "2 Beaver leather + 1 Beeswax -> 1"
+    }
+  ]
+}

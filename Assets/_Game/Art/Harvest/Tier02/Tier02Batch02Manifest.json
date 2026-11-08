@@ -1,0 +1,112 @@
+{
+  "Revision": 1,
+  "Batch": 2,
+  "Scope": "Four passive raw fish assets; no recipes/stats/sources/footprints changed.",
+  "BlenderVersion": "5.2.3 LTS",
+  "Items": [
+    {
+      "Name": "CommonCarp",
+      "Model": "CommonCarp",
+      "SourcePath": "Assets/_Game/Art/Harvest/Tier02/CommonCarp.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/CommonCarpPalette.png",
+      "PrefabPath": "Tier02/Drops/CommonCarp",
+      "Triangles": 1832,
+      "BoundsMin": [
+        -0.62,
+        -0.3,
+        -0.16
+      ],
+      "BoundsMax": [
+        0.443208,
+        0.34,
+        0.172
+      ],
+      "DisplayName": "Common carp",
+      "ItemId": "",
+      "RuntimeBinding": "Passive raw fish art; canonical runtime IDs/bindings unresolved",
+      "SourceRegions": [
+        7,
+        9,
+        11
+      ]
+    },
+    {
+      "Name": "NorthernPike",
+      "Model": "NorthernPike",
+      "SourcePath": "Assets/_Game/Art/Harvest/Tier02/NorthernPike.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/NorthernPikePalette.png",
+      "PrefabPath": "Tier02/Drops/NorthernPike",
+      "Triangles": 1396,
+      "BoundsMin": [
+        -0.73,
+        -0.25,
+        -0.1
+      ],
+      "BoundsMax": [
+        0.69,
+        0.265,
+        0.112
+      ],
+      "DisplayName": "Northern pike",
+      "ItemId": "",
+      "RuntimeBinding": "Passive raw fish art; canonical runtime IDs/bindings unresolved",
+      "SourceRegions": [
+        8,
+        9,
+        12
+      ]
+    },
+    {
+      "Name": "ChannelCatfish",
+      "Model": "ChannelCatfish",
+      "SourcePath": "Assets/_Game/Art/Harvest/Tier02/ChannelCatfish.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/ChannelCatfishPalette.png",
+      "PrefabPath": "Tier02/Drops/ChannelCatfish",
+      "Triangles": 1380,
+      "BoundsMin": [
+        -0.68,
+        -0.22,
+        -0.235754
+      ],
+      "BoundsMax": [
+        0.58223,
+        0.32,
+        0.235754
+      ],
+      "DisplayName": "Channel catfish",
+      "ItemId": "",
+      "RuntimeBinding": "Passive raw fish art; canonical runtime IDs/bindings unresolved",
+      "SourceRegions": [
+        7,
+        10,
+        12
+      ]
+    },
+    {
+      "Name": "Walleye",
+      "Model": "Walleye",
+      "SourcePath": "Assets/_Game/Art/Harvest/Tier02/Walleye.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/WalleyePalette.png",
+      "PrefabPath": "Tier02/Drops/Walleye",
+      "Triangles": 1152,
+      "BoundsMin": [
+        -0.65,
+        -0.28,
+        -0.14
+      ],
+      "BoundsMax": [
+        0.46,
+        0.36,
+        0.152
+      ],
+      "DisplayName": "Walleye",
+      "ItemId": "",
+      "RuntimeBinding": "Passive raw fish art; canonical runtime IDs/bindings unresolved",
+      "SourceRegions": [
+        8,
+        10,
+        11
+      ]
+    }
+  ]
+}

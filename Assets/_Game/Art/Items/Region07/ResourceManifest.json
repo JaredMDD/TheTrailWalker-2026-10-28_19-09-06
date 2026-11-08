@@ -1,0 +1,59 @@
+{
+  "Region": 7,
+  "Models": [
+    {
+      "Name": "BirchBranch",
+      "Triangles": 272,
+      "BoundsMin": [
+        -0.497,
+        -0.1117,
+        -0.1303
+      ],
+      "BoundsMax": [
+        0.5728,
+        0.33,
+        0.22
+      ],
+      "ProposedFootprint": [
+        1200,
+        495
+      ]
+    },
+    {
+      "Name": "BeaverPelt",
+      "Triangles": 228,
+      "BoundsMin": [
+        -0.4713,
+        0.0,
+        -0.406
+      ],
+      "BoundsMax": [
+        0.475,
+        0.1,
+        0.406
+      ],
+      "ProposedFootprint": [
+        900,
+        95
+      ]
+    },
+    {
+      "Name": "Blackberries",
+      "Triangles": 1080,
+      "BoundsMin": [
+        -0.3109,
+        -0.1364,
+        -0.0912
+      ],
+      "BoundsMax": [
+        0.3707,
+        0.62,
+        0.1382
+      ],
+      "ProposedFootprint": [
+        721,
+        800
+      ]
+    }
+  ]
+}

@@ -1,0 +1,452 @@
+{
+  "Number": 4,
+  "Name": "Fern Hollow",
+  "PaletteSize": 32,
+  "TrailColorRGB": [
+    151,
+    123,
+    79
+  ],
+  "Models": [
+    {
+      "Id": "env.tier01.region04.OpenWoodlandPine",
+      "Name": "OpenWoodlandPine",
+      "Category": "Tree",
+      "Triangles": 184,
+      "BoundsMin": [
+        -1.4455482010040048,
+        -0.016853925196242802,
+        -1.5357260572423181
+      ],
+      "BoundsMax": [
+        1.3981828962436667,
+        6,
+        1.5247110572023224
+      ],
+      "FootprintRadius": 2.089,
+      "CastsShadows": true,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 10.09,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region04/OpenWoodlandPine"
+    },
+    {
+      "Id": "env.tier01.region04.LeaningHollowPine",
+      "Name": "LeaningHollowPine",
+      "Category": "Tree",
+      "Triangles": 184,
+      "BoundsMin": [
+        -0.9420669268348827,
+        -0.026479906270059306,
+        -1.0849330610100663
+      ],
+      "BoundsMax": [
+        1.3460586197563331,
+        5.2,
+        1.2038074026780379
+      ],
+      "FootprintRadius": 1.618,
+      "CastsShadows": true,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 9.62,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region04/LeaningHollowPine"
+    },
+    {
+      "Id": "env.tier01.region04.HollowPineSapling",
+      "Name": "HollowPineSapling",
+      "Category": "Tree",
+      "Triangles": 184,
+      "BoundsMin": [
+        -0.5023122510451327,
+        -0.016853925196242802,
+        -0.5405317614851313
+      ],
+      "BoundsMax": [
+        0.5639659417754647,
+        2.4,
+        0.5362966132892292
+      ],
+      "FootprintRadius": 0.758,
+      "CastsShadows": true,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 8.76,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region04/HollowPineSapling"
+    },
+    {
+      "Id": "env.tier01.region04.FernFan",
+      "Name": "FernFan",
+      "Category": "GroundCover",
+      "Triangles": 784,
+      "BoundsMin": [
+        -0.6464936876952173,
+        0.024556391205061777,
+        -0.6993182766193804
+      ],
+      "BoundsMax": [
+        0.7171983804748789,
+        0.8020413532981019,
+        0.6993182766193804
+      ],
+      "FootprintRadius": 0.977,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.98,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region04/FernFan"
+    },
+    {
+      "Id": "env.tier01.region04.FernClump",
+      "Name": "FernClump",
+      "Category": "GroundCover",
+      "Triangles": 784,
+      "BoundsMin": [
+        -0.8800776188928755,
+        0.02309362564704734,
+        -0.9521747745800736
+      ],
+      "BoundsMax": [
+        0.9765140897619936,
+        0.6025898903823572,
+        0.9521747745800736
+      ],
+      "FootprintRadius": 1.33,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 4.33,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region04/FernClump"
+    },
+    {
+      "Id": "env.tier01.region04.YoungFern",
+      "Name": "YoungFern",
+      "Category": "GroundCover",
+      "Triangles": 784,
+      "BoundsMin": [
+        -0.29484854001627886,
+        0.012499999999999997,
+        -0.3188362074959298
+      ],
+      "BoundsMax": [
+        0.3269170590836064,
+        0.30230757111915585,
+        0.3188362074959298
+      ],
+      "FootprintRadius": 0.445,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.45,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region04/YoungFern"
+    },
+    {
+      "Id": "env.tier01.region04.HollowBush",
+      "Name": "HollowBush",
+      "Category": "Shrub",
+      "Triangles": 340,
+      "BoundsMin": [
+        -0.8619976394712978,
+        -0.022926143286784394,
+        -0.9778521809480707
+      ],
+      "BoundsMax": [
+        0.7,
+        0.984,
+        0.6847815667760512
+      ],
+      "FootprintRadius": 1.141,
+      "CastsShadows": true,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 4.14,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region04/HollowBush"
+    },
+    {
+      "Id": "env.tier01.region04.LowLeafBush",
+      "Name": "LowLeafBush",
+      "Category": "Shrub",
+      "Triangles": 340,
+      "BoundsMin": [
+        -0.7388551195468267,
+        -0.0289965974842296,
+        -0.8381590122412035
+      ],
+      "BoundsMax": [
+        0.6000000000000001,
+        0.492,
+        0.5869556286651867
+      ],
+      "FootprintRadius": 0.978,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.98,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region04/LowLeafBush"
+    },
+    {
+      "Id": "env.tier01.region04.GroundIvy",
+      "Name": "GroundIvy",
+      "Category": "GroundCover",
+      "Triangles": 784,
+      "BoundsMin": [
+        -0.4697435681553854,
+        -0.009051448671873954,
+        -0.5076300771364173
+      ],
+      "BoundsMax": [
+        0.5206208757731332,
+        0.14293504910935684,
+        0.5076300771364173
+      ],
+      "FootprintRadius": 0.709,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.71,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region04/GroundIvy"
+    },
+    {
+      "Id": "env.tier01.region04.HollowTallGrass",
+      "Name": "HollowTallGrass",
+      "Category": "GroundCover",
+      "Triangles": 24,
+      "BoundsMin": [
+        -0.3301078532387045,
+        0,
+        -0.3267041413531486
+      ],
+      "BoundsMax": [
+        0.4853787886017843,
+        0.786959747777987,
+        0.3685283115398377
+      ],
+      "FootprintRadius": 0.536,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 3.54,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region04/HollowTallGrass"
+    },
+    {
+      "Id": "env.tier01.region04.MossRockCluster",
+      "Name": "MossRockCluster",
+      "Category": "Rock",
+      "Triangles": 420,
+      "BoundsMin": [
+        -1.1512578760913805,
+        0,
+        -0.832953647216049
+      ],
+      "BoundsMax": [
+        1.156688642314818,
+        0.7055395875399825,
+        0.8471142265873576
+      ],
+      "FootprintRadius": 1.427,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 4.43,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region04/MossRockCluster"
+    },
+    {
+      "Id": "env.tier01.region04.PaleRockOutcrop",
+      "Name": "PaleRockOutcrop",
+      "Category": "Rock",
+      "Triangles": 56,
+      "BoundsMin": [
+        -1.9464399391851566,
+        0,
+        -0.9618681195788248
+      ],
+      "BoundsMax": [
+        1.734775784540979,
+        1.442,
+        0.9873171212592615
+      ],
+      "FootprintRadius": 2.083,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 5.08,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region04/PaleRockOutcrop"
+    },
+    {
+      "Id": "env.tier01.region04.RootedFallenLog",
+      "Name": "RootedFallenLog",
+      "Category": "Deadwood",
+      "Triangles": 136,
+      "BoundsMin": [
+        -1.6595693672427716,
+        -0.010983977446079317,
+        -0.5337500007819618
+      ],
+      "BoundsMax": [
+        1.15,
+        0.39156107751457686,
+        0.6572236411362795
+      ],
+      "FootprintRadius": 1.526,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 4.53,
+      "TerrainReplacement": false,
+      "ResourcePath": "Environment/Tier01/Region04/RootedFallenLog"
+    },
+    {
+      "Id": "env.tier01.region04.HollowRim",
+      "Name": "HollowRim",
+      "Category": "Terrain",
+      "Triangles": 160,
+      "BoundsMin": [
+        -5.0,
+        0.0,
+        -4.0
+      ],
+      "BoundsMax": [
+        5.0,
+        1.02,
+        4.0
+      ],
+      "FootprintRadius": 6.403,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 9.4,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier01/Region04/HollowRim"
+    },
+    {
+      "Id": "env.tier01.region04.HollowBasin",
+      "Name": "HollowBasin",
+      "Category": "Terrain",
+      "Triangles": 160,
+      "BoundsMin": [
+        -5.0,
+        -1.0,
+        -5.0
+      ],
+      "BoundsMax": [
+        5.0,
+        0,
+        5.0
+      ],
+      "FootprintRadius": 7.071,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 10.07,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier01/Region04/HollowBasin"
+    },
+    {
+      "Id": "env.tier01.region04.WoodlandBank",
+      "Name": "WoodlandBank",
+      "Category": "Terrain",
+      "Triangles": 160,
+      "BoundsMin": [
+        -4.0,
+        0.0,
+        -3.0
+      ],
+      "BoundsMax": [
+        4.0,
+        0.66,
+        3.0
+      ],
+      "FootprintRadius": 5.0,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 8.0,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier01/Region04/WoodlandBank"
+    },
+    {
+      "Id": "env.tier01.region04.LeafyGroundPatch",
+      "Name": "LeafyGroundPatch",
+      "Category": "Terrain",
+      "Triangles": 72,
+      "BoundsMin": [
+        -3.0,
+        0,
+        -3.0
+      ],
+      "BoundsMax": [
+        3.0,
+        0,
+        3.0
+      ],
+      "FootprintRadius": 4.243,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 7.24,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier01/Region04/LeafyGroundPatch"
+    },
+    {
+      "Id": "env.tier01.region04.HollowLeafLitter",
+      "Name": "HollowLeafLitter",
+      "Category": "Terrain",
+      "Triangles": 216,
+      "BoundsMin": [
+        -3.0,
+        -0.036,
+        -3.0
+      ],
+      "BoundsMax": [
+        3.0,
+        0.054,
+        3.0
+      ],
+      "FootprintRadius": 4.243,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 7.24,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier01/Region04/HollowLeafLitter"
+    },
+    {
+      "Id": "env.tier01.region04.FernTrailShoulder",
+      "Name": "FernTrailShoulder",
+      "Category": "Terrain",
+      "Triangles": 72,
+      "BoundsMin": [
+        -3.0,
+        0,
+        -3.0
+      ],
+      "BoundsMax": [
+        3.0,
+        0,
+        3.0
+      ],
+      "FootprintRadius": 4.243,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 7.24,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier01/Region04/FernTrailShoulder"
+    },
+    {
+      "Id": "env.tier01.region04.HollowClearingPatch",
+      "Name": "HollowClearingPatch",
+      "Category": "Terrain",
+      "Triangles": 72,
+      "BoundsMin": [
+        -4.0,
+        0,
+        -4.0
+      ],
+      "BoundsMax": [
+        4.0,
+        0,
+        4.0
+      ],
+      "FootprintRadius": 5.657,
+      "CastsShadows": false,
+      "DistantOnly": false,
+      "RecommendedRoadClearance": 8.66,
+      "TerrainReplacement": true,
+      "ResourcePath": "Environment/Tier01/Region04/HollowClearingPatch"
+    }
+  ]
+}

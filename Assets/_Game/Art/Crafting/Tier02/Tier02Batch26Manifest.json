@@ -1,0 +1,86 @@
+{
+  "Revision": 1,
+  "Batch": 26,
+  "Scope": "2 passive Food art outputs; no gameplay value or shared shader changes.",
+  "BlenderVersion": "5.2.3 LTS",
+  "Items": [
+    {
+      "Name": "HoneyBrioche",
+      "Model": "HoneyBrioche",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/HoneyBrioche.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/HoneyBriochePalette.png",
+      "PrefabPath": "Tier02/Food/HoneyBrioche",
+      "Triangles": 1060,
+      "BoundsMin": [
+        -0.326,
+        -0.173,
+        -0.30318
+      ],
+      "BoundsMax": [
+        0.326,
+        0.219,
+        0.30318
+      ],
+      "DisplayName": "Honey brioche",
+      "ItemId": "",
+      "RecipeId": "recipe.food.honey_brioche",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "",
+      "MissionRegion": 0,
+      "IngredientBrief": "2 Wheat flour + 1 Cow butter + 1 Honey -> 1",
+      "Role": "Food",
+      "Representation": "display",
+      "DepictedPortions": 1,
+      "UnlockTier": 2,
+      "UnlockSource": "Rare bakery recipe substitution (tier 2); no mission; excluded from Balloon box",
+      "ArtReusePolicy": "Same source mesh for prepared bakery stock and crafted output; no duplicate shop-only asset",
+      "QualityPolicy": "Prepared stock Q5; crafted output ordinary Food mastery/quality; food purchase never grants recipe",
+      "BindingStatus": "Passive premium bakery Food art; canonical output IDs/live bindings unresolved",
+      "AuthoredHeartsPerServing": 8,
+      "EligibilityPolicy": "Wheat region 6, Honey region 11; accessible exact Cow butter, known flour/butter conversion or exact shops; source discovery never waived",
+      "DocumentaryGoldPerServing": 5,
+      "DocumentaryGoldPerFullStack": 4500,
+      "DocumentaryGoldPerRecipe": 50,
+      "OfferPolicy": "Existing 1% per eligible premium bakery slot; same-food recipe replaces whole food offer, once; source/status rechecks at payment; prices/recovery documentary only"
+    },
+    {
+      "Name": "BlackberryCreamPastry",
+      "Model": "BlackberryCreamPastry",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/BlackberryCreamPastry.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/BlackberryCreamPastryPalette.png",
+      "PrefabPath": "Tier02/Food/BlackberryCreamPastry",
+      "Triangles": 4208,
+      "BoundsMin": [
+        -0.31465,
+        -0.130997,
+        -0.2639
+      ],
+      "BoundsMax": [
+        0.31465,
+        0.167,
+        0.2639
+      ],
+      "DisplayName": "Blackberry cream pastry",
+      "ItemId": "",
+      "RecipeId": "recipe.food.blackberry_cream_pastry",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "",
+      "MissionRegion": 0,
+      "IngredientBrief": "2 Wheat flour + 2 Blackberries + 1 Cow cream -> 1",
+      "Role": "Food",
+      "Representation": "display",
+      "DepictedPortions": 1,
+      "UnlockTier": 2,
+      "UnlockSource": "Rare bakery recipe substitution (tier 2); no mission; excluded from Balloon box",
+      "ArtReusePolicy": "Same source mesh for prepared bakery stock and crafted output; no duplicate shop-only asset",
+      "QualityPolicy": "Prepared stock Q5; crafted output ordinary Food mastery/quality; food purchase never grants recipe",
+      "BindingStatus": "Passive premium bakery Food art; canonical output IDs/live bindings unresolved",
+      "AuthoredHeartsPerServing": 10,
+      "EligibilityPolicy": "Wheat region 6, Blackberries region 7; accessible exact Cow cream, known flour/cream conversion or exact shops; no cream cheese substitution",
+      "DocumentaryGoldPerServing": 7,
+      "DocumentaryGoldPerFullStack": 6300,
+      "DocumentaryGoldPerRecipe": 70,
+      "OfferPolicy": "Existing 1% per eligible premium bakery slot; same-food recipe replaces whole food offer, once; source/status rechecks at payment; prices/recovery documentary only"
+    }
+  ]
+}

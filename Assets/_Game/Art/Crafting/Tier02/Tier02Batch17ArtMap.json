@@ -1,0 +1,49 @@
+{
+  "Scope": "Passive Taiga clothing art; no gameplay edits",
+  "Frame": "Body-root metres; +Y up/+Z forward",
+  "Items": {
+    "MaleWearTaigaWaxedShirt": {
+      "Representation": "worn",
+      "Body": "Male",
+      "Anchor": "BodyRoot metre coordinates; runtime weights/binding pending",
+      "ItemId": "item.taiga_waxed_shirt",
+      "RecipeId": "recipe.wearable.taiga_waxed_shirt"
+    },
+    "MaleWearTaigaTrousers": {
+      "Representation": "worn",
+      "Body": "Male",
+      "Anchor": "BodyRoot metre coordinates; runtime weights/binding pending",
+      "ItemId": "item.taiga_trousers",
+      "RecipeId": "recipe.wearable.taiga_trousers"
+    },
+    "FemaleWearTaigaWaxedShirt": {
+      "Representation": "worn",
+      "Body": "Female",
+      "Anchor": "BodyRoot metre coordinates; runtime weights/binding pending",
+      "ItemId": "item.taiga_waxed_shirt",
+      "RecipeId": "recipe.wearable.taiga_waxed_shirt"
+    },
+    "FemaleWearTaigaTrousers": {
+      "Representation": "worn",
+      "Body": "Female",
+      "Anchor": "BodyRoot metre coordinates; runtime weights/binding pending",
+      "ItemId": "item.taiga_trousers",
+      "RecipeId": "recipe.wearable.taiga_trousers"
+    },
+    "TaigaWaxedShirt": {
+      "Representation": "display",
+      "ItemId": "item.taiga_waxed_shirt",
+      "RecipeId": "recipe.wearable.taiga_waxed_shirt"
+    },
+    "TaigaTrousers": {
+      "Representation": "display",
+      "ItemId": "item.taiga_trousers",
+      "RecipeId": "recipe.wearable.taiga_trousers"
+    }
+  },
+  "DocumentarySetBOnly": {
+    "shirt_pockets": 4,
+    "pants_hooks": 4
+  },
+  "Pending": "Runtime weights/bindings, capacity contents/footprints/save reconciliation, current animation/device tests"
+}

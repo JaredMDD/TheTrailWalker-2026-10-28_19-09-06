@@ -1,0 +1,71 @@
+{
+  "Revision": 1,
+  "Batch": 1,
+  "Scope": "Three passive art assets; no recipe/stat/source/footprint edits.",
+  "BlenderVersion": "5.2.3 LTS",
+  "Items": [
+    {
+      "Name": "BirchLog",
+      "Model": "BirchLog",
+      "SourcePath": "Assets/_Game/Art/Harvest/Tier02/BirchLog.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/BirchLogPalette.png",
+      "PrefabPath": "Tier02/Drops/BirchLog",
+      "Triangles": 1308,
+      "BoundsMin": [
+        -0.63679,
+        -0.310272,
+        -0.422847
+      ],
+      "BoundsMax": [
+        0.63241,
+        0.361331,
+        0.403644
+      ],
+      "DisplayName": "Birch log",
+      "ItemId": "",
+      "RuntimeBinding": "Not installed; log/meat IDs unresolved"
+    },
+    {
+      "Name": "BirchSap",
+      "Model": "BirchSap",
+      "SourcePath": "Assets/_Game/Art/Harvest/Tier02/BirchSap.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/BirchSapPalette.png",
+      "PrefabPath": "Tier02/Drops/BirchSap",
+      "Triangles": 1360,
+      "BoundsMin": [
+        -0.35,
+        -0.4,
+        -0.23
+      ],
+      "BoundsMax": [
+        0.35,
+        0.4,
+        0.23
+      ],
+      "DisplayName": "Birch sap",
+      "ItemId": "ingredient.birch_sap",
+      "RuntimeBinding": "Existing definition retained; art binding pending"
+    },
+    {
+      "Name": "RawBeaverMeat",
+      "Model": "RawBeaverMeat",
+      "SourcePath": "Assets/_Game/Art/Harvest/Tier02/RawBeaverMeat.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/RawBeaverMeatPalette.png",
+      "PrefabPath": "Tier02/Drops/RawBeaverMeat",
+      "Triangles": 480,
+      "BoundsMin": [
+        -0.46,
+        -0.255,
+        -0.200444
+      ],
+      "BoundsMax": [
+        0.44,
+        0.255,
+        0.2
+      ],
+      "DisplayName": "Raw beaver meat",
+      "ItemId": "",
+      "RuntimeBinding": "Not installed; log/meat IDs unresolved"
+    }
+  ]
+}

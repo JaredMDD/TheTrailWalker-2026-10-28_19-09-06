@@ -1,0 +1,37 @@
+{
+  "Models": [
+    {
+      "Name": "BirchCampfireWood",
+      "Triangles": 1520,
+      "BoundsMin": [
+        -0.7493,
+        -0.035,
+        -0.6963
+      ],
+      "BoundsMax": [
+        0.7353,
+        0.5394,
+        1.1236
+      ]
+    },
+    {
+      "Name": "BirchCampfireFlames",
+      "Triangles": 660,
+      "BoundsMin": [
+        -0.2619,
+        0.08,
+        -0.2911
+      ],
+      "BoundsMax": [
+        0.2856,
+        0.939,
+        0.289
+      ]
+    }
+  ],
+  "Wood": "Birch",
+  "WoodTier": 2,
+  "FirstRegion": 7,
+  "LastRegion": 12,
+  "Policy": "Decorative art only. Flames are opaque faceted shells drawn unlit without shadows and animated by a tiny flicker component; no particles, lights or colliders. Seats are the existing BirchLogSeat."
+}

@@ -1,0 +1,62 @@
+{
+  "Scope": "Passive wearable art; no live binding or item footprint changes",
+  "HeadAnchor": [
+    0,
+    1.43,
+    0
+  ],
+  "HatCompatibleHairReuse": "Characters/Tier01Accessories/Parts/{Body}HatHair{Style}",
+  "HairStyles": [
+    "Crop",
+    "Sweep",
+    "Bob",
+    "Tied"
+  ],
+  "HairPolicy": "Keep saved style/palette; substitute existing compatible geometry while cap shown, restore original on removal.",
+  "Bodies": [
+    "Male",
+    "Female"
+  ],
+  "BootFrame": "Body-root metre coordinates; pair; +Z forward; ankle anchors at (+/-0.10,0.10,0)",
+  "Items": {
+    "MaleWearBeaverFurCap": {
+      "Representation": "worn",
+      "Body": "Male",
+      "Anchor": "HeadAnchor/HatAnchor",
+      "ItemId": "item.beaver_fur_cap",
+      "BindingStatus": "Authored item identity only; no live equipment binding/weights/animation"
+    },
+    "MaleWearMarshBoots": {
+      "Representation": "worn",
+      "Body": "Male",
+      "Anchor": "BodyRoot; split LeftBoot/RightBoot for runtime",
+      "ItemId": "item.marsh_boots",
+      "BindingStatus": "Authored item identity only; no live equipment binding/weights/animation"
+    },
+    "FemaleWearBeaverFurCap": {
+      "Representation": "worn",
+      "Body": "Female",
+      "Anchor": "HeadAnchor/HatAnchor",
+      "ItemId": "item.beaver_fur_cap",
+      "BindingStatus": "Authored item identity only; no live equipment binding/weights/animation"
+    },
+    "FemaleWearMarshBoots": {
+      "Representation": "worn",
+      "Body": "Female",
+      "Anchor": "BodyRoot; split LeftBoot/RightBoot for runtime",
+      "ItemId": "item.marsh_boots",
+      "BindingStatus": "Authored item identity only; no live equipment binding/weights/animation"
+    },
+    "BeaverFurCap": {
+      "Representation": "display",
+      "ItemId": "item.beaver_fur_cap",
+      "RecipeId": "recipe.wearable.beaver_fur_cap"
+    },
+    "MarshBoots": {
+      "Representation": "display",
+      "ItemId": "item.marsh_boots",
+      "RecipeId": "recipe.wearable.marsh_boots"
+    }
+  },
+  "ValidationLimit": "Static fitted art and rigid pose studies; not skinned animation or runtime equip validation."
+}

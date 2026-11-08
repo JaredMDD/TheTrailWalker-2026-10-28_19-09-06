@@ -12,15 +12,15 @@ namespace TheTrailWalker.Editor
         public static void Run()
         {
             var state = new EquipmentState();
-            Check(state.MaxHearts == 3 && state.Pockets == 0 && state.Hooks == 0 && state.BackpackWidth == 6 && Math.Abs(state.SpeedCap - 1.0) < 0.0001, "starter defaults");
+            Check(state.MaxHearts == 3 && state.Pockets == 0 && state.Hooks == 0 && state.BackpackWidth == 6 && Math.Abs(state.SpeedCap - 1.5) < 0.0001, "starter defaults");
             state.Equip(new WornGear("hat", GearSlot.Hat, 4, 5, 10));
             state.Equip(new WornGear("boots", GearSlot.Boots, 4, 5, 10));
             state.Equip(new WornGear("shirt", GearSlot.Shirt, 4, 5, 10));
             state.Equip(new WornGear("pants", GearSlot.Pants, 4, 5, 10));
             state.Equip(new WornGear("bag", GearSlot.Backpack, 4, 5, 10));
-            Check(state.MaxHearts == 12 && state.Pockets == 10 && state.Hooks == 10 && state.BackpackWidth == 14 && Math.Abs(state.SpeedCap - 3.0) < 0.0001, "maximum caps");
+            Check(state.MaxHearts == 12 && state.Pockets == 10 && state.Hooks == 10 && state.BackpackWidth == 14 && Math.Abs(state.SpeedCap - 4.5) < 0.0001, "maximum caps");
             Check(state.ApplyDistance(0).Count == 0 && state.Get(GearSlot.Hat).RemainingDistance == 10, "stationary equipment does not wear");
-            Check(state.ApplyDistance(10).Count == 5 && state.MaxHearts == 3 && state.Pockets == 0 && state.Hooks == 0 && state.BackpackWidth == 6 && Math.Abs(state.SpeedCap - 1.0) < 0.0001, "simultaneous expiry removes capabilities");
+            Check(state.ApplyDistance(10).Count == 5 && state.MaxHearts == 3 && state.Pockets == 0 && state.Hooks == 0 && state.BackpackWidth == 6 && Math.Abs(state.SpeedCap - 1.5) < 0.0001, "simultaneous expiry removes capabilities");
             state.Equip(new WornGear("infinite", GearSlot.Hat, 1, 1, 0, true));
             Check(state.ApplyDistance(100000).Count == 0 && state.MaxHearts == 4, "infinite durability exemption");
             var stamina = new StaminaState(); stamina.QueueFood(6); stamina.Advance(9, 0, false, true);

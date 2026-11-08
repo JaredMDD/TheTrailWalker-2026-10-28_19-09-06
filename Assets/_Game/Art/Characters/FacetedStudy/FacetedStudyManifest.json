@@ -1,0 +1,87 @@
+{
+  "revision": 1,
+  "headAnchor": [
+    0,
+    1.43,
+    0
+  ],
+  "palette": "StudyPalette.png",
+  "colors": [
+    "Skin",
+    "SkinShade",
+    "Stubble",
+    "Lips",
+    "Eye",
+    "Hair",
+    "HairDark",
+    "Shirt",
+    "ShirtDark",
+    "Pants",
+    "PantsDark",
+    "Nail"
+  ],
+  "shades": 5,
+  "headLocal": [
+    "StudyMaleHead",
+    "StudyMaleHairSweep"
+  ],
+  "parts": [
+    {
+      "name": "StudyMaleHead",
+      "vertices": 169,
+      "triangles": 287
+    },
+    {
+      "name": "StudyMaleHairSweep",
+      "vertices": 137,
+      "triangles": 224
+    },
+    {
+      "name": "StudyMaleBeard",
+      "vertices": 81,
+      "triangles": 87
+    },
+    {
+      "name": "StudyMaleSkin",
+      "vertices": 358,
+      "triangles": 640
+    },
+    {
+      "name": "StudyMaleShirt",
+      "vertices": 221,
+      "triangles": 408
+    },
+    {
+      "name": "StudyMalePants",
+      "vertices": 206,
+      "triangles": 400
+    }
+  ],
+  "avatars": [
+    {
+      "name": "StudyMale",
+      "body": [
+        "StudyMaleSkin",
+        "StudyMaleShirt",
+        "StudyMalePants"
+      ],
+      "head": [
+        "StudyMaleHead",
+        "StudyMaleHairSweep"
+      ]
+    },
+    {
+      "name": "StudyMaleBeard",
+      "body": [
+        "StudyMaleSkin",
+        "StudyMaleShirt",
+        "StudyMalePants"
+      ],
+      "head": [
+        "StudyMaleHead",
+        "StudyMaleHairSweep",
+        "StudyMaleBeard"
+      ]
+    }
+  ]
+}

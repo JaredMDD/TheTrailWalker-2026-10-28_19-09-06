@@ -1,0 +1,79 @@
+{
+  "Revision": 1,
+  "Batch": 25,
+  "Scope": "2 passive Food art outputs; no gameplay value or shared shader changes.",
+  "BlenderVersion": "5.2.3 LTS",
+  "Items": [
+    {
+      "Name": "HoneyRoastDuck",
+      "Model": "HoneyRoastDuck",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/HoneyRoastDuck.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/HoneyRoastDuckPalette.png",
+      "PrefabPath": "Tier02/Food/HoneyRoastDuck",
+      "Triangles": 4768,
+      "BoundsMin": [
+        -0.365,
+        -0.13,
+        -0.365
+      ],
+      "BoundsMax": [
+        0.365,
+        0.131161,
+        0.365
+      ],
+      "DisplayName": "Honey-roast duck",
+      "ItemId": "",
+      "RecipeId": "recipe.food.honey_roast_duck",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "",
+      "MissionRegion": 0,
+      "IngredientBrief": "1 Duck meat + 1 Honey + 2 Birch branches -> 1",
+      "Role": "Food",
+      "Representation": "display",
+      "DepictedPortions": 1,
+      "UnlockSource": "Balloon mystery box (tier 2); no mission",
+      "UnlockTier": 2,
+      "VesselPolicy": "Illustrative ceramic serving dish; not an additional ingredient",
+      "SourcePolicy": "Exact ranch.duck_meat, Store only; tier 2 discovered and ranch reachable/eligible; no hunted duck, loose/pet/NPC/physical-box meat source",
+      "BindingStatus": "Passive premium Food art; canonical output IDs/live bindings unresolved",
+      "AuthoredHeartsPerServing": 10,
+      "EligibilityPolicy": "Exact Duck meat ranch source, Honey region 11, exact Birch fuel source; box recipe never appears early",
+      "FuelPolicy": "Two Birch branches consumed cooking fuel; not edible garnish or a separate serving prop"
+    },
+    {
+      "Name": "DuckBlueberryRice",
+      "Model": "DuckBlueberryRice",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/DuckBlueberryRice.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/DuckBlueberryRicePalette.png",
+      "PrefabPath": "Tier02/Food/DuckBlueberryRice",
+      "Triangles": 4080,
+      "BoundsMin": [
+        -0.365,
+        -0.2,
+        -0.365
+      ],
+      "BoundsMax": [
+        0.365,
+        0.193,
+        0.365
+      ],
+      "DisplayName": "Duck blueberry rice",
+      "ItemId": "",
+      "RecipeId": "recipe.food.duck_blueberry_rice",
+      "RuntimeBinding": "Passive art; canonical IDs and live binding unresolved",
+      "MissionCode": "",
+      "MissionRegion": 0,
+      "IngredientBrief": "1 Duck meat + 1 Blueberries + 1 Rice -> 1",
+      "Role": "Food",
+      "Representation": "display",
+      "DepictedPortions": 1,
+      "UnlockSource": "Balloon mystery box (tier 2); no mission",
+      "UnlockTier": 2,
+      "VesselPolicy": "Illustrative ceramic serving dish; not an additional ingredient",
+      "SourcePolicy": "Exact ranch.duck_meat, Store only; tier 2 discovered and ranch reachable/eligible; no hunted duck, loose/pet/NPC/physical-box meat source",
+      "BindingStatus": "Passive premium Food art; canonical output IDs/live bindings unresolved",
+      "AuthoredHeartsPerServing": 9,
+      "EligibilityPolicy": "Exact Duck meat ranch source, Blueberries region 9, Rice region 11; no Honey input"
+    }
+  ]
+}

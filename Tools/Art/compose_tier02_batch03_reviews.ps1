@@ -1,0 +1,35 @@
+$ErrorActionPreference = 'Stop'
+Add-Type -AssemblyName System.Drawing
+$reviewRoot = Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) 'Docs/Art/Tier02/Batch03'
+$assetNames = @('Lavender','Crab','DuckMeat')
+$reviewViews = @('front','back','left','right','top','study')
+$sheet = New-Object System.Drawing.Bitmap(1560,870)
+$canvas = [System.Drawing.Graphics]::FromImage($sheet)
+$font = New-Object System.Drawing.Font('Arial',10)
+$brush = New-Object System.Drawing.SolidBrush([System.Drawing.Color]::FromArgb(239,238,222))
+try {
+    $canvas.Clear([System.Drawing.Color]::FromArgb(44,51,54))
+    for ($row=0; $row -lt 3; $row++) {
+        for ($col=0; $col -lt 6; $col++) {
+            $file = Join-Path $reviewRoot ($assetNames[$row]+'-blender-'+$reviewViews[$col]+'.png')
+            $frame = [System.Drawing.Image]::FromFile($file)
+            try { $canvas.DrawImage($frame,[System.Drawing.Rectangle]::new($col*260,$row*290,256,256)) }
+            finally { $frame.Dispose() }
+            $canvas.DrawString(($assetNames[$row]+' / '+$reviewViews[$col]),$font,$brush,([single]($col*260+5)),([single]($row*290+262)))
+        }
+    }
+    $sheet.Save((Join-Path $reviewRoot 'batch03-six-view-review.png'),[System.Drawing.Imaging.ImageFormat]::Png)
+} finally { $canvas.Dispose(); $sheet.Dispose() }
+$hero = New-Object System.Drawing.Bitmap(1440,530)
+$heroCanvas = [System.Drawing.Graphics]::FromImage($hero)
+try {
+    $heroCanvas.Clear([System.Drawing.Color]::FromArgb(51,59,61))
+    for ($index=0; $index -lt 3; $index++) {
+        $frame = [System.Drawing.Image]::FromFile((Join-Path $reviewRoot ($assetNames[$index]+'-unity-study.png')))
+        try { $heroCanvas.DrawImage($frame,[System.Drawing.Rectangle]::new($index*480,0,480,480)) }
+        finally { $frame.Dispose() }
+        $heroCanvas.DrawString($assetNames[$index],$font,$brush,([single]($index*480+25)),[single]490)
+    }
+    $hero.Save((Join-Path $reviewRoot 'batch03-unity-overview.png'),[System.Drawing.Imaging.ImageFormat]::Png)
+} finally { $heroCanvas.Dispose(); $hero.Dispose(); $font.Dispose(); $brush.Dispose() }
+Write-Output 'Saved six-view sheet and actual Unity-prefab overview.'
