@@ -48,8 +48,19 @@ PALETTES = {
     # shared crafted palette: its same colour slots also represent other goods.
     'Assets/_Game/Art/Items/Region04/MushroomsPalette.png': slots({10: 'leather', R(27, 28): 'ceramic'}),
     # Harvest interactables: trunk bark 0-2, cut face 3-4, rabbit fur 5-6.
-    'Assets/_Game/Art/Harvest/Tier01/Tier01Palette.png': slots({R(0, 2): 'bark', R(3, 4): 'wood', R(5, 6): 'fur'}),
+    # Only the trunk and fishing pond still use this palette (drops moved to the item-design palettes, November 5); the
+    # pond's stones 29 and reeds 30 gained detail on November 7, 2026. Water 27-28 stays flat.
+    'Assets/_Game/Art/Harvest/Tier01/Tier01Palette.png': slots({R(0, 2): 'bark', R(3, 4): 'wood', R(5, 6): 'fur', 29: 'stone', 30: 'plant_fibre'}),
     # Camp props: log seats per wood tier (bark), campfire ash and stones, burned wood.
+    # Balloon special gear and mystery boxes, tiers 2-4 (item surface detail, November 7, 2026; tier one uses the merchant palettes).
+    'Assets/_Game/Art/Items/BalloonGoods/BalloonGoodsTier01Palette.png': slots({R(0, 1): 'cloth', R(2, 3): 'leather', R(4, 5): 'cloth', R(6, 7): 'metal', 8: 'cloth', 9: 'leather', 10: 'ceramic', R(11, 12): 'wood', 13: 'fur'}),
+    'Assets/_Game/Art/Items/BalloonGoods/MysteryBoxTier01Palette.png': slots({0: 'wood', R(2, 3): 'leather', R(6, 7): 'metal', 8: 'cloth', R(11, 12): 'wood'}),
+    'Assets/_Game/Art/Items/BalloonGoods/BalloonGoodsTier02Palette.png': slots({R(0, 1): 'cloth', R(2, 3): 'leather', R(4, 5): 'cloth', R(6, 7): 'metal', 8: 'cloth', 9: 'leather', 10: 'ceramic', R(11, 12): 'wood', 13: 'fur'}),
+    'Assets/_Game/Art/Items/BalloonGoods/MysteryBoxTier02Palette.png': slots({0: 'wood', R(2, 3): 'leather', R(6, 7): 'metal', 8: 'cloth', R(11, 12): 'wood'}),
+    'Assets/_Game/Art/Items/BalloonGoods/BalloonGoodsTier03Palette.png': slots({R(0, 1): 'cloth', R(2, 3): 'leather', R(4, 5): 'cloth', R(6, 7): 'metal', 8: 'cloth', 9: 'leather', 10: 'ceramic', R(11, 12): 'wood', 13: 'fur'}),
+    'Assets/_Game/Art/Items/BalloonGoods/MysteryBoxTier03Palette.png': slots({0: 'wood', R(2, 3): 'leather', R(6, 7): 'metal', 8: 'cloth', R(11, 12): 'wood'}),
+    'Assets/_Game/Art/Items/BalloonGoods/BalloonGoodsTier04Palette.png': slots({R(0, 1): 'cloth', R(2, 3): 'leather', R(4, 5): 'cloth', R(6, 7): 'metal', 8: 'cloth', 9: 'leather', 10: 'ceramic', R(11, 12): 'wood', 13: 'fur'}),
+    'Assets/_Game/Art/Items/BalloonGoods/MysteryBoxTier04Palette.png': slots({0: 'wood', R(2, 3): 'leather', R(6, 7): 'metal', 8: 'cloth', R(11, 12): 'wood'}),
     'Assets/_Game/Art/Environment/CampProps/CampPropsPalette.png': slots({R(0, 5): 'bark', R(6, 7): 'bark', R(9, 11): 'wood', R(12, 23): 'bark', R(24, 26): 'stone', R(27, 30): 'wood'}),
     # Environment kits (32-colour contract): bark 0-3, grasses 4-7, bushes 8-10, pine needles 12-14, stone 16-18,
     # ground 19-23, leaves 27-28.

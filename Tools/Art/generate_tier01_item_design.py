@@ -34,6 +34,8 @@ def surface_family(key,category):
     def use(indices,kind):types.update({i:kind for i in indices})
     if category=='Harvest':
         family='HarvestOrganic'
+        # Meat 8-11 muscle grain, bone and fat 12-13 smooth (Claude, item surface detail, November 7, 2026).
+        use(range(8,12),'plant_fibre');use((12,13),'ceramic')
         if key=='PineLog':family='HarvestTimber';use(range(3),'bark');use((3,4),'wood')
         elif key=='PineNuts':family='HarvestNuts';use((13,),'grain');use((31,),'wood')
         elif key in ('RainbowTrout','LargemouthBass','Bluegill','YellowPerch'):
@@ -59,7 +61,9 @@ def surface_family(key,category):
         use(range(4),'wood');use((6,7),'grain');use((19,20),'ceramic')
         if key in ('cow_milk','goat_milk'):
             family='GoatMilk' if key=='goat_milk' else 'CowMilk';types={};use((19,) if key=='goat_milk' else (28,),'ceramic')
-        elif key in ('egg','shrimp'):family='RawEgg' if key=='egg' else 'RawShrimp';types={}
+        elif key in ('egg','shrimp'):
+            family='RawEgg' if key=='egg' else 'RawShrimp';types={}
+            if key=='egg':use((28,),'ceramic')   # egg shell (November 7, 2026)
         elif key in ('apple_juice','strawberry_cow_yogurt_drink'):
             family='JuiceVessels';use((19,20),'ceramic');use((24,25),'fruit_skin')
         elif key in ('cow_cream','cow_yogurt','cow_butter','cow_cheese','goat_cheese','mixed_milk_cheese'):

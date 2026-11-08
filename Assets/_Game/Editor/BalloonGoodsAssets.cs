@@ -28,7 +28,7 @@ namespace TheTrailWalker.Editor
                 string path=Target+"Materials/Tier"+(i+1).ToString("00")+".mat";
                 var mat=materials[i];if(mat==null){mat=new Material(Shader.Find("Universal Render Pipeline/Lit"));AssetDatabase.CreateAsset(mat,path);}
                 mat.SetTexture("_BaseMap",AssetDatabase.LoadAssetAtPath<Texture2D>(Source+"BalloonGoodsTier"+(i+1).ToString("00")+"Palette.png"));
-                mat.SetColor("_BaseColor",Color.white);mat.SetFloat("_Smoothness",.10f);EditorUtility.SetDirty(mat);materials[i]=mat;
+                mat.SetColor("_BaseColor",Color.white);mat.SetFloat("_Smoothness",.10f);FacetedDetailMaterials.Configure(mat,mat.GetTexture("_BaseMap"));EditorUtility.SetDirty(mat);materials[i]=mat; // surface detail (November 7, 2026)
             }
             var catalog=AssetDatabase.LoadAssetAtPath<BalloonGoodsArtCatalog>(Target+"BalloonGoodsArtCatalog.asset");
             if(catalog==null){catalog=ScriptableObject.CreateInstance<BalloonGoodsArtCatalog>();AssetDatabase.CreateAsset(catalog,Target+"BalloonGoodsArtCatalog.asset");}
@@ -45,7 +45,7 @@ namespace TheTrailWalker.Editor
                 string materialPath=Target+"Materials/MysteryBoxTier"+tier.ToString("00")+".mat";
                 var boxMaterial=AssetDatabase.LoadAssetAtPath<Material>(materialPath);
                 if(boxMaterial==null){boxMaterial=new Material(Shader.Find("Universal Render Pipeline/Lit"));AssetDatabase.CreateAsset(boxMaterial,materialPath);}
-                boxMaterial.SetTexture("_BaseMap",AssetDatabase.LoadAssetAtPath<Texture2D>(Source+"MysteryBoxTier"+tier.ToString("00")+"Palette.png"));boxMaterial.SetColor("_BaseColor",Color.white);boxMaterial.SetFloat("_Smoothness",.12f);EditorUtility.SetDirty(boxMaterial);
+                boxMaterial.SetTexture("_BaseMap",AssetDatabase.LoadAssetAtPath<Texture2D>(Source+"MysteryBoxTier"+tier.ToString("00")+"Palette.png"));boxMaterial.SetColor("_BaseColor",Color.white);boxMaterial.SetFloat("_Smoothness",.12f);FacetedDetailMaterials.Configure(boxMaterial,boxMaterial.GetTexture("_BaseMap"));EditorUtility.SetDirty(boxMaterial);
                 string path=Target+"MysteryBoxes/MysteryBoxTier"+tier.ToString("00")+".prefab";
                 var box=new GameObject("MysteryBoxTier"+tier.ToString("00"));
                 try
@@ -59,6 +59,9 @@ namespace TheTrailWalker.Editor
                 finally{UnityEngine.Object.DestroyImmediate(box);}
             }
             EditorUtility.SetDirty(catalog);AssetDatabase.SaveAssets();Verify();
+            // Rebuilding the prefabs resets them to the plain tier material; re-apply the isolated tier-one merchant surfaces
+            // (Tier01MerchantItemDesignAssets) so a rebuild never drops them (regression fixed November 7, 2026).
+            if(File.Exists("Assets/_Game/Art/Items/Tier01Design/MerchantItemDesignManifest.json"))Tier01MerchantItemDesignAssets.Build();
             Debug.Log("Balloon goods art: 20 display models, 40 wearable fits, 8 hat hair fits and 4 animated box tiers. No stock, rewards or equip wiring changed.");
         }
         static GameObject SaveMesh(string mesh,string path,Material material)

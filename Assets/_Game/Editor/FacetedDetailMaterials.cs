@@ -24,6 +24,8 @@ namespace TheTrailWalker.Editor
             "Assets/_Game/Art/Items/Region11/Region11Palette.png", "Assets/_Game/Art/Items/Region12/Region12Palette.png",
             "Assets/_Game/Art/Items/Region04/MushroomsPalette.png",
             "Assets/_Game/Art/Harvest/Tier01/Tier01Palette.png", "Assets/_Game/Art/Harvest/Tier01/RabbitPalette.png",
+            // Item surface detail, November 7, 2026: balloon special gear and mystery boxes (tiers 2-4; tier one uses the merchant palettes).
+            "Assets/_Game/Art/Items/BalloonGoods/BalloonGoodsTier01Palette.png", "Assets/_Game/Art/Items/BalloonGoods/MysteryBoxTier01Palette.png", "Assets/_Game/Art/Items/BalloonGoods/BalloonGoodsTier02Palette.png", "Assets/_Game/Art/Items/BalloonGoods/MysteryBoxTier02Palette.png", "Assets/_Game/Art/Items/BalloonGoods/BalloonGoodsTier03Palette.png", "Assets/_Game/Art/Items/BalloonGoods/MysteryBoxTier03Palette.png", "Assets/_Game/Art/Items/BalloonGoods/BalloonGoodsTier04Palette.png", "Assets/_Game/Art/Items/BalloonGoods/MysteryBoxTier04Palette.png",
             "Assets/_Game/Art/Environment/CampProps/CampPropsPalette.png", "Assets/_Game/Art/Environment/CampProps/Tier02/Tier02CampPalette.png",
             "Assets/_Game/Art/Environment/Region01/DawnPlainsPalette.png",
             "Assets/_Game/Art/Environment/Tier01/Region01/EnvironmentPalette.png", "Assets/_Game/Art/Environment/Tier01/Region02/EnvironmentPalette.png",
