@@ -1,9 +1,14 @@
-"""Twenty listed balloon special items, avatar fits and four-tier hinged mystery box art."""
+"""Twenty listed balloon special items, avatar fits and four-tier hinged mystery box art.
+
+Worn fits: special_gear_fitted.py (faceted bodies, November 7, 2026); this file keeps the item displays, the boot
+item profile, the mystery box and the hat-compatible hair.
+"""
 from pathlib import Path
 import math,json
 import generate_region01_meshes as b
 import natural_character_geometry as n
 from generate_tier01_crafted_items import boot_profile
+import special_gear_fitted as fitted
 
 ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'Assets/_Game/Art/Items/BalloonGoods'
 # Material slots: main textile, secondary textile, leather, dark leather, crimson,
@@ -49,102 +54,9 @@ def save(m,tier=0):
     assert all(len({i,j,k})==3 and all(1<=v<=len(m.vertices) for v in (i,j,k)) for i,j,k,_ in m.faces),m.name
     m.save();STATS.append({'Name':m.name,'Tier':tier,'Triangles':len(m.faces)})
 
-def hat(tier,female=False):
-    m=b.Model('Hat');sy=.96 if female else 1
-    if tier==3:
-        n.surface(m,[(.168,0,-.006,.102,.102),(.19,0,-.008,.107,.107),(.24,0,-.005,.098,.098),(.275,0,-.006,.067,.070),(.293,0,-.006,.008,.009)],24,0)
-        for y in (.18,.205,.232,.255):loop(m,(0,y,-.004),.104-(y-.18)*.3,.105-(y-.18)*.3,.007,1,'xz',24)
-        # Side veil stays behind the cheeks, leaving the face and vision clear.
-        for side in (-1,1):box(m,(side*.098,.093,-.037),(.024,.19,.115),0)
-        box(m,(0,.191,.099),(.18,.023,.014),4);badge(m,(.067,.189,.113),.016)
-    else:
-        brim=.22 if tier in (1,4) else .20
-        n.surface(m,[(.179,0,-.009,brim,.172),(.191,0,-.009,brim,.172),(.198,0,-.01,.106,.102)],32,0 if tier==1 else 2 if tier==2 else 10)
-        n.surface(m,[(.193,0,-.009,.111,.105),(.228,0,-.013,.112,.102),(.277,0,-.019,.090,.081),(.296,0,-.021,.055,.051),(.301,0,-.021,.008,.008)],24,0 if tier!=4 else 10)
-        n.surface(m,[(.198,0,-.009,.114,.108),(.224,0,-.012,.114,.107)],24,4)
-        badge(m,(.072,.216,.087),.017)
-        if tier in (1,2):
-            tube(m,[(-.086,.218,0),(-.13,.33,-.015),(-.15,.42,-.034)],.004,6)
-            feather=b.Model('Plume');n.ellipse(feather,(-.132,.34,-.018),(.021,.087,.009),13,12,7);add(m,feather,angle=-12)
-        if tier==4:
-            for i in range(8):
-                a=i*math.tau/8;n.ellipse(m,(.117*math.cos(a),.212,.11*math.sin(a)-.008),(.014,.012,.009),10,8,4)
-            for r in (.14,.17,.20):loop(m,(0,.193,-.009),r,r*.78,.0025,8,'xz',32)
-    if tier==2:
-        m.vertices=[(x,y-.025 if z<-.08 and .175<y<.20 else y,z*1.35 if z<-.08 and .175<y<.20 else z) for x,y,z in m.vertices]
-    if female:m.vertices=[(x*.96,y*sy,z*.98) for x,y,z in m.vertices]
-    return m
-
-def shirt(tier,female):
-    m=b.Model('Shirt');radius=.213 if female else .232;bottom=-.19 if tier==3 else -.15
-    n.surface(m,[(bottom,0,0,.246 if tier==3 else .223,.175 if tier==3 else .152),(-.02,0,0,.23 if tier==3 else .206,.16 if tier==3 else .143),(.09,0,0,.166 if female else .182,.129),(.24,0,0,radius,.144),(.34,0,0,radius+.007,.135),(.385,0,0,.18,.108),(.418,0,0,.077,.070),(.433,0,0,.070,.066)],28,0)
-    for side in (-1,1):
-        length=.50 if tier in (3,4) else .29
-        sleeve=n.limb('Sleeve',[(-length,.044,.041,0),(-.24,.063,.059,0),(-.10,.080,.075,0),(.026,.080,.076,0)],0)
-        add(m,sleeve,(side*(.225 if female else .25),.345,0),side*12)
-        cap=b.Model('Cap');n.ellipse(cap,(0,0,0),(.088,.081,.077),0,18,8);add(m,cap,(side*(.20 if female else .225),.34,0))
-    count=[2,3,5,8][tier-1]
-    # Hidden-pocket robe uses narrow outlined openings; other styles show flap pockets.
-    for i in range(count):
-        cols=2 if count<5 else 4;x=(i%cols-(cols-1)/2)*(.115 if cols==4 else .19);y=.22-(i//cols)*.17
-        if tier==3:
-            box(m,(x,y,.149),(.075,.018,.012),1);box(m,(x+.025,y-.025,.16),(.012,.04,.012),6)
-        else:
-            box(m,(x,y-.035,.145),(.083 if cols==4 else .14,.11,.024),0)
-            box(m,(x,y+.018,.163),(.089 if cols==4 else .15,.035,.015),1)
-            n.ellipse(m,(x,y+.009,.176),(.009,.009,.004),6,8,4)
-            if tier==2:
-                tube(m,[(x-.025,y+.02,.18),(x+.025,y+.02,.18)],.007,4)
-                n.ellipse(m,(x+.025,y+.02,.18),(.007,.007,.008),6,8,4)
-    # Collar piping and merchant signature on every garment.
-    loop(m,(0,.423,0),.079,.072,.008,4,'xz',24)
-    if tier==3:box(m,(0,-.015,.153),(.37,.045,.02),4)
-    if tier==4:
-        tube(m,[(-.06,.40,.077),(0,.31,.158),(.06,.40,.077)],.017,4)
-        for x in (-.11,.11):box(m,(x,.38,.11),(.055,.04,.015),1)
-    badge(m,(.15,.31,.147),.016)
-    if tier==1:m.faces=[(i,j,k,1 if c==0 else c) for i,j,k,c in m.faces]
-    return m
-
-def pants(tier,female):
-    m=b.Model('Pants');col=0 if tier==1 else 1
-    n.surface(m,[(-.10,0,0,.149,.121),(-.04,0,0,.182 if female else .174,.136),(.06,0,0,.178,.126)],24,col)
-    for side in (-1,1):
-        thigh=n.limb('Thigh',[(-.375,.075,.076,0),(-.28,.083,.085,0),(-.10,.102 if tier!=3 else .117,.106,0),(.025,.09,.09,0)],col)
-        shin=n.limb('Shin',[(-.435,.052,.051,0),(-.35,.055,.058,0),(-.19,.070,.075,0),(.02,.074,.071,0)],col)
-        add(m,thigh,(side*.115,0,0));add(m,shin,(side*.115,-.36,0))
-        if tier==1:box(m,(side*.115,-.34,.079),(.12,.15,.025),2)
-        if tier==2:
-            for y in (-.65,-.53):box(m,(side*.115,y,.066),(.10,.095,.022),3)
-        if tier in (3,4):
-            for y in (-.62,-.66,-.70):loop(m,(side*.115,y,0),.062,.063,.008,0 if tier==3 else 8,'xz',18)
-    n.surface(m,[(.021,0,0,.186,.14),(.06,0,0,.186,.14)],24,2 if tier!=4 else 8)
-    count=[2,3,5,8][tier-1]
-    for i in range(count):
-        x=(i-(count-1)/2)*(.045 if count>=5 else .11)
-        loop(m,(x,-.001,.154),.014,.020,.004,6)
-    box(m,(0,.04,.145),(.045,.035,.012),4);badge(m,(-.146,.025,.13),.013)
-    return m
-
-def boots(tier):
-    m=b.Model('Boots')
-    for side in (-1,1):
-        foot=n.foot('Boot',False);foot.vertices=[(x*1.06,y,z*1.03) for x,y,z in foot.vertices]
-        foot.faces=[(i,j,k,9 if c==15 else 1 if tier==4 else 2) for i,j,k,c in foot.faces]
-        add(m,foot,(side*.115,.10,0))
-        height=.32 if tier==2 else .17 if tier==3 else .13
-        shaft=[(.11,side*.115,0,.060,.058),(.19,side*.115,-.004,.086,.086),(.10+height,side*.115,-.008,.095,.095)] if tier==2 else [(.11,side*.115,0,.060,.058),(.10+height,side*.115,-.008,.063,.060)]
-        n.surface(m,shaft,20,1 if tier==4 else 2)
-        cuff=.10+height
-        n.surface(m,[(cuff-.025,side*.115,-.008,.102 if tier==2 else .068,.102 if tier==2 else .065),(cuff+.013,side*.115,-.008,.102 if tier==2 else .068,.102 if tier==2 else .065)],20,8 if tier==2 else 4)
-        for y in (.13,.16,.19):tube(m,[(side*.115-.035,y,.064),(side*.115+.035,y+.014,.064)],.004,4)
-        if tier==1:box(m,(side*.115,.037,.196),(.104,.05,.040),6)
-        if tier==2:box(m,(side*.115+.096,.28,.018),(.024,.045,.065),6)
-        if tier==2:box(m,(side*.115,cuff+.028,-.096),(.025,.07,.015),4)
-        if tier==3:
-            for y in (.13,.17,.21,.25):loop(m,(side*.115,y,0),.064,.060,.007,1,'xz',18)
-        badge(m,(side*.115,cuff-.009,.068),.011)
-    return m
+def as_model(km,name):
+    """A faceted_character_kit mesh (face colours are palette slots) as this pipeline's Model (1-based faces)."""
+    m=b.Model(name);m.vertices=list(km.vertices);m.faces=[(i+1,j+1,l+1,c) for i,j,l,c in km.faces];return m
 
 def item_boot(tier):
     m=b.Model('BootItem');height=[.22,.56,.30,.22][tier-1]
@@ -167,38 +79,6 @@ def item_boot(tier):
     if tier==3:
         for y in (.09,.16,.23,.30):box(m,(-.17,y,-.125),(.27,.018,.02),1)
     badge(m,(-.225,height-.11,-.14),.027)
-    return m
-
-def pack(tier):
-    m=b.Model('Pack')
-    if tier==4:
-        box(m,(0,.04,-.16),(.49,.43,.28),11)
-        for x in (-.21,-.07,.07,.21):box(m,(x,.04,-.308),(.012,.39,.016),12)
-        box(m,(0,.28,-.16),(.51,.075,.30),4)
-        for x in (-.23,.23):
-            for y in (-.15,.23):box(m,(x,y,-.31),(.075,.07,.025),6)
-        box(m,(0,.16,-.314),(.065,.10,.025),6)
-    else:
-        n.surface(m,[(-.24,0,-.16,.16,.10),(-.20,0,-.16,.225,.14),(.17,0,-.16,.23,.145),(.29,0,-.16,.18,.10)],24,0 if tier!=3 else 2)
-        box(m,(0,.19,-.302),(.41,.15,.045),4)
-        for x in (-.145,.145):
-            box(m,(x,-.01,-.322),(.035,.30,.027),2);box(m,(x,.045,-.343),(.061,.055,.018),6)
-        if tier==1:
-            tube(m,[(-.24,.31,-.15),(.24,.31,-.15)],.079,1,14)
-            for x in (-.15,.15):loop(m,(x,.31,-.15),.085,.085,.011,4,plane='xy',steps=16)
-        if tier==2:
-            for x in (-.24,.24):tube(m,[(x,-.25,-.07),(x,.31,-.07)],.014,11)
-            box(m,(0,.28,-.16),(.47,.065,.29),8)
-            for i in range(8):n.ellipse(m,(-.205+i*.058,.248,-.313),(.036,.029,.017),8,8,4)
-        if tier==3:
-            for x in (-.25,.25):
-                box(m,(x,-.02,-.17),(.16,.35,.25),2);box(m,(x,.14,-.19),(.18,.055,.25),4)
-                for y in (-.15,.08):box(m,(x,y,-.31),(.10,.05,.02),6)
-                tube(m,[(x,-.18,-.30),(x,-.30,-.30)],.012,4)
-            for x in (-.10,0,.10):tube(m,[(x-.035,-.05,-.308),(x,.0,-.312),(x+.035,-.05,-.308),(x,-.10,-.312),(x-.035,-.05,-.308)],.003,3)
-    # Straps arc around the shoulder area, while the pack shell stays behind the torso.
-    for x in (-.16,.16):tube(m,[(x,.23,-.03),(x,.28,.13),(x,.12,.36),(x,-.15,.34),(x,-.21,-.02)],.018,2)
-    badge(m,(0,.10,-.345),.026)
     return m
 
 def make_item(source,name,slot):
@@ -276,17 +156,18 @@ def main():
         b.COLORS=boxcolors;b.palette(f'MysteryBoxTier{tier:02}Palette.png');b.COLORS=PALETTES[tier-1]
         for index,slot in enumerate(SLOTS):
             prefix=f'SpecialT{tier:02}{slot.title()}'
-            anchor={'hat':'HeadAnchor','shirt':'ShirtAnchor','pants':'PantsAnchor','pack':'BackpackAnchor','boots':'Root'}[slot]
+            # Faceted body frames (November 7, 2026): hats at the head origin, shirts/pants/boots in body-root space.
+            anchor={'hat':'HeadAnchor/HatAnchor','shirt':'Root','pants':'Root','pack':'BackpackAnchor','boots':'Root'}[slot]
             fits={}
             for female,sex in [(False,'Male'),(True,'Female')]:
-                mesh={'hat':lambda:hat(tier,female),'shirt':lambda:shirt(tier,female),'pants':lambda:pants(tier,female),'boots':lambda:boots(tier),'pack':lambda:pack(tier)}[slot]()
-                mesh.name=prefix+sex+'Worn';save(mesh,tier);fits[sex]=mesh.name
+                build={'hat':fitted.hat,'shirt':fitted.shirt,'pants':fitted.pants,'boots':fitted.boots,'pack':fitted.pack}[slot]
+                mesh=as_model(build(tier,female),prefix+sex+'Worn');save(mesh,tier);fits[sex]=mesh.name
                 if not female:
                     display=make_item(item_boot(tier) if slot=='boots' else mesh,prefix+'Item',slot)
                     save(display,tier)
             ITEMS.append({'Id':f'special.t{tier}.{slot}','Name':NAMES[tier-1][index],'Tier':tier,'Slot':slot,'ItemMesh':prefix+'Item','MaleMesh':fits['Male'],'FemaleMesh':fits['Female'],'Anchor':anchor,'InfiniteDurability':True})
     mystery();clipped_hair()
-    data={'Revision':1,'Parts':STATS,'Items':ITEMS,'BoxTiers':[{'Tier':i,'FirstRegion':(i-1)*6+1,'LastRegion':i*6,'Palette':f'MysteryBoxTier{i:02}Palette','Color':['Olive and brass','Deep teal and brass','Amber and crimson','Navy and brass'][i-1]} for i in range(1,5)],'BoxLidPivot':[0,.39,.30],
+    data={'Revision':2,'WornFit':'faceted bodies (special_gear_fitted.py)','Parts':STATS,'Items':ITEMS,'BoxTiers':[{'Tier':i,'FirstRegion':(i-1)*6+1,'LastRegion':i*6,'Palette':f'MysteryBoxTier{i:02}Palette','Color':['Olive and brass','Deep teal and brass','Amber and crimson','Navy and brass'][i-1]} for i in range(1,5)],'BoxLidPivot':[0,.39,.30],
           'ThemeSource':'PROJECT_RECOMENDATIONS.md section 14.1','Scope':'Art and animation only; no purchases, item stats, loot rolling or shop population.'}
     (OUT/'BalloonGoodsManifest.json').write_text(json.dumps(data,indent=2)+'\n',encoding='utf-8')
     print(f'{len(ITEMS)} special item designs; {len(STATS)} source parts; four mystery-box palette tiers; eight hat-compatible hair meshes.')

@@ -16,7 +16,7 @@ MonoBehaviour:
   - Id: special.t1.hat
     Name: Wayfarer's felt hat
     Slot: hat
-    Anchor: HeadAnchor
+    Anchor: HeadAnchor/HatAnchor
     Tier: 1
     Display: {fileID: 5017365558387935122, guid: baeac102d7c281d47b87a6d4dd969ca8, type: 3}
     MaleWearable: {fileID: 5394285540264338247, guid: 058374225a7173c4b9f235e96092fc3e, type: 3}
@@ -32,7 +32,7 @@ MonoBehaviour:
   - Id: special.t1.shirt
     Name: Wayfarer's waxed shirt
     Slot: shirt
-    Anchor: ShirtAnchor
+    Anchor: Root
     Tier: 1
     Display: {fileID: 142228654130741690, guid: c14c300a8203e9b4b9f64f24932683af, type: 3}
     MaleWearable: {fileID: 7939339301087061654, guid: bb55830ecfc948d4aad7e335ff2b015c, type: 3}
@@ -40,7 +40,7 @@ MonoBehaviour:
   - Id: special.t1.pants
     Name: Wayfarer's field trousers
     Slot: pants
-    Anchor: PantsAnchor
+    Anchor: Root
     Tier: 1
     Display: {fileID: 1030479933994385189, guid: 68e23f095834327499c0350271433172, type: 3}
     MaleWearable: {fileID: 4569454903819788898, guid: 5e98c85ef20c6214cab7d479487557d3, type: 3}
@@ -56,7 +56,7 @@ MonoBehaviour:
   - Id: special.t2.hat
     Name: Heron-plume rain hat
     Slot: hat
-    Anchor: HeadAnchor
+    Anchor: HeadAnchor/HatAnchor
     Tier: 2
     Display: {fileID: 2596069243637571399, guid: fe5617ede17431f48b778e4f34d7aca4, type: 3}
     MaleWearable: {fileID: 2957664444176438777, guid: e14b19687f9497f4ea114c962721e808, type: 3}
@@ -72,7 +72,7 @@ MonoBehaviour:
   - Id: special.t2.shirt
     Name: Lakeshore oilskin shirt
     Slot: shirt
-    Anchor: ShirtAnchor
+    Anchor: Root
     Tier: 2
     Display: {fileID: 1116071939404580465, guid: 654b80da1e2357b45ac7af674a0c8c5d, type: 3}
     MaleWearable: {fileID: 5178374649337360411, guid: 26bc0a93aaa330b4dbc8107664592e8f, type: 3}
@@ -80,7 +80,7 @@ MonoBehaviour:
   - Id: special.t2.pants
     Name: Boardwalk trousers
     Slot: pants
-    Anchor: PantsAnchor
+    Anchor: Root
     Tier: 2
     Display: {fileID: 3711780937156566637, guid: 51031112b4ac0ce4db25a88f49b8cfa2, type: 3}
     MaleWearable: {fileID: 8080873737190080501, guid: 7d17b891de9f14440a8e9c7aa7ba9a70, type: 3}
@@ -96,7 +96,7 @@ MonoBehaviour:
   - Id: special.t3.hat
     Name: Dune wrap
     Slot: hat
-    Anchor: HeadAnchor
+    Anchor: HeadAnchor/HatAnchor
     Tier: 3
     Display: {fileID: 8776836640829281423, guid: 659ec6d7817d72746b9482dab826fbc1, type: 3}
     MaleWearable: {fileID: 4504544133689566229, guid: 9805620ecb46e3b46b7c4221b675efde, type: 3}
@@ -112,7 +112,7 @@ MonoBehaviour:
   - Id: special.t3.shirt
     Name: Nomad linen robe
     Slot: shirt
-    Anchor: ShirtAnchor
+    Anchor: Root
     Tier: 3
     Display: {fileID: 7187530630708622079, guid: b8cf1b07a25a4674fbd01ad41d2fd753, type: 3}
     MaleWearable: {fileID: 2687466565633163368, guid: 7fbb5729e9eff1b46b6f75ec9367be2d, type: 3}
@@ -120,7 +120,7 @@ MonoBehaviour:
   - Id: special.t3.pants
     Name: Caravan wrap trousers
     Slot: pants
-    Anchor: PantsAnchor
+    Anchor: Root
     Tier: 3
     Display: {fileID: 1285735408949283201, guid: a24581b8e1235ff499282f88a72849ef, type: 3}
     MaleWearable: {fileID: 2594927626232913861, guid: 7d744c82d7f283f4ba6cc5b24eb7e4d6, type: 3}
@@ -136,7 +136,7 @@ MonoBehaviour:
   - Id: special.t4.hat
     Name: Coral-shell sun hat
     Slot: hat
-    Anchor: HeadAnchor
+    Anchor: HeadAnchor/HatAnchor
     Tier: 4
     Display: {fileID: 2022240162619518498, guid: 0dfc1f32d8cb9124fb6d791797bc33bd, type: 3}
     MaleWearable: {fileID: 1615199050198073322, guid: ee7a49115320dfc499daddf3df449f37, type: 3}
@@ -152,7 +152,7 @@ MonoBehaviour:
   - Id: special.t4.shirt
     Name: Mariner's sailcloth shirt
     Slot: shirt
-    Anchor: ShirtAnchor
+    Anchor: Root
     Tier: 4
     Display: {fileID: 5439377342222954732, guid: 0bd1e097fdf6d364fad873a0ec96f67c, type: 3}
     MaleWearable: {fileID: 5211731350534403364, guid: 84fbedaadb90dc84c80b621350a34412, type: 3}
@@ -160,7 +160,7 @@ MonoBehaviour:
   - Id: special.t4.pants
     Name: Reef-runner trousers
     Slot: pants
-    Anchor: PantsAnchor
+    Anchor: Root
     Tier: 4
     Display: {fileID: 1970138459004981673, guid: 3accc593e9802da44b65d8a0e5d00f2a, type: 3}
     MaleWearable: {fileID: 1586993676212806705, guid: 0b9b65ca144b44042bdc64d5931f9cd8, type: 3}

@@ -152,6 +152,11 @@ def starter_pack(female=False):
     k.limb(m, [(p, .008, .008) for p in [(-.048, top-.020, -.240), (-.045, top+.020, -.240),
                                        (.045, top+.020, -.240), (.048, top-.020, -.240)]],
            'PeltLeatherDark', sides=6)
+    # Seat the pack against the shirt (user, November 7, 2026: it hung 3-6 cm behind the back). Measured on the fitted
+    # hemp shirt: back plane z = -0.111 (male) / -0.104 (female); the rails' front was -0.155. Only geometry behind the
+    # body moves (frame, bag, pocket, lashings, rear strap ends), leaving about 4 mm of clearance; strap fronts stay put.
+    seat = .040 if not female else .047
+    m.transform(lambda p: (p[0], p[1], p[2]+seat) if p[2] < -.125 else p)
     m.transform(lambda p: k.sub(p, PACK))
     return m
 

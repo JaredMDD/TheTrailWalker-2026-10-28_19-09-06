@@ -31,8 +31,9 @@ namespace TheTrailWalker
     }
 
     // The standing player avatar in the equipment menu's centre stage, rendered live by its own camera into a texture
-    // (only while the menu is open). It wears the default basewear plus the worn gear: fitted shirt, pants and boots
-    // shells from the catalog (tier one so far), and the hat and backpack as item models at the art anchors.
+    // (only while the menu is open). It wears the default basewear plus the worn gear. Every fitted garment, any tier,
+    // comes from WearableArtCatalog (equipment redesign, November 7, 2026); a hat or backpack without fitted art falls
+    // back to its item model at the anchor.
     public sealed class EquipmentAvatarView
     {
         private const int Layer = 30, TextureWidth = 432; // texture shape close to the stage, so the figure fills it
@@ -41,23 +42,20 @@ namespace TheTrailWalker
         private readonly Camera camera;
         private readonly RenderTexture texture;
         private readonly Transform hatAnchor, packAnchor, bodyRoot;
-        private GameObject hat, pack;
-        private string hatId, packId;
-        // Fitted wearables (user, November 5, 2026): shirt, pants and boots shells swapped in from the catalog; the shirt
-        // and pants hide the base tunic/trousers they replace.
         private readonly PlayerAvatarArtCatalog art;
         private readonly bool female;
         private readonly GameObject baseShirt, basePants;
-        private GameObject shirt, pants, boots;
-        private string shirtId, pantsId, bootsId;
-        // Fitted hat and backpack (tier-one art pass, November 5, 2026): worn shells at their anchors with identity TRS,
-        // and a hat-compatible hair variant that keeps the saved style and colour (restored when the hat comes off).
+        // One worn state per slot: the shown object, the item it shows and whether it is fitted art (not a fallback model).
+        private sealed class Worn { public GameObject Shown; public string ItemId; public bool Fitted; }
+        private readonly Worn hat = new Worn(), pack = new Worn(), shirt = new Worn(), pants = new Worn(), boots = new Worn();
+        // While a fitted hat is worn, the saved hairstyle shows as its hat-compatible variant (restored when it comes off).
         private readonly Transform hairAnchor;
         private readonly PlayerAppearance look;
         private GameObject baseHair, hatHair;
-        private bool hatFitted, packFitted;
 
         public static PlayerAvatarArtCatalog Catalog => Resources.Load<PlayerAvatarArtCatalog>("Characters/PlayerDefault/PlayerAvatarArtCatalog");
+        // Editor reviews copy the dressed avatar out of its private stage.
+        public GameObject StageAvatar => bodyRoot != null ? bodyRoot.gameObject : null;
 
         public static EquipmentAvatarView Create(RectTransform stage, PlayerAppearance look)
         {
@@ -124,45 +122,57 @@ namespace TheTrailWalker
             return texture;
         }
 
-        // Shows the worn gear (null when the slot holds default gear). Cheap when nothing changed. The hat and backpack
-        // still use their item models at the anchors; shirt, pants and boots use the fitted shells when one exists.
+        // Shows the worn gear (null when the slot holds default gear). Cheap when nothing changed.
         public void Dress(ItemDefinition hatItem, ItemDefinition packItem, ItemDefinition shirtItem = null, ItemDefinition pantsItem = null, ItemDefinition bootsItem = null)
         {
-            DressAccessory(ref hat, ref hatId, ref hatFitted, hatItem, hatAnchor, () => Attach(ref hat, ref hatId, hatItem, hatAnchor, HatWidth, true, new Vector3(0, HatBrim, 0.005f), 0f));
+            Wear(hat, hatItem, hatAnchor, null, () => Attach(hat, hatItem, hatAnchor, HatWidth, true, new Vector3(0, HatBrim, 0.005f)));
             SyncHatHair();
-            DressAccessory(ref pack, ref packId, ref packFitted, packItem, packAnchor, () => Attach(ref pack, ref packId, packItem, packAnchor, PackHeight, false, new Vector3(0, 0, PackBack), 0f));
-            Wear(ref shirt, ref shirtId, shirtItem, baseShirt);
-            Wear(ref pants, ref pantsId, pantsItem, basePants);
-            Wear(ref boots, ref bootsId, bootsItem, null);
-        }
-        private delegate void LegacyAttach();
-        // A fitted accessory (hat/backpack) from the art map when one exists for the item; otherwise the legacy item
-        // model at the anchor. Cheap when the item did not change.
-        private void DressAccessory(ref GameObject current, ref string currentId, ref bool fitted, ItemDefinition item, Transform anchor, LegacyAttach legacy)
-        {
-            string id = item != null ? item.Id : null;
-            GameObject prefab = item != null ? FittedAccessory(ItemArt.ModelFor(item).Id, female) : null;
-            if (prefab == null || anchor == null)
-            {
-                if (fitted) { if (current != null) Kill(current); current = null; currentId = null; fitted = false; }
-                legacy();
-                return;
-            }
-            if (fitted && id == currentId && current != null) return;
-            if (current != null) Kill(current);
-            current = Object.Instantiate(prefab, anchor, false);
-            current.transform.localPosition = Vector3.zero; current.transform.localRotation = Quaternion.identity; current.transform.localScale = Vector3.one;
-            current.name = "Worn " + item.Name;
-            foreach (Collider collider in current.GetComponentsInChildren<Collider>()) Kill(collider);
-            SetLayer(current);
-            currentId = id; fitted = true;
+            Wear(pack, packItem, packAnchor, null, () => Attach(pack, packItem, packAnchor, PackHeight, false, new Vector3(0, 0, PackBack)));
+            Wear(shirt, shirtItem, bodyRoot, baseShirt, null);
+            Wear(pants, pantsItem, bodyRoot, basePants, null);
+            Wear(boots, bootsItem, bodyRoot, null, null);
         }
 
-        // While a fitted hat is worn, the saved hairstyle shows as its hat-compatible variant (crown tucked under the
-        // cap) in the saved colour; the original hair returns when the hat comes off. The saved appearance never changes.
+        // The catalog's fitted garment for an item and body, or null (debug test gear borrows its slot's tier-one model).
+        public static WearableArt FittedArt(ItemDefinition item) => item != null ? WearableArtCatalog.Current?.Find(ItemArt.ModelFor(item).Id) : null;
+        public static GameObject FittedPrefab(ItemDefinition item, bool female) => FittedArt(item)?.For(female);
+        public static GameObject HatHair(bool female, int style) => WearableArtCatalog.Current?.HatHair(female, style);
+
+        private delegate void Fallback();
+        // Fitted art under its anchor (identity transform); otherwise the fallback (item model) or nothing. A fitted
+        // shirt or pants hides the base garment it replaces; anything else leaves the base showing.
+        private void Wear(Worn slot, ItemDefinition item, Transform frame, GameObject replaced, Fallback fallback)
+        {
+            string id = item != null ? item.Id : null;
+            WearableArt art = FittedArt(item);
+            GameObject prefab = art?.For(female);
+            Transform anchor = prefab == null ? null : art.Anchor == "Root" ? bodyRoot : bodyRoot.Find(art.Anchor) ?? frame;
+            if (prefab == null || anchor == null)
+            {
+                if (slot.Fitted) { Clear(slot); }
+                if (fallback != null) fallback(); else if (slot.ItemId != id) { Clear(slot); slot.ItemId = id; }
+                if (replaced != null) replaced.SetActive(true);
+                return;
+            }
+            if (slot.Fitted && slot.ItemId == id && slot.Shown != null) return;
+            Clear(slot);
+            slot.Shown = Object.Instantiate(prefab, anchor, false);
+            slot.Shown.transform.localPosition = Vector3.zero; slot.Shown.transform.localRotation = Quaternion.identity; slot.Shown.transform.localScale = Vector3.one;
+            slot.Shown.name = "Worn " + item.Name;
+            foreach (Collider collider in slot.Shown.GetComponentsInChildren<Collider>()) Kill(collider);
+            SetLayer(slot.Shown);
+            slot.ItemId = id; slot.Fitted = true;
+            if (replaced != null) replaced.SetActive(false);
+        }
+        private void Clear(Worn slot)
+        {
+            if (slot.Shown != null) Kill(slot.Shown);
+            slot.Shown = null; slot.ItemId = null; slot.Fitted = false;
+        }
+
         private void SyncHatHair()
         {
-            GameObject wanted = hatFitted ? HatHair(female, look.HairStyle) : null;
+            GameObject wanted = hat.Fitted ? HatHair(female, look.HairStyle) : null;
             if (wanted == null)
             {
                 if (hatHair != null) { Kill(hatHair); hatHair = null; }
@@ -177,79 +187,17 @@ namespace TheTrailWalker
             if (baseHair != null) baseHair.SetActive(false);
         }
 
-        // ---- Tier-one accessory art map (Resources/Characters/Tier01Accessories/Tier01AccessoriesArtMap.json)
-        [System.Serializable] private class AccessoryMap { public AccessoryEntry[] items; public HairBodies compatibleHair; }
-        [System.Serializable] private class AccessoryEntry { public string itemId; public BodyPaths worn; }
-        [System.Serializable] private class BodyPaths { public string Male, Female; }
-        [System.Serializable] private class HairBodies { public HairStyles Male, Female; }
-        [System.Serializable] private class HairStyles { public string Crop, Sweep, Bob, Tied; }
-        private static AccessoryMap accessoryMap;
-        private static bool accessoryMapLoaded;
-        private static AccessoryMap Accessories
-        {
-            get
-            {
-                if (accessoryMapLoaded) return accessoryMap;
-                accessoryMapLoaded = true;
-                TextAsset json = Resources.Load<TextAsset>("Characters/Tier01Accessories/Tier01AccessoriesArtMap");
-                if (json != null) try { accessoryMap = JsonUtility.FromJson<AccessoryMap>(json.text); } catch (System.Exception) { accessoryMap = null; }
-                return accessoryMap;
-            }
-        }
-        // The fitted worn prefab for an item model ID and body, or null when the item has no fitted accessory.
-        public static GameObject FittedAccessory(string modelId, bool female)
-        {
-            AccessoryMap map = Accessories;
-            if (map?.items == null || modelId == null) return null;
-            foreach (AccessoryEntry entry in map.items)
-                if (entry.itemId == modelId && entry.worn != null)
-                {
-                    string path = female ? entry.worn.Female : entry.worn.Male;
-                    return string.IsNullOrEmpty(path) ? null : Resources.Load<GameObject>(path);
-                }
-            return null;
-        }
-        // The hat-compatible hair for a body and saved hairstyle index (Crop, Sweep, Bob, Tied).
-        public static GameObject HatHair(bool female, int style)
-        {
-            HairStyles styles = female ? Accessories?.compatibleHair?.Female : Accessories?.compatibleHair?.Male;
-            if (styles == null) return null;
-            string path = style == 0 ? styles.Crop : style == 1 ? styles.Sweep : style == 2 ? styles.Bob : style == 3 ? styles.Tied : null;
-            return string.IsNullOrEmpty(path) ? null : Resources.Load<GameObject>(path);
-        }
-
-        // The fitted shell for an item (debug test gear borrows its slot's tier-one model), or null for basewear.
-        public static GameObject WearableFor(PlayerAvatarArtCatalog art, ItemDefinition item, bool female) =>
-            art != null && item != null ? art.Wearable(ItemArt.ModelFor(item).Id, female) : null;
-
-        private void Wear(ref GameObject current, ref string currentId, ItemDefinition item, GameObject replaced)
-        {
-            string id = item != null ? item.Id : null;
-            if (id == currentId) return;
-            currentId = id;
-            if (current != null) Kill(current);
-            current = null;
-            GameObject prefab = WearableFor(art, item, female);
-            if (prefab != null)
-            {
-                current = Object.Instantiate(prefab, bodyRoot, false);
-                current.name = "Worn " + item.Name;
-                SetLayer(current);
-            }
-            // Only a fitted shell replaces the basewear; an item without one leaves the base garment showing.
-            if (replaced != null) replaced.SetActive(current == null);
-        }
         // Head-local hat brim height and width; backpack height and offset behind the BackpackAnchor (tuned by render).
         public static float HatWidth = 0.27f, HatBrim = 0.155f, PackHeight = 0.52f, PackBack = -0.06f;
 
-        private void Attach(ref GameObject current, ref string currentId, ItemDefinition item, Transform anchor, float size, bool sitOnBottom, Vector3 offset, float yaw)
+        // Fallback for a hat or backpack without fitted art: its item model, scaled to the anchor.
+        private void Attach(Worn slot, ItemDefinition item, Transform anchor, float size, bool sitOnBottom, Vector3 offset)
         {
             string id = item != null ? item.Id : null;
-            if (id == currentId && (current != null || id == null)) return;
-            currentId = id;
-            if (current != null) Kill(current);
-            current = null;
+            if (id == slot.ItemId && !slot.Fitted && (slot.Shown != null || id == null)) return;
+            Clear(slot); slot.ItemId = id;
             if (item == null || anchor == null) return;
+            ref GameObject current = ref slot.Shown; const float yaw = 0f;
             string path = Tier1CraftedItems.VisualPath(ItemArt.ModelFor(item).Id);
             GameObject prefab = path != null ? Resources.Load<GameObject>(path) : null;
             if (prefab == null) return;

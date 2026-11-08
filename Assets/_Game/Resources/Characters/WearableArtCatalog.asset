@@ -1,0 +1,235 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6184e3eaa1b2fd244936381582f90eca, type: 3}
+  m_Name: WearableArtCatalog
+  m_EditorClassIdentifier: Assembly-CSharp::TheTrailWalker.WearableArtCatalog
+  Items:
+  - ItemId: item.hemp_shirt
+    Slot: 2
+    Anchor: Root
+    Male: {fileID: 2055270081940595674, guid: 9301ed2808d1cb2418b6264d91d53007, type: 3}
+    Female: {fileID: 7642515691734231041, guid: 48183c6047f430c47998d9f0e1b14dda, type: 3}
+    Source: tier-one shells
+  - ItemId: item.hemp_pants
+    Slot: 3
+    Anchor: Root
+    Male: {fileID: 4796902291886746830, guid: f2f00dad62f52ca48888c493e1f11679, type: 3}
+    Female: {fileID: 963223534217781653, guid: c5e06d3aa2cee8948a845680e96a40ae, type: 3}
+    Source: tier-one shells
+  - ItemId: item.rabbit_boots
+    Slot: 1
+    Anchor: Root
+    Male: {fileID: 6662610018606416260, guid: c0f72f61b7e51534f96691d051ff6688, type: 3}
+    Female: {fileID: 499815424936528965, guid: 48acac8249485634eb7b80b2079418ba, type: 3}
+    Source: tier-one shells
+  - ItemId: item.rabbit_hat
+    Slot: 0
+    Anchor: HeadAnchor/HatAnchor
+    Male: {fileID: 2409223046989343141, guid: 2147d6ec6902a3948bdf376bd9ce61cf, type: 3}
+    Female: {fileID: 3995870467103620965, guid: 7aae76c391a1ca540b3414b2e0172573, type: 3}
+    Source: tier-one accessories
+  - ItemId: item.starter_backpack
+    Slot: 4
+    Anchor: BackpackAnchor
+    Male: {fileID: 8010986296732186323, guid: a1d2d81ec7abadd47a9b83eecf432e50, type: 3}
+    Female: {fileID: 1457506180023148960, guid: ea9c904e705a87541bb86d35b7ee3b67, type: 3}
+    Source: tier-one accessories
+  - ItemId: item.beaver_fur_cap
+    Slot: 0
+    Anchor: HeadAnchor/HatAnchor
+    Male: {fileID: 7672511773791542696, guid: 3f6b6a3d04bce074f9b79049569f8ca2, type: 3}
+    Female: {fileID: 5508607472850833041, guid: 10ecf17c48566284ea445aa081766729, type: 3}
+    Source: Tier02Batch13ArtMap.json
+  - ItemId: item.marsh_boots
+    Slot: 1
+    Anchor: Root
+    Male: {fileID: 6821540909813157503, guid: 5fa5261afb8a0bb48b26cc10f3425587, type: 3}
+    Female: {fileID: 5595235585807187607, guid: a4b43fd1ffcf59d45946c05e6641e933, type: 3}
+    Source: Tier02Batch13ArtMap.json
+  - ItemId: item.flax_work_shirt
+    Slot: 2
+    Anchor: Root
+    Male: {fileID: 2468574239172186399, guid: c06ba3c74a1359f4dbe5efe1d0031396, type: 3}
+    Female: {fileID: 7216368294295589155, guid: 46da19799d9571146989980bc5dc1739, type: 3}
+    Source: Tier02Batch14ArtMap.json
+  - ItemId: item.flax_trousers
+    Slot: 3
+    Anchor: Root
+    Male: {fileID: 5457021940707409233, guid: 651c66f05b8bae24986c346ea55b5b6c, type: 3}
+    Female: {fileID: 685850507652803470, guid: bf6600b1e654e7e4580299c8853febc8, type: 3}
+    Source: Tier02Batch14ArtMap.json
+  - ItemId: item.marsh_pack
+    Slot: 4
+    Anchor: BackpackAnchor
+    Male: {fileID: 5243955794257753395, guid: 8718ae168eef0ec43baf7b952188e5b0, type: 3}
+    Female: {fileID: 1292110724433952200, guid: 2a02bfef28daa5f4cbeca507f42cfa6a, type: 3}
+    Source: Tier02Batch15ArtMap.json
+  - ItemId: item.taiga_fur_hat
+    Slot: 0
+    Anchor: HeadAnchor/HatAnchor
+    Male: {fileID: 8773670090606210656, guid: 5e5864c6e4dfc964ab2b4b52cc6b6801, type: 3}
+    Female: {fileID: 3846127921630717101, guid: fcf74d68f2a652b41b84c81894dda204, type: 3}
+    Source: Tier02Batch16ArtMap.json
+  - ItemId: item.taiga_boots
+    Slot: 1
+    Anchor: Root
+    Male: {fileID: 8334419041021175758, guid: 4eb7db264e94d1d4ebfd83dfb8cc392f, type: 3}
+    Female: {fileID: 8231938806564713340, guid: 41e6a71f8b1ac0f4a9ae6f2fd040f8b4, type: 3}
+    Source: Tier02Batch16ArtMap.json
+  - ItemId: item.taiga_waxed_shirt
+    Slot: 2
+    Anchor: Root
+    Male: {fileID: 7083864117172419776, guid: 44d918a611e248f4392f802b04374fb0, type: 3}
+    Female: {fileID: 8548623348574374641, guid: 06866239e4401564f9f2d9f1e6dcb1ae, type: 3}
+    Source: Tier02Batch17ArtMap.json
+  - ItemId: item.taiga_trousers
+    Slot: 3
+    Anchor: Root
+    Male: {fileID: 1760752530394187513, guid: 6c0e7907b775a224db1c5f69ddf0872a, type: 3}
+    Female: {fileID: 4322085097671647613, guid: 11a65d0306cdafc4ab48d0ca9050b47e, type: 3}
+    Source: Tier02Batch17ArtMap.json
+  - ItemId: item.taiga_frame_pack
+    Slot: 4
+    Anchor: BackpackAnchor
+    Male: {fileID: 7088161747809468555, guid: dbb3f013fa6d6b744942ca762015bfec, type: 3}
+    Female: {fileID: 8428144457706416286, guid: 1f97ca3161f9de548a9ed7f0f1dbc811, type: 3}
+    Source: Tier02Batch18ArtMap.json
+  - ItemId: special.t1.hat
+    Slot: 0
+    Anchor: HeadAnchor/HatAnchor
+    Male: {fileID: 5394285540264338247, guid: 058374225a7173c4b9f235e96092fc3e, type: 3}
+    Female: {fileID: 2062957195709707559, guid: cc262701bb843d74e91140c4d57795b9, type: 3}
+    Source: balloon special gear
+  - ItemId: special.t1.boots
+    Slot: 1
+    Anchor: Root
+    Male: {fileID: 5201837880987940890, guid: 031581d83ec25bc4a9039f11a8fa3da3, type: 3}
+    Female: {fileID: 6363770186134372938, guid: f0325d25778213848be84baae470ccf8, type: 3}
+    Source: balloon special gear
+  - ItemId: special.t1.shirt
+    Slot: 2
+    Anchor: Root
+    Male: {fileID: 7939339301087061654, guid: bb55830ecfc948d4aad7e335ff2b015c, type: 3}
+    Female: {fileID: 8744189485786579467, guid: 5942385023d61fb4688eb15368f339df, type: 3}
+    Source: balloon special gear
+  - ItemId: special.t1.pants
+    Slot: 3
+    Anchor: Root
+    Male: {fileID: 4569454903819788898, guid: 5e98c85ef20c6214cab7d479487557d3, type: 3}
+    Female: {fileID: 2125733750325144633, guid: 097916058a4c8684996ddd137a4fc40e, type: 3}
+    Source: balloon special gear
+  - ItemId: special.t1.pack
+    Slot: 4
+    Anchor: BackpackAnchor
+    Male: {fileID: 5846661019940622680, guid: becf0e06afa32434aa472d8c88205d69, type: 3}
+    Female: {fileID: 8156371681212787426, guid: aa71fc501fa208c4bb3aa64f8eba0dce, type: 3}
+    Source: balloon special gear
+  - ItemId: special.t2.hat
+    Slot: 0
+    Anchor: HeadAnchor/HatAnchor
+    Male: {fileID: 2957664444176438777, guid: e14b19687f9497f4ea114c962721e808, type: 3}
+    Female: {fileID: 1960862110276559068, guid: 13139d37d7eba734692017725ef2dffd, type: 3}
+    Source: balloon special gear
+  - ItemId: special.t2.boots
+    Slot: 1
+    Anchor: Root
+    Male: {fileID: 3517223551330930607, guid: 5a436a7c8bbc14446b4723912fcc91c8, type: 3}
+    Female: {fileID: 2616123608856051711, guid: c5256618bb730d745b2f2b535f693e75, type: 3}
+    Source: balloon special gear
+  - ItemId: special.t2.shirt
+    Slot: 2
+    Anchor: Root
+    Male: {fileID: 5178374649337360411, guid: 26bc0a93aaa330b4dbc8107664592e8f, type: 3}
+    Female: {fileID: 7790444098772703949, guid: d6c93d4c40496724cad9cde14f4cbd01, type: 3}
+    Source: balloon special gear
+  - ItemId: special.t2.pants
+    Slot: 3
+    Anchor: Root
+    Male: {fileID: 8080873737190080501, guid: 7d17b891de9f14440a8e9c7aa7ba9a70, type: 3}
+    Female: {fileID: 8835455452039961501, guid: e2452291bdbcca44582860f3f5aef59f, type: 3}
+    Source: balloon special gear
+  - ItemId: special.t2.pack
+    Slot: 4
+    Anchor: BackpackAnchor
+    Male: {fileID: 3258560504572514060, guid: 83879d0562c64834a8589b2d4afba6ec, type: 3}
+    Female: {fileID: 3086370710122691842, guid: a832cf713645dcc458df310291aed068, type: 3}
+    Source: balloon special gear
+  - ItemId: special.t3.hat
+    Slot: 0
+    Anchor: HeadAnchor/HatAnchor
+    Male: {fileID: 4504544133689566229, guid: 9805620ecb46e3b46b7c4221b675efde, type: 3}
+    Female: {fileID: 1547137532221359708, guid: 71bf7dad059592c47a54af29eaebe4c5, type: 3}
+    Source: balloon special gear
+  - ItemId: special.t3.boots
+    Slot: 1
+    Anchor: Root
+    Male: {fileID: 3035193872091032872, guid: 14444ae9ee9f87a478ee8b68a77a14b1, type: 3}
+    Female: {fileID: 128687149224067492, guid: 6a65a33d1c731c64299e2ede9d81c2fa, type: 3}
+    Source: balloon special gear
+  - ItemId: special.t3.shirt
+    Slot: 2
+    Anchor: Root
+    Male: {fileID: 2687466565633163368, guid: 7fbb5729e9eff1b46b6f75ec9367be2d, type: 3}
+    Female: {fileID: 5893370512595530597, guid: 690430b3c5da4834b8d1256a5893ece5, type: 3}
+    Source: balloon special gear
+  - ItemId: special.t3.pants
+    Slot: 3
+    Anchor: Root
+    Male: {fileID: 2594927626232913861, guid: 7d744c82d7f283f4ba6cc5b24eb7e4d6, type: 3}
+    Female: {fileID: 6258767369998665055, guid: 28c05f39fb068344989f4a93a99840dd, type: 3}
+    Source: balloon special gear
+  - ItemId: special.t3.pack
+    Slot: 4
+    Anchor: BackpackAnchor
+    Male: {fileID: 7684107809060848276, guid: bc89a7cac41e3b84c958d03b814a7814, type: 3}
+    Female: {fileID: 8687079251920282004, guid: c34e03d67255dec4fa235ecab86ae25b, type: 3}
+    Source: balloon special gear
+  - ItemId: special.t4.hat
+    Slot: 0
+    Anchor: HeadAnchor/HatAnchor
+    Male: {fileID: 1615199050198073322, guid: ee7a49115320dfc499daddf3df449f37, type: 3}
+    Female: {fileID: 7413685614012904294, guid: 6c751e21e703e6c45933f84ebe4dbda5, type: 3}
+    Source: balloon special gear
+  - ItemId: special.t4.boots
+    Slot: 1
+    Anchor: Root
+    Male: {fileID: 1911420694400753271, guid: cee7a9c60930d7f48aeb1598a643ebd1, type: 3}
+    Female: {fileID: 5126158954572893247, guid: 9e13e95bce69ab14da1f1751f8b53daa, type: 3}
+    Source: balloon special gear
+  - ItemId: special.t4.shirt
+    Slot: 2
+    Anchor: Root
+    Male: {fileID: 5211731350534403364, guid: 84fbedaadb90dc84c80b621350a34412, type: 3}
+    Female: {fileID: 417665266249313440, guid: 3d97b12fa22eef147ba06af3f8bd51a9, type: 3}
+    Source: balloon special gear
+  - ItemId: special.t4.pants
+    Slot: 3
+    Anchor: Root
+    Male: {fileID: 1586993676212806705, guid: 0b9b65ca144b44042bdc64d5931f9cd8, type: 3}
+    Female: {fileID: 1954507182469149037, guid: b90a8b5a547cc6743b46d25ba03555af, type: 3}
+    Source: balloon special gear
+  - ItemId: special.t4.pack
+    Slot: 4
+    Anchor: BackpackAnchor
+    Male: {fileID: 3404487582665698065, guid: 49f5d367527a2354bb7318d7fc650f35, type: 3}
+    Female: {fileID: 2932729397150834016, guid: d39a44ceaa783e34ba52665ece9206aa, type: 3}
+    Source: balloon special gear
+  MaleHatHair:
+  - {fileID: 6687185081215464037, guid: f023a8d0cc0bb664693abf02aa288ad3, type: 3}
+  - {fileID: 6273890187484571391, guid: 1aadb2adfef3a3f49bd4abdc62e6f76d, type: 3}
+  - {fileID: 4942228882093305444, guid: 599c74277a81a1e42a302a623ed1d5e2, type: 3}
+  - {fileID: 6657262756404122072, guid: 2a36facf5315b2841b956eb44adede6f, type: 3}
+  FemaleHatHair:
+  - {fileID: 600969119329166134, guid: 260eec01475576942b4d245651fb1ca6, type: 3}
+  - {fileID: 311641381949684283, guid: f0d4e4741583acc498cfd56de02ead89, type: 3}
+  - {fileID: 4100600767586695658, guid: b7029dde852badb40ad7c85ca28cb544, type: 3}
+  - {fileID: 1127769881283299525, guid: abc9fb41217424e48914b2460376effc, type: 3}

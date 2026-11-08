@@ -1,0 +1,305 @@
+{
+  "revision": 1,
+  "scope": "Fitted garment art map (asset paths); built into Resources/Characters/WearableArtCatalog.asset.",
+  "slots": [
+    "Hat",
+    "Boots",
+    "Shirt",
+    "Pants",
+    "Backpack"
+  ],
+  "maleHatHair": [
+    "Assets/_Game/Resources/Characters/Tier01Accessories/Parts/MaleHatHairCrop.prefab",
+    "Assets/_Game/Resources/Characters/Tier01Accessories/Parts/MaleHatHairSweep.prefab",
+    "Assets/_Game/Resources/Characters/Tier01Accessories/Parts/MaleHatHairBob.prefab",
+    "Assets/_Game/Resources/Characters/Tier01Accessories/Parts/MaleHatHairTied.prefab"
+  ],
+  "femaleHatHair": [
+    "Assets/_Game/Resources/Characters/Tier01Accessories/Parts/FemaleHatHairCrop.prefab",
+    "Assets/_Game/Resources/Characters/Tier01Accessories/Parts/FemaleHatHairSweep.prefab",
+    "Assets/_Game/Resources/Characters/Tier01Accessories/Parts/FemaleHatHairBob.prefab",
+    "Assets/_Game/Resources/Characters/Tier01Accessories/Parts/FemaleHatHairTied.prefab"
+  ],
+  "items": [
+    {
+      "itemId": "item.hemp_shirt",
+      "slot": "Shirt",
+      "anchor": "Root",
+      "male": "Assets/_Game/Art/Characters/PlayerDefault/Unity/Wearables/MaleWearHempShirt.prefab",
+      "female": "Assets/_Game/Art/Characters/PlayerDefault/Unity/Wearables/FemaleWearHempShirt.prefab",
+      "source": "tier-one shells"
+    },
+    {
+      "itemId": "item.hemp_pants",
+      "slot": "Pants",
+      "anchor": "Root",
+      "male": "Assets/_Game/Art/Characters/PlayerDefault/Unity/Wearables/MaleWearHempPants.prefab",
+      "female": "Assets/_Game/Art/Characters/PlayerDefault/Unity/Wearables/FemaleWearHempPants.prefab",
+      "source": "tier-one shells"
+    },
+    {
+      "itemId": "item.rabbit_boots",
+      "slot": "Boots",
+      "anchor": "Root",
+      "male": "Assets/_Game/Art/Characters/PlayerDefault/Unity/Wearables/MaleWearRabbitBoots.prefab",
+      "female": "Assets/_Game/Art/Characters/PlayerDefault/Unity/Wearables/FemaleWearRabbitBoots.prefab",
+      "source": "tier-one shells"
+    },
+    {
+      "itemId": "item.rabbit_hat",
+      "slot": "Hat",
+      "anchor": "HeadAnchor/HatAnchor",
+      "male": "Assets/_Game/Resources/Characters/Tier01Accessories/Parts/MaleWearRabbitHat.prefab",
+      "female": "Assets/_Game/Resources/Characters/Tier01Accessories/Parts/FemaleWearRabbitHat.prefab",
+      "source": "tier-one accessories"
+    },
+    {
+      "itemId": "item.starter_backpack",
+      "slot": "Backpack",
+      "anchor": "BackpackAnchor",
+      "male": "Assets/_Game/Resources/Characters/Tier01Accessories/Parts/MaleWearStarterBackpack.prefab",
+      "female": "Assets/_Game/Resources/Characters/Tier01Accessories/Parts/FemaleWearStarterBackpack.prefab",
+      "source": "tier-one accessories"
+    },
+    {
+      "itemId": "item.beaver_fur_cap",
+      "slot": "Hat",
+      "anchor": "HeadAnchor/HatAnchor",
+      "male": "Assets/_Game/Resources/Tier02/Wearables/MaleWearBeaverFurCap.prefab",
+      "female": "Assets/_Game/Resources/Tier02/Wearables/FemaleWearBeaverFurCap.prefab",
+      "source": "Tier02Batch13ArtMap.json"
+    },
+    {
+      "itemId": "item.marsh_boots",
+      "slot": "Boots",
+      "anchor": "Root",
+      "male": "Assets/_Game/Resources/Tier02/Wearables/MaleWearMarshBoots.prefab",
+      "female": "Assets/_Game/Resources/Tier02/Wearables/FemaleWearMarshBoots.prefab",
+      "source": "Tier02Batch13ArtMap.json"
+    },
+    {
+      "itemId": "item.flax_work_shirt",
+      "slot": "Shirt",
+      "anchor": "Root",
+      "male": "Assets/_Game/Resources/Tier02/Wearables/MaleWearFlaxWorkShirt.prefab",
+      "female": "Assets/_Game/Resources/Tier02/Wearables/FemaleWearFlaxWorkShirt.prefab",
+      "source": "Tier02Batch14ArtMap.json"
+    },
+    {
+      "itemId": "item.flax_trousers",
+      "slot": "Pants",
+      "anchor": "Root",
+      "male": "Assets/_Game/Resources/Tier02/Wearables/MaleWearFlaxTrousers.prefab",
+      "female": "Assets/_Game/Resources/Tier02/Wearables/FemaleWearFlaxTrousers.prefab",
+      "source": "Tier02Batch14ArtMap.json"
+    },
+    {
+      "itemId": "item.marsh_pack",
+      "slot": "Backpack",
+      "anchor": "BackpackAnchor",
+      "male": "Assets/_Game/Resources/Tier02/Wearables/MaleWearMarshPack.prefab",
+      "female": "Assets/_Game/Resources/Tier02/Wearables/FemaleWearMarshPack.prefab",
+      "source": "Tier02Batch15ArtMap.json"
+    },
+    {
+      "itemId": "item.taiga_fur_hat",
+      "slot": "Hat",
+      "anchor": "HeadAnchor/HatAnchor",
+      "male": "Assets/_Game/Resources/Tier02/Wearables/MaleWearTaigaFurHat.prefab",
+      "female": "Assets/_Game/Resources/Tier02/Wearables/FemaleWearTaigaFurHat.prefab",
+      "source": "Tier02Batch16ArtMap.json"
+    },
+    {
+      "itemId": "item.taiga_boots",
+      "slot": "Boots",
+      "anchor": "Root",
+      "male": "Assets/_Game/Resources/Tier02/Wearables/MaleWearTaigaBoots.prefab",
+      "female": "Assets/_Game/Resources/Tier02/Wearables/FemaleWearTaigaBoots.prefab",
+      "source": "Tier02Batch16ArtMap.json"
+    },
+    {
+      "itemId": "item.taiga_waxed_shirt",
+      "slot": "Shirt",
+      "anchor": "Root",
+      "male": "Assets/_Game/Resources/Tier02/Wearables/MaleWearTaigaWaxedShirt.prefab",
+      "female": "Assets/_Game/Resources/Tier02/Wearables/FemaleWearTaigaWaxedShirt.prefab",
+      "source": "Tier02Batch17ArtMap.json"
+    },
+    {
+      "itemId": "item.taiga_trousers",
+      "slot": "Pants",
+      "anchor": "Root",
+      "male": "Assets/_Game/Resources/Tier02/Wearables/MaleWearTaigaTrousers.prefab",
+      "female": "Assets/_Game/Resources/Tier02/Wearables/FemaleWearTaigaTrousers.prefab",
+      "source": "Tier02Batch17ArtMap.json"
+    },
+    {
+      "itemId": "item.taiga_frame_pack",
+      "slot": "Backpack",
+      "anchor": "BackpackAnchor",
+      "male": "Assets/_Game/Resources/Tier02/Wearables/MaleWearTaigaFramePack.prefab",
+      "female": "Assets/_Game/Resources/Tier02/Wearables/FemaleWearTaigaFramePack.prefab",
+      "source": "Tier02Batch18ArtMap.json"
+    },
+    {
+      "itemId": "special.t1.hat",
+      "slot": "Hat",
+      "anchor": "HeadAnchor/HatAnchor",
+      "male": "Assets/_Game/Resources/BalloonGoods/Wearables/Male/SpecialT01HatMaleWorn.prefab",
+      "female": "Assets/_Game/Resources/BalloonGoods/Wearables/Female/SpecialT01HatFemaleWorn.prefab",
+      "source": "balloon special gear"
+    },
+    {
+      "itemId": "special.t1.boots",
+      "slot": "Boots",
+      "anchor": "Root",
+      "male": "Assets/_Game/Resources/BalloonGoods/Wearables/Male/SpecialT01BootsMaleWorn.prefab",
+      "female": "Assets/_Game/Resources/BalloonGoods/Wearables/Female/SpecialT01BootsFemaleWorn.prefab",
+      "source": "balloon special gear"
+    },
+    {
+      "itemId": "special.t1.shirt",
+      "slot": "Shirt",
+      "anchor": "Root",
+      "male": "Assets/_Game/Resources/BalloonGoods/Wearables/Male/SpecialT01ShirtMaleWorn.prefab",
+      "female": "Assets/_Game/Resources/BalloonGoods/Wearables/Female/SpecialT01ShirtFemaleWorn.prefab",
+      "source": "balloon special gear"
+    },
+    {
+      "itemId": "special.t1.pants",
+      "slot": "Pants",
+      "anchor": "Root",
+      "male": "Assets/_Game/Resources/BalloonGoods/Wearables/Male/SpecialT01PantsMaleWorn.prefab",
+      "female": "Assets/_Game/Resources/BalloonGoods/Wearables/Female/SpecialT01PantsFemaleWorn.prefab",
+      "source": "balloon special gear"
+    },
+    {
+      "itemId": "special.t1.pack",
+      "slot": "Backpack",
+      "anchor": "BackpackAnchor",
+      "male": "Assets/_Game/Resources/BalloonGoods/Wearables/Male/SpecialT01PackMaleWorn.prefab",
+      "female": "Assets/_Game/Resources/BalloonGoods/Wearables/Female/SpecialT01PackFemaleWorn.prefab",
+      "source": "balloon special gear"
+    },
+    {
+      "itemId": "special.t2.hat",
+      "slot": "Hat",
+      "anchor": "HeadAnchor/HatAnchor",
+      "male": "Assets/_Game/Resources/BalloonGoods/Wearables/Male/SpecialT02HatMaleWorn.prefab",
+      "female": "Assets/_Game/Resources/BalloonGoods/Wearables/Female/SpecialT02HatFemaleWorn.prefab",
+      "source": "balloon special gear"
+    },
+    {
+      "itemId": "special.t2.boots",
+      "slot": "Boots",
+      "anchor": "Root",
+      "male": "Assets/_Game/Resources/BalloonGoods/Wearables/Male/SpecialT02BootsMaleWorn.prefab",
+      "female": "Assets/_Game/Resources/BalloonGoods/Wearables/Female/SpecialT02BootsFemaleWorn.prefab",
+      "source": "balloon special gear"
+    },
+    {
+      "itemId": "special.t2.shirt",
+      "slot": "Shirt",
+      "anchor": "Root",
+      "male": "Assets/_Game/Resources/BalloonGoods/Wearables/Male/SpecialT02ShirtMaleWorn.prefab",
+      "female": "Assets/_Game/Resources/BalloonGoods/Wearables/Female/SpecialT02ShirtFemaleWorn.prefab",
+      "source": "balloon special gear"
+    },
+    {
+      "itemId": "special.t2.pants",
+      "slot": "Pants",
+      "anchor": "Root",
+      "male": "Assets/_Game/Resources/BalloonGoods/Wearables/Male/SpecialT02PantsMaleWorn.prefab",
+      "female": "Assets/_Game/Resources/BalloonGoods/Wearables/Female/SpecialT02PantsFemaleWorn.prefab",
+      "source": "balloon special gear"
+    },
+    {
+      "itemId": "special.t2.pack",
+      "slot": "Backpack",
+      "anchor": "BackpackAnchor",
+      "male": "Assets/_Game/Resources/BalloonGoods/Wearables/Male/SpecialT02PackMaleWorn.prefab",
+      "female": "Assets/_Game/Resources/BalloonGoods/Wearables/Female/SpecialT02PackFemaleWorn.prefab",
+      "source": "balloon special gear"
+    },
+    {
+      "itemId": "special.t3.hat",
+      "slot": "Hat",
+      "anchor": "HeadAnchor/HatAnchor",
+      "male": "Assets/_Game/Resources/BalloonGoods/Wearables/Male/SpecialT03HatMaleWorn.prefab",
+      "female": "Assets/_Game/Resources/BalloonGoods/Wearables/Female/SpecialT03HatFemaleWorn.prefab",
+      "source": "balloon special gear"
+    },
+    {
+      "itemId": "special.t3.boots",
+      "slot": "Boots",
+      "anchor": "Root",
+      "male": "Assets/_Game/Resources/BalloonGoods/Wearables/Male/SpecialT03BootsMaleWorn.prefab",
+      "female": "Assets/_Game/Resources/BalloonGoods/Wearables/Female/SpecialT03BootsFemaleWorn.prefab",
+      "source": "balloon special gear"
+    },
+    {
+      "itemId": "special.t3.shirt",
+      "slot": "Shirt",
+      "anchor": "Root",
+      "male": "Assets/_Game/Resources/BalloonGoods/Wearables/Male/SpecialT03ShirtMaleWorn.prefab",
+      "female": "Assets/_Game/Resources/BalloonGoods/Wearables/Female/SpecialT03ShirtFemaleWorn.prefab",
+      "source": "balloon special gear"
+    },
+    {
+      "itemId": "special.t3.pants",
+      "slot": "Pants",
+      "anchor": "Root",
+      "male": "Assets/_Game/Resources/BalloonGoods/Wearables/Male/SpecialT03PantsMaleWorn.prefab",
+      "female": "Assets/_Game/Resources/BalloonGoods/Wearables/Female/SpecialT03PantsFemaleWorn.prefab",
+      "source": "balloon special gear"
+    },
+    {
+      "itemId": "special.t3.pack",
+      "slot": "Backpack",
+      "anchor": "BackpackAnchor",
+      "male": "Assets/_Game/Resources/BalloonGoods/Wearables/Male/SpecialT03PackMaleWorn.prefab",
+      "female": "Assets/_Game/Resources/BalloonGoods/Wearables/Female/SpecialT03PackFemaleWorn.prefab",
+      "source": "balloon special gear"
+    },
+    {
+      "itemId": "special.t4.hat",
+      "slot": "Hat",
+      "anchor": "HeadAnchor/HatAnchor",
+      "male": "Assets/_Game/Resources/BalloonGoods/Wearables/Male/SpecialT04HatMaleWorn.prefab",
+      "female": "Assets/_Game/Resources/BalloonGoods/Wearables/Female/SpecialT04HatFemaleWorn.prefab",
+      "source": "balloon special gear"
+    },
+    {
+      "itemId": "special.t4.boots",
+      "slot": "Boots",
+      "anchor": "Root",
+      "male": "Assets/_Game/Resources/BalloonGoods/Wearables/Male/SpecialT04BootsMaleWorn.prefab",
+      "female": "Assets/_Game/Resources/BalloonGoods/Wearables/Female/SpecialT04BootsFemaleWorn.prefab",
+      "source": "balloon special gear"
+    },
+    {
+      "itemId": "special.t4.shirt",
+      "slot": "Shirt",
+      "anchor": "Root",
+      "male": "Assets/_Game/Resources/BalloonGoods/Wearables/Male/SpecialT04ShirtMaleWorn.prefab",
+      "female": "Assets/_Game/Resources/BalloonGoods/Wearables/Female/SpecialT04ShirtFemaleWorn.prefab",
+      "source": "balloon special gear"
+    },
+    {
+      "itemId": "special.t4.pants",
+      "slot": "Pants",
+      "anchor": "Root",
+      "male": "Assets/_Game/Resources/BalloonGoods/Wearables/Male/SpecialT04PantsMaleWorn.prefab",
+      "female": "Assets/_Game/Resources/BalloonGoods/Wearables/Female/SpecialT04PantsFemaleWorn.prefab",
+      "source": "balloon special gear"
+    },
+    {
+      "itemId": "special.t4.pack",
+      "slot": "Backpack",
+      "anchor": "BackpackAnchor",
+      "male": "Assets/_Game/Resources/BalloonGoods/Wearables/Male/SpecialT04PackMaleWorn.prefab",
+      "female": "Assets/_Game/Resources/BalloonGoods/Wearables/Female/SpecialT04PackFemaleWorn.prefab",
+      "source": "balloon special gear"
+    }
+  ]
+}

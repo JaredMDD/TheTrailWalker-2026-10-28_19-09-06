@@ -301,7 +301,7 @@ namespace TheTrailWalker.Editor
                 if (slot != TheTrailWalker.Domain.Equipment.GearSlot.Shirt && slot != TheTrailWalker.Domain.Equipment.GearSlot.Pants && slot != TheTrailWalker.Domain.Equipment.GearSlot.Boots) continue;
                 foreach (bool female in new[] { false, true })
                 {
-                    GameObject shell = EquipmentAvatarView.WearableFor(avatars, item, female);
+                    GameObject shell = EquipmentAvatarView.FittedPrefab(item, female);   // WearableArtCatalog (November 7, 2026)
                     fitted &= shell != null && shell.GetComponentsInChildren<MeshFilter>().Any(f => f.sharedMesh != null && f.sharedMesh.vertexCount > 0);
                 }
             }
@@ -315,13 +315,15 @@ namespace TheTrailWalker.Editor
                 if (slot != TheTrailWalker.Domain.Equipment.GearSlot.Hat && slot != TheTrailWalker.Domain.Equipment.GearSlot.Backpack) continue;
                 foreach (bool female in new[] { false, true })
                 {
-                    GameObject worn = EquipmentAvatarView.FittedAccessory(ItemArt.ModelFor(item).Id, female);
+                    GameObject worn = EquipmentAvatarView.FittedPrefab(item, female);
                     accessories &= worn != null && worn.GetComponentsInChildren<MeshFilter>().Any(f => f.sharedMesh != null && f.sharedMesh.vertexCount > 0);
                 }
             }
             for (int style = 0; style < 4; style++)
                 foreach (bool female in new[] { false, true }) accessories &= EquipmentAvatarView.HatHair(female, style) != null;
             Check(accessories, "The tier-one hat and backpack have fitted worn meshes on both bodies, with hat-compatible hair for all four styles");
+            // One wearable art map for every tier (equipment redesign, November 7, 2026): its own contract checks.
+            foreach (string name in TheTrailWalker.Editor.WearableArtCatalogAssets.Validate()) passed.Add("Wearable art: " + name);
         }
 
         private static void Check(bool value, string name) { if (!value) throw new Exception("Milestone 5: " + name); passed.Add(name); }

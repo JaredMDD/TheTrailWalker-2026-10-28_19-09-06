@@ -1,25 +1,26 @@
 {
-  "Revision": 1,
+  "Revision": 2,
+  "WornFit": "faceted bodies (special_gear_fitted.py)",
   "Parts": [
     {
       "Name": "SpecialT01HatMaleWorn",
       "Tier": 1,
-      "Triangles": 880
+      "Triangles": 328
     },
     {
       "Name": "SpecialT01HatItem",
       "Tier": 1,
-      "Triangles": 880
+      "Triangles": 328
     },
     {
       "Name": "SpecialT01HatFemaleWorn",
       "Tier": 1,
-      "Triangles": 880
+      "Triangles": 328
     },
     {
       "Name": "SpecialT01BootsMaleWorn",
       "Tier": 1,
-      "Triangles": 1688
+      "Triangles": 552
     },
     {
       "Name": "SpecialT01BootsItem",
@@ -29,72 +30,72 @@
     {
       "Name": "SpecialT01BootsFemaleWorn",
       "Tier": 1,
-      "Triangles": 1688
+      "Triangles": 552
     },
     {
       "Name": "SpecialT01ShirtMaleWorn",
       "Tier": 1,
-      "Triangles": 2152
+      "Triangles": 564
     },
     {
       "Name": "SpecialT01ShirtItem",
       "Tier": 1,
-      "Triangles": 2152
+      "Triangles": 564
     },
     {
       "Name": "SpecialT01ShirtFemaleWorn",
       "Tier": 1,
-      "Triangles": 2152
+      "Triangles": 564
     },
     {
       "Name": "SpecialT01PantsMaleWorn",
       "Tier": 1,
-      "Triangles": 1652
+      "Triangles": 688
     },
     {
       "Name": "SpecialT01PantsItem",
       "Tier": 1,
-      "Triangles": 1652
+      "Triangles": 688
     },
     {
       "Name": "SpecialT01PantsFemaleWorn",
       "Tier": 1,
-      "Triangles": 1652
+      "Triangles": 688
     },
     {
       "Name": "SpecialT01PackMaleWorn",
       "Tier": 1,
-      "Triangles": 1428
+      "Triangles": 564
     },
     {
       "Name": "SpecialT01PackItem",
       "Tier": 1,
-      "Triangles": 1428
+      "Triangles": 564
     },
     {
       "Name": "SpecialT01PackFemaleWorn",
       "Tier": 1,
-      "Triangles": 1428
+      "Triangles": 564
     },
     {
       "Name": "SpecialT02HatMaleWorn",
       "Tier": 2,
-      "Triangles": 880
+      "Triangles": 328
     },
     {
       "Name": "SpecialT02HatItem",
       "Tier": 2,
-      "Triangles": 880
+      "Triangles": 328
     },
     {
       "Name": "SpecialT02HatFemaleWorn",
       "Tier": 2,
-      "Triangles": 880
+      "Triangles": 328
     },
     {
       "Name": "SpecialT02BootsMaleWorn",
       "Tier": 2,
-      "Triangles": 1792
+      "Triangles": 584
     },
     {
       "Name": "SpecialT02BootsItem",
@@ -104,72 +105,72 @@
     {
       "Name": "SpecialT02BootsFemaleWorn",
       "Tier": 2,
-      "Triangles": 1792
+      "Triangles": 584
     },
     {
       "Name": "SpecialT02ShirtMaleWorn",
       "Tier": 2,
-      "Triangles": 2440
+      "Triangles": 568
     },
     {
       "Name": "SpecialT02ShirtItem",
       "Tier": 2,
-      "Triangles": 2440
+      "Triangles": 568
     },
     {
       "Name": "SpecialT02ShirtFemaleWorn",
       "Tier": 2,
-      "Triangles": 2440
+      "Triangles": 568
     },
     {
       "Name": "SpecialT02PantsMaleWorn",
       "Tier": 2,
-      "Triangles": 1964
+      "Triangles": 724
     },
     {
       "Name": "SpecialT02PantsItem",
       "Tier": 2,
-      "Triangles": 1964
+      "Triangles": 724
     },
     {
       "Name": "SpecialT02PantsFemaleWorn",
       "Tier": 2,
-      "Triangles": 1964
+      "Triangles": 724
     },
     {
       "Name": "SpecialT02PackMaleWorn",
       "Tier": 2,
-      "Triangles": 1048
+      "Triangles": 540
     },
     {
       "Name": "SpecialT02PackItem",
       "Tier": 2,
-      "Triangles": 1048
+      "Triangles": 540
     },
     {
       "Name": "SpecialT02PackFemaleWorn",
       "Tier": 2,
-      "Triangles": 1048
+      "Triangles": 540
     },
     {
       "Name": "SpecialT03HatMaleWorn",
       "Tier": 3,
-      "Triangles": 2740
+      "Triangles": 240
     },
     {
       "Name": "SpecialT03HatItem",
       "Tier": 3,
-      "Triangles": 2740
+      "Triangles": 240
     },
     {
       "Name": "SpecialT03HatFemaleWorn",
       "Tier": 3,
-      "Triangles": 2740
+      "Triangles": 240
     },
     {
       "Name": "SpecialT03BootsMaleWorn",
       "Tier": 3,
-      "Triangles": 5120
+      "Triangles": 656
     },
     {
       "Name": "SpecialT03BootsItem",
@@ -179,72 +180,72 @@
     {
       "Name": "SpecialT03BootsFemaleWorn",
       "Tier": 3,
-      "Triangles": 5120
+      "Triangles": 656
     },
     {
       "Name": "SpecialT03ShirtMaleWorn",
       "Tier": 3,
-      "Triangles": 2140
+      "Triangles": 852
     },
     {
       "Name": "SpecialT03ShirtItem",
       "Tier": 3,
-      "Triangles": 2140
+      "Triangles": 852
     },
     {
       "Name": "SpecialT03ShirtFemaleWorn",
       "Tier": 3,
-      "Triangles": 2140
+      "Triangles": 852
     },
     {
       "Name": "SpecialT03PantsMaleWorn",
       "Tier": 3,
-      "Triangles": 5084
+      "Triangles": 796
     },
     {
       "Name": "SpecialT03PantsItem",
       "Tier": 3,
-      "Triangles": 5084
+      "Triangles": 796
     },
     {
       "Name": "SpecialT03PantsFemaleWorn",
       "Tier": 3,
-      "Triangles": 5084
+      "Triangles": 796
     },
     {
       "Name": "SpecialT03PackMaleWorn",
       "Tier": 3,
-      "Triangles": 1036
+      "Triangles": 548
     },
     {
       "Name": "SpecialT03PackItem",
       "Tier": 3,
-      "Triangles": 1036
+      "Triangles": 548
     },
     {
       "Name": "SpecialT03PackFemaleWorn",
       "Tier": 3,
-      "Triangles": 1036
+      "Triangles": 548
     },
     {
       "Name": "SpecialT04HatMaleWorn",
       "Tier": 4,
-      "Triangles": 3376
+      "Triangles": 364
     },
     {
       "Name": "SpecialT04HatItem",
       "Tier": 4,
-      "Triangles": 3376
+      "Triangles": 364
     },
     {
       "Name": "SpecialT04HatFemaleWorn",
       "Tier": 4,
-      "Triangles": 3376
+      "Triangles": 364
     },
     {
       "Name": "SpecialT04BootsMaleWorn",
       "Tier": 4,
-      "Triangles": 1664
+      "Triangles": 528
     },
     {
       "Name": "SpecialT04BootsItem",
@@ -254,52 +255,52 @@
     {
       "Name": "SpecialT04BootsFemaleWorn",
       "Tier": 4,
-      "Triangles": 1664
+      "Triangles": 528
     },
     {
       "Name": "SpecialT04ShirtMaleWorn",
       "Tier": 4,
-      "Triangles": 2656
+      "Triangles": 1028
     },
     {
       "Name": "SpecialT04ShirtItem",
       "Tier": 4,
-      "Triangles": 2656
+      "Triangles": 1028
     },
     {
       "Name": "SpecialT04ShirtFemaleWorn",
       "Tier": 4,
-      "Triangles": 2656
+      "Triangles": 1028
     },
     {
       "Name": "SpecialT04PantsMaleWorn",
       "Tier": 4,
-      "Triangles": 5948
+      "Triangles": 832
     },
     {
       "Name": "SpecialT04PantsItem",
       "Tier": 4,
-      "Triangles": 5948
+      "Triangles": 832
     },
     {
       "Name": "SpecialT04PantsFemaleWorn",
       "Tier": 4,
-      "Triangles": 5948
+      "Triangles": 832
     },
     {
       "Name": "SpecialT04PackMaleWorn",
       "Tier": 4,
-      "Triangles": 484
+      "Triangles": 460
     },
     {
       "Name": "SpecialT04PackItem",
       "Tier": 4,
-      "Triangles": 484
+      "Triangles": 460
     },
     {
       "Name": "SpecialT04PackFemaleWorn",
       "Tier": 4,
-      "Triangles": 484
+      "Triangles": 460
     },
     {
       "Name": "MysteryBoxBody",
@@ -334,42 +335,42 @@
     {
       "Name": "MaleHatHairCrop",
       "Tier": 0,
-      "Triangles": 381
+      "Triangles": 96
     },
     {
       "Name": "MaleHatHairSweep",
       "Tier": 0,
-      "Triangles": 445
+      "Triangles": 96
     },
     {
       "Name": "MaleHatHairBob",
       "Tier": 0,
-      "Triangles": 861
+      "Triangles": 156
     },
     {
       "Name": "MaleHatHairTied",
       "Tier": 0,
-      "Triangles": 785
+      "Triangles": 150
     },
     {
       "Name": "FemaleHatHairCrop",
       "Tier": 0,
-      "Triangles": 420
+      "Triangles": 96
     },
     {
       "Name": "FemaleHatHairSweep",
       "Tier": 0,
-      "Triangles": 516
+      "Triangles": 96
     },
     {
       "Name": "FemaleHatHairBob",
       "Tier": 0,
-      "Triangles": 900
+      "Triangles": 156
     },
     {
       "Name": "FemaleHatHairTied",
       "Tier": 0,
-      "Triangles": 824
+      "Triangles": 152
     }
   ],
   "Items": [
@@ -381,7 +382,7 @@
       "ItemMesh": "SpecialT01HatItem",
       "MaleMesh": "SpecialT01HatMaleWorn",
       "FemaleMesh": "SpecialT01HatFemaleWorn",
-      "Anchor": "HeadAnchor",
+      "Anchor": "HeadAnchor/HatAnchor",
       "InfiniteDurability": true
     },
     {
@@ -403,7 +404,7 @@
       "ItemMesh": "SpecialT01ShirtItem",
       "MaleMesh": "SpecialT01ShirtMaleWorn",
       "FemaleMesh": "SpecialT01ShirtFemaleWorn",
-      "Anchor": "ShirtAnchor",
+      "Anchor": "Root",
       "InfiniteDurability": true
     },
     {
@@ -414,7 +415,7 @@
       "ItemMesh": "SpecialT01PantsItem",
       "MaleMesh": "SpecialT01PantsMaleWorn",
       "FemaleMesh": "SpecialT01PantsFemaleWorn",
-      "Anchor": "PantsAnchor",
+      "Anchor": "Root",
       "InfiniteDurability": true
     },
     {
@@ -436,7 +437,7 @@
       "ItemMesh": "SpecialT02HatItem",
       "MaleMesh": "SpecialT02HatMaleWorn",
       "FemaleMesh": "SpecialT02HatFemaleWorn",
-      "Anchor": "HeadAnchor",
+      "Anchor": "HeadAnchor/HatAnchor",
       "InfiniteDurability": true
     },
     {
@@ -458,7 +459,7 @@
       "ItemMesh": "SpecialT02ShirtItem",
       "MaleMesh": "SpecialT02ShirtMaleWorn",
       "FemaleMesh": "SpecialT02ShirtFemaleWorn",
-      "Anchor": "ShirtAnchor",
+      "Anchor": "Root",
       "InfiniteDurability": true
     },
     {
@@ -469,7 +470,7 @@
       "ItemMesh": "SpecialT02PantsItem",
       "MaleMesh": "SpecialT02PantsMaleWorn",
       "FemaleMesh": "SpecialT02PantsFemaleWorn",
-      "Anchor": "PantsAnchor",
+      "Anchor": "Root",
       "InfiniteDurability": true
     },
     {
@@ -491,7 +492,7 @@
       "ItemMesh": "SpecialT03HatItem",
       "MaleMesh": "SpecialT03HatMaleWorn",
       "FemaleMesh": "SpecialT03HatFemaleWorn",
-      "Anchor": "HeadAnchor",
+      "Anchor": "HeadAnchor/HatAnchor",
       "InfiniteDurability": true
     },
     {
@@ -513,7 +514,7 @@
       "ItemMesh": "SpecialT03ShirtItem",
       "MaleMesh": "SpecialT03ShirtMaleWorn",
       "FemaleMesh": "SpecialT03ShirtFemaleWorn",
-      "Anchor": "ShirtAnchor",
+      "Anchor": "Root",
       "InfiniteDurability": true
     },
     {
@@ -524,7 +525,7 @@
       "ItemMesh": "SpecialT03PantsItem",
       "MaleMesh": "SpecialT03PantsMaleWorn",
       "FemaleMesh": "SpecialT03PantsFemaleWorn",
-      "Anchor": "PantsAnchor",
+      "Anchor": "Root",
       "InfiniteDurability": true
     },
     {
@@ -546,7 +547,7 @@
       "ItemMesh": "SpecialT04HatItem",
       "MaleMesh": "SpecialT04HatMaleWorn",
       "FemaleMesh": "SpecialT04HatFemaleWorn",
-      "Anchor": "HeadAnchor",
+      "Anchor": "HeadAnchor/HatAnchor",
       "InfiniteDurability": true
     },
     {
@@ -568,7 +569,7 @@
       "ItemMesh": "SpecialT04ShirtItem",
       "MaleMesh": "SpecialT04ShirtMaleWorn",
       "FemaleMesh": "SpecialT04ShirtFemaleWorn",
-      "Anchor": "ShirtAnchor",
+      "Anchor": "Root",
       "InfiniteDurability": true
     },
     {
@@ -579,7 +580,7 @@
       "ItemMesh": "SpecialT04PantsItem",
       "MaleMesh": "SpecialT04PantsMaleWorn",
       "FemaleMesh": "SpecialT04PantsFemaleWorn",
-      "Anchor": "PantsAnchor",
+      "Anchor": "Root",
       "InfiniteDurability": true
     },
     {
