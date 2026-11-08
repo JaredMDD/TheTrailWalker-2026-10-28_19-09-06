@@ -41,6 +41,11 @@ namespace TheTrailWalker.Persistence
         public SavedMissions missions;
         // Statistics (optional, November 2, 2026): counters for the possible statistics page; older saves start at zero.
         public SavedStatistics statistics;
+        // Milestone 9 (optional): item values in minor units (economy 1; 0 = older whole-cash or placeholder values, migrated
+        // on load), the camp trade session of the current or last visit, and the recent trade transactions.
+        public int economy;
+        public TheTrailWalker.Domain.Economy.TradeSessionData trade;
+        public List<TheTrailWalker.Domain.Economy.TradeRecord> tradeLog = new List<TheTrailWalker.Domain.Economy.TradeRecord>();
     }
     [Serializable] public sealed class SavedCount { public string key; public long value; }
     [Serializable] public sealed class SavedStatistics
@@ -343,7 +348,7 @@ namespace TheTrailWalker.Persistence
             if (data.version >= 2 && !inventory.Reconfigure(gear.BackpackWidth * 1000, gear.BackpackHeight * 1000, gear.Pockets, gear.Hooks, out _)) throw new InvalidDataException("Invalid storage capabilities");
             foreach (SavedItem item in data.items)
             {
-                if (item == null || !Enum.TryParse(item.owner, false, out ItemOwner owner) || (owner != ItemOwner.World && owner != ItemOwner.Backpack && (data.version == 1 || (owner != ItemOwner.Pocket && owner != ItemOwner.Hook && owner != ItemOwner.Overflow && owner != ItemOwner.Worn))) || (wornIds.Contains(item.id) && owner != ItemOwner.Worn) || float.IsNaN(item.trailDistance) || float.IsInfinity(item.trailDistance) || item.trailDistance < 0 || item.trailDistance > (data.version == 3 ? 10000f : pathLength) || float.IsNaN(item.worldX) || float.IsInfinity(item.worldX) || float.IsNaN(item.worldY) || float.IsInfinity(item.worldY) || float.IsNaN(item.worldZ) || float.IsInfinity(item.worldZ)) throw new InvalidDataException("Invalid item record");
+                if (item == null || !Enum.TryParse(item.owner, false, out ItemOwner owner) || (owner != ItemOwner.World && owner != ItemOwner.Backpack && (data.version == 1 || (owner != ItemOwner.Pocket && owner != ItemOwner.Hook && owner != ItemOwner.Overflow && owner != ItemOwner.Worn && owner != ItemOwner.Escrow))) || (wornIds.Contains(item.id) && owner != ItemOwner.Worn) || float.IsNaN(item.trailDistance) || float.IsInfinity(item.trailDistance) || item.trailDistance < 0 || item.trailDistance > (data.version == 3 ? 10000f : pathLength) || float.IsNaN(item.worldX) || float.IsInfinity(item.worldX) || float.IsNaN(item.worldY) || float.IsInfinity(item.worldY) || float.IsNaN(item.worldZ) || float.IsInfinity(item.worldZ)) throw new InvalidDataException("Invalid item record");
                 ItemDefinition def = Array.Find(PrototypeItems.All, d => d.Id == item.definitionId);
                 if (def == null) throw new InvalidDataException("Unknown item definition: " + item.definitionId);
                 if (owner == ItemOwner.Worn)
@@ -377,6 +382,28 @@ namespace TheTrailWalker.Persistence
             }
             foreach (var record in wornRecords)
                 if (!record.Key.StartsWith("debug-", StringComparison.Ordinal) && !wornItems.Contains(record.Key)) throw new InvalidDataException("Worn item is missing from inventory ledger");
+        }
+
+        // Economy 0 -> 1 (Milestone 9): unit values become minor units (1/100 cash). Levelled crafts keep their snapshot (x100);
+        // everything else is re-derived from the new price data (older drops carried a placeholder value of 100).
+        public static void MigrateEconomy(SessionSnapshot data)
+        {
+            if (data == null || data.economy >= 1) return;
+            foreach (SavedItem item in data.items)
+            {
+                if (item == null) continue;
+                ItemDefinition def = Array.Find(PrototypeItems.All, d => d.Id == item.definitionId);
+                if (def == null) continue;
+                item.unitValue = TheTrailWalker.Domain.Economy.ItemPrices.MigrateLegacyValue(def, item.quality, item.unitValue);
+                if (item.pile != null) foreach (SavedPortion portion in item.pile) if (portion != null) portion.unitValue = TheTrailWalker.Domain.Economy.ItemPrices.MigrateLegacyValue(def, portion.quality, portion.unitValue);
+            }
+            if (data.crafting != null)
+                foreach (SavedBatch batch in data.crafting.batches)
+                {
+                    var recipe = TheTrailWalker.Domain.Crafting.RecipeBook.Find(batch?.recipeId);
+                    if (recipe?.Output != null) batch.unitValue = TheTrailWalker.Domain.Economy.ItemPrices.MigrateLegacyValue(recipe.Output, batch.quality, batch.unitValue);
+                }
+            data.economy = 1;
         }
 
         public static TravelState RestoreTravel(SessionSnapshot data, TravelCatalog catalog)

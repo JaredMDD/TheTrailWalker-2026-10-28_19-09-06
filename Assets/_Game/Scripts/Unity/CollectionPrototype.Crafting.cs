@@ -151,8 +151,7 @@ namespace TheTrailWalker
                 while (left > 0)
                 {
                     int quantity = item.Stackable ? (int)Math.Min(1000, left) : 1; left -= quantity;
-                    ItemProfile profile = item.Stackable ? new ItemProfile(1)
-                        : TheTrailWalker.Domain.Harvest.HarvestTools.TryGet(item, out var spec) ? new ItemProfile(100, spec.BaseUses, spec.BaseUses) : new ItemProfile(100, 10, 10);
+                    ItemProfile profile = TheTrailWalker.Domain.Economy.ItemPrices.Profile(item, 1);   // debug inputs: priced like Q1 source goods
                     ItemEntry entry = ledger.AddWorld("debug-input-" + Guid.NewGuid().ToString("N"), item, quantity, 1, profile);
                     const int token = -834;
                     if (!ledger.Reserve(entry, token)) continue;
@@ -402,7 +401,7 @@ namespace TheTrailWalker
             Sprite outputSprite = ItemIconRenderer.For(ItemArt.ModelFor(output));
             craftOutputIcon.enabled = outputSprite != null; craftOutputIcon.sprite = outputSprite;
             string durability = result.MaxDurability > 0 ? (output.GearSlot.HasValue ? " | " + Distance(result.MaxDurability) : $" | {result.MaxDurability} uses") : "";
-            craftPreview.text = $"x{result.OutputUnits}  |  Q{result.Quality}  |  {result.UnitValue:N0} cash each{durability}  |  {FormatTime(result.Seconds)}";
+            craftPreview.text = $"x{result.OutputUnits}  |  Q{result.Quality}  |  {TheTrailWalker.Domain.Economy.Money.Format(result.UnitValue)} cash each{durability}  |  {FormatTime(result.Seconds)}";
             craftRecipeName.text = craftRecipe.Name;
             long units = crafting.UnitsOf(craftRecipe.Id);
             craftLevelStar.enabled = craftRecipe.Levelled && LevelStar(result.Level) != null;

@@ -669,7 +669,7 @@ namespace TheTrailWalker
                     if (!ledger.Reserve(item, pointer)) return;
                     selected = item;
                     contacts[pointer] = new Contact { Item = item, Start = position, Position = position, Started = Time.unscaledTime, Offset = point - new Vector2(item.X, item.Y) };
-                    Say($"{item.Definition.Name} / {item.Quantity} / {(item.Ready ? "Ready" : "Pending")} / Value {item.Profile.UnitValue}" + (item.Definition.Stackable ? "" : " / Durability " + DurabilityText(item.Definition, item.Profile.Durability, item.Profile.MaxDurability))); return;
+                    Say($"{item.Definition.Name} / {item.Quantity} / {(item.Ready ? "Ready" : "Pending")} / Value {TheTrailWalker.Domain.Economy.Money.Format(item.Profile.UnitValue)} cash each" + (item.Definition.Stackable ? "" : " / Durability " + DurabilityText(item.Definition, item.Profile.Durability, item.Profile.MaxDurability))); return;
                 }
             }
             // Touching the container rather than an item scrolls it sideways.
@@ -840,6 +840,7 @@ namespace TheTrailWalker
             if (ledger == null) return;
             if (milestone4) AdvanceSurvival(Time.deltaTime);
             if (milestone5 && initialized && travel != null) UpdateTravel();
+            if (milestone5 && initialized && travel != null) UpdateTrade();
             if (milestone5) UpdateHarvest();
             if (milestone5) UpdateCrafting();
             SyncScreenReturn();
@@ -1027,7 +1028,7 @@ namespace TheTrailWalker
             if (detailsPanel == null || item == null || item.Owner == ItemOwner.Consumed) return;
             selected = item;
             string durability = item.Definition.Stackable ? "" : "\nDurability " + DurabilityText(item.Definition, item.HasWearRemaining ? item.WearRemaining : item.Profile.Durability, item.Profile.MaxDurability);
-            detailsText.text = $"{item.Definition.Name}  ({CategoryLabel(item.Definition)})\nQuantity {item.Quantity} | {(item.Ready ? "Ready" : "Pending")} | Value {item.Profile.UnitValue}{durability}";
+            detailsText.text = $"{item.Definition.Name}  ({CategoryLabel(item.Definition)})\nQuantity {item.Quantity} | {(item.Ready ? "Ready" : "Pending")} | Value {TheTrailWalker.Domain.Economy.Money.Format(item.Profile.UnitValue)} cash each{durability}";
             detailsQuality.Bind(item, true);
             detailEat.SetActive(item.Definition.FoodHearts > 0 && item.Ready);
             detailEquip.SetActive(item.Definition.GearSlot.HasValue && item.Owner == ItemOwner.Backpack);
@@ -1413,7 +1414,7 @@ namespace TheTrailWalker
                             quality = gear.Quality, remainingDistance = gear.RemainingDistance, infinite = gear.Infinite });
                     }
                 }
-                if (milestone5) { snapshot.segmentId = travel.CurrentSegment.Id; snapshot.travel = SessionSaveStore.SaveTravel(travel); snapshot.harvested = HarvestedForSave(); snapshot.crafting = SaveCrafting(); snapshot.missions = SaveMissions(); snapshot.statistics = SaveStatistics(); }
+                if (milestone5) { snapshot.economy = 1; snapshot.trade = tradeSession?.Data; snapshot.tradeLog = tradeLog; snapshot.segmentId = travel.CurrentSegment.Id; snapshot.travel = SessionSaveStore.SaveTravel(travel); snapshot.harvested = HarvestedForSave(); snapshot.crafting = SaveCrafting(); snapshot.missions = SaveMissions(); snapshot.statistics = SaveStatistics(); }
                 foreach (ItemEntry item in ledger.Entries)
                 {
                     if (item.Owner == ItemOwner.Consumed) continue;
@@ -1454,8 +1455,9 @@ namespace TheTrailWalker
         }
         private void RestoreSnapshot(SessionSnapshot snapshot)
         {
+            if (milestone5) SessionSaveStore.MigrateEconomy(snapshot);   // Milestone 9: item values in minor units
             SessionSaveStore.Validate(snapshot, path.Length, out ledger);
-            if (milestone5) { travel = SessionSaveStore.RestoreTravel(snapshot, scene.Catalog); RestoreHarvested(snapshot.harvested); RestoreCrafting(snapshot.crafting); RestoreMissions(snapshot.missions); RestoreStatistics(snapshot.statistics); }
+            if (milestone5) { RestoreTrade(snapshot); travel = SessionSaveStore.RestoreTravel(snapshot, scene.Catalog); RestoreHarvested(snapshot.harvested); RestoreCrafting(snapshot.crafting); RestoreMissions(snapshot.missions); RestoreStatistics(snapshot.statistics); }
             if (milestone4)
             {
                 equipment = new EquipmentState();

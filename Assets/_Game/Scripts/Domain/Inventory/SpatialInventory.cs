@@ -377,10 +377,49 @@ namespace TheTrailWalker.Domain.Inventory
             Revision++; return true;
         }
 
+        // Camp trade escrow (Milestone 9): moves `quantity` units (lowest quality first) of a carried, ready, unheld entry onto
+        // the belt as their own Escrow entry, so they can no longer be crafted, eaten, delivered, worn or lost. A tool or spare
+        // gear item moves whole and keeps its identity and wear. The listing then settles the escrow exactly once.
+        public bool TryEscrow(ItemEntry source, int quantity, string escrowId, out ItemEntry escrow, out string reason)
+        {
+            escrow = null; reason = "Item is unavailable";
+            if (!Owns(source) || reservations.ContainsKey(source.Id) || !source.Ready || (source.Owner != ItemOwner.Backpack && source.Owner != ItemOwner.Pocket && source.Owner != ItemOwner.Hook)) return false;
+            if (quantity < 1 || quantity > source.Quantity) { reason = "Choose between 1 and " + source.Quantity; return false; }
+            if (!source.Definition.Stackable)
+            {
+                source.Owner = ItemOwner.Escrow; source.X = source.Y = 0; escrow = source; Revision++; reason = "Listed " + source.Definition.Name; return true;
+            }
+            if (string.IsNullOrWhiteSpace(escrowId) || identities.ContainsKey(escrowId)) { reason = "Invalid listing identity"; return false; }
+            List<PilePortion> taken = source.TakeLowest(quantity);
+            escrow = new ItemEntry(escrowId, source.Definition, quantity, taken[0].Quality, taken[0].Profile, true, 0);
+            escrow.ReplacePile(taken);
+            escrow.Owner = ItemOwner.Escrow;
+            identities.Add(escrowId, escrow); entries.Add(escrow);
+            if (source.Quantity == 0) source.Owner = ItemOwner.Consumed;
+            Revision++; reason = $"Listed {quantity} {source.Definition.Name}"; return true;
+        }
+        // A settled listing's units are gone (sold, shredded or cancelled for cash).
+        public bool SettleEscrow(ItemEntry escrow)
+        {
+            if (!Owns(escrow) || escrow.Owner != ItemOwner.Escrow) return false;
+            escrow.Owner = ItemOwner.Consumed; Revision++; return true;
+        }
+        // A bought item tops up compatible stacks, then takes free backpack space, otherwise goes to overflow (never lost).
+        public bool StoreBought(ItemEntry item, out bool overflow)
+        {
+            overflow = false; const int token = int.MinValue + 11;
+            if (!Owns(item) || item.Owner != ItemOwner.World || !Reserve(item, token)) return false;
+            bool stored = TryQuickStore(item, token, out _);
+            Release(item, token);
+            if (item.Owner == ItemOwner.World) { item.Owner = ItemOwner.Overflow; item.X = item.Y = 0; overflow = true; Revision++; }
+            return true;
+        }
+
         // Used only while reconstructing a validated save into an otherwise private inventory.
         public bool RestoreStored(ItemEntry item, ItemOwner owner, int x, int y)
         {
             if (!Owns(item) || item.Owner != ItemOwner.World || reservations.ContainsKey(item.Id)) return false;
+            if (owner == ItemOwner.Escrow) { if (x != 0 || y != 0) return false; item.Owner = owner; item.X = item.Y = 0; Revision++; return true; }
             if (owner == ItemOwner.Backpack)
             {
                 if (!Reserve(item, int.MinValue)) return false;

@@ -188,9 +188,10 @@ namespace TheTrailWalker.Domain.Travel
         public bool Seated { get; private set; }
         public string LastTrailCampId { get; private set; }
         public int VisitNumber { get; private set; }
-        public long Cash { get; private set; }
-        // Debug gold wallet until Milestone 9; gold can pay the ferry toll at the exchange rate (cash / 1,000, at least 1).
-        public long Gold { get; private set; }
+        // Cash and gold wallets (Milestone 9, section 12.2); gold can pay the ferry toll at the exchange rate (cash / 1,000, at least 1).
+        public Economy.Wallet Wallet { get; private set; } = new Economy.Wallet();
+        public long Cash => Wallet.Cash;
+        public long Gold => Wallet.Gold;
         public IReadOnlyCollection<string> VisitedCamps => visited;
         public IReadOnlyList<string> DiscoveredRegions => discovered;
         public IReadOnlyCollection<string> PaidTolls => paidTolls;
@@ -288,7 +289,7 @@ namespace TheTrailWalker.Domain.Travel
         public void PayToll(TollCurrency currency)
         {
             if (!CanPayToll(currency, out string reason)) throw new InvalidOperationException(reason);
-            if (currency == TollCurrency.Gold) Gold -= TollGold(CurrentRegion); else Cash -= CurrentRegion.TollCost;
+            if (currency == TollCurrency.Gold) Wallet.Debit(Economy.Currency.Gold, TollGold(CurrentRegion)); else Wallet.Debit(Economy.Currency.Cash, CurrentRegion.TollCost);
             paidTolls.Add(CurrentRegion.Id);
         }
         // Once the toll is paid, reaching the ferry takes the player straight to the next region's first camp.
@@ -320,9 +321,9 @@ namespace TheTrailWalker.Domain.Travel
             return unlocked;
         }
 
-        // Debug wallet stand-in until Milestone 9 wallets exist.
-        public void GrantTestCash(long amount) { if (amount <= 0 || Cash > long.MaxValue - amount) throw new ArgumentOutOfRangeException(nameof(amount)); Cash += amount; }
-        public void GrantTestGold(long amount) { if (amount <= 0 || Gold > long.MaxValue - amount) throw new ArgumentOutOfRangeException(nameof(amount)); Gold += amount; }
+        // Debug wallet grants (kept until Milestone 18).
+        public void GrantTestCash(long amount) { if (amount <= 0 || Cash > long.MaxValue - amount) throw new ArgumentOutOfRangeException(nameof(amount)); Wallet.Credit(Economy.Currency.Cash, amount); }
+        public void GrantTestGold(long amount) { if (amount <= 0 || Gold > long.MaxValue - amount) throw new ArgumentOutOfRangeException(nameof(amount)); Wallet.Credit(Economy.Currency.Gold, amount); }
 
         public static TravelState Restore(TravelCatalog catalog, string campId, bool seated, string lastTrailCampId, int visitNumber, long cash,
             IEnumerable<string> visitedCamps, IEnumerable<string> discoveredRegions, IEnumerable<string> tolls, IEnumerable<KeyValuePair<string, int>> cycles, long gold = 0, bool farBank = false)
@@ -336,7 +337,7 @@ namespace TheTrailWalker.Domain.Travel
             foreach (var cycle in cycles) if (catalog.Segment(cycle.Key) == null || cycle.Value < 1 || state.dropCycles.ContainsKey(cycle.Key)) throw new ArgumentException("Invalid drop cycle"); else state.dropCycles.Add(cycle.Key, cycle.Value);
             if (!state.visited.Contains(camp.Id) || !state.discovered.Contains(camp.RegionId) || !state.visited.Contains(lastTrailCampId) || state.CycleOf(catalog.Outgoing(camp.Id).Id) < 1) throw new ArgumentException("Travel state is inconsistent");
             foreach (string id in state.visited) if (!state.discovered.Contains(catalog.Camp(id).RegionId)) throw new ArgumentException("Visited camp in an undiscovered region");
-            state.CurrentCampId = camp.Id; state.Seated = seated; state.LastTrailCampId = lastTrailCampId; state.VisitNumber = visitNumber; state.Cash = cash; state.Gold = gold;
+            state.CurrentCampId = camp.Id; state.Seated = seated; state.LastTrailCampId = lastTrailCampId; state.VisitNumber = visitNumber; state.Wallet = new Economy.Wallet(cash, gold);
             if (farBank)
             {
                 SegmentDefinition landing = catalog.LandingInto(state.CurrentRegion.NextRegionId);

@@ -60,8 +60,8 @@ namespace TheTrailWalker
         }
 
         private string CurrentSegmentId => travel?.CurrentSegment.Id;
-        // Trading (Milestone 9) will also make travel busy.
-        private bool TravelBusy => saveBlocked || (stamina != null && stamina.Fainted);
+        // A running camp trade (Milestone 9) also makes travel busy: no map, ferry or standing up during the 15 seconds.
+        private bool TravelBusy => saveBlocked || (stamina != null && stamina.Fainted) || TradeActive;
         private bool TravelInputLocked => milestone5 && (phase == TravelPhase.Approaching || phase == TravelPhase.Leaving || phase == TravelPhase.Transition);
 
         private void StartTravelProfile()
@@ -81,7 +81,7 @@ namespace TheTrailWalker
             foreach (LooseDrops.Drop drop in LooseDrops.Roll(region, segment, cycle))
             {
                 ItemDefinition definition = Array.Find(PrototypeItems.All, d => d.Id == drop.ItemId);
-                ItemEntry item = ledger.AddWorld(LooseDrops.ItemId(segmentId, cycle, drop.Point), definition, 1000, drop.Quality, new ItemProfile(100), true, drop.Distance);
+                ItemEntry item = ledger.AddWorld(LooseDrops.ItemId(segmentId, cycle, drop.Point), definition, 1000, drop.Quality, TheTrailWalker.Domain.Economy.ItemPrices.Profile(definition, drop.Quality), true, drop.Distance);
                 ledger.AssignSegment(item, segmentId);
                 if (segmentId == scene.Segment.Id) SpawnSegmentBundle(item, Vector3.zero);
             }
@@ -220,8 +220,8 @@ namespace TheTrailWalker
 
         private void CreateTravelHud()
         {
-            cashButton = Button(safe, "+1,000 CASH", 0.74f, 0.67f, 0.98f, 0.72f, () => { travel.GrantTestCash(1000); statistics.AddCash(1000); SaveNow(); RefreshTravelHud(); Say("Added 1,000 test cash (debug wallet until Milestone 9)."); }).transform.parent.gameObject;
-            goldButton = Button(safe, "+1 GOLD", 0.74f, 0.725f, 0.98f, 0.775f, () => { travel.GrantTestGold(1); statistics.AddGold(1); SaveNow(); RefreshTravelHud(); Say("Added 1 test gold (debug wallet until Milestone 9)."); }).transform.parent.gameObject;
+            cashButton = Button(safe, "+1,000 CASH", 0.74f, 0.67f, 0.98f, 0.72f, () => { travel.GrantTestCash(1000); statistics.AddCash(1000); SaveNow(); RefreshTravelHud(); Say("Added 1,000 test cash (debug)."); }).transform.parent.gameObject;
+            goldButton = Button(safe, "+1 GOLD", 0.74f, 0.725f, 0.98f, 0.775f, () => { travel.GrantTestGold(1); statistics.AddGold(1); SaveNow(); RefreshTravelHud(); Say("Added 1 test gold (debug)."); }).transform.parent.gameObject;
             // Ferry toll dialog: shown by the ferry NPC when the player reaches the river.
             tollPanel = Rect("Ferry toll", safe, 0.08f, 0.36f, 0.92f, 0.64f).gameObject;
             tollPanel.AddComponent<Image>().color = new Color(0.05f, 0.11f, 0.13f, 0.98f);
@@ -232,6 +232,7 @@ namespace TheTrailWalker
             Button(tollPanel.transform, "NOT NOW", 0.66f, 0.06f, 0.96f, 0.34f, DeclineToll);
             tollPanel.SetActive(false);
             CreateMapPanel(); // worn region map (CollectionPrototype.Map.cs)
+            CreateTradeHud(); // camp conveyor trade and wallet (CollectionPrototype.Trade.cs)
             CreateRouteCard(); // departure preview and remaining leg (CollectionPrototype.Route.cs)
         }
 

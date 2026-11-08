@@ -107,47 +107,19 @@ namespace TheTrailWalker.Domain.Crafting
         }
     }
 
-    // Price references (section 12.2.1) and fixed material base prices. Placeholder data for the post-debug rebalance.
+    // Price references and material bases live in Domain.Economy.ItemPrices (Milestone 9).
     public static class CraftPrices
     {
-        private static readonly long[] Misc = { 600, 1800, 3600, 6000 }, Backpack = { 350, 1050, 2100, 3500 }, Clothing = { 220, 660, 1320, 2200 },
-            Tool = { 140, 420, 840, 1400 }, Food = { 60, 180, 360, 600 }, Basic = { 1, 3, 6, 10 };
-        public static readonly double[] QualityMultiplier = { 1.00, 1.15, 1.35, 1.60, 2.00 };
-
-        public static long ReferenceAtLevel10(RecipeDefinition recipe)
-        {
-            int t = recipe.Tier - 1;
-            switch (recipe.Role)
-            {
-                case RecipeRole.Misc: return Misc[t];
-                case RecipeRole.Tool: return Tool[t];
-                case RecipeRole.Food: return Food[t];
-                case RecipeRole.Wearable: return recipe.Output?.GearSlot == Equipment.GearSlot.Backpack ? Backpack[t] : Clothing[t];
-                default: return 0;
-            }
-        }
-
-        // Gathered items cost the tier's basic price; a crafted material costs its inputs divided by its yield (rounded up).
-        private static readonly Dictionary<string, long> materialMemo = new Dictionary<string, long>();
-        public static long MaterialBase(string itemId)
-        {
-            if (materialMemo.TryGetValue(itemId, out long cached)) return cached;
-            RecipeDefinition maker = Array.Find(Tier1Recipes.All, r => r.OutputId == itemId && r.Role == RecipeRole.Material);
-            long price = Basic[ItemTiers.Of(itemId) - 1];
-            if (maker != null && maker.BaseSeconds > 0)
-            {
-                long inputs = 0; foreach (RecipeInput input in maker.Inputs) inputs += MaterialBase(input.ItemId) * input.Quantity;
-                price = Math.Max(1, (inputs + maker.Yield - 1) / maker.Yield);
-            }
-            return materialMemo[itemId] = price;
-        }
+        public static double[] QualityMultiplier => Economy.ItemPrices.QualityMultiplier;
+        public static long ReferenceAtLevel10(RecipeDefinition recipe) =>
+            Economy.ItemPrices.ReferenceAtLevel10(recipe.Role, recipe.Tier, recipe.Output?.GearSlot == Equipment.GearSlot.Backpack);
     }
 
     // The deterministic output profile of one batch (section 6.1.1), snapshotted at craft start.
     public readonly struct CraftResult
     {
         public readonly int Level, Quality, Executions, OutputUnits, MaxDurability;
-        public readonly long UnitValue;
+        public readonly long UnitValue;   // minor units (1/100 cash), Milestone 9
         public readonly double Seconds;
         public CraftResult(int level, int quality, int executions, int outputUnits, long unitValue, int maxDurability, double seconds)
         { Level = level; Quality = quality; Executions = executions; OutputUnits = outputUnits; UnitValue = unitValue; MaxDurability = maxDurability; Seconds = seconds; }
@@ -186,7 +158,7 @@ namespace TheTrailWalker.Domain.Crafting
             int quality = Math.Max(1, Math.Min(5, (recipe.Levelled ? Math.Min(level, 5) : 1) + furnitureQuality));
             long value;
             int durability = 0;
-            if (!recipe.Levelled) value = (long)Math.Floor(CraftPrices.MaterialBase(recipe.OutputId) * CraftPrices.QualityMultiplier[quality - 1]);
+            if (!recipe.Levelled) value = Economy.ItemPrices.IntrinsicMinor(recipe.Output, quality);
             else
             {
                 double price = CraftPrices.ReferenceAtLevel10(recipe) * PriceLevelFactor(level) * CraftPrices.QualityMultiplier[quality - 1];
@@ -197,7 +169,7 @@ namespace TheTrailWalker.Domain.Crafting
                     durability = (int)Math.Round(dBase * (1 + extra));
                     price *= 1 + extra;
                 }
-                value = (long)Math.Floor(price);
+                value = Economy.Money.Minor(price);
             }
             return new CraftResult(level, quality, executions, recipe.Yield * executions, Math.Max(1, value), durability, Seconds(recipe, level, executions));
         }

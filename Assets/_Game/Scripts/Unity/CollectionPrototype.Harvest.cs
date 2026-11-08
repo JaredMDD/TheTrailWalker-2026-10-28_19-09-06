@@ -696,7 +696,7 @@ namespace TheTrailWalker
             {
                 ItemDefinition definition = Array.Find(PrototypeItems.All, d => d.Id == manifest[i].ItemId);
                 if (definition == null) continue;
-                ItemEntry item = ledger.AddWorld(HarvestManifest.BundleId(segmentId, cycle, target.AnchorId, i), definition, 1000, manifest[i].Quality, new ItemProfile(100), true, target.Distance);
+                ItemEntry item = ledger.AddWorld(HarvestManifest.BundleId(segmentId, cycle, target.AnchorId, i), definition, 1000, manifest[i].Quality, TheTrailWalker.Domain.Economy.ItemPrices.Profile(definition, manifest[i].Quality), true, target.Distance);
                 ledger.AssignSegment(item, segmentId);
             }
             harvestedKeys.Add(HarvestManifest.HarvestKey(segmentId, cycle, target.AnchorId));

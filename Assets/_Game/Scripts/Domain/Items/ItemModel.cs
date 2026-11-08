@@ -5,7 +5,8 @@ using TheTrailWalker.Domain.Equipment;
 
 namespace TheTrailWalker.Domain.Items
 {
-    public enum ItemOwner { World, Backpack, Consumed, Pocket, Hook, Overflow, Worn }
+    // Escrow (Milestone 9): units listed on the camp trade belt; out of the bag until the listing settles.
+    public enum ItemOwner { World, Backpack, Consumed, Pocket, Hook, Overflow, Worn, Escrow }
     // Raw/refined ingredients are recipe inputs only; raw food can be eaten manually; only prepared food is auto-eaten.
     public enum ItemCategory { Material, RawIngredient, RefinedIngredient, RawFood, PreparedFood, Tool, Wearable }
     public sealed class ItemDefinition

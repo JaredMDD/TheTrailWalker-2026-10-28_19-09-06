@@ -62,7 +62,8 @@ namespace TheTrailWalker.Editor
             CraftResult furnished = CraftStats.Compute(hat, 20, 1, 0, 0.2);
             Check(furnished.MaxDurability > hat5.MaxDurability && furnished.UnitValue > hat5.UnitValue && furnished.Seconds == hat5.Seconds && CraftStats.Compute(log, 0, 1, 2).Quality == 3,
                 "Furniture raises durability/value (and material quality) but never changes the timer");
-            Check(CraftStats.Compute(bird, 0, 1).UnitValue == (long)(600 * 0.8) && CraftStats.Compute(bird, 115, 1).UnitValue == 600 * 2,
+            // Values are minor units (1/100 cash) since Milestone 9.
+            Check(CraftStats.Compute(bird, 0, 1).UnitValue == (long)(600 * 0.8) * 100 && CraftStats.Compute(bird, 115, 1).UnitValue == 600 * 2 * 100,
                 "Misc price: level-one Q1 is 80% of the level-ten reference; level-ten Q5 doubles it");
             Check(CraftStats.Seconds(juice, 1, 1000) > CraftStats.Seconds(juice, 1, 1) && Math.Abs(CraftStats.Seconds(juice, 1, 1000) / CraftStats.Seconds(juice, 1, 1) - (1 + 0.2 * Math.Log(1000, 2))) < 1e-6,
                 "Batch factor: 1 + 0.2 log2(executions), applied once");
