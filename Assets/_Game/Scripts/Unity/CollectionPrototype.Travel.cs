@@ -264,12 +264,6 @@ namespace TheTrailWalker
             continueAfterReload = true;
             CommitTravel(() => travel.CrossRiver(TravelBusy), $"Crossed the river into {next.Name}. {next.FirstCamp.Name} lies ahead.");
         }
-        // Debug: return to the camp this segment started from (a real camp return, so its drops reroll).
-        private void BackToCamp()
-        {
-            if (phase != TravelPhase.Walking || TravelBusy) { Say("Only while walking a segment."); return; }
-            CommitTravel(() => travel.ArriveAtCamp(travel.CurrentCampId), "Back at " + travel.CurrentCamp.Name + ".");
-        }
         // Debug (user, November 2, 2026): unlock every camp of the current region on the camp map.
         private void UnlockRegionCamps()
         {

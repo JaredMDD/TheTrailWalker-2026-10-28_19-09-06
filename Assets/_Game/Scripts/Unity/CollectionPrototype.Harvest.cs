@@ -33,8 +33,6 @@ namespace TheTrailWalker
         private readonly List<HarvestTarget> harvestTargets = new List<HarvestTarget>();
         private readonly HashSet<string> harvestedKeys = new HashSet<string>();
         private bool harvestReady;
-        private int targetTierOverride;   // debug: 0 = the region's own tier
-        private Text targetTierLabel;
         private float nextHarvestSpawn;
         private const int VisiblePerAnchor = 6;
         private const float HarvestReach = 30f;
@@ -64,7 +62,7 @@ namespace TheTrailWalker
         private float CanvasScale => safe != null && safe.GetComponentInParent<Canvas>() != null ? safe.GetComponentInParent<Canvas>().scaleFactor : 1f;
         private FollowCameraRig CameraRig => cameraView != null ? cameraView.GetComponent<FollowCameraRig>() : null;
         private int RegionTier => SegmentLayout.Tier(scene.Catalog.RegionOf(scene.Segment));
-        private int TargetTier => targetTierOverride > 0 ? targetTierOverride : RegionTier;
+        private int TargetTier => RegionTier;   // the TARGET T1-T4 debug override went with the debug cleanup (November 7, 2026)
 
         // ---------------------------------------------------------------- setup
 
@@ -792,15 +790,6 @@ namespace TheTrailWalker
             harvestedKeys.Clear();
             if (saved == null) return;
             foreach (string key in saved) harvestedKeys.Add(key);
-        }
-
-        // ---------------------------------------------------------------- debug (removed with the debug cleanup)
-
-        private void CycleTargetTier()
-        {
-            targetTierOverride = TargetTier % 4 + 1;
-            if (targetTierLabel != null) targetTierLabel.text = "TARGET T" + TargetTier;
-            Say($"Interactables now count as tier {TargetTier} (debug). Tools more than two tiers below cannot start.");
         }
 
         // ---------------------------------------------------------------- heart sprite

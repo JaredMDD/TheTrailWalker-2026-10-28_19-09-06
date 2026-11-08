@@ -227,7 +227,11 @@ namespace TheTrailWalker
             status = Label(safe, "", 0.02f, 0.865f, 0.98f, 0.94f, 23);
             // Four status lines with travel info: shrink to fit instead of clipping.
             status.resizeTextForBestFit = true; status.resizeTextMinSize = 12; status.resizeTextMaxSize = 23;
-            Button(safe, "EMPTY", 0.02f, 0.81f, 0.24f, 0.86f, () => ResetFixture(0));
+            // Debug cleanup, second pass (user, November 7, 2026): the camp world drops EMPTY, EAT SELECTED (item details
+            // has EAT), TARGET T1-T4, BACK TO CAMP and TEST EMPTY. It keeps +1,000 CASH / +1 GOLD (no income until
+            // Milestone 9 trading), AUTO SORT / CLAIM OVERFLOW (until the gravity bag), RESET SAVE / UNLOCK CAMPS and
+            // LEARN T1 RECIPES / + INGREDIENTS (crafting mastery tests). The older scenes keep their buttons.
+            if (!milestone5) Button(safe, "EMPTY", 0.02f, 0.81f, 0.24f, 0.86f, () => ResetFixture(0));
             // Debug cleanup, first pass (user, November 2, 2026): the camp world drops the MIXED / FULL BAG / TREE FOOD
             // fixtures, the test and spare gear and the tool kits; crafting now supplies real gear and tools for testing.
             // The older collection and survival scenes keep their fixtures because they have no crafting.
@@ -236,15 +240,13 @@ namespace TheTrailWalker
             Button(safe, "RESET SAVE", 0.76f, 0.81f, 0.98f, 0.86f, ConfirmReset);
             feedback = Label(safe, "Swipe a pickup DOWN quickly, or hold then drag into the bag.", 0.02f, 0.735f, 0.98f, 0.81f, 23);
             // Milestone 6 debug: interactable target tier and tool kits for Normal/Elite and tier comparisons.
-            targetTierLabel = Button(safe, "TARGET T1", 0.20f, 0.67f, 0.45f, 0.72f, CycleTargetTier);
-            if (milestone5) Button(safe, "BACK TO CAMP", 0.47f, 0.67f, 0.72f, 0.72f, BackToCamp);
-            else Button(safe, "TRAIL START", 0.47f, 0.67f, 0.72f, 0.72f, ReturnToTrailStart);
+            if (!milestone5) Button(safe, "TRAIL START", 0.47f, 0.67f, 0.72f, 0.72f, ReturnToTrailStart);
             if (milestone4)
             {
-                Button(safe, "EAT SELECTED", 0.47f, 0.61f, 0.72f, 0.66f, EatSelected);
+                if (!milestone5) Button(safe, "EAT SELECTED", 0.47f, 0.61f, 0.72f, 0.66f, EatSelected);
                 if (milestone5) Button(safe, "UNLOCK CAMPS", 0.20f, 0.61f, 0.45f, 0.66f, UnlockRegionCamps);
                 if (milestone5) Button(safe, "LEARN T1 RECIPES", 0.20f, 0.49f, 0.45f, 0.54f, LearnAllRecipes);
-                Button(safe, "TEST EMPTY", 0.74f, 0.61f, 0.98f, 0.66f, DebugEmptyStamina);
+                if (!milestone5) Button(safe, "TEST EMPTY", 0.74f, 0.61f, 0.98f, 0.66f, DebugEmptyStamina);
                 if (!milestone5) Button(safe, "TREE FOOD", 0.20f, 0.55f, 0.45f, 0.60f, () => ResetFixture(3));
                 // Debug auto sort (November 2, 2026) until the gravity/collision bag replaces manual packing.
                 if (milestone5) Button(safe, "AUTO SORT", 0.20f, 0.55f, 0.45f, 0.60f, AutoSortBag);
