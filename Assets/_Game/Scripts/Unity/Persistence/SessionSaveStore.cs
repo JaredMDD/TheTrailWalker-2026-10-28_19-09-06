@@ -45,8 +45,20 @@ namespace TheTrailWalker.Persistence
         // on load), the camp trade session of the current or last visit, and the recent trade transactions.
         public int economy;
         public TheTrailWalker.Domain.Economy.TradeSessionData trade;
+        // Settlement shell (November 8, 2026, optional): the discovered settlement, the player's plot and the neighbours. Older saves have none.
+        public SavedSettlement settlement;
         public List<TheTrailWalker.Domain.Economy.TradeRecord> tradeLog = new List<TheTrailWalker.Domain.Economy.TradeRecord>();
     }
+    [Serializable] public sealed class SavedSettlement
+    {
+        // JsonUtility writes an absent block as a default object, so 0 marks "no settlement block" (older saves); saves write 1.
+        public int block;
+        public bool discovered;
+        public int plotIndex = -1, seed;
+        public List<SavedNeighbour> neighbours = new List<SavedNeighbour>();
+        public List<string> countedRegions = new List<string>();
+    }
+    [Serializable] public sealed class SavedNeighbour { public int plot, level, countdown; }
     [Serializable] public sealed class SavedCount { public string key; public long value; }
     [Serializable] public sealed class SavedStatistics
     {
@@ -90,6 +102,7 @@ namespace TheTrailWalker.Persistence
         public long cash; public long gold; // debug gold wallet (absent in older schema 3 files: 0)
         public bool farBank; // walking the ferry landing leg
         public bool settlementApproach; // walking the settlement approach past Bright Hollow's ferry (absent in older saves: false)
+        public bool inSettlement; public string settlementReturnCampId; // inside the settlement shell and the camp the Return button seats (absent in older saves: outside, none)
         public List<string> visited = new List<string>(), discovered = new List<string>(), paidTolls = new List<string>();
         public List<SavedCycle> cycles = new List<SavedCycle>();
     }
@@ -290,7 +303,7 @@ namespace TheTrailWalker.Persistence
         // Carried items, progress and paid tolls are untouched.
         public static void MigrateCatalogLayout(SessionSnapshot data)
         {
-            if (data == null || data.version != 3 || data.travel == null || data.travel.cycles == null) return;
+            if (data == null || data.version != 3 || data.travel == null || data.travel.cycles == null || data.travel.inSettlement) return;
             TravelCatalog catalog = TravelCatalog.Prototype();
             CampDefinition camp = catalog.Camp(data.travel.campId);
             if (camp == null) return;
@@ -328,6 +341,7 @@ namespace TheTrailWalker.Persistence
                     data.missions.catalog, data.missions.legacyClaims, data.missions.activeLegacy, data.missions.claimCatalogs, data.missions.activeCatalog); }
                 catch (ArgumentException e) { throw new InvalidDataException("Invalid mission progress: " + e.Message); }
             }
+            if (data.settlement != null && data.settlement.block != 0) RestoreSettlement(data, 0);
             var movement = new MovementState(); movement.Restore(data.distance, data.requestedSpeed, data.speedCap, data.inventoryResume, data.inventoryOpen, data.postHarvest, data.camp);
             // The camp flag belongs to the saved leg too; an unseated schema-3 walk is reset on restart, so only check it otherwise.
             if (data.camp != (data.distance >= pathLength) && pathLength != float.MaxValue && !WalkOnSavedLeg(data)) throw new InvalidDataException("Invalid camp position");
@@ -420,18 +434,34 @@ namespace TheTrailWalker.Persistence
             data.economy = 1;
         }
 
+        // A missing block (older save) is an undiscovered settlement with the caller's seed.
+        public static SettlementState RestoreSettlement(SessionSnapshot data, int newSeed)
+        {
+            SavedSettlement saved = data?.settlement;
+            if (saved == null || saved.block == 0) return SettlementState.New(newSeed);
+            if (saved.neighbours == null || saved.countedRegions == null || saved.neighbours.Exists(n => n == null)) throw new InvalidDataException("Invalid settlement block");
+            try { return SettlementState.Restore(saved.discovered, saved.plotIndex, saved.seed, saved.neighbours.ConvertAll(n => (n.plot, n.level, n.countdown)), saved.countedRegions); }
+            catch (ArgumentException error) { throw new InvalidDataException("Invalid settlement block: " + error.Message); }
+        }
+        public static SavedSettlement SaveSettlement(SettlementState s)
+        {
+            var saved = new SavedSettlement { block = 1, discovered = s.Discovered, plotIndex = s.PlotIndex, seed = s.Seed, countedRegions = new List<string>(s.CountedRegions) };
+            foreach (var n in s.Neighbours) saved.neighbours.Add(new SavedNeighbour { plot = n.Plot, level = n.Level, countdown = n.Countdown });
+            return saved;
+        }
+
         public static TravelState RestoreTravel(SessionSnapshot data, TravelCatalog catalog)
         {
             SavedTravel saved = data?.travel;
             if (saved == null || saved.visited == null || saved.discovered == null || saved.paidTolls == null || saved.cycles == null) throw new InvalidDataException("Missing travel state");
             var cycles = new List<KeyValuePair<string, int>>();
             foreach (SavedCycle cycle in saved.cycles) { if (cycle == null) throw new InvalidDataException("Invalid drop cycle"); cycles.Add(new KeyValuePair<string, int>(cycle.segmentId, cycle.cycle)); }
-            try { return TravelState.Restore(catalog, saved.campId, saved.seated, saved.lastTrailCampId, saved.visitNumber, saved.cash, saved.visited, saved.discovered, saved.paidTolls, cycles, saved.gold, saved.farBank, saved.settlementApproach); }
+            try { return TravelState.Restore(catalog, saved.campId, saved.seated, saved.lastTrailCampId, saved.visitNumber, saved.cash, saved.visited, saved.discovered, saved.paidTolls, cycles, saved.gold, saved.farBank, saved.settlementApproach, saved.inSettlement, saved.settlementReturnCampId); }
             catch (ArgumentException error) { throw new InvalidDataException(error.Message); }
         }
         public static SavedTravel SaveTravel(TravelState travel)
         {
-            var saved = new SavedTravel { campId = travel.CurrentCampId, lastTrailCampId = travel.LastTrailCampId, seated = travel.Seated, visitNumber = travel.VisitNumber, cash = travel.Cash, gold = travel.Gold, farBank = travel.OnFarBank, settlementApproach = travel.OnSettlementApproach,
+            var saved = new SavedTravel { campId = travel.CurrentCampId, lastTrailCampId = travel.LastTrailCampId, seated = travel.Seated, visitNumber = travel.VisitNumber, cash = travel.Cash, gold = travel.Gold, farBank = travel.OnFarBank, settlementApproach = travel.OnSettlementApproach, inSettlement = travel.InSettlement, settlementReturnCampId = travel.SettlementReturnCampId,
                 visited = new List<string>(travel.VisitedCamps), discovered = new List<string>(travel.DiscoveredRegions), paidTolls = new List<string>(travel.PaidTolls) };
             foreach (var cycle in travel.DropCycles) saved.cycles.Add(new SavedCycle { segmentId = cycle.Key, cycle = cycle.Value });
             return saved;

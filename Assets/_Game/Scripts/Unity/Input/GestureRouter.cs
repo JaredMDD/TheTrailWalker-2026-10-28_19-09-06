@@ -28,6 +28,9 @@ namespace TheTrailWalker.Input
         private CameraOrbitController orbit;
         public IResourceGestures Resources { get; set; }
         public bool InteractionLocked { get; set; }
+        // The settlement street has no walking: the centre-line speed surface is off and every touch goes to Resources (drag to
+        // scroll, tap to select), so no orbit or speed gesture can start there.
+        public bool SpeedAreaEnabled { get; set; } = true;
         public int OrbitGestures { get; private set; }
         public int SpeedGestures { get; private set; }
         // Raised when a SPEED-area swipe is ignored, so the UI can explain why walking did not change.
@@ -57,7 +60,7 @@ namespace TheTrailWalker.Input
             {
                 if (contacts.Count > 0) CancelAll();
                 foreach (Touch touch in Touch.activeTouches)
-                    if (touch.phase == UnityEngine.InputSystem.TouchPhase.Began && OverAvatar(touch.screenPosition) && !OverUi(touch.screenPosition)) SpeedBlocked?.Invoke(movement.Pauses, 0f);
+                    if (touch.phase == UnityEngine.InputSystem.TouchPhase.Began && SpeedAreaEnabled && OverAvatar(touch.screenPosition) && !OverUi(touch.screenPosition)) SpeedBlocked?.Invoke(movement.Pauses, 0f);
                 return;
             }
             foreach (Touch touch in Touch.activeTouches)
@@ -75,7 +78,7 @@ namespace TheTrailWalker.Input
             if (mouse.leftButton.isPressed) Move(-1, position);
             if (mouse.leftButton.wasReleasedThisFrame) End(-1, position, false);
             float scroll = mouse.scroll.ReadValue().y;
-            if (scroll != 0f && !OverUi(position) && OverAvatar(position)) { movement.SpeedGesture(Mathf.Sign(scroll) * 0.2f); LastSpeedInput = Time.unscaledTime; }
+            if (scroll != 0f && SpeedAreaEnabled && !OverUi(position) && OverAvatar(position)) { movement.SpeedGesture(Mathf.Sign(scroll) * 0.2f); LastSpeedInput = Time.unscaledTime; }
 #endif
         }
 
@@ -105,7 +108,7 @@ namespace TheTrailWalker.Input
             // Leave the system shade edge to Android even on devices reporting a full-screen safe area.
             if (IsSystemGestureArea(position.y, Screen.height, Screen.safeArea)) return;
             bool ui = OverUi(position);
-            bool speedSurface = !ui && OverAvatar(position);
+            bool speedSurface = !ui && SpeedAreaEnabled && OverAvatar(position);
             bool resource = !ui && !speedSurface && Resources != null && Resources.Begin(id, position);
             contacts[id] = new Contact { Start = position, Previous = position, Avatar = speedSurface, Resource = resource, Owner = ui || resource ? GestureOwner.Blocked : GestureOwner.Pending };
         }

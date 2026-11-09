@@ -48,13 +48,21 @@ namespace TheTrailWalker
             return sprite != null ? sprite : Resources.Load<Sprite>("UI/Missions/paper_0");
         }
 
+        // Settlement card (house icon) in the region list: only when discovered, seated at a camp and not in the settlement.
+        // Public so the Editor checks assembly can call it.
+        public static bool ShowSettlementCard(bool discovered, bool seated, bool inSettlement) => discovered && seated && !inSettlement;
+        // In the settlement the map is read-only (region cards say "Use Return to travel" and never travel).
+        public static bool MapTravelAllowed(bool inSettlement) => !inSettlement;
+        public const string MapReadOnlyNote = "Use Return to travel";
+        private bool MapReadOnly => !MapTravelAllowed(phase == TravelPhase.Settlement);
+
         private void OpenMap()
         {
-            if (phase != TravelPhase.Seated) return;
+            if (phase != TravelPhase.Seated && phase != TravelPhase.Settlement) return;
             if (inventoryOpen) ToggleInventory();
             if (craftPanel != null) craftPanel.SetActive(false);
             if (gearPanel != null) gearPanel.SetActive(false);
-            mapRegionId = travel.CurrentRegion.Id; mapRegionList = false;
+            mapRegionId = travel.CurrentRegion.Id; mapRegionList = MapReadOnly;   // the settlement map opens on the region list
             BuildMapPage();
             mapPanel.transform.SetAsLastSibling(); // in front of the HUD squares
             mapPanel.SetActive(true);
@@ -166,7 +174,7 @@ namespace TheTrailWalker
             RectTransform rect = Rect("Region title", mapPage, 0.16f, 0.882f, 0.84f, 0.968f);
             Image hit = rect.gameObject.AddComponent<Image>(); hit.color = Color.clear;
             var button = rect.gameObject.AddComponent<Button>(); button.targetGraphic = hit;
-            button.onClick.AddListener(() => { mapRegionList = !mapRegionList; BuildMapPage(); });
+            button.onClick.AddListener(() => { if (MapReadOnly) { MapNote(MapReadOnlyNote); return; } mapRegionList = !mapRegionList; BuildMapPage(); });
             MapText(rect, title, 0.03f, 0.35f, 0.97f, 0.97f, 34, MapInk).fontStyle = FontStyle.Bold;
             MapText(rect, subtitle, 0.1f, 0.02f, 0.9f, 0.34f, 17, MapFaded);
         }
@@ -190,13 +198,17 @@ namespace TheTrailWalker
         // Tapping a discovered row opens its camps; the arrow on the right travels to its first camp once reached.
         private void BuildRegionList(TravelCatalog catalog)
         {
-            int count = catalog.Regions.Count; float top = 0.86f, bottom = 0.06f;
-            float row = Mathf.Min(0.11f, (top - bottom) / Mathf.Max(1, count));
+            bool readOnly = MapReadOnly;
+            bool card = ShowSettlementCard(settlement.Discovered, phase == TravelPhase.Seated, phase == TravelPhase.Settlement);
+            int count = catalog.Regions.Count, slots = count + (card ? 1 : 0); float top = 0.86f, bottom = 0.06f;
+            float row = Mathf.Min(0.11f, (top - bottom) / Mathf.Max(1, slots));
+            if (card) BuildSettlementCard(top, row);
             for (int i = 0; i < count; i++)
             {
                 RegionDefinition region = catalog.Regions[i];
+                int slot = i + (card ? 1 : 0);
                 bool discovered = travel.DiscoveredRegions.Contains(region.Id), here = region.Id == travel.CurrentRegion.Id;
-                float y1 = top - i * row, y0 = y1 - row * 0.86f;
+                float y1 = top - slot * row, y0 = y1 - row * 0.86f;
                 RectTransform rect = Rect(region.Name, mapPage, 0.05f, y0, 0.95f, y1);
                 Image plate = rect.gameObject.AddComponent<Image>();
                 Sprite tab = Resources.Load<Sprite>("UI/Missions/tab"); if (tab != null) plate.sprite = tab;
@@ -205,7 +217,7 @@ namespace TheTrailWalker
                 if (discovered)
                 {
                     var open = rect.gameObject.AddComponent<Button>(); open.targetGraphic = plate;
-                    string id = region.Id; open.onClick.AddListener(() => { mapRegionId = id; mapRegionList = false; BuildMapPage(); });
+                    string id = region.Id; open.onClick.AddListener(() => { if (readOnly) { MapNote(MapReadOnlyNote); return; } mapRegionId = id; mapRegionList = false; BuildMapPage(); });
                 }
                 // Thumbnail: the region's own map sheet, edged in the region colour.
                 RectTransform swatch = Rect("Swatch", rect, 0.015f, 0.1f, 0.175f, 0.9f);
@@ -233,9 +245,29 @@ namespace TheTrailWalker
                     if (silhouette != null) silhouette.GetComponent<Image>().color = new Color(1, 1, 1, 0.35f);
                 }
                 string regionId = region.Id, firstCamp = region.FirstCamp.Id;
-                goButton.onClick.AddListener(() => { if (here) SelectCamp(firstCamp); else SelectRegion(regionId); });
+                goButton.onClick.AddListener(() => { if (readOnly) { MapNote(MapReadOnlyNote); return; } if (here) SelectCamp(firstCamp); else SelectRegion(regionId); });
             }
         }
+
+        // The settlement shortcut: a house-icon card at the top of the region list (no toll).
+        private void BuildSettlementCard(float top, float row)
+        {
+            float y1 = top, y0 = y1 - row * 0.86f;
+            RectTransform rect = Rect("Settlement card", mapPage, 0.05f, y0, 0.95f, y1);
+            Image plate = rect.gameObject.AddComponent<Image>();
+            Sprite tab = Resources.Load<Sprite>("UI/Missions/tab"); if (tab != null) plate.sprite = tab;
+            plate.color = new Color(0.95f, 0.88f, 0.7f, 0.95f);
+            var button = rect.gameObject.AddComponent<Button>(); button.targetGraphic = plate;
+            button.onClick.AddListener(SelectSettlement);
+            RectTransform icon = Rect("Home", rect, 0.015f, 0.1f, 0.175f, 0.9f);
+            icon.gameObject.AddComponent<Image>().color = Color.clear;
+            HudIconStyle.ApplyTo(icon, "home", false);
+            MapText(rect, "Settlement", 0.2f, 0.42f, 0.8f, 0.95f, 24, MapInk, TextAnchor.MiddleLeft).fontStyle = FontStyle.Bold;
+            MapText(rect, "Tap to travel - no toll", 0.2f, 0.06f, 0.8f, 0.44f, 15, MapInk, TextAnchor.MiddleLeft);
+        }
+
+        // Notes in the settlement go on the paper note; on the trail (no settlement HUD) the feedback line.
+        private void MapNote(string text) { if (settlementNote != null) ShowSettlementNote(text); else Say(text); }
 
         private void MapRoad(List<Vector2> points, float thickness, Color color)
         {

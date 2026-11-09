@@ -180,7 +180,8 @@ namespace TheTrailWalker
         private ITrailPath previousPath;
 
         // The walked leg's region look (fog, light, valley); the settlement approach drops Fern Hollow's valley.
-        private RegionLook Look => milestone5Enabled && travelScene?.Segment != null
+        private RegionLook Look => milestone5Enabled && travelScene != null && travelScene.Settlement ? RegionLooks.For(4, true)   // the settlement keeps Fern Hollow's light
+            : milestone5Enabled && travelScene?.Segment != null
             ? RegionLooks.For(travelScene.Catalog.RegionOf(travelScene.Segment).Number, travelScene.Segment.SettlementApproach) : RegionLooks.Default;
 
         private static Vector3 Heading(Vector3 tangent)
@@ -189,9 +190,15 @@ namespace TheTrailWalker
             return flat.sqrMagnitude > 1e-6f ? flat.normalized : Vector3.forward;
         }
 
+        // Settlement mode (spec 2026-11-08, section 2): the street replaces road, camps and interactables; no pickups.
+        public SettlementStreet Street { get; private set; }
+        public StreetCamera StreetView { get; private set; }
+
         private void CreateWorld()
         {
-            if (milestone5Enabled)
+            bool settlement = milestone5Enabled && travelScene.Settlement;
+            if (settlement) Street = SettlementScenery.Build(transform, travelScene.HouseLevels, travelScene.PlayerPlot);
+            else if (milestone5Enabled)
             {
                 ITrailPath ground = path;
                 nextSegment = travelScene.Segment.RiverApproach ? null : travelScene.Catalog.Outgoing(travelScene.Segment.ToCampId);
@@ -233,7 +240,7 @@ namespace TheTrailWalker
                     clearings.ToArray(), ponds.ToArray(), Look, rivers.ToArray());
             }
             else Primitive("Ground", PrimitiveType.Cube, new Vector3(0, -0.3f, 70), new Vector3(110, 0.5f, 200), terrainMaterial);
-            BuildRibbon("Curved trail", path);
+            if (!settlement) BuildRibbon("Curved trail", path);
             if (nextPath != null) BuildRibbon("Curved trail (next leg)", nextPath);
             if (previousPath != null) BuildRibbon("Curved trail (previous leg)", previousPath);
             // Camp segments are dressed with the environment kit instead (DressSegment); markers remain for older prototypes.
@@ -245,7 +252,8 @@ namespace TheTrailWalker
                 // Low silhouettes provide readable parallax without camera obstructions.
                 Primitive("Trail scenery", PrimitiveType.Sphere, p - side * 5f + Vector3.up * 0.4f, new Vector3(2f, 1f, 2f), terrainMaterial);
             }
-            if (milestone5Enabled)
+            if (settlement) { /* the street was built above: no camps, interactables or scatter */ }
+            else if (milestone5Enabled)
             {
                 // Camps sit in clearings beside the road: the one this segment leaves from, and the next one (or the river ferry).
                 TravelCatalog catalog = travelScene.Catalog;
@@ -305,6 +313,7 @@ namespace TheTrailWalker
             nose.GetComponent<Renderer>().enabled = false;
             nose.GetComponent<Collider>().enabled = false;
             motor = player.AddComponent<TrailMotor>(); motor.Bind(state, path);
+            if (settlement) motor.Detached = true;   // nobody walks the street: the camera scrolls along it
 
             var cameraObject = new GameObject("Main Camera", typeof(Camera), typeof(AudioListener));
             cameraObject.tag = "MainCamera"; cameraObject.transform.SetParent(transform, false);
@@ -312,7 +321,8 @@ namespace TheTrailWalker
             camera.clearFlags = CameraClearFlags.SolidColor; camera.backgroundColor = new Color(0.44f, 0.64f, 0.7f);
             camera.GetUniversalAdditionalCameraData().renderPostProcessing = false;
             orbit = cameraObject.AddComponent<CameraOrbitController>();
-            var rig = cameraObject.AddComponent<FollowCameraRig>(); rig.Target = player.transform; rig.Orbit = orbit;
+            if (settlement) { StreetView = cameraObject.AddComponent<StreetCamera>(); StreetView.Bind(Street); }
+            else { var rig = cameraObject.AddComponent<FollowCameraRig>(); rig.Target = player.transform; rig.Orbit = orbit; }
             var lightObject = new GameObject("Sun", typeof(Light)); lightObject.transform.SetParent(transform, false);
             lightObject.transform.rotation = Quaternion.Euler(45, -30, 0);
             Light light = lightObject.GetComponent<Light>(); light.type = LightType.Directional; light.shadows = LightShadows.Soft;

@@ -268,7 +268,10 @@ namespace TheTrailWalker.Domain.Travel
         public bool OnFarBank { get; private set; }
         // True after the ferry from a region's last camp crosses to a settlement approach (Bright Hollow -> settlement.01).
         public bool OnSettlementApproach { get; private set; }
-        public SegmentDefinition CurrentSegment => OnFarBank ? catalog.LandingInto(CurrentRegion.NextRegionId)
+        // True while inside the settlement (entered through the arch or the shortcut); Return seats at SettlementReturnCampId.
+        public bool InSettlement { get; private set; }
+        public string SettlementReturnCampId { get; private set; }
+        public SegmentDefinition CurrentSegment => InSettlement ? catalog.SettlementApproach : OnFarBank ? catalog.LandingInto(CurrentRegion.NextRegionId)
             : OnSettlementApproach ? catalog.SettlementApproachFrom(CurrentCampId) : catalog.Outgoing(CurrentCampId);
         public TravelCatalog Catalog => catalog;
 
@@ -287,7 +290,7 @@ namespace TheTrailWalker.Domain.Travel
         public string ArriveAtCamp(string campId)
         {
             CampDefinition camp = catalog.Camp(campId) ?? throw new ArgumentException("Unknown camp");
-            CurrentCampId = camp.Id; Seated = true; OnFarBank = false; OnSettlementApproach = false; LastTrailCampId = camp.Id; VisitNumber++;
+            CurrentCampId = camp.Id; Seated = true; OnFarBank = false; OnSettlementApproach = false; InSettlement = false; SettlementReturnCampId = null; LastTrailCampId = camp.Id; VisitNumber++;
             visited.Add(camp.Id);
             if (!discovered.Contains(camp.RegionId)) discovered.Add(camp.RegionId);
             string segmentId = catalog.Outgoing(camp.Id).Id;
@@ -300,6 +303,7 @@ namespace TheTrailWalker.Domain.Travel
         public bool CanStandUp(out string reason)
         {
             reason = "";
+            if (InSettlement) { reason = "You are in the settlement"; return false; }
             if (!Seated) { reason = "Already walking"; return false; }
             return true;
         }
@@ -307,7 +311,7 @@ namespace TheTrailWalker.Domain.Travel
 
         // Reopening the app after it closed mid-segment returns to the camp the segment started from. Confirmed: this
         // counts as a camp visit, so it starts a new visit and rerolls that segment's resources. Returns the rolled segment.
-        public string ResumeAtCampAfterRestart() => Seated ? null : ArriveAtCamp(CurrentCampId);
+        public string ResumeAtCampAfterRestart() => Seated || InSettlement ? null : ArriveAtCamp(CurrentCampId);
 
         // Walking to the end of the current segment arrives at its destination camp.
         public string ArriveAtSegmentEnd()
@@ -318,12 +322,45 @@ namespace TheTrailWalker.Domain.Travel
             return ArriveAtCamp(segment.ToCampId);
         }
 
-        // Route only (spec, November 8, 2026): until the settlement opens (Milestone 10), walking into the entrance arch
-        // returns to the camp the approach started from as a real camp return (new visit, fresh drops); the toll stays paid.
+        // Walking into the entrance arch enters the settlement; Return goes back to the camp the approach started from.
         public string ReachSettlementArch()
         {
             if (Seated || !OnSettlementApproach) throw new InvalidOperationException("Not walking the settlement approach");
-            return ArriveAtCamp(CurrentCampId);
+            OnSettlementApproach = false; InSettlement = true; Seated = false; SettlementReturnCampId = CurrentCampId;
+            return RollApproachCycle();
+        }
+        // The approach has no drop points, but callers roll drops for the returned segment, which needs a cycle of at least 1.
+        private string RollApproachCycle()
+        {
+            string id = catalog.SettlementApproach.Id;
+            dropCycles[id] = CycleOf(id) + 1;
+            return id;
+        }
+
+        // Shortcut from any camp once the settlement is discovered; no toll.
+        public bool CanTravelToSettlement(bool settlementDiscovered, bool busy, out string reason)
+        {
+            reason = "";
+            if (!Seated || busy) { reason = "Travel is only available while seated at a camp and not trading or recovering"; return false; }
+            if (!settlementDiscovered) { reason = "The settlement has not been discovered"; return false; }
+            return true;
+        }
+        public string TravelToSettlement(bool settlementDiscovered, bool busy)
+        {
+            if (!CanTravelToSettlement(settlementDiscovered, busy, out string reason)) throw new InvalidOperationException(reason);
+            Seated = false; InSettlement = true; SettlementReturnCampId = CurrentCampId;
+            return RollApproachCycle();
+        }
+        public bool CanReturnFromSettlement(out string reason)
+        {
+            reason = "";
+            if (!InSettlement || catalog.Camp(SettlementReturnCampId) == null) { reason = "You are not in the settlement"; return false; }
+            return true;
+        }
+        public string ReturnFromSettlement()
+        {
+            if (!CanReturnFromSettlement(out string reason)) throw new InvalidOperationException(reason);
+            return ArriveAtCamp(SettlementReturnCampId);
         }
 
         // Camp map: unlocked camps of the current region by exact selection; other discovered regions arrive at their first camp.
@@ -406,7 +443,7 @@ namespace TheTrailWalker.Domain.Travel
         public void GrantTestGold(long amount) { if (amount <= 0 || Gold > long.MaxValue - amount) throw new ArgumentOutOfRangeException(nameof(amount)); Wallet.Credit(Economy.Currency.Gold, amount); }
 
         public static TravelState Restore(TravelCatalog catalog, string campId, bool seated, string lastTrailCampId, int visitNumber, long cash,
-            IEnumerable<string> visitedCamps, IEnumerable<string> discoveredRegions, IEnumerable<string> tolls, IEnumerable<KeyValuePair<string, int>> cycles, long gold = 0, bool farBank = false, bool settlementApproach = false)
+            IEnumerable<string> visitedCamps, IEnumerable<string> discoveredRegions, IEnumerable<string> tolls, IEnumerable<KeyValuePair<string, int>> cycles, long gold = 0, bool farBank = false, bool settlementApproach = false, bool inSettlement = false, string settlementReturnCampId = null)
         {
             var state = new TravelState(catalog);
             CampDefinition camp = catalog.Camp(campId);
@@ -429,6 +466,11 @@ namespace TheTrailWalker.Domain.Travel
                 SegmentDefinition approach = catalog.SettlementApproachFrom(camp.Id);
                 if (seated || farBank || approach == null || !state.paidTolls.Contains(camp.RegionId) || state.CycleOf(approach.Id) < 1) throw new ArgumentException("Invalid settlement-approach state");
                 state.OnSettlementApproach = true;
+            }
+            if (inSettlement)
+            {
+                if (seated || farBank || settlementApproach || catalog.Camp(settlementReturnCampId) == null || !state.visited.Contains(settlementReturnCampId) || settlementReturnCampId != camp.Id) throw new ArgumentException("Invalid settlement state");
+                state.InSettlement = true; state.SettlementReturnCampId = settlementReturnCampId;
             }
             return state;
         }

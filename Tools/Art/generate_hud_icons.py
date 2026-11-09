@@ -40,6 +40,25 @@ icons={
  'travel':[
   poly([(18,52),(70,52),(70,26),(112,64),(70,102),(70,76),(18,76)],BLACK),
   poly([(26,59),(78,59),(78,44),(98,64),(78,84),(78,69),(26,69)],GRAY)],
+ # Settlement list (settlement shell, November 8, 2026): home, warehouse and lumber field.
+ 'home':[
+  rect(80,20,13,30,BLACK,2),
+  poly([(10,64),(64,16),(118,64),(106,64),(64,28),(22,64)]),
+  poly([(64,34),(100,66),(100,112),(28,112),(28,66)]),
+  rect(56,78,16,34,GRAY,3),
+  rect(37,74,13,13,LIGHT,2),rect(78,74,13,13,LIGHT,2)],
+ 'warehouse':[
+  poly([(8,52),(64,20),(120,52),(110,52),(64,30),(18,52)]),
+  poly([(64,36),(108,56),(108,112),(20,112),(20,56)]),
+  rect(36,62,56,50,GRAY,2),
+  poly([(40,66),(46,66),(88,108),(82,108)],LIGHT),poly([(82,66),(88,66),(46,108),(40,108)],LIGHT),
+  rect(57,40,14,12,LIGHT,2)],
+ 'lumber':[
+  poly([(64,4),(86,34),(42,34)]),poly([(64,16),(96,54),(32,54)]),
+  rect(59,52,10,14,BLACK,1),
+  circle(38,106,13),circle(64,106,13),circle(90,106,13),circle(51,82,13),circle(77,82,13),
+  circle(38,106,7,LIGHT),circle(64,106,7,LIGHT),circle(90,106,7,LIGHT),circle(51,82,7,LIGHT),circle(77,82,7,LIGHT),
+  circle(38,106,2.5,GRAY),circle(64,106,2.5,GRAY),circle(90,106,2.5,GRAY),circle(51,82,2.5,GRAY),circle(77,82,2.5,GRAY)],
  'user':[
   poly([(64+49*(1 if i%2==0 else .49)*math.cos(-math.pi/2+i*math.pi/8),64+49*(1 if i%2==0 else .49)*math.sin(-math.pi/2+i*math.pi/8)) for i in range(16)])]
 }

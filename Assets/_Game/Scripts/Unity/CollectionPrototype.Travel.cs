@@ -15,7 +15,8 @@ namespace TheTrailWalker
     // Milestone 5 camp travel: seated camps beside the road, segment transitions, map, ferry toll and drop cycles.
     public sealed partial class CollectionPrototype
     {
-        private enum TravelPhase { Walking, Approaching, Seated, Leaving, Transition }
+        // Settlement: inside the settlement street (spec 2026-11-08, section 3): no walker, seated-style stamina, its own HUD context.
+        private enum TravelPhase { Walking, Approaching, Seated, Leaving, Transition, Settlement }
         private const float SeatMoveSeconds = 1.6f, SeatedEyeDrop = 0.55f;
         private bool milestone5;
         private TravelSceneInfo scene;
@@ -29,7 +30,7 @@ namespace TheTrailWalker
         private Text tollText;
         private Button tollCash, tollGold;
         private bool tollAsked; // the ferry NPC asks once per walk up to the river
-        private GameObject archPanel; private bool archShown; // settlement arch note (route only until Milestone 10)
+        private bool archShown; // the arch is crossed once per walk up to it
         // Set before a scene reload that continues a walk (the ferry crossing onto its landing leg), so the next load
         // does not treat the unseated save as a closed game. A real app start always begins false.
         private static bool continueAfterReload;
@@ -42,6 +43,7 @@ namespace TheTrailWalker
             TravelCatalog catalog = TravelCatalog.Prototype();
             SegmentDefinition segment = catalog.Outgoing(catalog.StartRegion.FirstCamp.Id);
             int visit = 1;
+            bool inSettlement = false; SettlementState savedSettlement = null;
             try
             {
                 var store = new SessionSaveStore(SaveDirectory, new SystemClock(), 3);
@@ -50,14 +52,18 @@ namespace TheTrailWalker
                 {
                     TravelState saved = SessionSaveStore.RestoreTravel(snapshot, catalog);
                     segment = saved.CurrentSegment;
+                    inSettlement = saved.InSettlement;
+                    if (inSettlement) savedSettlement = SessionSaveStore.RestoreSettlement(snapshot, SettlementSeed(snapshot));
                     // Reopening mid-segment counts as a new visit to the start camp (ResumeAtCampAfterRestart), which
                     // also leaves a ferry landing: the scene shows that camp's own leg. A continuing reload keeps the walk.
-                    if (!saved.Seated && !continueAfterReload) segment = catalog.Outgoing(saved.CurrentCampId);
+                    if (!saved.Seated && !continueAfterReload && !inSettlement) segment = catalog.Outgoing(saved.CurrentCampId);
                     visit = Math.Max(1, saved.Seated || continueAfterReload ? saved.VisitNumber : saved.VisitNumber + 1);
                 }
             }
             catch (Exception error) when (error is IOException || error is InvalidDataException) { Debug.LogWarning("[Milestone5] Travel peek failed: " + error.Message); }
-            return new TravelSceneInfo { Catalog = catalog, Segment = segment, StartVisit = visit };
+            var info = new TravelSceneInfo { Catalog = catalog, Segment = segment, StartVisit = visit };
+            if (inSettlement) { info.Settlement = true; info.HouseLevels = SettlementScenery.HouseLevels(savedSettlement); info.PlayerPlot = SettlementScenery.PlayerPlot(savedSettlement); }
+            return info;
         }
 
         private string CurrentSegmentId => travel?.CurrentSegment.Id;
@@ -103,6 +109,8 @@ namespace TheTrailWalker
 
         private void ApplyTravelPose()
         {
+            // The settlement scene has no camps (scene.StartCamp/EndCamp are null) and no walker (CollectionPrototype.Settlement).
+            if (scene.Settlement && travel.InSettlement) { EnterSettlementContext(); RefreshTravelHud(); return; }
             if (travel.Seated)
             {
                 phase = TravelPhase.Seated; motor.Detached = true;
@@ -116,6 +124,7 @@ namespace TheTrailWalker
 
         private void UpdateTravel()
         {
+            if (phase == TravelPhase.Settlement) { UpdateSettlement(); return; }
             if (phase == TravelPhase.Approaching || phase == TravelPhase.Leaving)
             {
                 float t = Mathf.Clamp01((Time.unscaledTime - moveStarted) / SeatMoveSeconds);
@@ -134,9 +143,9 @@ namespace TheTrailWalker
                 if (travel.PaidTolls.Contains(travel.CurrentRegion.Id)) { if (travel.CanCrossRiver(false, out _)) TakeFerry(); else AskToll(); }
                 else AskToll();
             }
-            // Walking into the settlement's entrance arch stops the walk; until Milestone 10 a note sends the player back.
+            // Walking into the settlement's entrance arch goes straight into the settlement (CollectionPrototype.Settlement).
             if (phase == TravelPhase.Walking && scene.Segment.SettlementApproach && (movement.Pauses & MovementPauseReasons.Camp) != 0 && !TravelBusy && !inventoryOpen)
-                ShowArchNote();
+                EnterSettlementThroughArch();
         }
 
         private void AskToll()
@@ -170,20 +179,6 @@ namespace TheTrailWalker
             tollPanel.SetActive(false); router.InteractionLocked = stamina.Fainted;
             TakeFerry();
         }
-        private void ShowArchNote()
-        {
-            if (archShown) return;
-            archShown = true; router.CancelAll(); router.InteractionLocked = true;
-            archPanel.transform.SetAsLastSibling(); archPanel.SetActive(true);
-        }
-        // A real camp return to the camp the ferry left from: new visit and fresh drops; the toll stays paid.
-        private void ConfirmArch()
-        {
-            archPanel.SetActive(false); router.InteractionLocked = stamina.Fainted;
-            string camp = travel.CurrentCamp.Name;
-            CommitTravel(() => travel.ReachSettlementArch(), $"Back at {camp}. The ferry is paid.");
-        }
-
         // Declining walks back to the camp the river leg started from (a real camp return, like BACK TO CAMP).
         private void DeclineToll()
         {
@@ -239,10 +234,14 @@ namespace TheTrailWalker
             SaveNow(); RefreshTravelHud(); Say("Walking on from " + travel.CurrentCamp.Name + ".");
         }
 
+        private GameObject settlementDebugButton;
         private void CreateTravelHud()
         {
             cashButton = Button(safe, "+1,000 CASH", 0.74f, 0.67f, 0.98f, 0.72f, () => { travel.GrantTestCash(1000); statistics.AddCash(1000); SaveNow(); RefreshTravelHud(); Say("Added 1,000 test cash (debug)."); }).transform.parent.gameObject;
             goldButton = Button(safe, "+1 GOLD", 0.74f, 0.725f, 0.98f, 0.775f, () => { travel.GrantTestGold(1); statistics.AddGold(1); SaveNow(); RefreshTravelHud(); Say("Added 1 test gold (debug)."); }).transform.parent.gameObject;
+            // Debug entry (camp only; the normal unlock stays the arch after region four).
+            settlementDebugButton = Button(safe, "SETTLEMENT (DEBUG)", 0.20f, 0.67f, 0.60f, 0.72f, DebugSettlement).transform.parent.gameObject;
+            settlementDebugButton.SetActive(false);
             // Ferry toll dialog: shown by the ferry NPC when the player reaches the river.
             tollPanel = Rect("Ferry toll", safe, 0.08f, 0.36f, 0.92f, 0.64f).gameObject;
             tollPanel.AddComponent<Image>().color = new Color(0.05f, 0.11f, 0.13f, 0.98f);
@@ -252,24 +251,20 @@ namespace TheTrailWalker
             tollGold = Button(tollPanel.transform, "PAY GOLD", 0.36f, 0.06f, 0.65f, 0.34f, () => PayTollWith(TollCurrency.Gold)).transform.parent.GetComponent<Button>();
             Button(tollPanel.transform, "NOT NOW", 0.66f, 0.06f, 0.96f, 0.34f, DeclineToll);
             tollPanel.SetActive(false);
-            // Settlement arch note on mission paper (regions 3-4 spec: route only until the settlement opens).
-            archPanel = Rect("Settlement arch note", safe, 0.10f, 0.38f, 0.90f, 0.62f).gameObject;
-            Sheet("Paper", archPanel.transform, "paper_0", 0f, 0f, 1f, 1f, -1.5f);
-            Text archText = Label(archPanel.transform, "The settlement opens in a later milestone (Milestone 10).", 0.10f, 0.42f, 0.90f, 0.88f, 26);
-            archText.color = Ink; archText.fontStyle = FontStyle.Bold; archText.resizeTextForBestFit = true; archText.resizeTextMinSize = 12; archText.resizeTextMaxSize = 26;
-            Button(archPanel.transform, "OK", 0.32f, 0.10f, 0.68f, 0.34f, ConfirmArch);
-            archPanel.SetActive(false);
             CreateMapPanel(); // worn region map (CollectionPrototype.Map.cs)
             CreateTradeHud(); // camp conveyor trade and wallet (CollectionPrototype.Trade.cs)
             CreateRouteCard(); // departure preview and remaining leg (CollectionPrototype.Route.cs)
+            CreateSettlementHud(); // settlement list, notes, plot choice and Return (settlement scene only; CollectionPrototype.Settlement.cs)
         }
 
         private void RefreshTravelHud()
         {
             if (cashButton == null || travel == null) return;
             bool seated = phase == TravelPhase.Seated;
-            if (!seated && mapPanel.activeSelf) CloseMap();
-            cashButton.SetActive(seated); goldButton.SetActive(seated);
+            if (!seated && phase != TravelPhase.Settlement && mapPanel.activeSelf) CloseMap();   // the settlement keeps its read-only map
+            bool wallet = seated && TrailControlsVisible(InSettlementScene);   // debug grants are camp-only, never in the settlement
+            cashButton.SetActive(wallet); goldButton.SetActive(wallet);
+            if (settlementDebugButton != null) settlementDebugButton.SetActive(wallet);
             SetMenu(menuOpen);
         }
 
@@ -286,6 +281,20 @@ namespace TheTrailWalker
             RegionDefinition region = scene.Catalog.Region(regionId);
             CommitTravel(() => travel.TravelToRegion(regionId, TravelBusy), $"Travelled to {region.Name}: {region.FirstCamp.Name}.");
         }
+        // Shortcut from any camp (map card) or the debug button (allowUndiscovered). Arrival is applied inside the move step
+        // exactly like the arch, so the save and the reload carry the seeded, discovered settlement and the welcome note.
+        // Busy rules are the camp-travel ones (TravelBusy); the paper note shows the refusal reason.
+        private void TravelToSettlementFromCamp(bool allowUndiscovered)
+        {
+            bool discovered = allowUndiscovered || settlement.Discovered;
+            if (!travel.CanTravelToSettlement(discovered, TravelBusy, out string reason)) { MapNote(reason); return; }
+            CloseMap();
+            settlementWelcomePending = true;
+            CommitTravel(() => { string rolled = travel.TravelToSettlement(discovered, TravelBusy); ApplySettlementArrival(); return rolled; }, SettlementWelcome);
+            if (saveBlocked) settlementWelcomePending = false;
+        }
+        private void SelectSettlement() => TravelToSettlementFromCamp(false);
+        private void DebugSettlement() => TravelToSettlementFromCamp(true);
         private void TakeFerry()
         {
             if (!travel.CanCrossRiver(TravelBusy, out string reason)) { Say(reason); return; }
@@ -307,7 +316,7 @@ namespace TheTrailWalker
         private static bool ContinuingReload() { bool continuing = continueAfterReload; continueAfterReload = false; return continuing; }
         private string TravelStatus() => travel == null ? "" :
             $"\nRegion {scene.Catalog.RegionOf(travel.CurrentSegment).Number} {scene.Catalog.RegionOf(travel.CurrentSegment).Name} | " +
-            (travel.OnSettlementApproach ? "Road to the " + scene.Catalog.Settlement(travel.CurrentSegment.ToSettlementId).Name.ToLowerInvariant()
+            (travel.InSettlement ? "In the settlement" : travel.OnSettlementApproach ? "Road to the " + scene.Catalog.Settlement(travel.CurrentSegment.ToSettlementId).Name.ToLowerInvariant()
                 : travel.OnFarBank ? "Road to " + scene.Catalog.Camp(travel.CurrentSegment.ToCampId).Name : (phase == TravelPhase.Walking ? "Road from " : "") + travel.CurrentCamp.Name) +
             $" | Cash {travel.Cash} | Gold {travel.Gold}";
     }

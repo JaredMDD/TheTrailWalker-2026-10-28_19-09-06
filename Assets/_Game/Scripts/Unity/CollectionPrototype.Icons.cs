@@ -17,6 +17,7 @@ namespace TheTrailWalker
         // Buttons that only work at a camp are hidden while walking a segment; the column closes the gap.
         private readonly HashSet<RectTransform> campOnlyButtons = new HashSet<RectTransform>();
         private float menuBarLine;
+        private RectTransform mapMenuButton; // camp-only, but also kept in the settlement (settlement shell, section 3)
 
         private void CreateUserMenu()
         {
@@ -24,7 +25,7 @@ namespace TheTrailWalker
             userButton = (RectTransform)user.transform.parent; userButton.name = "User menu";
             HudIconStyle.Apply(user, "user");
             campOnlyButtons.Add(AddMenuButton("CRAFT", "crafting", () => { if (milestone5) ToggleCraftPanel(); else Say("Crafting needs the camp world."); }));
-            campOnlyButtons.Add(AddMenuButton("MAP", "map", OpenMapFromMenu));
+            campOnlyButtons.Add(mapMenuButton = AddMenuButton("MAP", "map", OpenMapFromMenu));
             AddMenuButton("GEAR", "equipment", () => { if (milestone4) ToggleGearPanel(); });
             AddMenuButton("SETTINGS", "settings", () => Say("Settings arrive in a later milestone."));
             SetMenu(false);
@@ -43,7 +44,7 @@ namespace TheTrailWalker
             int row = 1;
             foreach (RectTransform button in menuButtons)
             {
-                bool show = open && (!campOnlyButtons.Contains(button) || AtCamp);
+                bool show = open && (!campOnlyButtons.Contains(button) || AtCamp || (button == mapMenuButton && phase == TravelPhase.Settlement));
                 button.gameObject.SetActive(show);
                 if (show) PlaceSquare(button, true, menuBarLine, 0, row++);
             }
@@ -51,7 +52,8 @@ namespace TheTrailWalker
         private void OpenMapFromMenu()
         {
             if (!milestone5) { Say("The camp map arrives with camp travel."); return; }
-            if (phase != TravelPhase.Seated) { Say("The map opens while seated at a camp."); return; }
+            // In the settlement the map opens on the region list, read-only.
+            if (phase != TravelPhase.Seated && phase != TravelPhase.Settlement) { Say("The map opens while seated at a camp."); return; }
             OpenMap();
         }
 

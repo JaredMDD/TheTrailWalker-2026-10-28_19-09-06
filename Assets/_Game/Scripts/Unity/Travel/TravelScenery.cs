@@ -448,5 +448,9 @@ namespace TheTrailWalker.Travel
         public System.Action RequestReload;
         // Visit number the start camp is shown for (a mid-segment restart counts as a new visit); the end camp is the next one.
         public int StartVisit = 1;
+        // Settlement mode (spec 2026-11-08): the scene builds the street instead of a road. HouseLevels has six entries (index = plot).
+        public bool Settlement;
+        public int[] HouseLevels;
+        public int PlayerPlot = -1;
     }
 }

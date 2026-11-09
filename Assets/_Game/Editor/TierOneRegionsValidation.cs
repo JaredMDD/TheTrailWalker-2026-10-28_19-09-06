@@ -276,7 +276,7 @@ namespace TheTrailWalker.Editor
                 new[] { new KeyValuePair<string, int>("segment.04.river", 1) }, gold);
         }
         private static TravelState Reload(TravelState s) => TravelState.Restore(s.Catalog, s.CurrentCampId, s.Seated, s.LastTrailCampId, s.VisitNumber, s.Cash,
-            s.VisitedCamps.ToList(), s.DiscoveredRegions.ToList(), s.PaidTolls.ToList(), s.DropCycles.ToList(), s.Gold, s.OnFarBank, s.OnSettlementApproach);
+            s.VisitedCamps.ToList(), s.DiscoveredRegions.ToList(), s.PaidTolls.ToList(), s.DropCycles.ToList(), s.Gold, s.OnFarBank, s.OnSettlementApproach, s.InSettlement, s.SettlementReturnCampId);
 
         private static void SettlementRouteChecks()
         {
@@ -309,9 +309,10 @@ namespace TheTrailWalker.Editor
             Check(Throws(() => s.ArriveAtSegmentEnd()), "The approach has no camp at its end (the arch handles it)");
             TravelState reloaded = Reload(s);
             Check(reloaded.OnSettlementApproach && reloaded.CurrentSegment == approach, "Walking the approach is a valid saved state");
-            Check(s.ReachSettlementArch() == "segment.04.river" && s.Seated && s.CurrentCampId == "camp.04.13" && !s.OnSettlementApproach && s.VisitNumber == visit + 1
-                && s.PaidTolls.Contains("region.04") && s.CycleOf("segment.04.river") == 2, "Reaching the arch returns to Bright Hollow as a new visit; the toll stays paid");
+            Check(s.ReachSettlementArch() == "segment.settlement.approach" && s.InSettlement && !s.Seated && s.SettlementReturnCampId == "camp.04.13" && !s.OnSettlementApproach && s.VisitNumber == visit
+                && s.PaidTolls.Contains("region.04"), "Reaching the arch enters the settlement with Bright Hollow as the return camp; the toll stays paid");
             Check(Throws(() => s.ReachSettlementArch()), "The arch can only be reached while walking the approach");
+            Check(s.ReturnFromSettlement() == "segment.04.river" && s.Seated && !s.InSettlement && s.CurrentCampId == "camp.04.13" && s.VisitNumber == visit + 1 && s.CycleOf("segment.04.river") == 2, "Returning seats at Bright Hollow as a new visit");
             s.StandUp();
             Check(s.CanCrossRiver(false, out _) && !s.CanPayToll(TollCurrency.Cash, out _), "Later crossings to the settlement need no second toll");
 

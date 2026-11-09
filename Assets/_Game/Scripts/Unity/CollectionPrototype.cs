@@ -317,7 +317,7 @@ namespace TheTrailWalker
             float top = inventoryOpen ? bagFrame.anchorMax.y : 0;
             aperture.anchorMin = new Vector2(0, top); aperture.anchorMax = new Vector2(1, top + 0.035f);
             LayoutSquares(top + BarLineGap);
-            dropPocket.gameObject.SetActive(inventoryOpen);
+            dropPocket.gameObject.SetActive(inventoryOpen && TrailControlsVisible(InSettlementScene)); // nothing is dropped onto the street
             inventoryLabel.text = inventoryOpen ? "RETURN" : "BAG"; // only shown until the icons import
             SyncBagButtonIcon();
         }
@@ -441,7 +441,7 @@ namespace TheTrailWalker
             resetPending = false;
             try
             {
-                saveStore.ArchiveForReset(); saveBlocked = false; lastSavedState = null; crafting = new CraftingState(); missions = new TheTrailWalker.Domain.Missions.MissionState();
+                saveStore.ArchiveForReset(); saveBlocked = false; lastSavedState = null; crafting = new CraftingState(); missions = new TheTrailWalker.Domain.Missions.MissionState(); settlement = TheTrailWalker.Domain.Travel.SettlementState.New(0);
                 if (inventoryOpen) { movement.CloseInventory(); inventoryOpen = false; LayoutBackpack(); }
                 router.CancelAll(); movement.Reset();
                 if (milestone4) { equipment = new EquipmentState(); stamina = new StaminaState(); router.InteractionLocked = false; movement.SetSpeedCap(MovementState.StarterSpeedCap); faintEventId = null; faintLoss.Clear(); if (gearPanel != null) gearPanel.SetActive(false); }
@@ -631,6 +631,7 @@ namespace TheTrailWalker
         }
         public bool Begin(int pointer, Vector2 position)
         {
+            if (InSettlementScene) return SettlementPointerBegin(pointer, position); // street drag and tap; no pickups or harvest
             if (saveBlocked || (milestone4 && stamina.Fainted)) return false;
             // Interactables first: their selection colliders are triggers, which the pickup ray below ignores (and that
             // ray finds nothing at all when only an interactable is under the finger).
@@ -677,6 +678,7 @@ namespace TheTrailWalker
         }
         public void Move(int pointer, Vector2 position)
         {
+            if (SettlementPointerMove(pointer, position)) return;
             if (scrollPointer == pointer)
             {
                 RectTransformUtility.ScreenPointToLocalPointInRectangle(safe, position, null, out Vector2 now);
@@ -703,11 +705,12 @@ namespace TheTrailWalker
         }
         public void End(int pointer, Vector2 position, bool canceled)
         {
+            if (SettlementPointerEnd(pointer, position, canceled)) return;
             if (scrollPointer == pointer) { if (!canceled) Move(pointer, position); scrollPointer = null; return; }
             if (!contacts.TryGetValue(pointer, out Contact contact)) return;
             if (!canceled) Move(pointer, position);
             if (!contacts.ContainsKey(pointer)) return; // Quick storage already committed.
-            if (!canceled && contact.Dragging && !contact.World && inventoryOpen && RectTransformUtility.RectangleContainsScreenPoint(dropPocket, position))
+            if (!canceled && contact.Dragging && !contact.World && inventoryOpen && dropPocket.gameObject.activeSelf && RectTransformUtility.RectangleContainsScreenPoint(dropPocket, position))
             { DropToTrail(pointer, contact); return; }
             if (!canceled && contact.Dragging && !contact.World && inventoryOpen && SideCellAt(position, out bool hook, out int index))
             {
@@ -753,7 +756,7 @@ namespace TheTrailWalker
         public void CancelAll()
         {
             foreach (var pair in contacts) { ledger.Release(pair.Value.Item, pair.Key); if (pair.Value.Ghost != null) Destroy(pair.Value.Ghost.gameObject); }
-            contacts.Clear(); scrollPointer = null;
+            contacts.Clear(); scrollPointer = null; CancelSettlementPointer();
         }
         private void Redraw()
         {
@@ -814,7 +817,7 @@ namespace TheTrailWalker
         // Tube length follows the current boots cap; the fill shows requested speed within it.
         private void UpdateSpeedGauge()
         {
-            bool show = !inventoryOpen && (router.AdjustingSpeed || Time.unscaledTime - router.LastSpeedInput < 0.6f);
+            bool show = TrailControlsVisible(InSettlementScene) && !inventoryOpen && (router.AdjustingSpeed || Time.unscaledTime - router.LastSpeedInput < 0.6f);
             speedGauge.gameObject.SetActive(show); speedValue.gameObject.SetActive(false); // no numerical readout (user)
             if (!show) return;
             float bottom = ThermometerBase, top = bottom + ThermometerFull * Mathf.Clamp01(movement.SpeedCap / MaximumSpeedCap);
@@ -841,7 +844,7 @@ namespace TheTrailWalker
             if (milestone4) AdvanceSurvival(Time.deltaTime);
             if (milestone5 && initialized && travel != null) UpdateTravel();
             if (milestone5 && initialized && travel != null) UpdateTrade();
-            if (milestone5) UpdateHarvest();
+            if (milestone5 && TrailControlsVisible(InSettlementScene)) UpdateHarvest();
             if (milestone5) UpdateCrafting();
             SyncScreenReturn();
             if (milestone5 && initialized && travel != null) UpdateMissions();
@@ -1414,7 +1417,7 @@ namespace TheTrailWalker
                             quality = gear.Quality, remainingDistance = gear.RemainingDistance, infinite = gear.Infinite });
                     }
                 }
-                if (milestone5) { snapshot.economy = 1; snapshot.trade = tradeSession?.Data; snapshot.tradeLog = tradeLog; snapshot.segmentId = travel.CurrentSegment.Id; snapshot.travel = SessionSaveStore.SaveTravel(travel); snapshot.harvested = HarvestedForSave(); snapshot.crafting = SaveCrafting(); snapshot.missions = SaveMissions(); snapshot.statistics = SaveStatistics(); }
+                if (milestone5) { snapshot.economy = 1; snapshot.trade = tradeSession?.Data; snapshot.tradeLog = tradeLog; snapshot.segmentId = travel.CurrentSegment.Id; snapshot.travel = SessionSaveStore.SaveTravel(travel); snapshot.settlement = SaveSettlementForSnapshot(); snapshot.harvested = HarvestedForSave(); snapshot.crafting = SaveCrafting(); snapshot.missions = SaveMissions(); snapshot.statistics = SaveStatistics(); }
                 foreach (ItemEntry item in ledger.Entries)
                 {
                     if (item.Owner == ItemOwner.Consumed) continue;
@@ -1457,7 +1460,7 @@ namespace TheTrailWalker
         {
             if (milestone5) SessionSaveStore.MigrateEconomy(snapshot);   // Milestone 9: item values in minor units
             SessionSaveStore.Validate(snapshot, path.Length, out ledger);
-            if (milestone5) { RestoreTrade(snapshot); travel = SessionSaveStore.RestoreTravel(snapshot, scene.Catalog); RestoreHarvested(snapshot.harvested); RestoreCrafting(snapshot.crafting); RestoreMissions(snapshot.missions); RestoreStatistics(snapshot.statistics); }
+            if (milestone5) { RestoreTrade(snapshot); travel = SessionSaveStore.RestoreTravel(snapshot, scene.Catalog); RestoreHarvested(snapshot.harvested); RestoreCrafting(snapshot.crafting); RestoreMissions(snapshot.missions); RestoreStatistics(snapshot.statistics); RestoreSettlementFromSnapshot(snapshot); }
             if (milestone4)
             {
                 equipment = new EquipmentState();
