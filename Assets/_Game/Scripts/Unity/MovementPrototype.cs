@@ -62,7 +62,8 @@ namespace TheTrailWalker
                 if (benchmark)
                 {
                     TravelCatalog catalog = TravelCatalog.Prototype();
-                    travelScene = new TravelSceneInfo { Catalog = catalog, Segment = catalog.Segment(PerformanceBenchmark.SegmentId) };
+                    travelScene = new TravelSceneInfo { Catalog = catalog, Segment = PerformanceBenchmark.ChosenSegment(catalog) };
+                    PerformanceBenchmark.MeasuredSegment = travelScene.Segment.Id;
                 }
                 else travelScene = CollectionPrototype.ResolveTravelScene();
                 travelScene.RequestReload = requestReload;
@@ -138,7 +139,8 @@ namespace TheTrailWalker
             Add(previousPath, previousSegment, previousAnchors); Add(path, travelScene.Segment, anchors); Add(nextPath, nextSegment, nextAnchors);
             if (travelScene.StartCamp != null) campPoints.Add(travelScene.StartCamp.LookTarget);
             if (travelScene.EndCamp != null) campPoints.Add(travelScene.EndCamp.LookTarget);
-            SceneryScatter.Build(transform, roads, regions, campPoints, anchorPoints, height, travelScene.Segment.Id);
+            if (archPoint.HasValue) campPoints.Add(archPoint.Value);   // keep scatter off the arch and its road end
+            SceneryScatter.Build(transform, roads, regions, campPoints, anchorPoints, height, travelScene.Segment.Id, Look);
             Destroy(ground); // only for placement; pickups and touches never hit the ground
         }
 
@@ -174,7 +176,12 @@ namespace TheTrailWalker
         // The leg already walked into the start camp, shown behind it so the view back is not an empty expanse. Its
         // resources are not repopulated (they roll only when the player returns to that leg's camp).
         private SegmentDefinition previousSegment;
+        private Vector3? archPoint;
         private ITrailPath previousPath;
+
+        // The walked leg's region look (fog, light, valley); the settlement approach drops Fern Hollow's valley.
+        private RegionLook Look => milestone5Enabled && travelScene?.Segment != null
+            ? RegionLooks.For(travelScene.Catalog.RegionOf(travelScene.Segment).Number, travelScene.Segment.SettlementApproach) : RegionLooks.Default;
 
         private static Vector3 Heading(Vector3 tangent)
         {
@@ -195,7 +202,7 @@ namespace TheTrailWalker
                     ground = new JoinedTrailPath(path, nextPath);
                 }
                 // A landing already starts at the river; other legs show the leg that arrived at their start camp.
-                previousSegment = travelScene.Segment.Landing ? null : travelScene.Catalog.Incoming(travelScene.Segment.FromCampId);
+                previousSegment = travelScene.Segment.StartsAtRiver ? null : travelScene.Catalog.Incoming(travelScene.Segment.FromCampId);
                 if (previousSegment != null)
                 {
                     // Turn and move the previous leg so it ends exactly where this road starts, heading the same way.
@@ -209,15 +216,21 @@ namespace TheTrailWalker
                 Material palette = Region01Environment.GroundMaterial;
                 // Level the ground under this leg's camp clearings (no clearing at a ferry landing or the river end).
                 var clearings = new List<Vector3>();
-                if (!travelScene.Segment.Landing) clearings.Add(TravelScenery.ClearingCentre(path, 0, travelScene.Catalog.Camp(travelScene.Segment.FromCampId)));
-                if (!travelScene.Segment.RiverApproach) clearings.Add(TravelScenery.ClearingCentre(path, path.Length, travelScene.Catalog.Camp(travelScene.Segment.ToCampId)));
+                if (!travelScene.Segment.StartsAtRiver) clearings.Add(TravelScenery.ClearingCentre(path, 0, travelScene.Catalog.Camp(travelScene.Segment.FromCampId)));
+                if (travelScene.Segment.ToCampId != null) clearings.Add(TravelScenery.ClearingCentre(path, path.Length, travelScene.Catalog.Camp(travelScene.Segment.ToCampId)));
                 // Level the ground under every shown leg's fishing ponds too (the same anchors BuildInteractables places below).
                 var ponds = new List<Vector3>();
                 TravelScenery.AddPonds(ponds, path, SegmentLayout.Build(travelScene.Catalog.RegionOf(travelScene.Segment), travelScene.Segment));
                 if (nextSegment != null) TravelScenery.AddPonds(ponds, nextPath, SegmentLayout.Build(travelScene.Catalog.RegionOf(nextSegment), nextSegment));
                 if (previousSegment != null) TravelScenery.AddPonds(ponds, previousPath, SegmentLayout.Build(travelScene.Catalog.RegionOf(previousSegment), previousSegment));
+                // Every river shown in this scene gets a channel in the terrain (the same centres BuildRiver uses).
+                var rivers = new List<TravelScenery.RiverCut>();
+                if (travelScene.Segment.RiverApproach) rivers.Add(TravelScenery.RiverCutFor(path, false));
+                if (travelScene.Segment.StartsAtRiver) rivers.Add(TravelScenery.RiverCutFor(path, true));
+                if (nextSegment != null && nextSegment.RiverApproach) rivers.Add(TravelScenery.RiverCutFor(nextPath, false));
+                if (previousSegment != null && previousSegment.Landing) rivers.Add(TravelScenery.RiverCutFor(previousPath, true));
                 TravelScenery.BuildTerrain(transform, ground, palette != null ? palette : terrainMaterial, 70f, 3f, TravelScenery.Undulation(travelScene.Segment), palette != null,
-                    clearings.ToArray(), ponds.ToArray());
+                    clearings.ToArray(), ponds.ToArray(), Look, rivers.ToArray());
             }
             else Primitive("Ground", PrimitiveType.Cube, new Vector3(0, -0.3f, 70), new Vector3(110, 0.5f, 200), terrainMaterial);
             BuildRibbon("Curved trail", path);
@@ -242,10 +255,12 @@ namespace TheTrailWalker
                 HashSet<string> knownRecipes = CollectionPrototype.KnownRecipesFromSave();
                 string fromCamp = travelScene.Segment.FromCampId, toCamp = travelScene.Segment.ToCampId;
                 // A ferry landing starts on the far riverbank instead of at a camp.
-                if (travelScene.Segment.Landing) TravelScenery.BuildRiver(transform, path, terrainMaterial, trailMaterial, avatarMaterial, landing: true);
+                if (travelScene.Segment.StartsAtRiver) TravelScenery.BuildRiver(transform, path, terrainMaterial, trailMaterial, avatarMaterial, landing: true);
                 else travelScene.StartCamp = TravelScenery.BuildCamp(transform, catalog.Camp(fromCamp), path, 0, terrainMaterial, trailMaterial, avatarMaterial,
                     region.Number, CampNpcs.Roll(fromCamp, travelScene.StartVisit, knownRecipes));
                 if (travelScene.Segment.RiverApproach) TravelScenery.BuildRiver(transform, path, terrainMaterial, trailMaterial, avatarMaterial);
+                // The settlement approach ends at the entrance arch instead of a camp (crossing it: CollectionPrototype.Travel).
+                else if (travelScene.Segment.SettlementApproach) archPoint = TravelScenery.BuildSettlementApproach(transform, path, trailMaterial);
                 else travelScene.EndCamp = TravelScenery.BuildCamp(transform, catalog.Camp(toCamp), path, path.Length, terrainMaterial, trailMaterial, avatarMaterial,
                     region.Number, CampNpcs.Roll(toCamp, travelScene.StartVisit + 1, knownRecipes));
                 var anchors = SegmentLayout.Build(region, travelScene.Segment);
@@ -300,9 +315,24 @@ namespace TheTrailWalker
             var rig = cameraObject.AddComponent<FollowCameraRig>(); rig.Target = player.transform; rig.Orbit = orbit;
             var lightObject = new GameObject("Sun", typeof(Light)); lightObject.transform.SetParent(transform, false);
             lightObject.transform.rotation = Quaternion.Euler(45, -30, 0);
-            Light light = lightObject.GetComponent<Light>(); light.type = LightType.Directional; light.intensity = 1.1f; light.shadows = LightShadows.Soft;
-            RenderSettings.sun = light; RenderSettings.ambientMode = AmbientMode.Flat; RenderSettings.ambientLight = Color.gray;
+            Light light = lightObject.GetComponent<Light>(); light.type = LightType.Directional; light.shadows = LightShadows.Soft;
+            RenderSettings.sun = light; RenderSettings.ambientMode = AmbientMode.Flat;
+            // Region look (fog, sun, ambient, sky) of the walked leg's region; older prototypes keep the default look.
+            ApplyLook(Look, light, camera);
             gestures = gameObject.AddComponent<GestureRouter>(); gestures.Bind(state, camera, body.GetComponent<Collider>(), orbit);
+        }
+
+        // Sets every look value each time (fog included), so nothing carries over from the previous scene's region.
+        public static void ApplyLook(RegionLook look, Light sun, Camera camera)
+        {
+            Color Rgb(float[] c) => new Color(c[0], c[1], c[2]);
+            RenderSettings.fog = look.Fog;
+            RenderSettings.fogMode = FogMode.Linear;
+            RenderSettings.fogColor = Rgb(look.FogColor);
+            RenderSettings.fogStartDistance = look.FogStart; RenderSettings.fogEndDistance = look.FogEnd;
+            RenderSettings.ambientLight = Rgb(look.Ambient);
+            if (sun != null) { sun.intensity = look.SunIntensity; sun.color = Rgb(look.SunTint); }
+            if (camera != null) camera.backgroundColor = Rgb(look.Sky);
         }
 
         private void CreateHud()

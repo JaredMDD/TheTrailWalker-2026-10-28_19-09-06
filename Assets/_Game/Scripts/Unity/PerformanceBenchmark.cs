@@ -20,6 +20,15 @@ namespace TheTrailWalker
         public static string ResultPath => Path.Combine(Application.persistentDataPath, "benchmark-results.txt");
         // Dawn Meadow -> Quiet Meadow: camp with traders, trees, rabbits and the full scenery kit.
         public const string SegmentId = "segment.01.02";
+        // The trigger file may name another leg (regions 3-4, November 8, 2026: "segment.03.05" measures Mistwood fog);
+        // an empty or unknown name keeps the default leg. Read before the trigger is deleted.
+        public static Domain.Travel.SegmentDefinition ChosenSegment(Domain.Travel.TravelCatalog catalog)
+        {
+            string id = null;
+            try { id = File.ReadAllText(TriggerPath).Trim(); } catch (IOException) { }
+            return catalog.Segment(id) ?? catalog.Segment(SegmentId);
+        }
+        public static string MeasuredSegment = SegmentId;
         private const float ViewDistance = 6f;
         private const float Warmup = 3f, Measure = 12f;
         private CameraOrbitController orbit;
@@ -64,7 +73,7 @@ namespace TheTrailWalker
             sun = FindAnyObjectByType<Light>();
             var report = new StringBuilder();
             report.AppendLine($"TheTrailWalker benchmark | {SystemInfo.deviceModel} | {SystemInfo.graphicsDeviceName} ({SystemInfo.graphicsDeviceType}) | " +
-                              $"{Screen.width}x{Screen.height} @ {Screen.currentResolution.refreshRateRatio.value:F0} Hz | uncapped (target 144)");
+                              $"{Screen.width}x{Screen.height} @ {Screen.currentResolution.refreshRateRatio.value:F0} Hz | uncapped (target 144) | leg {MeasuredSegment} | fog {(RenderSettings.fog ? "on" : "off")}");
             // Ask for the display's highest refresh rate so frames are not capped at 60 Hz when the GPU has headroom.
             Resolution best = Screen.currentResolution;
             foreach (Resolution r in Screen.resolutions) if (r.refreshRateRatio.value > best.refreshRateRatio.value) best = r;

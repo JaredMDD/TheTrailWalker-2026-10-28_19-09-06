@@ -51,7 +51,89 @@ namespace TheTrailWalker.Editor
             string materialPath=Meshes+"InventoryClothUI.mat";
             var material=AssetDatabase.LoadAssetAtPath<Material>(materialPath);
             if(material==null){material=new Material(Shader.Find("UI/Default"));AssetDatabase.CreateAsset(material,materialPath);}
-            AssetDatabase.SaveAssets();Debug.Log("Inventory container skins, eight native Canvas meshes and prefabs built.");
+            foreach(var gear in InventoryStorageGear.All)BuildGear(gear);
+            AssetDatabase.SaveAssets();Debug.Log("Inventory container skins, native Canvas meshes and prefabs built ("+Names.Length+" base, "+InventoryStorageGear.All.Length+" storage gear items).");
+        }
+        // Table-driven skins: a shirt gets a Pocket, a backpack a Backpack and an Opening. Merchant gear samples its display prefab.
+        private static void BuildGear(InventoryStorageGear.Entry gear)
+        {
+            Color cloth=gear.Cloth,patch=gear.Patch,binding=gear.Binding;
+            if(gear.Sampled)SampleMerchantPalette(gear.ItemId,out cloth,out binding,out patch);
+            string baseName=InventoryStorageGear.PascalName(gear.ItemId);
+            if(gear.Backpack){BuildGearSkin(baseName+"Backpack",InventoryContainerKind.Backpack,gear.ItemId,new Vector2(800,400),cloth,patch,binding,gear.Thread);BuildGearSkin(baseName+"Opening",InventoryContainerKind.Opening,gear.ItemId,new Vector2(600,32),cloth,patch,binding,gear.Thread);}
+            else BuildGearSkin(baseName+"Pocket",InventoryContainerKind.Pocket,gear.ItemId,new Vector2(140,240),cloth,patch,binding,gear.Thread);
+        }
+        private static void BuildGearSkin(string name,InventoryContainerKind kind,string itemId,Vector2 size,Color cloth,Color patch,Color binding,Color thread)
+        {
+            string path=Target+name+".asset";
+            var skin=AssetDatabase.LoadAssetAtPath<InventoryContainerSkin>(path);
+            if(skin==null){skin=ScriptableObject.CreateInstance<InventoryContainerSkin>();AssetDatabase.CreateAsset(skin,path);}
+            skin.Kind=kind;skin.EquipmentDefinitionId=itemId;skin.Cloth=cloth;skin.Shade=new Color(cloth.r*.45f,cloth.g*.45f,cloth.b*.45f,1f);
+            skin.Binding=binding;skin.Thread=thread;skin.Patch=patch;EditorUtility.SetDirty(skin);
+            var root=new GameObject(name,typeof(RectTransform),typeof(CanvasRenderer),typeof(InventoryContainerGraphic));
+            try
+            {
+                root.GetComponent<RectTransform>().sizeDelta=size;var graphic=root.GetComponent<InventoryContainerGraphic>();graphic.Bind(skin);
+                SaveMesh(graphic,name);PrefabUtility.SaveAsPrefabAsset(root,Target+name+".prefab");
+            }
+            finally{UnityEngine.Object.DestroyImmediate(root);}
+        }
+        // Area-weighted palette sampling of "special.tN.shirt|pack" -> Resources/BalloonGoods/Items/SpecialT0N{Shirt|Pack}Item.
+        // Cloth = most-used colour, Binding (outer rim) = darkest of the top three, Patch (top band) = most saturated of the top three;
+        // if both pick one colour, Patch is the next most saturated distinct colour among the top five.
+        public static string LastSampleReport="";
+        private static void SampleMerchantPalette(string itemId,out Color cloth,out Color binding,out Color patch)
+        {
+            string[] parts=itemId.Split('.');string path="BalloonGoods/Items/SpecialT0"+parts[1].Substring(1)+(parts[2]=="pack"?"Pack":"Shirt")+"Item";
+            var prefab=Resources.Load<GameObject>(path);if(prefab==null)throw new InvalidOperationException("Merchant display prefab missing: "+path);
+            var weights=new Dictionary<Color32,double>();
+            foreach(var renderer in prefab.GetComponentsInChildren<MeshRenderer>())
+            {
+                var filter=renderer.GetComponent<MeshFilter>();var mesh=filter!=null?filter.sharedMesh:null;if(mesh==null)continue;
+                var texture=renderer.sharedMaterial.GetTexture("_BaseMap") as Texture2D;if(texture==null)texture=renderer.sharedMaterial.mainTexture as Texture2D;
+                if(texture==null)throw new InvalidOperationException("No palette texture on "+path);
+                Color32[] pixels=ReadPixels(texture);Matrix4x4 matrix=renderer.transform.localToWorldMatrix;
+                Vector3[] vertices=mesh.vertices;Vector2[] uv=mesh.uv;
+                for(int sub=0;sub<mesh.subMeshCount;sub++)
+                {
+                    int[] tri=mesh.GetTriangles(sub);
+                    for(int t=0;t+2<tri.Length;t+=3)
+                    {
+                        Vector3 a=matrix.MultiplyPoint3x4(vertices[tri[t]]),b=matrix.MultiplyPoint3x4(vertices[tri[t+1]]),c=matrix.MultiplyPoint3x4(vertices[tri[t+2]]);
+                        double area=Vector3.Cross(b-a,c-a).magnitude*.5;if(area<=0)continue;
+                        Vector2 centre=(uv[tri[t]]+uv[tri[t+1]]+uv[tri[t+2]])/3f;
+                        int x=Mathf.Clamp(Mathf.FloorToInt((centre.x-Mathf.Floor(centre.x))*texture.width),0,texture.width-1),y=Mathf.Clamp(Mathf.FloorToInt((centre.y-Mathf.Floor(centre.y))*texture.height),0,texture.height-1);
+                        Color32 colour=pixels[y*texture.width+x];colour.a=255;weights.TryGetValue(colour,out double sum);weights[colour]=sum+area;
+                    }
+                }
+            }
+            var top=new List<KeyValuePair<Color32,double>>(weights);top.Sort((l,r)=>r.Value.CompareTo(l.Value));if(top.Count==0)throw new InvalidOperationException("No triangles sampled on "+path);
+            if(top.Count>5)top.RemoveRange(5,top.Count-5);
+            Color Of(Color32 c)=>new Color(c.r/255f,c.g/255f,c.b/255f,1f);
+            cloth=Of(top[0].Key);binding=cloth;patch=cloth;float darkest=float.MaxValue;
+            float Sat(Color c){Color.RGBToHSV(c,out _,out float sat,out _);return sat;}
+            for(int i=0;i<Mathf.Min(3,top.Count);i++){Color c=Of(top[i].Key);float luma=c.r*.299f+c.g*.587f+c.b*.114f;if(luma<darkest){darkest=luma;binding=c;}}
+            float best=-1;
+            for(int i=0;i<Mathf.Min(3,top.Count);i++){Color c=Of(top[i].Key);if(Sat(c)>best){best=Sat(c);patch=c;}}
+            if(patch==binding)
+            {
+                best=-1;Color pick=binding;
+                for(int i=0;i<top.Count;i++){Color c=Of(top[i].Key);if(c!=binding&&Sat(c)>best){best=Sat(c);pick=c;}}
+                patch=pick;
+            }
+            string line=itemId+": cloth "+(Color32)cloth+" binding "+(Color32)binding+" patch "+(Color32)patch;
+            LastSampleReport+=line+"\n";Debug.Log("Sampled "+line);
+        }
+        private static Color32[] ReadPixels(Texture2D texture)
+        {
+            var target=RenderTexture.GetTemporary(texture.width,texture.height,0,RenderTextureFormat.ARGB32);var previous=RenderTexture.active;
+            var oldFilter=texture.filterMode;texture.filterMode=FilterMode.Point;
+            try
+            {
+                Graphics.Blit(texture,target);RenderTexture.active=target;var copy=new Texture2D(texture.width,texture.height,TextureFormat.RGBA32,false);
+                copy.ReadPixels(new UnityEngine.Rect(0,0,texture.width,texture.height),0,0);var pixels=copy.GetPixels32();UnityEngine.Object.DestroyImmediate(copy);return pixels;
+            }
+            finally{texture.filterMode=oldFilter;RenderTexture.active=previous;RenderTexture.ReleaseTemporary(target);}
         }
         private static void SaveMesh(InventoryContainerGraphic graphic,string name)
         {
@@ -115,6 +197,45 @@ namespace TheTrailWalker.Editor
             {
                 RenderTexture.active=previous;if(view!=null)UnityEngine.Object.DestroyImmediate(view);if(cameraObject!=null)UnityEngine.Object.DestroyImmediate(cameraObject);
                 if(target!=null){target.Release();UnityEngine.Object.DestroyImmediate(target);}
+            }
+        }
+        [MenuItem("The Trail Walker/Art/Capture Inventory Storage Gear Preview")]
+        public static void CaptureGearPreview()
+        {
+            if(EditorApplication.isPlayingOrWillChangePlaymode)throw new InvalidOperationException("Capture outside Play mode.");
+            Scene previous=SceneManager.GetActiveScene();Scene scene=EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Additive);
+            RenderTexture target=null;Texture2D output=null;RenderTexture old=RenderTexture.active;const int W=1920,H=3270;
+            try
+            {
+                SceneManager.SetActiveScene(scene);
+                var cam=new GameObject("Container gear camera").AddComponent<Camera>();cam.orthographic=true;cam.orthographicSize=H/200f;
+                cam.transform.position=new Vector3(0,0,-10);cam.clearFlags=CameraClearFlags.SolidColor;cam.backgroundColor=new Color(.12f,.13f,.13f);
+                cam.nearClipPlane=.01f;cam.farClipPlane=30;cam.cullingMask=1<<31;
+                var canvas=new GameObject("Container gear study",typeof(RectTransform),typeof(Canvas)).GetComponent<Canvas>();canvas.renderMode=RenderMode.WorldSpace;canvas.worldCamera=cam;
+                canvas.GetComponent<RectTransform>().sizeDelta=new Vector2(W,H);canvas.transform.localScale=Vector3.one*.01f;
+                Label(canvas.transform,"INVENTORY BAGS / STARTER PACK AND ONE OR TWO PACKS PER TIER",60,3190,1800,60,34);
+                string[] bags={"Tier01Backpack","MarshPackBackpack","TaigaFramePackBackpack","CanyonPackBackpack","HighlandFramePackBackpack","SavannaPackBackpack","CoastalPackBackpack","SpecialT2PackBackpack","SpecialT4PackBackpack"};
+                string[] bagLabels={"T1 STARTER PACK","T2 MARSH PACK","T2 TAIGA FRAME PACK","T3 CANYON PACK","T3 HIGHLAND FRAME PACK","T4 SAVANNA PACK","T4 COASTAL PACK","T2 MERCHANT PACK (SAMPLED)","T4 MERCHANT PACK (SAMPLED)"};
+                for(int i=0;i<bags.Length;i++)
+                {
+                    float x=60+(i%2)*930,y=2730-(i/2)*470;Skin(canvas.transform,bags[i],x,y,800,400);Label(canvas.transform,bagLabels[i],x,y+400,800,40,24);
+                }
+                Label(canvas.transform,"SHIRT POCKETS",60,430,1800,50,28);
+                string[] pockets={"Tier01ShirtPocket","FlaxWorkShirtPocket","TaigaWaxedShirtPocket","PrairieFeatherShirtPocket","HighlandShirtPocket","SavannaShirtPocket","CoastalShirtPocket","SpecialT1ShirtPocket","SpecialT2ShirtPocket","SpecialT3ShirtPocket","SpecialT4ShirtPocket"};
+                string[] pocketLabels={"T1 HEMP","FLAX","WAXED","FEATHER","HIGHLAND","SAVANNA","COASTAL","MERCH T1","MERCH T2","MERCH T3","MERCH T4"};
+                for(int i=0;i<pockets.Length;i++){float x=60+i*165;Skin(canvas.transform,pockets[i],x,150,140,240);Label(canvas.transform,pocketLabels[i],x,100,170,40,18);}
+                foreach(Transform t in canvas.GetComponentsInChildren<Transform>(true))t.gameObject.layer=31;
+                Canvas.ForceUpdateCanvases();target=new RenderTexture(W,H,24);target.Create();
+                UnityEngine.Rendering.RenderPipeline.SubmitRenderRequest(cam,new UnityEngine.Rendering.Universal.UniversalRenderPipeline.SingleCameraRequest{destination=target});
+                RenderTexture.active=target;output=new Texture2D(W,H,TextureFormat.RGBA32,false);output.ReadPixels(new UnityEngine.Rect(0,0,W,H),0,0);output.Apply();
+                Directory.CreateDirectory("Docs/Art/UI");File.WriteAllBytes("Docs/Art/UI/inventory-storage-gear-unity-v1.png",output.EncodeToPNG());
+            }
+            finally
+            {
+                RenderTexture.active=old;if(output!=null)UnityEngine.Object.DestroyImmediate(output);
+                if(target!=null){target.Release();UnityEngine.Object.DestroyImmediate(target);}
+                EditorSceneManager.CloseScene(scene,true);
+                if(previous.IsValid()&&previous.isLoaded)SceneManager.SetActiveScene(previous);
             }
         }
         [MenuItem("The Trail Walker/Art/Capture Inventory Container Preview")]

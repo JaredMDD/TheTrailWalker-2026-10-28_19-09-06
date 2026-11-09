@@ -11,6 +11,7 @@ namespace TheTrailWalker.Editor
     {
         const string Source = "Assets/_Game/Art/Characters/Tier01Accessories/";
         const string Target = "Assets/_Game/Resources/Characters/Tier01Accessories/";
+        const string ReviewTarget = "Assets/_Game/ArtReviews/Characters/Tier01Accessories/";
         const string Existing = "Assets/_Game/Art/Characters/PlayerDefault/";
         const string Docs = "Docs/Art/Characters/Tier01Accessories/";
         static readonly string[] Bodies = { "Male", "Female" };
@@ -28,7 +29,7 @@ namespace TheTrailWalker.Editor
             Guard();
             Directory.CreateDirectory(Target + "Parts");
             Directory.CreateDirectory(Target + "Materials");
-            Directory.CreateDirectory(Target + "ReviewOnly");
+            Directory.CreateDirectory(ReviewTarget + "ReviewOnly");
             AssetDatabase.Refresh();
             var manifest = Own;
             foreach (var part in manifest.parts)
@@ -71,7 +72,7 @@ namespace TheTrailWalker.Editor
             foreach (string body in Bodies) foreach (string style in Styles) foreach (bool seated in new[] { false, true })
             {
                 var root = Review(body, style, 1, seated);
-                try { PrefabUtility.SaveAsPrefabAsset(root, Target + "ReviewOnly/" + root.name + ".prefab"); }
+                try { PrefabUtility.SaveAsPrefabAsset(root, ReviewTarget + "ReviewOnly/" + root.name + ".prefab"); }
                 finally { DestroyReview(root); }
             }
             AssetDatabase.SaveAssets();

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TheTrailWalker.Domain.Travel;
 using TheTrailWalker.Movement;
 using UnityEngine;
 
@@ -60,9 +61,15 @@ namespace TheTrailWalker.Travel
             public bool Empty => Cover.Count + LowShrubs.Count + Rocks.Count + Trees.Count == 0;
         }
 
-        // roads[i] is dressed with the kit of regionNumbers[i].
+        // Fern Hollow valley (spec 2026-11-08): ferns and bushes crowd the slopes and thin out on the floor.
+        public static float FernBushWeight(RegionLook look, float distanceToRoad) =>
+            look == null || !look.Valley ? 1f : distanceToRoad > look.ValleyFlat ? look.SlopeScatter : look.FloorScatter;
+        private static bool FernOrBush(RegionalSceneryArt art) =>
+            art != null && (art.Category == "Shrub" || (art.Category == "GroundCover" && ((art.Name ?? "") + (art.Id ?? "")).IndexOf("fern", StringComparison.OrdinalIgnoreCase) >= 0));
+
+        // roads[i] is dressed with the kit of regionNumbers[i] (and the scene's region look, for the valley weights).
         public static void Build(Transform parent, IReadOnlyList<ITrailPath> roads, IReadOnlyList<int> regionNumbers, IReadOnlyList<Vector3> camps,
-            IReadOnlyList<Vector3> anchors, Func<Vector3, float> groundHeight, string seedName)
+            IReadOnlyList<Vector3> anchors, Func<Vector3, float> groundHeight, string seedName, RegionLook look = null)
         {
             if (roads.Count == 0) return;
             var palettes = new Palette[roads.Count];
@@ -106,12 +113,22 @@ namespace TheTrailWalker.Travel
             }
 
             // Places a piece if it clears every road by its catalog clearance (scaled), the camps and the interactables.
-            void Place(RegionalSceneryArt art, Vector3 position, float scale)
+            // In a valley, ferns and bushes are thinned on the floor (kept with probability w < 1) or doubled on the slopes
+            // (a second copy a few metres away for w >= 2).
+            void Place(RegionalSceneryArt art, Vector3 position, float scale, bool copy = false)
             {
                 if (art == null) return;
                 var here = new Vector2(position.x, position.z);
                 float clearance = art.RecommendedRoadClearance + art.FootprintRadius * (scale - 1f);
-                if (RoadDistance(here, out _) < clearance) return;
+                float roadDistance = RoadDistance(here, out _);
+                if (roadDistance < clearance) return;
+                float weight = !copy && FernOrBush(art) ? FernBushWeight(look, roadDistance) : 1f;
+                if (weight < 1f && random.NextDouble() >= weight) return;
+                if (weight >= 2f)
+                {
+                    float angle = (float)random.NextDouble() * Mathf.PI * 2f, step = 1.8f + (float)random.NextDouble() * 1.6f;
+                    Place(art, position + new Vector3(Mathf.Cos(angle), 0f, Mathf.Sin(angle)) * step, scale, true);
+                }
                 if (Near(position, camps, CampClear) || Near(position, anchors, AnchorClear)) return;
                 position.y = groundHeight(position);
                 Matrix4x4 placement = Matrix4x4.TRS(position, Quaternion.Euler(0, (float)random.NextDouble() * 360f, 0), Vector3.one * scale);

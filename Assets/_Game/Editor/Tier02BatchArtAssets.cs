@@ -18,6 +18,7 @@ namespace TheTrailWalker.Editor
             Docs = "Docs/Art/Tier02/Batch" + code + "/";
         }
         [Serializable] sealed class Item { public string Name, Model, SourcePath, PalettePath, PrefabPath, ItemId, Representation; public int Triangles; }
+        public static string PrefabAssetPath(string prefabPath) => (prefabPath.StartsWith("Tier02/Reviews/", StringComparison.Ordinal) ? "Assets/_Game/ArtReviews/" : "Assets/_Game/Resources/") + prefabPath + ".prefab";
         [Serializable] sealed class Manifest { public Item[] Items; }
         static Manifest Load() => JsonUtility.FromJson<Manifest>(File.ReadAllText(ManifestPath));
 
@@ -48,7 +49,7 @@ namespace TheTrailWalker.Editor
                 material.SetTexture("_DetailMap", AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/_Game/Art/Shared/Detail/DetailAtlas.png"));
                 material.SetFloat("_DetailScale", 5); material.SetFloat("_DetailStrength", .40f); material.enableInstancing = true;
                 EditorUtility.SetDirty(material);
-                string prefabFile = "Assets/_Game/Resources/" + row.PrefabPath + ".prefab";
+                string prefabFile = PrefabAssetPath(row.PrefabPath);
                 Directory.CreateDirectory(Path.GetDirectoryName(prefabFile));
                 var root = new GameObject(row.Model);
                 try
@@ -76,7 +77,7 @@ namespace TheTrailWalker.Editor
             if (EditorApplication.isPlayingOrWillChangePlaymode) throw new InvalidOperationException("Capture outside Play mode.");
             foreach (var row in Load().Items)
             {
-                var prefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Game/Resources/" + row.PrefabPath + ".prefab");
+                var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(PrefabAssetPath(row.PrefabPath));
                 float forward = row.Representation == "worn" ? 1f : -1f;
                 Render(prefab, row.Model + "-unity-front.png", new Vector3(0,0,4*forward));
                 Render(prefab, row.Model + "-unity-study.png", new Vector3(2.3f,1.3f,4*forward));

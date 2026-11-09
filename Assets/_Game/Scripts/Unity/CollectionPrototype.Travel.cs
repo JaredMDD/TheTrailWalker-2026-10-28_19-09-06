@@ -29,6 +29,7 @@ namespace TheTrailWalker
         private Text tollText;
         private Button tollCash, tollGold;
         private bool tollAsked; // the ferry NPC asks once per walk up to the river
+        private GameObject archPanel; private bool archShown; // settlement arch note (route only until Milestone 10)
         // Set before a scene reload that continues a walk (the ferry crossing onto its landing leg), so the next load
         // does not treat the unseated save as a closed game. A real app start always begins false.
         private static bool continueAfterReload;
@@ -80,7 +81,7 @@ namespace TheTrailWalker
             int cycle = travel.CycleOf(segmentId);
             foreach (LooseDrops.Drop drop in LooseDrops.Roll(region, segment, cycle))
             {
-                ItemDefinition definition = Array.Find(PrototypeItems.All, d => d.Id == drop.ItemId);
+                ItemDefinition definition = TheTrailWalker.Domain.Crafting.Items.Find(drop.ItemId);
                 ItemEntry item = ledger.AddWorld(LooseDrops.ItemId(segmentId, cycle, drop.Point), definition, 1000, drop.Quality, TheTrailWalker.Domain.Economy.ItemPrices.Profile(definition, drop.Quality), true, drop.Distance);
                 ledger.AssignSegment(item, segmentId);
                 if (segmentId == scene.Segment.Id) SpawnSegmentBundle(item, Vector3.zero);
@@ -133,6 +134,9 @@ namespace TheTrailWalker
                 if (travel.PaidTolls.Contains(travel.CurrentRegion.Id)) { if (travel.CanCrossRiver(false, out _)) TakeFerry(); else AskToll(); }
                 else AskToll();
             }
+            // Walking into the settlement's entrance arch stops the walk; until Milestone 10 a note sends the player back.
+            if (phase == TravelPhase.Walking && scene.Segment.SettlementApproach && (movement.Pauses & MovementPauseReasons.Camp) != 0 && !TravelBusy && !inventoryOpen)
+                ShowArchNote();
         }
 
         private void AskToll()
@@ -140,11 +144,14 @@ namespace TheTrailWalker
             if (tollAsked) return;
             tollAsked = true; router.CancelAll(); router.InteractionLocked = true;
             RegionDefinition region = travel.CurrentRegion, next = scene.Catalog.Region(region.NextRegionId);
-            bool open = next != null;
+            // Past Bright Hollow the ferry crosses to the settlement approach; region 5 lies beyond the settlement.
+            bool toSettlement = scene.Catalog.SettlementApproachFrom(travel.CurrentCampId) != null;
+            bool open = next != null || toSettlement;
+            string destination = toSettlement ? "the settlement and on to Cloudstep Mountains" : next?.Name;
             long gold = TravelState.TollGold(region);
             tollText.text = !open ? "Ferryman: \"The far bank isn't open yet. Come back in a later milestone.\""
                 : travel.PaidTolls.Contains(region.Id) ? "Ferryman: \"Your crossing is paid.\""
-                : $"Ferryman: \"Crossing to {next.Name} costs a one-time fee. After that, the ferry is yours whenever you come.\"\n\nYou have {travel.Cash} cash and {travel.Gold} gold.";
+                : $"Ferryman: \"Crossing to {destination} costs a one-time fee. After that, the ferry is yours whenever you come.\"\n\nYou have {travel.Cash} cash and {travel.Gold} gold.";
             tollCash.gameObject.SetActive(open && !travel.PaidTolls.Contains(region.Id));
             tollGold.gameObject.SetActive(open && !travel.PaidTolls.Contains(region.Id));
             tollCash.GetComponentInChildren<Text>().text = $"PAY {region.TollCost} CASH";
@@ -163,6 +170,20 @@ namespace TheTrailWalker
             tollPanel.SetActive(false); router.InteractionLocked = stamina.Fainted;
             TakeFerry();
         }
+        private void ShowArchNote()
+        {
+            if (archShown) return;
+            archShown = true; router.CancelAll(); router.InteractionLocked = true;
+            archPanel.transform.SetAsLastSibling(); archPanel.SetActive(true);
+        }
+        // A real camp return to the camp the ferry left from: new visit and fresh drops; the toll stays paid.
+        private void ConfirmArch()
+        {
+            archPanel.SetActive(false); router.InteractionLocked = stamina.Fainted;
+            string camp = travel.CurrentCamp.Name;
+            CommitTravel(() => travel.ReachSettlementArch(), $"Back at {camp}. The ferry is paid.");
+        }
+
         // Declining walks back to the camp the river leg started from (a real camp return, like BACK TO CAMP).
         private void DeclineToll()
         {
@@ -231,6 +252,13 @@ namespace TheTrailWalker
             tollGold = Button(tollPanel.transform, "PAY GOLD", 0.36f, 0.06f, 0.65f, 0.34f, () => PayTollWith(TollCurrency.Gold)).transform.parent.GetComponent<Button>();
             Button(tollPanel.transform, "NOT NOW", 0.66f, 0.06f, 0.96f, 0.34f, DeclineToll);
             tollPanel.SetActive(false);
+            // Settlement arch note on mission paper (regions 3-4 spec: route only until the settlement opens).
+            archPanel = Rect("Settlement arch note", safe, 0.10f, 0.38f, 0.90f, 0.62f).gameObject;
+            Sheet("Paper", archPanel.transform, "paper_0", 0f, 0f, 1f, 1f, -1.5f);
+            Text archText = Label(archPanel.transform, "The settlement opens in a later milestone (Milestone 10).", 0.10f, 0.42f, 0.90f, 0.88f, 26);
+            archText.color = Ink; archText.fontStyle = FontStyle.Bold; archText.resizeTextForBestFit = true; archText.resizeTextMinSize = 12; archText.resizeTextMaxSize = 26;
+            Button(archPanel.transform, "OK", 0.32f, 0.10f, 0.68f, 0.34f, ConfirmArch);
+            archPanel.SetActive(false);
             CreateMapPanel(); // worn region map (CollectionPrototype.Map.cs)
             CreateTradeHud(); // camp conveyor trade and wallet (CollectionPrototype.Trade.cs)
             CreateRouteCard(); // departure preview and remaining leg (CollectionPrototype.Route.cs)
@@ -262,8 +290,10 @@ namespace TheTrailWalker
         {
             if (!travel.CanCrossRiver(TravelBusy, out string reason)) { Say(reason); return; }
             RegionDefinition next = scene.Catalog.Region(travel.CurrentRegion.NextRegionId);
+            SegmentDefinition approach = scene.Catalog.SettlementApproachFrom(travel.CurrentCampId);
             continueAfterReload = true;
-            CommitTravel(() => travel.CrossRiver(TravelBusy), $"Crossed the river into {next.Name}. {next.FirstCamp.Name} lies ahead.");
+            CommitTravel(() => travel.CrossRiver(TravelBusy), approach != null ? $"Crossed the river. The road leads to the {scene.Catalog.Settlement(approach.ToSettlementId).Name.ToLowerInvariant()}."
+                : $"Crossed the river into {next.Name}. {next.FirstCamp.Name} lies ahead.");
         }
         // Debug (user, November 2, 2026): unlock every camp of the current region on the camp map.
         private void UnlockRegionCamps()
@@ -277,7 +307,8 @@ namespace TheTrailWalker
         private static bool ContinuingReload() { bool continuing = continueAfterReload; continueAfterReload = false; return continuing; }
         private string TravelStatus() => travel == null ? "" :
             $"\nRegion {scene.Catalog.RegionOf(travel.CurrentSegment).Number} {scene.Catalog.RegionOf(travel.CurrentSegment).Name} | " +
-            (travel.OnFarBank ? "Road to " + scene.Catalog.Camp(travel.CurrentSegment.ToCampId).Name : (phase == TravelPhase.Walking ? "Road from " : "") + travel.CurrentCamp.Name) +
+            (travel.OnSettlementApproach ? "Road to the " + scene.Catalog.Settlement(travel.CurrentSegment.ToSettlementId).Name.ToLowerInvariant()
+                : travel.OnFarBank ? "Road to " + scene.Catalog.Camp(travel.CurrentSegment.ToCampId).Name : (phase == TravelPhase.Walking ? "Road from " : "") + travel.CurrentCamp.Name) +
             $" | Cash {travel.Cash} | Gold {travel.Gold}";
     }
 }

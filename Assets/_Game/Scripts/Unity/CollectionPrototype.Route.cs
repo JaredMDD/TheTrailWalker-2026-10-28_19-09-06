@@ -56,13 +56,13 @@ namespace TheTrailWalker
             if (routeCard == null || travel == null) return;
             bool covered = inventoryOpen || stamina.Fainted || saveBlocked || TravelInputLocked || active != null
                 || (craftPanel != null && craftPanel.activeSelf) || (gearPanel != null && gearPanel.activeSelf) || (missionPanel != null && missionPanel.activeSelf)
-                || (mapPanel != null && mapPanel.activeSelf) || (tollPanel != null && tollPanel.activeSelf);
+                || (mapPanel != null && mapPanel.activeSelf) || (tollPanel != null && tollPanel.activeSelf) || (archPanel != null && archPanel.activeSelf);
             SegmentDefinition leg = travel.CurrentSegment;
             bool show = !covered && leg != null && !leg.RiverApproach;
             routeCard.gameObject.SetActive(show);
             if (!show || Time.unscaledTime < routeRefreshAt) return;
             routeRefreshAt = Time.unscaledTime + 0.5f;
-            string destination = scene.Catalog.Camp(leg.ToCampId)?.Name ?? "the next camp";
+            string destination = leg.SettlementApproach ? "the settlement" : scene.Catalog.Camp(leg.ToCampId)?.Name ?? "the next camp";
             double cost = RouteBudget.Hearts(leg);
             if (phase == TravelPhase.Seated)
             {

@@ -18,7 +18,8 @@ namespace TheTrailWalker.Editor
         [MenuItem("The Trail Walker/Milestone 5/Prepare and Validate")]
         public static void Prepare()
         {
-            Milestone4Setup.Prepare(); Milestone4EquipmentValidation.Run(); Milestone5Validation.Run(); Milestone6Validation.Run(); Milestone7Validation.Run(); Milestone8Validation.Run(); Milestone9Validation.Run();
+            KeepFogVariants();
+            Milestone4Setup.Prepare(); Milestone4EquipmentValidation.Run(); Milestone5Validation.Run(); Milestone6Validation.Run(); Milestone7Validation.Run(); Milestone8Validation.Run(); Milestone9Validation.Run(); TierOneRegionsValidation.Run(); Phase1ConsistencyValidation.Run();
             Create(BootstrapPath, () => new GameObject("Session", typeof(GameBootstrapper)).GetComponent<GameBootstrapper>().Configure("TravelTrail"));
             Create(TrailPath, () =>
             {
@@ -28,6 +29,16 @@ namespace TheTrailWalker.Editor
             });
             EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(BootstrapPath, true), new EditorBuildSettingsScene(TrailPath, true) };
             AssetDatabase.SaveAssets();
+        }
+        // Mistwood fog is switched on at runtime (RegionLook), so Automatic fog stripping would remove the linear fog
+        // shader variants from the device build. Custom stripping keeps them (regions 3-4, November 8, 2026).
+        private static void KeepFogVariants()
+        {
+            var graphics = new SerializedObject(UnityEngine.Rendering.GraphicsSettings.GetGraphicsSettings());
+            SerializedProperty stripping = graphics.FindProperty("m_FogStripping"), linear = graphics.FindProperty("m_FogKeepLinear");
+            if (stripping.intValue == 1 && linear.boolValue) return;
+            stripping.intValue = 1; linear.boolValue = true;
+            graphics.ApplyModifiedPropertiesWithoutUndo(); AssetDatabase.SaveAssets();
         }
         private static void Create(string path, Action create)
         {
@@ -43,6 +54,7 @@ namespace TheTrailWalker.Editor
             Prepare(); Directory.CreateDirectory("Builds/Android");
             BuildReport result = BuildPipeline.BuildPlayer(new BuildPlayerOptions { scenes = new[] { BootstrapPath, TrailPath }, target = BuildTarget.Android, targetGroup = BuildTargetGroup.Android, locationPathName = "Builds/Android/TheTrailWalker-Milestone5-Development.apk", options = BuildOptions.Development });
             if (result.summary.result != BuildResult.Succeeded) throw new Exception("Milestone 5 build failed: " + result.summary.result);
+            ApkBudget.Enforce("Builds/Android/TheTrailWalker-Milestone5-Development.apk", result);
         }
     }
     [InitializeOnLoad] internal static class Milestone5Request

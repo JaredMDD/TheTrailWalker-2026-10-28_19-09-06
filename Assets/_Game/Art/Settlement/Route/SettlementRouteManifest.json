@@ -1,0 +1,24 @@
+{
+  "Revision": 1,
+  "Style": "faceted",
+  "Parts": [
+    {
+      "name": "EntranceArch",
+      "vertices": 292,
+      "triangles": 452
+    },
+    {
+      "name": "PalisadeSegment",
+      "vertices": 367,
+      "triangles": 570
+    },
+    {
+      "name": "FenceSection",
+      "vertices": 90,
+      "triangles": 152
+    }
+  ],
+  "ArchClearWidth": 4.64,
+  "ArchClearHeight": 3.23,
+  "Scope": "Art only: entrance arch, palisade segment and fence section for the settlement approach."
+}

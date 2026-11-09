@@ -694,7 +694,7 @@ namespace TheTrailWalker
             // Commit the manifest (world items in the save) before anything appears.
             for (int i = 0; i < manifest.Count; i++)
             {
-                ItemDefinition definition = Array.Find(PrototypeItems.All, d => d.Id == manifest[i].ItemId);
+                ItemDefinition definition = TheTrailWalker.Domain.Crafting.Items.Find(manifest[i].ItemId);
                 if (definition == null) continue;
                 ItemEntry item = ledger.AddWorld(HarvestManifest.BundleId(segmentId, cycle, target.AnchorId, i), definition, 1000, manifest[i].Quality, TheTrailWalker.Domain.Economy.ItemPrices.Profile(definition, manifest[i].Quality), true, target.Distance);
                 ledger.AssignSegment(item, segmentId);

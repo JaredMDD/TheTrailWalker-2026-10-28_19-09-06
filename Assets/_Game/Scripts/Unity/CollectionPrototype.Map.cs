@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using TheTrailWalker.Domain.Harvest;
 using TheTrailWalker.Domain.Items;
 using TheTrailWalker.Domain.Travel;
 using UnityEngine;
@@ -101,12 +102,7 @@ namespace TheTrailWalker
             // The road: winds from below the first camp up to the ferry, one node per camp.
             int n = region.Camps.Count;
             float bottom = MapRoadBottom, top = MapRoadTop;
-            var nodes = new List<Vector2>();
-            for (int i = 0; i < n; i++)
-            {
-                float y = n == 1 ? (bottom + top) / 2 : bottom + (top - bottom) * i / (n - 1);
-                nodes.Add(new Vector2(0.5f + 0.07f * Mathf.Sin(i * 1.35f + region.Number), y));
-            }
+            List<Vector2> nodes = CampNodes(n, region.Number);
             var road = new List<Vector2> { new Vector2(0.5f, 0.06f) }; road.AddRange(nodes); road.Add(new Vector2(0.5f, 0.775f));
             var smooth = Smooth(road, 6);
             MapRoad(smooth, 13f, new Color(0.36f, 0.24f, 0.11f, 0.85f));
@@ -130,14 +126,32 @@ namespace TheTrailWalker
         // Map layout (Milestone 8 item 6, November 2, 2026): camps alternate road sides, so same-side tabs are two road
         // steps apart; up to the 20-camp tier-four maximum they never overlap, and the sheet needs no scrolling.
         public const float MapRoadBottom = 0.1f, MapRoadTop = 0.71f, CampTabHalfHeight = 0.03f;
+        public const float CampTabGap = 0.035f, RoadWiggle = 0.07f, DenseRoadWiggle = 0.05f;
+        public static List<Vector2> CampNodes(int n, int regionNumber)
+        {
+            var nodes = new List<Vector2>();
+            // Dense maps (review fix, November 8, 2026): when neighbouring camps are closer than a tab's height their tabs
+            // share rows, so the road's sideways wiggle must stay under the two tab gaps or a left tab crosses its right
+            // neighbour's. Neighbouring wiggle differs by up to 1.25 x the amplitude (2 sin 0.675).
+            float step = n > 1 ? (MapRoadTop - MapRoadBottom) / (n - 1) : 1f;
+            float wiggle = step >= 2f * CampTabHalfHeight ? RoadWiggle : DenseRoadWiggle;
+            for (int i = 0; i < n; i++)
+            {
+                float y = n == 1 ? (MapRoadBottom + MapRoadTop) / 2 : MapRoadBottom + (MapRoadTop - MapRoadBottom) * i / (n - 1);
+                nodes.Add(new Vector2(0.5f + wiggle * Mathf.Sin(i * 1.35f + regionNumber), y));
+            }
+            return nodes;
+        }
+        // A camp's tab on the sheet: from beside its road node out to the sheet edge on its side (x0, y0, x1, y1).
+        public static UnityEngine.Rect CampTabRect(Vector2 node, bool right) =>
+            UnityEngine.Rect.MinMaxRect(right ? node.x + CampTabGap : 0.035f, node.y - CampTabHalfHeight, right ? 0.965f : node.x - CampTabGap, node.y + CampTabHalfHeight);
         public static bool CampTabsFit(int camps) => camps <= 2 || 2f * (MapRoadTop - MapRoadBottom) / (camps - 1) >= 2f * CampTabHalfHeight;
 
         private static ItemDefinition MapItem(string id) => id == null ? null : TheTrailWalker.Domain.Crafting.Items.Find(id);
         // The region's local fishing pair (harvest table): the first species stands for fishing on the map.
         private static string FishFor(int region)
         {
-            string[] pairs = { "fish.rainbow_trout", "fish.largemouth_bass", "fish.rainbow_trout", "fish.bluegill", "fish.rainbow_trout", "fish.largemouth_bass" };
-            return pairs[(region - 1) % pairs.Length];
+            return HarvestManifest.FishPair(region).a;
         }
 
         private void MapIcon(ItemDefinition item, float x0, float y0, float x1, float y1, float alpha = 1f)
@@ -251,9 +265,8 @@ namespace TheTrailWalker
         private void CampButton(CampDefinition camp, Vector2 node, bool current, bool reached, bool selectable, bool sameRegion)
         {
             bool right = camp.Side == CampSide.Right;
-            float h = CampTabHalfHeight, gap = 0.035f;
-            float x0 = right ? node.x + gap : 0.035f, x1 = right ? 0.965f : node.x - gap;
-            RectTransform rect = Rect(camp.Name, mapPage, x0, node.y - h, x1, node.y + h);
+            UnityEngine.Rect tabRect = CampTabRect(node, right);
+            RectTransform rect = Rect(camp.Name, mapPage, tabRect.xMin, tabRect.yMin, tabRect.xMax, tabRect.yMax);
             Image plate = rect.gameObject.AddComponent<Image>();
             Sprite tab = Resources.Load<Sprite>("UI/Missions/tab");
             if (tab != null) { plate.sprite = tab; plate.type = Image.Type.Simple; }

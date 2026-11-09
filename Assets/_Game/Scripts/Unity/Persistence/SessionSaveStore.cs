@@ -89,6 +89,7 @@ namespace TheTrailWalker.Persistence
         public int visitNumber;
         public long cash; public long gold; // debug gold wallet (absent in older schema 3 files: 0)
         public bool farBank; // walking the ferry landing leg
+        public bool settlementApproach; // walking the settlement approach past Bright Hollow's ferry (absent in older saves: false)
         public List<string> visited = new List<string>(), discovered = new List<string>(), paidTolls = new List<string>();
         public List<SavedCycle> cycles = new List<SavedCycle>();
     }
@@ -294,12 +295,24 @@ namespace TheTrailWalker.Persistence
             CampDefinition camp = catalog.Camp(data.travel.campId);
             if (camp == null) return;
             SegmentDefinition outgoing = catalog.Outgoing(camp.Id);
-            SegmentDefinition expected = data.travel.farBank ? catalog.LandingInto(catalog.Region(camp.RegionId).NextRegionId) : outgoing;
+            SegmentDefinition expected = data.travel.farBank ? catalog.LandingInto(catalog.Region(camp.RegionId).NextRegionId)
+                : data.travel.settlementApproach ? catalog.SettlementApproachFrom(camp.Id) : outgoing;
             bool landingMoved = data.travel.farBank && (expected == null || expected.FromCampId != camp.Id);
             if (!landingMoved && expected != null && data.segmentId == expected.Id) return;
-            data.segmentId = outgoing.Id; data.travel.seated = true; data.travel.farBank = false;
+            data.segmentId = outgoing.Id; data.travel.seated = true; data.travel.farBank = false; data.travel.settlementApproach = false;
             data.distance = 0; data.requestedSpeed = 0; data.inventoryResume = 0; data.camp = false;
             if (!data.travel.cycles.Exists(c => c != null && c.segmentId == outgoing.Id)) data.travel.cycles.Add(new SavedCycle { segmentId = outgoing.Id, cycle = 1 });
+        }
+        // An unseated schema-3 save is a walk on its saved leg, but on a real app start the scene shows the start camp's own
+        // leg (a ferry landing or the settlement approach start at a river, so that leg is the short river walk); the restart
+        // then reseats the player and resets the distance. Bound such a distance by the saved leg's catalogue length instead
+        // (review fix, November 8, 2026: closing the app at the settlement arch or far along a landing blocked the save).
+        private static bool WalkOnSavedLeg(SessionSnapshot data) => data.version == 3 && data.travel != null && !data.travel.seated;
+        private static float DistanceLimit(SessionSnapshot data, float pathLength)
+        {
+            if (!WalkOnSavedLeg(data)) return pathLength;
+            SegmentDefinition saved = TravelCatalog.Prototype().Segment(data.segmentId);
+            return saved == null ? pathLength : Math.Max(pathLength, saved.Length);
         }
         public static void Validate(SessionSnapshot data, float pathLength, out SpatialInventory inventory)
         {
@@ -307,7 +320,7 @@ namespace TheTrailWalker.Persistence
                 (data.crafting != null && (data.crafting.known == null || data.crafting.mastery == null || data.crafting.batches == null || data.crafting.batches.Count > 4096
                     || data.crafting.mastery.Exists(m => m == null || string.IsNullOrEmpty(m.recipeId) || m.units < 0)
                     || data.crafting.batches.Exists(b => b == null || string.IsNullOrEmpty(b.id) || string.IsNullOrEmpty(b.recipeId) || b.executions < 1 || b.outputUnits < 1 || b.itemIds == null
-                        || !DateTime.TryParse(b.readyAtUtc, null, System.Globalization.DateTimeStyles.RoundtripKind, out _)))) || float.IsNaN(data.yaw) || float.IsInfinity(data.yaw) || data.distance > pathLength) throw new InvalidDataException("Invalid session header");
+                        || !DateTime.TryParse(b.readyAtUtc, null, System.Globalization.DateTimeStyles.RoundtripKind, out _)))) || float.IsNaN(data.yaw) || float.IsInfinity(data.yaw) || data.distance > DistanceLimit(data, pathLength)) throw new InvalidDataException("Invalid session header");
             if (data.missions != null)
             {
                 if (data.missions.claimed == null || data.missions.claimed.Count > 256) throw new InvalidDataException("Invalid session data");
@@ -316,7 +329,8 @@ namespace TheTrailWalker.Persistence
                 catch (ArgumentException e) { throw new InvalidDataException("Invalid mission progress: " + e.Message); }
             }
             var movement = new MovementState(); movement.Restore(data.distance, data.requestedSpeed, data.speedCap, data.inventoryResume, data.inventoryOpen, data.postHarvest, data.camp);
-            if (data.camp != (data.distance >= pathLength) && pathLength != float.MaxValue) throw new InvalidDataException("Invalid camp position");
+            // The camp flag belongs to the saved leg too; an unseated schema-3 walk is reset on restart, so only check it otherwise.
+            if (data.camp != (data.distance >= pathLength) && pathLength != float.MaxValue && !WalkOnSavedLeg(data)) throw new InvalidDataException("Invalid camp position");
             TravelCatalog catalog = TravelCatalog.Prototype();
             if (data.version == 3)
             {
@@ -349,7 +363,7 @@ namespace TheTrailWalker.Persistence
             foreach (SavedItem item in data.items)
             {
                 if (item == null || !Enum.TryParse(item.owner, false, out ItemOwner owner) || (owner != ItemOwner.World && owner != ItemOwner.Backpack && (data.version == 1 || (owner != ItemOwner.Pocket && owner != ItemOwner.Hook && owner != ItemOwner.Overflow && owner != ItemOwner.Worn && owner != ItemOwner.Escrow))) || (wornIds.Contains(item.id) && owner != ItemOwner.Worn) || float.IsNaN(item.trailDistance) || float.IsInfinity(item.trailDistance) || item.trailDistance < 0 || item.trailDistance > (data.version == 3 ? 10000f : pathLength) || float.IsNaN(item.worldX) || float.IsInfinity(item.worldX) || float.IsNaN(item.worldY) || float.IsInfinity(item.worldY) || float.IsNaN(item.worldZ) || float.IsInfinity(item.worldZ)) throw new InvalidDataException("Invalid item record");
-                ItemDefinition def = Array.Find(PrototypeItems.All, d => d.Id == item.definitionId);
+                ItemDefinition def = TheTrailWalker.Domain.Crafting.Items.Find(item.definitionId);
                 if (def == null) throw new InvalidDataException("Unknown item definition: " + item.definitionId);
                 if (owner == ItemOwner.Worn)
                 {
@@ -392,7 +406,7 @@ namespace TheTrailWalker.Persistence
             foreach (SavedItem item in data.items)
             {
                 if (item == null) continue;
-                ItemDefinition def = Array.Find(PrototypeItems.All, d => d.Id == item.definitionId);
+                ItemDefinition def = TheTrailWalker.Domain.Crafting.Items.Find(item.definitionId);
                 if (def == null) continue;
                 item.unitValue = TheTrailWalker.Domain.Economy.ItemPrices.MigrateLegacyValue(def, item.quality, item.unitValue);
                 if (item.pile != null) foreach (SavedPortion portion in item.pile) if (portion != null) portion.unitValue = TheTrailWalker.Domain.Economy.ItemPrices.MigrateLegacyValue(def, portion.quality, portion.unitValue);
@@ -412,12 +426,12 @@ namespace TheTrailWalker.Persistence
             if (saved == null || saved.visited == null || saved.discovered == null || saved.paidTolls == null || saved.cycles == null) throw new InvalidDataException("Missing travel state");
             var cycles = new List<KeyValuePair<string, int>>();
             foreach (SavedCycle cycle in saved.cycles) { if (cycle == null) throw new InvalidDataException("Invalid drop cycle"); cycles.Add(new KeyValuePair<string, int>(cycle.segmentId, cycle.cycle)); }
-            try { return TravelState.Restore(catalog, saved.campId, saved.seated, saved.lastTrailCampId, saved.visitNumber, saved.cash, saved.visited, saved.discovered, saved.paidTolls, cycles, saved.gold, saved.farBank); }
+            try { return TravelState.Restore(catalog, saved.campId, saved.seated, saved.lastTrailCampId, saved.visitNumber, saved.cash, saved.visited, saved.discovered, saved.paidTolls, cycles, saved.gold, saved.farBank, saved.settlementApproach); }
             catch (ArgumentException error) { throw new InvalidDataException(error.Message); }
         }
         public static SavedTravel SaveTravel(TravelState travel)
         {
-            var saved = new SavedTravel { campId = travel.CurrentCampId, lastTrailCampId = travel.LastTrailCampId, seated = travel.Seated, visitNumber = travel.VisitNumber, cash = travel.Cash, gold = travel.Gold, farBank = travel.OnFarBank,
+            var saved = new SavedTravel { campId = travel.CurrentCampId, lastTrailCampId = travel.LastTrailCampId, seated = travel.Seated, visitNumber = travel.VisitNumber, cash = travel.Cash, gold = travel.Gold, farBank = travel.OnFarBank, settlementApproach = travel.OnSettlementApproach,
                 visited = new List<string>(travel.VisitedCamps), discovered = new List<string>(travel.DiscoveredRegions), paidTolls = new List<string>(travel.PaidTolls) };
             foreach (var cycle in travel.DropCycles) saved.cycles.Add(new SavedCycle { segmentId = cycle.Key, cycle = cycle.Value });
             return saved;

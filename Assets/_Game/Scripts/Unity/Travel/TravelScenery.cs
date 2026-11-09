@@ -28,7 +28,8 @@ namespace TheTrailWalker.Travel
             uint hash = 2166136261; foreach (char c in segment.Id) { hash ^= c; hash *= 16777619; }
             for (int i = 0; i < count; i++)
             {
-                float swing = segment.RiverApproach || i == 0 ? 0f : ((hash >> (i % 24)) % 17) - 8f;
+                // River legs and the settlement approach run straight (the approach ends square-on at the entrance arch).
+                float swing = segment.RiverApproach || segment.SettlementApproach || i == 0 ? 0f : ((hash >> (i % 24)) % 17) - 8f;
                 // Hills: alternating climbs and descents with a per-segment phase. Both ends are level (user, November 2,
                 // 2026: the road dropped into a camp and climbed out again in a V): the first and last two knots sit at the
                 // camp height and the hills ease in between, so every camp has a flat approach and departure.
@@ -44,16 +45,22 @@ namespace TheTrailWalker.Travel
 
         // Ground grid around the road whose height follows the road (level across it). A road-following strip folds
         // over itself on tight bends, and the overlapping triangles flickered.
-        public static void BuildTerrain(Transform parent, ITrailPath path, Material ground, float margin = 70f, float cell = 3f, float undulation = 0f, bool styled = false, Vector3[] campPoints = null, Vector3[] pondPoints = null)
+        public static void BuildTerrain(Transform parent, ITrailPath path, Material ground, float margin = 70f, float cell = 3f, float undulation = 0f, bool styled = false, Vector3[] campPoints = null, Vector3[] pondPoints = null, RegionLook look = null, RiverCut[] rivers = null)
         {
             var terrain = new GameObject("Terrain", typeof(MeshFilter), typeof(MeshRenderer));
             terrain.transform.SetParent(parent, false);
-            terrain.GetComponent<MeshFilter>().sharedMesh = TerrainMesh(path, margin, cell, undulation, styled, campPoints, pondPoints);
+            terrain.GetComponent<MeshFilter>().sharedMesh = TerrainMesh(path, margin, cell, undulation, styled, campPoints, pondPoints, look, rivers);
             terrain.GetComponent<MeshRenderer>().sharedMaterial = ground;
         }
 
         // Rolling-ground height away from the road: gentle on the plains, larger where the segment has relief.
-        public static float Undulation(SegmentDefinition segment) => 0.7f + segment.Relief * 0.3f;
+        // The settlement approach is flat farmland: its palisade and backdrop stand at road height (review fix, November 8, 2026).
+        public static float Undulation(SegmentDefinition segment) => segment.SettlementApproach ? 0f : 0.7f + segment.Relief * 0.3f;
+        // Fern Hollow valley floor (spec 2026-11-08, section 2): the ground stays flat for ValleyFlat metres either side of the
+        // road, then rises smoothly to ValleyHeight by ValleyRiseEnd. Added on top of the rolling ground, before the clearing
+        // and pond levelling, so camps and ponds (all inside the floor) stay level.
+        public static float ValleyLift(RegionLook look, float distanceToRoad) =>
+            look != null && look.Valley ? look.ValleyHeight * Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(look.ValleyFlat, look.ValleyRiseEnd, distanceToRoad)) : 0f;
         // Rolling ground starts beyond the camp clearings (up to 12.5 m) and interactables (up to 14 m), and stays
         // flat near both camps at the segment ends.
         private const float FlatBand = 16f, RollFull = 30f, CampFlat = 25f;
@@ -89,7 +96,28 @@ namespace TheTrailWalker.Travel
             return road + Vector3.Cross(Vector3.up, tangent).normalized * (camp.Side == CampSide.Right ? 1f : -1f) * ClearingOffset;
         }
 
-        public static Mesh TerrainMesh(ITrailPath path, float margin = 70f, float cell = 3f, float undulation = 0f, bool styled = false, Vector3[] campPoints = null, Vector3[] pondPoints = null)
+        // River crossings (user report, November 8, 2026: every ferry stood on grass). The water box sat 4 cm under the ground
+        // because the terrain had no channel. A river is a band across the road, RiverHalfWidth either side of its centre line
+        // and RiverHalfLength along it. The ground there drops to a bed below the water, with banks up to the road's end. In a
+        // valley the walls fall away near the river (flat to ValleyRiverOpen, back to full height by ValleyRiverFull), and the
+        // rolling ground calms the same way, so the valley opens onto the river instead of walling it in.
+        public readonly struct RiverCut
+        {
+            public readonly Vector3 Centre, Along; // Along: horizontal unit direction across the river (the crossing direction)
+            public RiverCut(Vector3 centre, Vector3 along) { Centre = centre; Along = along; }
+        }
+        public const float RiverOffset = 9f, RiverHalfWidth = 7f, RiverHalfLength = 60f, RiverBank = 2f, RiverBed = 0.45f, RiverWaterDrop = 0.10f;
+        public const float ValleyRiverOpen = 25f, ValleyRiverFull = 50f;
+        // The river beyond a river leg's end, or behind a landing's start; shared by the water box and the terrain channel.
+        public static RiverCut RiverCutFor(ITrailPath path, bool landing)
+        {
+            path.Evaluate(landing ? 0 : path.Length, out Vector3 end, out Vector3 tangent);
+            if (landing) tangent = -tangent;
+            tangent.y = 0; tangent.Normalize();
+            return new RiverCut(end + tangent * RiverOffset, tangent);
+        }
+
+        public static Mesh TerrainMesh(ITrailPath path, float margin = 70f, float cell = 3f, float undulation = 0f, bool styled = false, Vector3[] campPoints = null, Vector3[] pondPoints = null, RegionLook look = null, RiverCut[] rivers = null)
         {
             int samples = Mathf.CeilToInt(path.Length) + 1;
             var points = new Vector3[samples]; var grade = new float[samples];
@@ -152,10 +180,24 @@ namespace TheTrailWalker.Travel
                             float w = PondLevelWeight(here, pond, distanceToRoad);
                             if (w > level) { level = w; campHeight = pond.y - 0.06f; }
                         }
-                    roadDistance[index] = distanceToRoad; rise[index] = undulation * roll * noise * (1f - level);
+                    // Near a river the valley opens and the rolling ground calms; inside its band the ground drops to the bed.
+                    float riverOpen = 1f, riverDepth = 0f, riverBed = 0f;
+                    if (rivers != null)
+                        foreach (RiverCut river in rivers)
+                        {
+                            Vector2 local = here - new Vector2(river.Centre.x, river.Centre.z);
+                            Vector2 along2 = new Vector2(river.Along.x, river.Along.z), side2 = new Vector2(-river.Along.z, river.Along.x);
+                            float along = Mathf.Abs(Vector2.Dot(local, along2)), side = Mathf.Abs(Vector2.Dot(local, side2));
+                            if (side > RiverHalfLength) continue;
+                            riverOpen = Mathf.Min(riverOpen, Mathf.InverseLerp(ValleyRiverOpen, ValleyRiverFull, along));
+                            float depth = 1f - Mathf.InverseLerp(RiverHalfWidth, RiverHalfWidth + RiverBank, along);
+                            if (depth > riverDepth) { riverDepth = depth; riverBed = river.Centre.y - RiverBed; }
+                        }
+                    roadDistance[index] = distanceToRoad; rise[index] = undulation * roll * noise * (1f - level) * riverOpen;
                     // Chord sag of a grid triangle over the bending road (diagonal^2 / 8), capped; plus a 6 cm base gap.
                     float diagonal = cell * 1.5f;
-                    float terrainHeight = height - 0.06f - near * Mathf.Min(0.15f, 0.02f + slope * diagonal * diagonal * 0.125f) + rise[index];
+                    float terrainHeight = height - 0.06f - near * Mathf.Min(0.15f, 0.02f + slope * diagonal * diagonal * 0.125f) + rise[index] + ValleyLift(look, distanceToRoad) * riverOpen;
+                    terrainHeight = Mathf.Lerp(terrainHeight, riverBed, riverDepth);
                     vertices[index] = new Vector3(x, Mathf.Lerp(terrainHeight, campHeight, level), z);
                 }
             int k = 0;
@@ -250,13 +292,64 @@ namespace TheTrailWalker.Travel
 
         // River at the end of a final camp's river leg (dock, ferry, toll NPC), or with landing set, the far bank
         // behind the start of a ferry landing leg (dock and the ferry that just arrived).
+        // Settlement approach (regions 3-4 spec, November 8, 2026): calm farmland edge with fence lines along the road, a
+        // palisade across the view, house and storefront roofs behind it, and the entrance arch spanning the road where it
+        // ends. Visual only (no colliders, pickups or interactables). Returns the arch position on the road.
+        public const float ArchBeforeEnd = 0.4f;
+        public static Vector3 BuildSettlementApproach(Transform parent, ITrailPath path, Material wood)
+        {
+            var root = new GameObject("Settlement approach").transform; root.SetParent(parent, false);
+            path.Evaluate(path.Length - ArchBeforeEnd, out Vector3 arch, out Vector3 tangent);
+            tangent.y = 0; tangent.Normalize();
+            Quaternion facing = Quaternion.LookRotation(tangent);
+            Vector3 across = facing * Vector3.right;
+            void Piece(string name, string resource, Vector3 position, Quaternion rotation, Vector3 fallbackSize)
+            {
+                var prefab = Resources.Load<GameObject>(resource);
+                GameObject piece;
+                if (prefab != null) piece = Object.Instantiate(prefab, root, false);
+                else
+                {
+                    piece = GameObject.CreatePrimitive(PrimitiveType.Cube); piece.transform.SetParent(root, false);
+                    piece.transform.localScale = fallbackSize; position += Vector3.up * fallbackSize.y * 0.5f;
+                    if (wood != null) piece.GetComponent<Renderer>().sharedMaterial = wood;
+                }
+                foreach (Collider collider in piece.GetComponentsInChildren<Collider>(true)) Object.DestroyImmediate(collider);
+                piece.name = name; piece.transform.SetPositionAndRotation(position, rotation);
+            }
+            Vector3 ground = Vector3.down * 0.06f;
+            Piece("Entrance arch", "Settlement/Route/EntranceArch", arch + ground, facing, new Vector3(6.6f, 0.4f, 0.4f));
+            // Palisade either side of the arch posts, 4 m segments out past the field of view.
+            for (int i = 0; i < 11; i++)
+                for (int sign = -1; sign <= 1; sign += 2)
+                    Piece("Palisade", "Settlement/Route/PalisadeSegment", arch + ground + across * sign * (5.2f + 4f * i), facing, new Vector3(4f, 2.8f, 0.3f));
+            // Split-rail fences along both road sides, from past the ferry landing to just before the palisade.
+            for (float d = 22f; d <= path.Length - 10f; d += 4f)
+            {
+                path.Evaluate(d, out Vector3 road, out Vector3 along);
+                along.y = 0; along.Normalize();
+                Quaternion lengthwise = Quaternion.LookRotation(along) * Quaternion.Euler(0, 90, 0);
+                Vector3 side = Vector3.Cross(Vector3.up, along);
+                for (int sign = -1; sign <= 1; sign += 2) Piece("Fence", "Settlement/Route/FenceSection", road + ground + side * sign * 4.6f, lengthwise, new Vector3(4f, 1.1f, 0.1f));
+            }
+            // Static backdrop: settlement fronts behind the palisade, facing the approaching walker (their +Z faces the street).
+            (string resource, float lateral, float depth)[] backdrop = {
+                ("Settlement/Houses/HouseL02Front", -15f, 13f), ("Settlement/Storefronts/BakeryFront", -6.5f, 16f), ("Settlement/Storefronts/WarehouseFront", 7f, 17f),
+                ("Settlement/Houses/HouseL04Front", 16f, 12f), ("Settlement/Houses/HouseL06Front", -25f, 19f), ("Settlement/Storefronts/FarmFront", 26f, 18f) };
+            Quaternion facingWalker = facing * Quaternion.Euler(0, 180, 0);
+            foreach (var (resource, lateral, depth) in backdrop)
+                Piece("Settlement backdrop", resource, arch + ground + across * lateral + tangent * depth, facingWalker, new Vector3(6f, 5f, 6f));
+            return arch;
+        }
+
         public static void BuildRiver(Transform parent, ITrailPath path, Material water, Material wood, Material npc, bool landing = false)
         {
             path.Evaluate(landing ? 0 : path.Length, out Vector3 end, out Vector3 tangent);
             if (landing) tangent = -tangent;
             Vector3 across = Vector3.Cross(Vector3.up, tangent).normalized;
             var root = new GameObject(landing ? "Ferry landing" : "River crossing").transform; root.SetParent(parent, false);
-            GameObject river = Primitive(root, "River", PrimitiveType.Cube, end + tangent * 9f + Vector3.down * 0.15f, new Vector3(120f, 0.1f, 14f), water);
+            RiverCut cut = RiverCutFor(path, landing);   // same centre as the terrain channel
+            GameObject river = Primitive(root, "River", PrimitiveType.Cube, cut.Centre + Vector3.down * (RiverWaterDrop + 0.05f), new Vector3(2f * RiverHalfLength, 0.1f, 2f * RiverHalfWidth), water);
             river.transform.rotation = Quaternion.LookRotation(tangent);
             river.GetComponent<Renderer>().material.SetColor("_BaseColor", new Color(0.2f, 0.45f, 0.75f));
             // Ferry art (November 2, 2026): plank dock, cable ferry raft and the cable across the river; primitives remain

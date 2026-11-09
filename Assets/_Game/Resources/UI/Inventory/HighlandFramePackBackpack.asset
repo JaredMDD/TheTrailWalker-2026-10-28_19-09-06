@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f762be705e222434cadccc2185671b9b, type: 3}
+  m_Name: HighlandFramePackBackpack
+  m_EditorClassIdentifier: Assembly-CSharp::TheTrailWalker.InventoryContainerSkin
+  Kind: 1
+  EquipmentDefinitionId: item.highland_frame_pack
+  Cloth: {r: 0.91, g: 0.89, b: 0.82, a: 1}
+  Shade: {r: 0.4095, g: 0.40049997, b: 0.369, a: 1}
+  Binding: {r: 0.38, g: 0.25, b: 0.15, a: 1}
+  Thread: {r: 0.7, g: 0.66, b: 0.48, a: 1}
+  Patch: {r: 0.7, g: 0.66, b: 0.48, a: 1}

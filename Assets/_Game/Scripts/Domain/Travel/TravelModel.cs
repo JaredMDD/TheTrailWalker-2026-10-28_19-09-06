@@ -24,17 +24,35 @@ namespace TheTrailWalker.Domain.Travel
     public sealed class SegmentDefinition
     {
         public readonly string Id, FromCampId, ToCampId;
+        // Settlement approach (spec, November 8, 2026): from a final camp's far riverbank to a settlement stop instead of a camp.
+        public readonly string ToSettlementId;
+        public bool SettlementApproach => ToSettlementId != null;
         public readonly float Length;
         // Largest rise or fall from the starting camp along the leg, in metres (0 = flat); hill regions climb and descend.
         public readonly float Relief;
-        public bool RiverApproach => ToCampId == null;
+        public bool RiverApproach => ToCampId == null && ToSettlementId == null;
+        // Legs that begin on a far riverbank (after the ferry) rather than at a camp.
+        public bool StartsAtRiver => Landing || SettlementApproach;
         // Ferry landing leg: from the far riverbank to the next region's first camp. FromCampId is the previous region's
         // final camp, where the journey started (closing the game on this leg returns there).
         public readonly bool Landing;
-        public SegmentDefinition(string id, string fromCampId, string toCampId, float length, float relief = 0, bool landing = false)
+        public SegmentDefinition(string id, string fromCampId, string toCampId, float length, float relief = 0, bool landing = false, string toSettlementId = null)
         {
-            if (string.IsNullOrWhiteSpace(id) || string.IsNullOrWhiteSpace(fromCampId) || length <= 0 || float.IsNaN(length) || float.IsInfinity(length) || relief < 0 || float.IsNaN(relief) || (landing && toCampId == null)) throw new ArgumentException("Invalid segment");
-            Id = id; FromCampId = fromCampId; ToCampId = toCampId; Length = length; Relief = relief; Landing = landing;
+            if (string.IsNullOrWhiteSpace(id) || string.IsNullOrWhiteSpace(fromCampId) || length <= 0 || float.IsNaN(length) || float.IsInfinity(length) || relief < 0 || float.IsNaN(relief) || (landing && toCampId == null)
+                || (toSettlementId != null && (toCampId != null || landing || string.IsNullOrWhiteSpace(toSettlementId)))) throw new ArgumentException("Invalid segment");
+            Id = id; FromCampId = fromCampId; ToCampId = toCampId; Length = length; Relief = relief; Landing = landing; ToSettlementId = toSettlementId;
+        }
+    }
+
+    // A settlement stop (approach A, spec November 8, 2026): reached by its own leg from a final camp's river, it belongs
+    // to no region (no camps, missions, loose drops or map region entry). Its scene arrives with Milestone 10.
+    public sealed class SettlementDefinition
+    {
+        public readonly string Id, Name;
+        public SettlementDefinition(string id, string name)
+        {
+            if (string.IsNullOrWhiteSpace(id) || string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Invalid settlement");
+            Id = id; Name = name;
         }
     }
 
@@ -62,13 +80,16 @@ namespace TheTrailWalker.Domain.Travel
         private readonly Dictionary<string, SegmentDefinition> segments = new Dictionary<string, SegmentDefinition>();
         private readonly Dictionary<string, SegmentDefinition> outgoing = new Dictionary<string, SegmentDefinition>();
         private readonly Dictionary<string, SegmentDefinition> landings = new Dictionary<string, SegmentDefinition>(); // by destination region
+        private readonly Dictionary<string, SettlementDefinition> settlements = new Dictionary<string, SettlementDefinition>();
+        private readonly Dictionary<string, SegmentDefinition> approaches = new Dictionary<string, SegmentDefinition>(); // by the final camp whose river they start at
         public IReadOnlyList<RegionDefinition> Regions { get; }
         public RegionDefinition StartRegion => Regions[0];
 
-        public TravelCatalog(IReadOnlyList<RegionDefinition> regionList, IReadOnlyList<SegmentDefinition> segmentList)
+        public TravelCatalog(IReadOnlyList<RegionDefinition> regionList, IReadOnlyList<SegmentDefinition> segmentList, IReadOnlyList<SettlementDefinition> settlementList = null)
         {
             if (regionList == null || regionList.Count == 0 || segmentList == null) throw new ArgumentException("Invalid catalog");
             Regions = regionList;
+            if (settlementList != null) foreach (SettlementDefinition settlement in settlementList) settlements.Add(settlement.Id, settlement);
             foreach (RegionDefinition region in regionList)
             {
                 regions.Add(region.Id, region);
@@ -78,6 +99,12 @@ namespace TheTrailWalker.Domain.Travel
             {
                 if (!camps.ContainsKey(segment.FromCampId) || (segment.ToCampId != null && !camps.ContainsKey(segment.ToCampId))) throw new ArgumentException("Segment references an unknown camp");
                 segments.Add(segment.Id, segment);
+                if (segment.SettlementApproach)
+                {
+                    // An approach starts at a final camp's river (the ferry), so that camp keeps its own river leg.
+                    if (!settlements.ContainsKey(segment.ToSettlementId) || regions[camps[segment.FromCampId].RegionId].FinalCamp.Id != segment.FromCampId) throw new ArgumentException("Settlement approach must join a final camp's river to a known settlement: " + segment.Id);
+                    approaches.Add(segment.FromCampId, segment); continue;
+                }
                 if (!segment.Landing) { outgoing.Add(segment.FromCampId, segment); continue; }
                 // A landing runs from a final camp's river to the first camp of that region's next region.
                 RegionDefinition from = regions[camps[segment.FromCampId].RegionId], to = regions[camps[segment.ToCampId].RegionId];
@@ -98,6 +125,10 @@ namespace TheTrailWalker.Domain.Travel
         public SegmentDefinition Segment(string id) => id != null && segments.TryGetValue(id, out SegmentDefinition segment) ? segment : null;
         public SegmentDefinition Outgoing(string campId) => campId != null && outgoing.TryGetValue(campId, out SegmentDefinition segment) ? segment : null;
         public SegmentDefinition LandingInto(string regionId) => regionId != null && landings.TryGetValue(regionId, out SegmentDefinition segment) ? segment : null;
+        public SettlementDefinition Settlement(string id) => id != null && settlements.TryGetValue(id, out SettlementDefinition settlement) ? settlement : null;
+        public SegmentDefinition SettlementApproachFrom(string campId) => campId != null && approaches.TryGetValue(campId, out SegmentDefinition segment) ? segment : null;
+        // The prototype's single settlement approach (from Bright Hollow's river to settlement.01).
+        public SegmentDefinition SettlementApproach => Segment("segment.settlement.approach");
         // The leg that arrives at a camp: the previous camp's leg, or for a region's first camp its ferry landing.
         public SegmentDefinition Incoming(string campId)
         {
@@ -108,7 +139,7 @@ namespace TheTrailWalker.Domain.Travel
         public RegionDefinition RegionOf(SegmentDefinition segment) => Region(Camp(segment.Landing ? segment.ToCampId : segment.FromCampId).RegionId);
         public bool IsFinalCamp(string campId) { CampDefinition camp = Camp(campId); return camp != null && Region(camp.RegionId).FinalCamp.Id == campId; }
 
-        // Prototype world: Dawn Plains (ten camps) and Windward Hills (twelve camps) complete; region 3 is the locked next silhouette.
+        // Prototype world: the four tier-one regions authored so far (Dawn Plains, Windward Hills, Mistwood, Fern Hollow).
         public static TravelCatalog Prototype()
         {
             var dawn = new RegionDefinition("region.01", 1, "Dawn Plains", new[] {
@@ -142,7 +173,15 @@ namespace TheTrailWalker.Domain.Travel
                 new CampDefinition("camp.02.11", "Kestrel Point", "region.02", CampSide.Left),
                 new CampDefinition("camp.02.12", "Far Lookout", "region.02", CampSide.Right) },
                 new[] { "material.hemp", "material.flint", "material.pine_cone" }, 1000, "region.03");
-            return new TravelCatalog(new[] { dawn, windward }, new[] {
+            // Regions 3-4 (spec, November 8, 2026): Mistwood (eleven camps, foggy woodland) and Fern Hollow (thirteen camps,
+            // valley floor) follow the Windward Hills pattern: alternating sides, legs rising inside the 350-600 m band.
+            var mistwood = new RegionDefinition("region.03", 3, "Mistwood", Camps("region.03", CampSide.Right,
+                "Dawn Woodland", "Quiet Woodland", "Mossbank", "Owl's Perch", "Nettle Ford", "Clay Pits", "Salt Lick", "Fogbound", "Grey Thicket", "Hushwood", "Distant Woodland"),
+                new[] { "material.nettle_fiber", "material.clay", "ingredient.rock_salt" }, 2000, "region.04");
+            var fern = new RegionDefinition("region.04", 4, "Fern Hollow", Camps("region.04", CampSide.Left,
+                "Dawn Hollow", "Quiet Hollow", "Fernbank", "Lily Pond", "Strawberry Patch", "Mushroom Ring", "Limestone Steps", "Brookside", "Bracken Dell", "Frog's Rest", "Dragonfly Bend", "Greenway", "Bright Hollow"),
+                new[] { "material.limestone", "food.strawberries", "ingredient.mushrooms" }, 4000, null);
+            var legs = new List<SegmentDefinition> {
                 new SegmentDefinition("segment.01.01", "camp.01.01", "camp.01.02", 150),
                 new SegmentDefinition("segment.01.02", "camp.01.02", "camp.01.03", 180),
                 // Stamina pacing (user, October 31, 2026): the two opening legs stay under the starter's 3 hearts (G1 is
@@ -172,7 +211,34 @@ namespace TheTrailWalker.Domain.Travel
                 new SegmentDefinition("segment.02.09", "camp.02.09", "camp.02.10", 460, 12f),
                 new SegmentDefinition("segment.02.10", "camp.02.10", "camp.02.11", 480, 8f),
                 new SegmentDefinition("segment.02.11", "camp.02.11", "camp.02.12", 500, 5f),
-                new SegmentDefinition("segment.02.river", "camp.02.12", null, 30) });
+                new SegmentDefinition("segment.02.river", "camp.02.12", null, 30) };
+            // Mistwood: gentle forest ground (4.8-6.24 hearts per leg); Fern Hollow: valley floor (5.04-6.72 hearts).
+            AddRegionLegs(legs, mistwood, "camp.02.12", 1.5f, new float[] { 400, 410, 420, 430, 440, 450, 470, 490, 500, 520 }, new float[] { 3, 2, 4, 3, 5, 4, 3, 5, 4, 2 });
+            AddRegionLegs(legs, fern, "camp.03.11", 1f, new float[] { 420, 430, 440, 450, 460, 470, 480, 500, 520, 540, 550, 560 }, new float[] { 2, 1, 3, 2, 1, 4, 2, 3, 1, 2, 3, 2 });
+            // Settlement route (approach A): past Bright Hollow the ferry crosses to a calm approach ending at the settlement's
+            // entrance arch. segment.settlement.departure (settlement -> camp.05.01) is reserved for region 5 and Milestone 10.
+            legs.Add(new SegmentDefinition("segment.settlement.approach", "camp.04.13", null, 160, 0, toSettlementId: "settlement.01"));
+            return new TravelCatalog(new[] { dawn, windward, mistwood, fern }, legs, new[] { new SettlementDefinition("settlement.01", "Settlement") });
+        }
+
+        // Camps camp.NN.01.. in order on strictly alternating road sides, starting from the given side.
+        private static CampDefinition[] Camps(string regionId, CampSide first, params string[] names)
+        {
+            string number = regionId.Substring(regionId.Length - 2);
+            var camps = new CampDefinition[names.Length];
+            for (int i = 0; i < names.Length; i++)
+                camps[i] = new CampDefinition($"camp.{number}.{i + 1:00}", names[i], regionId, i % 2 == 0 ? first : (first == CampSide.Left ? CampSide.Right : CampSide.Left));
+            return camps;
+        }
+        // A region's ferry landing (120 m from the previous region's river), its camp-to-camp legs and its 30 m river leg.
+        private static void AddRegionLegs(List<SegmentDefinition> legs, RegionDefinition region, string previousFinalCamp, float landingRelief, float[] lengths, float[] relief)
+        {
+            string number = region.Id.Substring(region.Id.Length - 2);
+            if (lengths.Length != region.Camps.Count - 1 || relief.Length != lengths.Length) throw new ArgumentException("Leg data does not match the camps: " + region.Id);
+            legs.Add(new SegmentDefinition($"segment.{number}.landing", previousFinalCamp, region.FirstCamp.Id, 120, landingRelief, landing: true));
+            for (int i = 0; i < lengths.Length; i++)
+                legs.Add(new SegmentDefinition($"segment.{number}.{i + 1:00}", region.Camps[i].Id, region.Camps[i + 1].Id, lengths[i], relief[i]));
+            legs.Add(new SegmentDefinition($"segment.{number}.river", region.FinalCamp.Id, null, 30));
         }
     }
 
@@ -200,7 +266,10 @@ namespace TheTrailWalker.Domain.Travel
         public RegionDefinition CurrentRegion => catalog.Region(CurrentCamp.RegionId);
         // True after the ferry crossing, while walking the landing leg to the next region's first camp.
         public bool OnFarBank { get; private set; }
-        public SegmentDefinition CurrentSegment => OnFarBank ? catalog.LandingInto(CurrentRegion.NextRegionId) : catalog.Outgoing(CurrentCampId);
+        // True after the ferry from a region's last camp crosses to a settlement approach (Bright Hollow -> settlement.01).
+        public bool OnSettlementApproach { get; private set; }
+        public SegmentDefinition CurrentSegment => OnFarBank ? catalog.LandingInto(CurrentRegion.NextRegionId)
+            : OnSettlementApproach ? catalog.SettlementApproachFrom(CurrentCampId) : catalog.Outgoing(CurrentCampId);
         public TravelCatalog Catalog => catalog;
 
         private TravelState(TravelCatalog travelCatalog) { catalog = travelCatalog ?? throw new ArgumentNullException(nameof(travelCatalog)); }
@@ -218,7 +287,7 @@ namespace TheTrailWalker.Domain.Travel
         public string ArriveAtCamp(string campId)
         {
             CampDefinition camp = catalog.Camp(campId) ?? throw new ArgumentException("Unknown camp");
-            CurrentCampId = camp.Id; Seated = true; OnFarBank = false; LastTrailCampId = camp.Id; VisitNumber++;
+            CurrentCampId = camp.Id; Seated = true; OnFarBank = false; OnSettlementApproach = false; LastTrailCampId = camp.Id; VisitNumber++;
             visited.Add(camp.Id);
             if (!discovered.Contains(camp.RegionId)) discovered.Add(camp.RegionId);
             string segmentId = catalog.Outgoing(camp.Id).Id;
@@ -245,7 +314,16 @@ namespace TheTrailWalker.Domain.Travel
         {
             SegmentDefinition segment = CurrentSegment;
             if (Seated || segment.RiverApproach) throw new InvalidOperationException("Not walking a segment");
+            if (segment.SettlementApproach) throw new InvalidOperationException("The approach ends at the settlement arch");
             return ArriveAtCamp(segment.ToCampId);
+        }
+
+        // Route only (spec, November 8, 2026): until the settlement opens (Milestone 10), walking into the entrance arch
+        // returns to the camp the approach started from as a real camp return (new visit, fresh drops); the toll stays paid.
+        public string ReachSettlementArch()
+        {
+            if (Seated || !OnSettlementApproach) throw new InvalidOperationException("Not walking the settlement approach");
+            return ArriveAtCamp(CurrentCampId);
         }
 
         // Camp map: unlocked camps of the current region by exact selection; other discovered regions arrive at their first camp.
@@ -296,9 +374,9 @@ namespace TheTrailWalker.Domain.Travel
         public bool CanCrossRiver(bool busy, out string reason)
         {
             reason = "";
-            if (Seated || busy || OnFarBank || !CurrentSegment.RiverApproach) { reason = "Walk up to the ferry at the river"; return false; }
+            if (Seated || busy || OnFarBank || OnSettlementApproach || !CurrentSegment.RiverApproach) { reason = "Walk up to the ferry at the river"; return false; }
             if (!paidTolls.Contains(CurrentRegion.Id)) { reason = "Pay the ferry toll first"; return false; }
-            if (catalog.Region(CurrentRegion.NextRegionId) == null) { reason = "The next region arrives in a later milestone"; return false; }
+            if (catalog.Region(CurrentRegion.NextRegionId) == null && catalog.SettlementApproachFrom(CurrentCampId) == null) { reason = "The next region arrives in a later milestone"; return false; }
             return true;
         }
         // Crossing lands the player on the far bank at the start of the landing leg (rolling that leg's resources);
@@ -306,7 +384,9 @@ namespace TheTrailWalker.Domain.Travel
         public string CrossRiver(bool busy)
         {
             if (!CanCrossRiver(busy, out string reason)) throw new InvalidOperationException(reason);
-            OnFarBank = true;
+            // A settlement approach on the far bank takes precedence (Bright Hollow; later, region 5 is reached past the settlement).
+            if (catalog.SettlementApproachFrom(CurrentCampId) != null) OnSettlementApproach = true; else OnFarBank = true;
+            // The approach has no drop points (LooseDrops.PointCount is 0); its cycle is counted only so the save stays uniform.
             string segmentId = CurrentSegment.Id;
             dropCycles[segmentId] = dropCycles.TryGetValue(segmentId, out int cycle) ? cycle + 1 : 1;
             return segmentId;
@@ -326,7 +406,7 @@ namespace TheTrailWalker.Domain.Travel
         public void GrantTestGold(long amount) { if (amount <= 0 || Gold > long.MaxValue - amount) throw new ArgumentOutOfRangeException(nameof(amount)); Wallet.Credit(Economy.Currency.Gold, amount); }
 
         public static TravelState Restore(TravelCatalog catalog, string campId, bool seated, string lastTrailCampId, int visitNumber, long cash,
-            IEnumerable<string> visitedCamps, IEnumerable<string> discoveredRegions, IEnumerable<string> tolls, IEnumerable<KeyValuePair<string, int>> cycles, long gold = 0, bool farBank = false)
+            IEnumerable<string> visitedCamps, IEnumerable<string> discoveredRegions, IEnumerable<string> tolls, IEnumerable<KeyValuePair<string, int>> cycles, long gold = 0, bool farBank = false, bool settlementApproach = false)
         {
             var state = new TravelState(catalog);
             CampDefinition camp = catalog.Camp(campId);
@@ -344,6 +424,12 @@ namespace TheTrailWalker.Domain.Travel
                 if (seated || landing == null || !state.paidTolls.Contains(camp.RegionId) || state.CycleOf(landing.Id) < 1) throw new ArgumentException("Invalid far-bank state");
                 state.OnFarBank = true;
             }
+            if (settlementApproach)
+            {
+                SegmentDefinition approach = catalog.SettlementApproachFrom(camp.Id);
+                if (seated || farBank || approach == null || !state.paidTolls.Contains(camp.RegionId) || state.CycleOf(approach.Id) < 1) throw new ArgumentException("Invalid settlement-approach state");
+                state.OnSettlementApproach = true;
+            }
             return state;
         }
     }
@@ -360,7 +446,7 @@ namespace TheTrailWalker.Domain.Travel
         // legs, alternating sides and clear of the camps at both ends.
         public const float EndClearance = 6f, MetresPerPoint = 7f;
         public const int MinimumPoints = 20;
-        public static int PointCount(SegmentDefinition segment) => segment.RiverApproach ? 0 : Math.Max(MinimumPoints, (int)Math.Ceiling(segment.Length / MetresPerPoint));
+        public static int PointCount(SegmentDefinition segment) => segment.RiverApproach || segment.SettlementApproach ? 0 : Math.Max(MinimumPoints, (int)Math.Ceiling(segment.Length / MetresPerPoint));
         public static IReadOnlyList<Drop> Roll(RegionDefinition region, SegmentDefinition segment, int cycle)
         {
             if (region == null || segment == null || cycle < 1) throw new ArgumentException("Invalid drop roll");
@@ -473,7 +559,7 @@ namespace TheTrailWalker.Domain.Travel
         public static IReadOnlyList<InteractableAnchor> Build(RegionDefinition region, SegmentDefinition segment)
         {
             var anchors = new List<InteractableAnchor>();
-            if (segment.RiverApproach) return anchors;
+            if (segment.RiverApproach || segment.SettlementApproach) return anchors;
             Add(anchors, region, segment, InteractableKind.Tree, TreeCount(segment), 6.5f, 0.0f);
             Add(anchors, region, segment, InteractableKind.AnimalSpawn, AnimalSpawnCount(segment), 12f, 0.33f);
             Add(anchors, region, segment, InteractableKind.FishingPoint, FishingCount(region, segment), 10f, 0.66f);

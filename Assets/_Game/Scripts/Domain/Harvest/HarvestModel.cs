@@ -91,21 +91,47 @@ namespace TheTrailWalker.Domain.Harvest
         public HarvestBundle(string itemId, int quality) { ItemId = itemId; Quality = quality; }
     }
 
-    // Tier-one harvest outputs (section 7.1 / 7.1.1 and the authored art catalog). Higher debug target tiers reuse these
-    // outputs because only tier-one resources exist in the test world.
+    // Harvest outputs per tier (section 7.1 / 7.1.1 and the authored art catalog): tier one rolls PrototypeItems; tiers two to four
+    // roll their own wood, hunt and fish tables from HarvestTierItems (resolved through Items.Find).
     public static class HarvestManifest
     {
         private readonly struct Output { public readonly string ItemId; public readonly int NormalMin, NormalMax, EliteMin, EliteMax;
             public Output(string id, int nMin, int nMax, int eMin, int eMax) { ItemId = id; NormalMin = nMin; NormalMax = nMax; EliteMin = eMin; EliteMax = eMax; } }
 
-        private static readonly Output[] Tree = {
-            new Output("material.pine_branch", 2, 5, 4, 10), new Output("material.pine_log", 2, 5, 4, 10), new Output("ingredient.pine_nuts", 2, 4, 4, 6) };
-        private static readonly Output[] Rabbit = {
-            new Output("animal.rabbit.pelt", 2, 5, 4, 10), new Output("animal.rabbit.meat", 2, 5, 4, 10), new Output("material.bone", 2, 5, 4, 10), new Output("ingredient.animal_fat", 1, 3, 1, 6) };
-        // Regional fish pairs (section 6.2.5); the TOTAL catch is 2-5 bundles (Elite 4-10) drawn from the pair.
-        private static readonly string[,] FishPairs = {
-            { "fish.rainbow_trout", "fish.bluegill" }, { "fish.largemouth_bass", "fish.yellow_perch" }, { "fish.rainbow_trout", "fish.largemouth_bass" },
-            { "fish.bluegill", "fish.yellow_perch" }, { "fish.rainbow_trout", "fish.yellow_perch" }, { "fish.largemouth_bass", "fish.bluegill" } };
+        private static Output[] TreeOf(string wood, string ingredient) => new[] {
+            new Output($"material.{wood}_branch", 2, 5, 4, 10), new Output($"material.{wood}_log", 2, 5, 4, 10), new Output(ingredient, 2, 4, 4, 6) };
+        private static Output[] HuntOf(string primary, string meat, params Output[] extra)
+        {
+            var list = new List<Output> { new Output(primary, 2, 5, 4, 10), new Output(meat, 2, 5, 4, 10), new Output("material.bone", 2, 5, 4, 10), new Output("ingredient.animal_fat", 1, 3, 1, 6) };
+            list.AddRange(extra);
+            return list.ToArray();
+        }
+
+        // Per-tier tables indexed tier - 1 (section 7.1.1). Tier one keeps its original order so its rolls never change.
+        private static readonly Output[][] Tree = {
+            new[] { new Output("material.pine_branch", 2, 5, 4, 10), new Output("material.pine_log", 2, 5, 4, 10), new Output("ingredient.pine_nuts", 2, 4, 4, 6) },
+            TreeOf("birch", "ingredient.birch_sap"), TreeOf("mesquite", "ingredient.mesquite_pods"), TreeOf("oak", "ingredient.acorns") };
+        private static readonly Output[][] Hunt = {
+            new[] { new Output("animal.rabbit.pelt", 2, 5, 4, 10), new Output("animal.rabbit.meat", 2, 5, 4, 10), new Output("material.bone", 2, 5, 4, 10), new Output("ingredient.animal_fat", 1, 3, 1, 6) },
+            HuntOf("animal.beaver.pelt", "animal.beaver.meat"), HuntOf("animal.turkey.feathers", "animal.turkey.meat"),
+            HuntOf("animal.boar.hide", "animal.boar.meat", new Output("animal.boar.tusk", 1, 3, 1, 6)) };
+        // Regional fish pairs (section 6.2.5) per tier, indexed [tier - 1, (region - 1) % 6]; the TOTAL catch is 2-5 bundles (Elite 4-10) drawn from the pair.
+        private static readonly (string a, string b)[,] FishPairs = {
+            { ("fish.rainbow_trout", "fish.bluegill"), ("fish.largemouth_bass", "fish.yellow_perch"), ("fish.rainbow_trout", "fish.largemouth_bass"),
+              ("fish.bluegill", "fish.yellow_perch"), ("fish.rainbow_trout", "fish.yellow_perch"), ("fish.largemouth_bass", "fish.bluegill") },
+            { ("fish.common_carp", "fish.channel_catfish"), ("fish.northern_pike", "fish.walleye"), ("fish.common_carp", "fish.northern_pike"),
+              ("fish.channel_catfish", "fish.walleye"), ("fish.common_carp", "fish.walleye"), ("fish.northern_pike", "fish.channel_catfish") },
+            { ("fish.salmon", "fish.brown_trout"), ("fish.sturgeon", "fish.lake_trout"), ("fish.salmon", "fish.sturgeon"),
+              ("fish.brown_trout", "fish.lake_trout"), ("fish.salmon", "fish.lake_trout"), ("fish.sturgeon", "fish.brown_trout") },
+            { ("fish.longnose_gar", "fish.red_drum"), ("fish.longnose_gar", "fish.red_snapper"), ("fish.red_drum", "fish.red_snapper"),
+              ("fish.longnose_gar", "fish.tuna"), ("fish.red_drum", "fish.tuna"), ("fish.red_snapper", "fish.tuna") } };
+
+        private static int Tier(int regionNumber) => Math.Min(FishPairs.GetLength(0), (regionNumber - 1) / 6 + 1);
+        public static (string a, string b) FishPair(int regionNumber)
+        {
+            if (regionNumber < 1) throw new ArgumentException("Invalid region number");
+            return FishPairs[Tier(regionNumber) - 1, (regionNumber - 1) % 6];
+        }
 
         public static IReadOnlyList<HarvestBundle> Roll(InteractableKind kind, int regionNumber, string segmentId, int cycle, string anchorId, bool boosted)
         {
@@ -114,12 +140,12 @@ namespace TheTrailWalker.Domain.Harvest
             var bundles = new List<HarvestBundle>();
             if (kind == InteractableKind.FishingPoint)
             {
-                int pair = (regionNumber - 1) % FishPairs.GetLength(0);
+                (string a, string b) pair = FishPair(regionNumber);
                 int total = boosted ? random.Next(4, 11) : random.Next(2, 6);
-                for (int i = 0; i < total; i++) bundles.Add(new HarvestBundle(FishPairs[pair, random.Next(2)], 1 + random.Next(5)));
+                for (int i = 0; i < total; i++) bundles.Add(new HarvestBundle(random.Next(2) == 0 ? pair.a : pair.b, 1 + random.Next(5)));
                 return bundles;
             }
-            foreach (Output output in kind == InteractableKind.Tree ? Tree : Rabbit)
+            foreach (Output output in kind == InteractableKind.Tree ? Tree[Tier(regionNumber) - 1] : Hunt[Tier(regionNumber) - 1])
             {
                 int count = boosted ? random.Next(output.EliteMin, output.EliteMax + 1) : random.Next(output.NormalMin, output.NormalMax + 1);
                 for (int i = 0; i < count; i++) bundles.Add(new HarvestBundle(output.ItemId, 1 + random.Next(5)));

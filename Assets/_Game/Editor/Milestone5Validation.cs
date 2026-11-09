@@ -54,6 +54,11 @@ namespace TheTrailWalker.Editor
                 if (item.GearSlot == TheTrailWalker.Domain.Equipment.GearSlot.Shirt && !Has(item.Id, InventoryContainerKind.Pocket)) return false;
                 if (item.GearSlot == TheTrailWalker.Domain.Equipment.GearSlot.Backpack && !(Has(item.Id, InventoryContainerKind.Backpack) && Has(item.Id, InventoryContainerKind.Opening))) return false;
             }
+            foreach (InventoryStorageGear.Entry gear in InventoryStorageGear.All)
+            {
+                if (!gear.Backpack && !Has(gear.ItemId, InventoryContainerKind.Pocket)) return false;
+                if (gear.Backpack && !(Has(gear.ItemId, InventoryContainerKind.Backpack) && Has(gear.ItemId, InventoryContainerKind.Opening))) return false;
+            }
             return true;
         }
 
@@ -428,7 +433,7 @@ namespace TheTrailWalker.Editor
             string finalDawn = catalog.Region("region.01").FinalCamp.Id;
             Check(catalog.Region("region.01").Camps.Count == 10 && finalDawn == "camp.01.10" && catalog.Region("region.01").Camps.Select(c => c.Id).Distinct().Count() == 10,
                 "Dawn Plains has its ten proposed camps, ending at Last Light before the river");
-            Check(catalog.Regions.Count == 2 && catalog.Outgoing("camp.01.01").ToCampId == "camp.01.02" && catalog.Outgoing(finalDawn).RiverApproach && !catalog.Outgoing("camp.01.03").RiverApproach && catalog.IsFinalCamp("camp.02.12") && !catalog.IsFinalCamp("camp.02.02"), "Catalog links each camp to its outgoing segment; final camps own the river approach");
+            Check(catalog.Regions.Count == 4 && catalog.Outgoing("camp.01.01").ToCampId == "camp.01.02" && catalog.Outgoing(finalDawn).RiverApproach && !catalog.Outgoing("camp.01.03").RiverApproach && catalog.IsFinalCamp("camp.02.12") && !catalog.IsFinalCamp("camp.02.02"), "Catalog links each camp to its outgoing segment; final camps own the river approach");
             bool loose = true; foreach (RegionDefinition region in catalog.Regions) foreach (string id in region.LooseItemIds) loose &= Array.Exists(PrototypeItems.All, d => d.Id == id);
             Check(loose, "Every region loose resource has an item definition");
             Check(Throws(() => new TravelCatalog(catalog.Regions, new[] { new SegmentDefinition("bad", "camp.01.01", "camp.01.03", 10) })), "Segments must follow camp order and every camp needs an outgoing leg");
@@ -498,7 +503,7 @@ namespace TheTrailWalker.Editor
             Check(state.CurrentCampId == "camp.02.12" && catalog.Region("region.02").Camps.Count == 12, "Windward Hills runs through its twelve camps to Far Lookout");
             state.StandUp(); state.GrantTestGold(2); state.PayToll(TollCurrency.Gold);
             Check(state.Gold == 1 && state.PaidTolls.Contains("region.02") && Reload(state).Gold == 1, "The toll can be paid in gold instead, and the gold wallet persists");
-            Check(!state.CanCrossRiver(false, out string notYet) && notYet.Contains("later milestone"), "The ferry beyond the last authored region does not cross");
+            Check(state.CanCrossRiver(false, out _) && catalog.LandingInto("region.03").FromCampId == "camp.02.12", "With the toll paid, the ferry from Far Lookout crosses on to Mistwood (regions 3-4, November 8, 2026)");
 
             Check(!Throws(() => TravelState.Restore(catalog, finalDawn, false, finalDawn, 1, 0, new[] { finalDawn }, new[] { "region.01" }, new string[0], new[] { new KeyValuePair<string, int>("segment.01.river", 1) })), "A save can hold the walk from the last camp up to the river (the ferry asks for the toll there)");
             // Layout migration: a profile at Low Meadow from when it was the last camp (river segment) is reseated there.

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f762be705e222434cadccc2185671b9b, type: 3}
+  m_Name: SpecialT3PackOpening
+  m_EditorClassIdentifier: Assembly-CSharp::TheTrailWalker.InventoryContainerSkin
+  Kind: 5
+  EquipmentDefinitionId: special.t3.pack
+  Cloth: {r: 0.6039216, g: 0.40784314, b: 0.21960784, a: 1}
+  Shade: {r: 0.2717647, g: 0.1835294, b: 0.098823525, a: 1}
+  Binding: {r: 0.6666667, g: 0.14117648, b: 0.16470589, a: 1}
+  Thread: {r: 0.72, g: 0.63, b: 0.44, a: 1}
+  Patch: {r: 0.7647059, g: 0.57254905, b: 0.24313726, a: 1}
