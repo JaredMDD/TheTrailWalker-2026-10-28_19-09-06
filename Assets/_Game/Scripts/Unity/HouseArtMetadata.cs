@@ -9,7 +9,7 @@ namespace TheTrailWalker
     {
         public int Level, MaterialTier;
         public Vector2Int FurnishingGrid;
-        public float GridCellMetres = .5f, PlotWidth = 11.2f, PlotDepth = 10.6f;
+        public float GridCellMetres = .5f, PlotWidth = 15.2f, PlotDepth = 19f;
         public bool PreviewOnly;
         public Vector3 GridAxisX = new Vector3(-.5f, 0, 0);
         [FormerlySerializedAs("GridAxisY")] public Vector3 GridAxisDepth = new Vector3(0, 0, -.5f);

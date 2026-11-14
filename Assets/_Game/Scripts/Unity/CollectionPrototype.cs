@@ -176,6 +176,12 @@ namespace TheTrailWalker
                     if (travel.CurrentSegment.Id != scene.Segment.Id && scene.RequestReload != null) { scene.RequestReload(); return; }
                 }
                 Say(string.IsNullOrEmpty(message) ? "Session restored." : message);
+                if (houseMigrationPending)
+                {
+                    houseMigrationPending = false; SaveNow(true);
+                    const string returned = "Some deposited materials were returned to the overflow.";
+                    if (settlementNote != null) ShowSettlementNote(returned); else Say(returned);
+                }
             }
             else
             {
@@ -228,7 +234,7 @@ namespace TheTrailWalker
             // Four status lines with travel info: shrink to fit instead of clipping.
             status.resizeTextForBestFit = true; status.resizeTextMinSize = 12; status.resizeTextMaxSize = 23;
             // Debug cleanup, second pass (user, November 7, 2026): the camp world drops EMPTY, EAT SELECTED (item details
-            // has EAT), TARGET T1-T4, BACK TO CAMP and TEST EMPTY. It keeps +1,000 CASH / +1 GOLD (no income until
+            // has EAT), TARGET T1-T4, BACK TO CAMP and TEST EMPTY. It keeps +1 GOLD (+1,000 CASH removed November 14, 2026; no income until
             // Milestone 9 trading), AUTO SORT / CLAIM OVERFLOW (until the gravity bag), RESET SAVE / UNLOCK CAMPS and
             // LEARN T1 RECIPES / + INGREDIENTS (crafting mastery tests). The older scenes keep their buttons.
             if (!milestone5) Button(safe, "EMPTY", 0.02f, 0.81f, 0.24f, 0.86f, () => ResetFixture(0));
@@ -441,7 +447,7 @@ namespace TheTrailWalker
             resetPending = false;
             try
             {
-                saveStore.ArchiveForReset(); saveBlocked = false; lastSavedState = null; crafting = new CraftingState(); missions = new TheTrailWalker.Domain.Missions.MissionState(); settlement = TheTrailWalker.Domain.Travel.SettlementState.New(0);
+                saveStore.ArchiveForReset(); saveBlocked = false; lastSavedState = null; crafting = new CraftingState(); missions = new TheTrailWalker.Domain.Missions.MissionState(); settlement = TheTrailWalker.Domain.Travel.SettlementState.New(0); home = TheTrailWalker.Domain.Settlement.HomeState.New();
                 if (inventoryOpen) { movement.CloseInventory(); inventoryOpen = false; LayoutBackpack(); }
                 router.CancelAll(); movement.Reset();
                 if (milestone4) { equipment = new EquipmentState(); stamina = new StaminaState(); router.InteractionLocked = false; movement.SetSpeedCap(MovementState.StarterSpeedCap); faintEventId = null; faintLoss.Clear(); if (gearPanel != null) gearPanel.SetActive(false); }
@@ -922,7 +928,7 @@ namespace TheTrailWalker
                 if (!ledger.Reserve(item, token)) continue;
                 bool consumed = ledger.TryConsumeOne(item, token, out _); ledger.Release(item, token);
                 if (!consumed) continue;
-                stamina.QueueFood(item.Definition.FoodHearts); Redraw(); SaveNow();
+                stamina.QueueFood(TheTrailWalker.Domain.Settlement.FurnitureBuffs.FoodHearts(item.Definition.FoodHearts, home.Buffs)); Redraw(); SaveNow();
                 if (!saveBlocked) Say("Low stamina: ate " + item.Definition.Name + " automatically.");
                 return true;
             }
@@ -1018,7 +1024,7 @@ namespace TheTrailWalker
             const int token = -828;
             if (!selected.Ready) { Say("Still crafting: it can be eaten when its timer finishes."); return; }
             if (!ledger.Reserve(selected, token)) { Say("Item is in use."); return; }
-            int hearts = selected.Definition.FoodHearts;
+            double hearts = TheTrailWalker.Domain.Settlement.FurnitureBuffs.FoodHearts(selected.Definition.FoodHearts, home.Buffs);
             bool consumed = ledger.TryConsumeOne(selected, token, out string reason); ledger.Release(selected, token);
             if (!consumed) { Say(reason); return; }
             stamina.QueueFood(hearts); // Provisional debug values, not regional food balance.
@@ -1417,7 +1423,7 @@ namespace TheTrailWalker
                             quality = gear.Quality, remainingDistance = gear.RemainingDistance, infinite = gear.Infinite });
                     }
                 }
-                if (milestone5) { snapshot.economy = 1; snapshot.trade = tradeSession?.Data; snapshot.tradeLog = tradeLog; snapshot.segmentId = travel.CurrentSegment.Id; snapshot.travel = SessionSaveStore.SaveTravel(travel); snapshot.settlement = SaveSettlementForSnapshot(); snapshot.harvested = HarvestedForSave(); snapshot.crafting = SaveCrafting(); snapshot.missions = SaveMissions(); snapshot.statistics = SaveStatistics(); }
+                if (milestone5) { snapshot.economy = 1; snapshot.trade = tradeSession?.Data; snapshot.tradeLog = tradeLog; snapshot.segmentId = travel.CurrentSegment.Id; snapshot.travel = SessionSaveStore.SaveTravel(travel); snapshot.settlement = SaveSettlementForSnapshot(); snapshot.home = SaveHomeForSnapshot(); snapshot.harvested = HarvestedForSave(); snapshot.crafting = SaveCrafting(); snapshot.missions = SaveMissions(); snapshot.statistics = SaveStatistics(); }
                 foreach (ItemEntry item in ledger.Entries)
                 {
                     if (item.Owner == ItemOwner.Consumed) continue;

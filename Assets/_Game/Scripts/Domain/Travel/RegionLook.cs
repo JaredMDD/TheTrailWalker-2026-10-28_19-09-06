@@ -22,6 +22,9 @@ namespace TheTrailWalker.Domain.Travel
     public static class RegionLooks
     {
         public static RegionLook Default => new RegionLook();
+        // The settlement (backdrop proposal, November 9, 2026): Fern Hollow's light with a far haze tinted toward Cloudstep's
+        // grey-blue, so region 5's mountains on the horizon sit back.
+        public static RegionLook Settlement => new RegionLook { Fog = true, FogColor = new[] { 0.72f, 0.78f, 0.84f }, FogStart = 70f, FogEnd = 340f };
 
         // The look follows the walked leg's region (a landing belongs to the region it leads into); the settlement approach
         // uses Fern Hollow's palette and light without the valley slopes.

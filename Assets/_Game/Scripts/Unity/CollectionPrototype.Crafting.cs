@@ -106,7 +106,7 @@ namespace TheTrailWalker
                 CraftBatch batch = null; foreach (CraftBatch b in crafting.Batches) if (b.ItemIds.Contains(pair.Key)) { batch = b; break; }
                 if (pair.Value != null) pair.Value.text = batch == null ? "..." : FormatTime((batch.ReadyAtUtc - DateTime.UtcNow).TotalSeconds);
             }
-            if (craftPanel != null && craftPanel.activeSelf) { if (!AtCamp) craftPanel.SetActive(false); else { LayoutCraftPanel(); RefreshCraftPanel(); } }
+            if (craftPanel != null && craftPanel.activeSelf) { if (!CraftHere) craftPanel.SetActive(false); else { LayoutCraftPanel(); RefreshCraftPanel(); } }
         }
 
         private static string FormatTime(double seconds)
@@ -168,7 +168,7 @@ namespace TheTrailWalker
         private void ToggleCraftPanel()
         {
             if (saveBlocked || (milestone4 && stamina.Fainted)) return;
-            if (!AtCamp) { Say("Crafting is available at camps (and later at home)."); return; }
+            if (!CraftHere) { Say("Crafting is available at camps and inside your house."); return; }
             if (craftPanel == null) CreateCraftPanel();
             if (craftPanel.activeSelf) { craftPanel.SetActive(false); if (inventoryOpen) ToggleInventory(); return; }
             if (gearPanel != null && gearPanel.activeSelf) gearPanel.SetActive(false);
@@ -396,7 +396,8 @@ namespace TheTrailWalker
                 craftPreview.text = "Open RECIPES and choose a recipe."; craftOutputIcon.enabled = false; craftLevelInfo.text = ""; craftRecipeName.text = "No recipe selected";
                 craftLevelStar.enabled = false; craftProgressFill.rectTransform.anchorMax = new Vector2(0, 1); return;
             }
-            CraftResult result = CraftStats.Compute(craftRecipe, crafting.UnitsOf(craftRecipe.Id), craftSize);
+            var buffs = home.Buffs;
+            CraftResult result = CraftStats.Compute(craftRecipe, crafting.UnitsOf(craftRecipe.Id), craftSize, buffs.CraftQuality, buffs.DurabilityFor(craftRecipe.Output));
             ItemDefinition output = craftRecipe.Output;
             Sprite outputSprite = ItemIconRenderer.For(ItemArt.ModelFor(output));
             craftOutputIcon.enabled = outputSprite != null; craftOutputIcon.sprite = outputSprite;
@@ -440,7 +441,7 @@ namespace TheTrailWalker
         {
             if (craftBusy || craftRecipe == null) return;
             if (!craftFilled) { Say("Tap AUTOFILL first."); return; }
-            var outcome = CraftingService.Craft(ledger, crafting, craftRecipe, craftSize, DateTime.UtcNow, () => Guid.NewGuid().ToString("N"));
+            var outcome = CraftingService.Craft(ledger, crafting, craftRecipe, craftSize, DateTime.UtcNow, () => Guid.NewGuid().ToString("N"), home.Buffs);
             craftFilled = false;
             if (!outcome.Success) { Say(outcome.Reason + "."); RefreshCraftPanel(); return; }
             crafting.LastCrafted = craftRecipe.Id;

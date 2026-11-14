@@ -180,7 +180,7 @@ namespace TheTrailWalker
         private ITrailPath previousPath;
 
         // The walked leg's region look (fog, light, valley); the settlement approach drops Fern Hollow's valley.
-        private RegionLook Look => milestone5Enabled && travelScene != null && travelScene.Settlement ? RegionLooks.For(4, true)   // the settlement keeps Fern Hollow's light
+        private RegionLook Look => milestone5Enabled && travelScene != null && travelScene.Settlement ? RegionLooks.Settlement   // Fern Hollow's light with a far haze toward region 5
             : milestone5Enabled && travelScene?.Segment != null
             ? RegionLooks.For(travelScene.Catalog.RegionOf(travelScene.Segment).Number, travelScene.Segment.SettlementApproach) : RegionLooks.Default;
 
@@ -193,6 +193,42 @@ namespace TheTrailWalker
         // Settlement mode (spec 2026-11-08, section 2): the street replaces road, camps and interactables; no pickups.
         public SettlementStreet Street { get; private set; }
         public StreetCamera StreetView { get; private set; }
+
+        // Debug house-level preview: rebuilds the street with other house levels, keeping the camera where it is. View only;
+        // the save is untouched.
+        public void RebuildStreet(int[] houseLevels, int playerPlot)
+        {
+            if (Street == null) return;
+            if (Street.Root != null) Destroy(Street.Root.gameObject);
+            Street = SettlementScenery.Build(transform, houseLevels, playerPlot);
+            StreetView?.Rebind(Street);
+        }
+
+        // First home (task 6): the interior of the player's house, built inside the settlement scene but far below the street
+        // (world y = -200), so the street stays built and nothing of it shows in the interior camera. One interior at a time:
+        // building again replaces the previous one. The shell's own colliders (none today) are stripped: only the furniture
+        // touch boxes (CollectionPrototype.InstancePieces) are hit by interior taps.
+        public const string InteriorHolderName = "Home interior";
+        public static readonly Vector3 InteriorWorldPosition = new Vector3(0f, -200f, 0f);
+        public Transform BuildInterior(int level)
+        {
+            ClearInterior();
+            GameObject prefab = Resources.Load<GameObject>($"Settlement/Houses/HouseL{level:00}Interior");
+            if (prefab == null) { Debug.LogWarning($"[Settlement] HouseL{level:00}Interior is missing."); return null; }
+            var holder = new GameObject(InteriorHolderName).transform;
+            holder.SetParent(transform, false);
+            holder.SetPositionAndRotation(InteriorWorldPosition, Quaternion.identity);
+            GameObject interior = Instantiate(prefab, holder, false);
+            interior.name = prefab.name;
+            foreach (Collider c in interior.GetComponentsInChildren<Collider>(true)) DestroyImmediate(c);
+            return interior.transform;
+        }
+        public void ClearInterior()
+        {
+            // Immediate, so a rebuild in the same frame (and the Editor checks) never sees the old holder.
+            for (int i = transform.childCount - 1; i >= 0; i--)
+                if (transform.GetChild(i).name == InteriorHolderName) DestroyImmediate(transform.GetChild(i).gameObject);
+        }
 
         private void CreateWorld()
         {

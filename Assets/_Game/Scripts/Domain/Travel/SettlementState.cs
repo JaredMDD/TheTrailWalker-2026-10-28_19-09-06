@@ -8,7 +8,7 @@ namespace TheTrailWalker.Domain.Travel
     public sealed class SettlementState
     {
         public const int PlotCount = 6;
-        public const int MaxLevel = 8;
+        public const int MaxLevel = 16;   // Part 2 section 16.5: neighbours can reach level 16 (the 16 exteriors)
 
         public sealed class Neighbour
         {

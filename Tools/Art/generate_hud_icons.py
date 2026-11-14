@@ -59,6 +59,40 @@ icons={
   circle(38,106,13),circle(64,106,13),circle(90,106,13),circle(51,82,13),circle(77,82,13),
   circle(38,106,7,LIGHT),circle(64,106,7,LIGHT),circle(90,106,7,LIGHT),circle(51,82,7,LIGHT),circle(77,82,7,LIGHT),
   circle(38,106,2.5,GRAY),circle(64,106,2.5,GRAY),circle(90,106,2.5,GRAY),circle(51,82,2.5,GRAY),circle(77,82,2.5,GRAY)],
+ # Settlement menu button (user, November 9, 2026): a row of houses; tapping it opens the list downward.
+ 'settlement':[
+  poly([(2,74),(20,54),(38,74)]),rect(6,72,28,40,BLACK,1),
+  poly([(90,74),(108,54),(126,74)]),rect(94,72,28,40,BLACK,1),
+  poly([(40,56),(64,26),(88,56)]),rect(44,54,40,58,BLACK,1),
+  rect(57,84,14,28,GRAY,2),rect(58,64,12,12,LIGHT,2),
+  rect(14,84,12,12,LIGHT,2),rect(102,84,12,12,LIGHT,2)],
+ # Inside-house HUD (home revision, November 14, 2026): store (a market stall), upgrade (an up arrow) and pet (a paw).
+ 'store':[
+  rect(10,16,108,12,BLACK,4),
+  rect(14,28,20,18,BLACK),rect(34,28,20,18,GRAY),rect(54,28,20,18,BLACK),rect(74,28,20,18,GRAY),rect(94,28,20,18,BLACK),
+  circle(24,46,10),circle(44,46,10,GRAY),circle(64,46,10),circle(84,46,10,GRAY),circle(104,46,10),
+  rect(20,56,9,30,BLACK,2),rect(99,56,9,30,BLACK,2),
+  rect(12,80,104,34,BLACK,5),rect(22,90,84,6,LIGHT,3),rect(22,101,84,4,GRAY,2)],
+ 'upgrade':[
+  poly([(64,8),(112,58),(84,58),(84,94),(44,94),(44,58),(16,58)]),
+  poly([(64,26),(94,52),(74,52),(74,86),(54,86),(54,52),(34,52)],GRAY),
+  rect(28,102,72,14,BLACK,6)],
+ 'pet':[
+  circle(30,56,13),circle(50,32,13),circle(78,32,13),circle(98,56,13),
+  circle(64,82,22),circle(48,96,16),circle(80,96,16),rect(48,90,32,22,BLACK,8)],
+ # Store menu and bird's-eye HUD (home revision Task 5, November 14, 2026): storage (a chest) and store_piece (an arrow
+ # dropping a piece into an open crate).
+ 'storage':[
+  rect(14,26,100,34,BLACK,12),rect(14,46,100,8,GRAY),
+  rect(14,58,100,56,BLACK,6),rect(40,82,48,5,GRAY,2),rect(40,96,48,5,GRAY,2),
+  rect(14,52,100,8,LIGHT),
+  rect(54,42,20,30,BLACK,4),rect(59,50,10,14,LIGHT,3),
+  rect(26,30,8,84,GRAY,2),rect(94,30,8,84,GRAY,2)],
+ 'store_piece':[
+  poly([(52,6),(76,6),(76,38),(96,38),(64,70),(32,38),(52,38)]),
+  poly([(57,12),(71,12),(71,44),(84,44),(64,63),(44,44),(57,44)],GRAY),
+  poly([(8,64),(30,64),(40,78),(88,78),(98,64),(120,64),(108,116),(20,116)]),
+  rect(30,90,68,6,LIGHT,3),rect(36,102,56,4,GRAY,2)],
  'user':[
   poly([(64+49*(1 if i%2==0 else .49)*math.cos(-math.pi/2+i*math.pi/8),64+49*(1 if i%2==0 else .49)*math.sin(-math.pi/2+i*math.pi/8)) for i in range(16)])]
 }
@@ -127,5 +161,10 @@ def raster(name,shapes):
  write_png(PNG/(name+'.png'),w,w,out)
 
 if __name__=='__main__':
+ # Names on the command line regenerate only those icons (e.g. store upgrade pet); none regenerates all of them.
+ import sys
+ wanted=sys.argv[1:] or list(icons)
+ unknown=[n for n in wanted if n not in icons]
+ if unknown:raise SystemExit('Unknown icons: '+', '.join(unknown))
  SVG.mkdir(parents=True,exist_ok=True);PNG.mkdir(parents=True,exist_ok=True)
- for name,shapes in icons.items():write_svg(name,shapes);raster(name,shapes);print(name,'SVG + 256px RGBA PNG')
+ for name in wanted:shapes=icons[name];write_svg(name,shapes);raster(name,shapes);print(name,'SVG + 256px RGBA PNG')

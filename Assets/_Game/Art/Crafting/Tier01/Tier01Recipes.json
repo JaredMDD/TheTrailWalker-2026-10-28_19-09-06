@@ -1648,7 +1648,7 @@
       "Hearts": 8,
       "Style": "roasted_shrimp",
       "Model": "RoastedShrimp",
-      "UnlockSource": "Optional balloon recipe; exact ingredient sources must be discovered and accessible",
+      "UnlockSource": "Retired November 14, 2026: replaced by Strawberry-glazed shrimp skewers (premium rework); kept for saves that know it",
       "Note": "",
       "Inputs": [
         {
@@ -1665,6 +1665,43 @@
       "CraftingPathSourceIds": [
         "ingredient.shrimp",
         "material.pine_branch"
+      ],
+      "ConversionRecipeIds": [],
+      "BlockedSource": false,
+      "Retired": true
+    },
+    {
+      "Id": "recipe.food.strawberry_glazed_shrimp_skewers",
+      "Name": "Strawberry-glazed shrimp skewers",
+      "Category": "Food",
+      "OutputId": "item.strawberry_glazed_shrimp_skewers",
+      "Yield": 1,
+      "BaseSeconds": 3,
+      "Hearts": 8,
+      "Style": "strawberry_glazed_shrimp_skewers",
+      "Model": "StrawberryGlazedShrimpSkewers",
+      "UnlockSource": "Optional balloon recipe; exact ingredient sources must be discovered and accessible",
+      "Note": "November 14, 2026 premium rework of Roasted shrimp.",
+      "Inputs": [
+        {
+          "ItemId": "ingredient.shrimp",
+          "Quantity": 1
+        },
+        {
+          "ItemId": "food.strawberries",
+          "Quantity": 1
+        },
+        {
+          "ItemId": "ingredient.rock_salt",
+          "Quantity": 1
+        }
+      ],
+      "Tier": 1,
+      "PrefabPath": "BalloonExclusive/Items/StrawberryGlazedShrimpSkewers",
+      "CraftingPathSourceIds": [
+        "food.strawberries",
+        "ingredient.rock_salt",
+        "ingredient.shrimp"
       ],
       "ConversionRecipeIds": [],
       "BlockedSource": false

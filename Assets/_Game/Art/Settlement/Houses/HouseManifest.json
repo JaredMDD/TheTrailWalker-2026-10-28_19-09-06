@@ -12,9 +12,9 @@
       "Tier": 1,
       "GridWidth": 8,
       "GridDepth": 5,
-      "Width": 4.6,
-      "Depth": 3.8,
-      "Height": 2.9,
+      "Width": 4.72,
+      "Depth": 2.98,
+      "Height": 3.04,
       "Eaves": 2.15,
       "WallHeight": 2.1,
       "Wood": "Pine",
@@ -26,8 +26,8 @@
       "GridGuides": "HouseL01GridGuides",
       "FurnitureStudy": "HouseL01FurnitureStudy",
       "GridMetres": 0.5,
-      "PlotWidth": 11.2,
-      "PlotDepth": 10.6,
+      "PlotWidth": 15.2,
+      "PlotDepth": 19.0,
       "GridOrigin": [
         0,
         0,
@@ -59,12 +59,12 @@
         0
       ],
       "PetHomeAnchor": [
-        4.45,
+        3.31,
         0,
         0.25
       ],
       "CollectionAnchor": [
-        -4.4,
+        -3.31,
         0,
         0.25
       ],
@@ -123,7 +123,12 @@
           "Depth": 2,
           "PreviewOnly": true
         }
-      ]
+      ],
+      "WingWidth": 4.72,
+      "Triangles": 2404,
+      "FrontReach": 0.78,
+      "Stage": "Final exterior (batch 1)",
+      "NewElement": "Original shed scale"
     },
     {
       "Level": 2,
@@ -131,10 +136,10 @@
       "Tier": 1,
       "GridWidth": 10,
       "GridDepth": 6,
-      "Width": 5.6,
-      "Depth": 4.3,
-      "Height": 3.4,
-      "Eaves": 2.45,
+      "Width": 5.7357,
+      "Depth": 3.505,
+      "Height": 3.54,
+      "Eaves": 2.42,
       "WallHeight": 2.3,
       "Wood": "Pine",
       "Wall": "PineLight",
@@ -145,8 +150,8 @@
       "GridGuides": "HouseL02GridGuides",
       "FurnitureStudy": "HouseL02FurnitureStudy",
       "GridMetres": 0.5,
-      "PlotWidth": 11.2,
-      "PlotDepth": 10.6,
+      "PlotWidth": 15.2,
+      "PlotDepth": 19.0,
       "GridOrigin": [
         0,
         0,
@@ -178,12 +183,12 @@
         0
       ],
       "PetHomeAnchor": [
-        4.45,
+        3.8178,
         0,
         0.25
       ],
       "CollectionAnchor": [
-        -4.4,
+        -3.8178,
         0,
         0.25
       ],
@@ -242,7 +247,12 @@
           "Depth": 2,
           "PreviewOnly": true
         }
-      ]
+      ],
+      "WingWidth": 5.7357,
+      "Triangles": 3212,
+      "FrontReach": 0.95,
+      "Stage": "Final exterior (batch 1)",
+      "NewElement": "Side lean-to"
     },
     {
       "Level": 3,
@@ -250,10 +260,10 @@
       "Tier": 2,
       "GridWidth": 12,
       "GridDepth": 7,
-      "Width": 6.8,
-      "Depth": 4.8,
-      "Height": 4.4,
-      "Eaves": 2.95,
+      "Width": 7.17,
+      "Depth": 3.98,
+      "Height": 4.64,
+      "Eaves": 3.1,
       "WallHeight": 2.6,
       "Wood": "Birch",
       "Wall": "Plaster",
@@ -264,8 +274,8 @@
       "GridGuides": "HouseL03GridGuides",
       "FurnitureStudy": "HouseL03FurnitureStudy",
       "GridMetres": 0.5,
-      "PlotWidth": 11.2,
-      "PlotDepth": 10.6,
+      "PlotWidth": 15.2,
+      "PlotDepth": 19.0,
       "GridOrigin": [
         0,
         0,
@@ -297,12 +307,12 @@
         0
       ],
       "PetHomeAnchor": [
-        4.45,
+        4.535,
         0,
         0.25
       ],
       "CollectionAnchor": [
-        -4.4,
+        -4.535,
         0,
         0.25
       ],
@@ -361,7 +371,12 @@
           "Depth": 2,
           "PreviewOnly": true
         }
-      ]
+      ],
+      "WingWidth": 7.17,
+      "Triangles": 4632,
+      "FrontReach": 1.2625,
+      "Stage": "Final exterior (batch 1)",
+      "NewElement": "Gabled porch roof, chimney"
     },
     {
       "Level": 4,
@@ -369,10 +384,10 @@
       "Tier": 2,
       "GridWidth": 12,
       "GridDepth": 9,
-      "Width": 6.8,
-      "Depth": 5.8,
-      "Height": 4.5,
-      "Eaves": 3.0,
+      "Width": 7.77,
+      "Depth": 4.98,
+      "Height": 5.34,
+      "Eaves": 3.12,
       "WallHeight": 2.6,
       "Wood": "Birch",
       "Wall": "Plaster",
@@ -383,8 +398,8 @@
       "GridGuides": "HouseL04GridGuides",
       "FurnitureStudy": "HouseL04FurnitureStudy",
       "GridMetres": 0.5,
-      "PlotWidth": 11.2,
-      "PlotDepth": 10.6,
+      "PlotWidth": 15.2,
+      "PlotDepth": 19.0,
       "GridOrigin": [
         0,
         0,
@@ -416,18 +431,18 @@
         0
       ],
       "PetHomeAnchor": [
-        4.45,
+        4.835,
         0,
         0.25
       ],
       "CollectionAnchor": [
-        -4.4,
+        -4.835,
         0,
         0.25
       ],
       "HomeCameraAnchor": [
         0,
-        2.4,
+        2.403,
         13
       ],
       "PetsUnlocked": true,
@@ -480,7 +495,12 @@
           "Depth": 2,
           "PreviewOnly": true
         }
-      ]
+      ],
+      "WingWidth": 7.77,
+      "Triangles": 6820,
+      "FrontReach": 1.2625,
+      "Stage": "Final exterior (batch 1)",
+      "NewElement": "Raised rear gable (back room) rising behind the main roof"
     },
     {
       "Level": 5,
@@ -488,10 +508,10 @@
       "Tier": 3,
       "GridWidth": 12,
       "GridDepth": 11,
-      "Width": 6.8,
-      "Depth": 6.8,
-      "Height": 4.6,
-      "Eaves": 3.05,
+      "Width": 8.37,
+      "Depth": 5.9625,
+      "Height": 5.94,
+      "Eaves": 3.8,
       "WallHeight": 2.7,
       "Wood": "Mesquite",
       "Wall": "SandPlaster",
@@ -502,8 +522,8 @@
       "GridGuides": "HouseL05GridGuides",
       "FurnitureStudy": "HouseL05FurnitureStudy",
       "GridMetres": 0.5,
-      "PlotWidth": 11.2,
-      "PlotDepth": 10.6,
+      "PlotWidth": 15.2,
+      "PlotDepth": 19.0,
       "GridOrigin": [
         0,
         0,
@@ -535,18 +555,18 @@
         0
       ],
       "PetHomeAnchor": [
-        4.45,
+        5.135,
         0,
         0.25
       ],
       "CollectionAnchor": [
-        -4.4,
+        -5.135,
         0,
         0.25
       ],
       "HomeCameraAnchor": [
         0,
-        2.4,
+        2.673,
         13
       ],
       "PetsUnlocked": true,
@@ -599,7 +619,12 @@
           "Depth": 2,
           "PreviewOnly": true
         }
-      ]
+      ],
+      "WingWidth": 8.37,
+      "Triangles": 5288,
+      "FrontReach": 1.3825,
+      "Stage": "Final exterior (batch 1)",
+      "NewElement": "Half-storey (gable and knee-wall windows), projecting side bay"
     },
     {
       "Level": 6,
@@ -607,10 +632,10 @@
       "Tier": 3,
       "GridWidth": 12,
       "GridDepth": 13,
-      "Width": 6.8,
-      "Depth": 7.8,
-      "Height": 4.7,
-      "Eaves": 3.1,
+      "Width": 8.97,
+      "Depth": 6.9625,
+      "Height": 6.74,
+      "Eaves": 3.8,
       "WallHeight": 2.7,
       "Wood": "Mesquite",
       "Wall": "SandPlaster",
@@ -621,8 +646,8 @@
       "GridGuides": "HouseL06GridGuides",
       "FurnitureStudy": "HouseL06FurnitureStudy",
       "GridMetres": 0.5,
-      "PlotWidth": 11.2,
-      "PlotDepth": 10.6,
+      "PlotWidth": 15.2,
+      "PlotDepth": 19.0,
       "GridOrigin": [
         0,
         0,
@@ -654,18 +679,18 @@
         0
       ],
       "PetHomeAnchor": [
-        4.45,
+        5.435,
         0,
         0.25
       ],
       "CollectionAnchor": [
-        -4.4,
+        -5.435,
         0,
         0.25
       ],
       "HomeCameraAnchor": [
         0,
-        2.4,
+        3.0330000000000004,
         13
       ],
       "PetsUnlocked": true,
@@ -718,7 +743,12 @@
           "Depth": 2,
           "PreviewOnly": true
         }
-      ]
+      ],
+      "WingWidth": 8.97,
+      "Triangles": 6236,
+      "FrontReach": 1.2625,
+      "Stage": "Final exterior (batch 1)",
+      "NewElement": "Partial second storey (jettied cross gable), second chimney"
     },
     {
       "Level": 7,
@@ -726,10 +756,10 @@
       "Tier": 4,
       "GridWidth": 12,
       "GridDepth": 15,
-      "Width": 6.8,
-      "Depth": 8.8,
-      "Height": 4.8,
-      "Eaves": 3.15,
+      "Width": 9.77,
+      "Depth": 7.9625,
+      "Height": 7.74,
+      "Eaves": 5.5,
       "WallHeight": 2.8,
       "Wood": "Oak",
       "Wall": "Plaster",
@@ -740,8 +770,8 @@
       "GridGuides": "HouseL07GridGuides",
       "FurnitureStudy": "HouseL07FurnitureStudy",
       "GridMetres": 0.5,
-      "PlotWidth": 11.2,
-      "PlotDepth": 10.6,
+      "PlotWidth": 15.2,
+      "PlotDepth": 19.0,
       "GridOrigin": [
         0,
         0,
@@ -773,18 +803,18 @@
         0
       ],
       "PetHomeAnchor": [
-        4.45,
+        5.835,
         0,
         0.25
       ],
       "CollectionAnchor": [
-        -4.4,
+        -5.835,
         0,
         0.25
       ],
       "HomeCameraAnchor": [
         0,
-        2.4,
+        3.483,
         13
       ],
       "PetsUnlocked": true,
@@ -837,7 +867,12 @@
           "Depth": 2,
           "PreviewOnly": true
         }
-      ]
+      ],
+      "WingWidth": 9.77,
+      "Triangles": 6372,
+      "FrontReach": 1.2625,
+      "Stage": "Final exterior (batch 1)",
+      "NewElement": "Full two storeys, porch across the front"
     },
     {
       "Level": 8,
@@ -845,10 +880,10 @@
       "Tier": 4,
       "GridWidth": 12,
       "GridDepth": 17,
-      "Width": 6.8,
-      "Depth": 9.8,
-      "Height": 4.9,
-      "Eaves": 3.2,
+      "Width": 10.37,
+      "Depth": 8.9625,
+      "Height": 8.34,
+      "Eaves": 5.8,
       "WallHeight": 2.8,
       "Wood": "Oak",
       "Wall": "FinePlaster",
@@ -859,8 +894,8 @@
       "GridGuides": "HouseL08GridGuides",
       "FurnitureStudy": "HouseL08FurnitureStudy",
       "GridMetres": 0.5,
-      "PlotWidth": 11.2,
-      "PlotDepth": 10.6,
+      "PlotWidth": 15.2,
+      "PlotDepth": 19.0,
       "GridOrigin": [
         0,
         0,
@@ -892,18 +927,18 @@
         0
       ],
       "PetHomeAnchor": [
-        4.45,
+        6.135,
         0,
         0.25
       ],
       "CollectionAnchor": [
-        -4.4,
+        -6.135,
         0,
         0.25
       ],
       "HomeCameraAnchor": [
         0,
-        2.4,
+        3.753,
         13
       ],
       "PetsUnlocked": true,
@@ -956,14 +991,319 @@
           "Depth": 2,
           "PreviewOnly": true
         }
-      ]
+      ],
+      "WingWidth": 10.37,
+      "Triangles": 7232,
+      "FrontReach": 1.2625,
+      "Stage": "Final exterior (batch 1)",
+      "NewElement": "Gabled side wing, stone base"
+    },
+    {
+      "Level": 9,
+      "Name": "Maple lodge",
+      "Tier": 5,
+      "GridWidth": 12,
+      "GridDepth": 19,
+      "Width": 10.77,
+      "Depth": 9.9625,
+      "Height": 8.74,
+      "Eaves": 5.8,
+      "WallHeight": 3.0,
+      "Wood": "Maple",
+      "Wall": "Stone",
+      "Roof": "Slate",
+      "Chimneys": 2,
+      "Front": "HouseL09Front",
+      "Interior": "",
+      "GridGuides": "",
+      "FurnitureStudy": "",
+      "GridMetres": 0.5,
+      "PlotWidth": 15.2,
+      "PlotDepth": 19.0,
+      "GridOrigin": [
+        0,
+        0,
+        0
+      ],
+      "GridAxisX": [
+        -0.5,
+        0,
+        0
+      ],
+      "GridAxisDepth": [
+        0,
+        0,
+        -0.5
+      ],
+      "DoorAnchor": [
+        0,
+        0.34,
+        0.15
+      ],
+      "SelectAnchor": [
+        0,
+        1.4,
+        0.2
+      ],
+      "GroundAnchor": [
+        0,
+        0,
+        0
+      ],
+      "PetHomeAnchor": [
+        6.335,
+        0,
+        0.25
+      ],
+      "CollectionAnchor": [
+        -6.335,
+        0,
+        0.25
+      ],
+      "HomeCameraAnchor": [
+        0,
+        3.9330000000000003,
+        13
+      ],
+      "PetsUnlocked": true,
+      "FurnitureSamples": [],
+      "WingWidth": 10.77,
+      "Triangles": 9120,
+      "FrontReach": 1.4519,
+      "Stage": "Final exterior (batch 3)",
+      "NewElement": "Stone ground floor, maple upper storey, long porch roof, upper cross gable"
+    },
+    {
+      "Level": 10,
+      "Name": "Maple lodge with veranda",
+      "Tier": 5,
+      "GridWidth": 12,
+      "GridDepth": 21,
+      "Width": 10.9212,
+      "Depth": 10.9625,
+      "Height": 9.34,
+      "Eaves": 5.8,
+      "WallHeight": 3.0,
+      "Wood": "Maple",
+      "Wall": "Stone",
+      "Roof": "Slate",
+      "Chimneys": 2,
+      "Front": "HouseL10Front",
+      "Interior": "",
+      "GridGuides": "",
+      "FurnitureStudy": "",
+      "GridMetres": 0.5,
+      "PlotWidth": 15.2,
+      "PlotDepth": 19.0,
+      "GridOrigin": [
+        0,
+        0,
+        0
+      ],
+      "GridAxisX": [
+        -0.5,
+        0,
+        0
+      ],
+      "GridAxisDepth": [
+        0,
+        0,
+        -0.5
+      ],
+      "DoorAnchor": [
+        0,
+        0.34,
+        0.15
+      ],
+      "SelectAnchor": [
+        0,
+        1.4,
+        0.2
+      ],
+      "GroundAnchor": [
+        0,
+        0,
+        0
+      ],
+      "PetHomeAnchor": [
+        6.4106,
+        0,
+        0.25
+      ],
+      "CollectionAnchor": [
+        -6.4106,
+        0,
+        0.25
+      ],
+      "HomeCameraAnchor": [
+        0,
+        4.203,
+        13
+      ],
+      "PetsUnlocked": true,
+      "FurnitureSamples": [],
+      "WingWidth": 10.9212,
+      "Triangles": 9876,
+      "FrontReach": 1.4519,
+      "Stage": "Final exterior (batch 3)",
+      "NewElement": "Veranda wrapping the screen-left corner with a side return; 9.2 m ridge"
+    },
+    {
+      "Level": 11,
+      "Name": "Cedar chalet",
+      "Tier": 6,
+      "GridWidth": 12,
+      "GridDepth": 23,
+      "Width": 10.97,
+      "Depth": 11.9625,
+      "Height": 10.14,
+      "Eaves": 5.8,
+      "WallHeight": 3.0,
+      "Wood": "Cedar",
+      "Wall": "Granite",
+      "Roof": "Slate",
+      "Chimneys": 2,
+      "Front": "HouseL11Front",
+      "Interior": "",
+      "GridGuides": "",
+      "FurnitureStudy": "",
+      "GridMetres": 0.5,
+      "PlotWidth": 15.2,
+      "PlotDepth": 19.0,
+      "GridOrigin": [
+        0,
+        0,
+        0
+      ],
+      "GridAxisX": [
+        -0.5,
+        0,
+        0
+      ],
+      "GridAxisDepth": [
+        0,
+        0,
+        -0.5
+      ],
+      "DoorAnchor": [
+        0,
+        0.34,
+        0.15
+      ],
+      "SelectAnchor": [
+        0,
+        1.4,
+        0.2
+      ],
+      "GroundAnchor": [
+        0,
+        0,
+        0
+      ],
+      "PetHomeAnchor": [
+        6.435,
+        0,
+        0.25
+      ],
+      "CollectionAnchor": [
+        -6.435,
+        0,
+        0.25
+      ],
+      "HomeCameraAnchor": [
+        0,
+        4.563000000000001,
+        13
+      ],
+      "PetsUnlocked": true,
+      "FurnitureSamples": [],
+      "WingWidth": 10.97,
+      "Triangles": 10836,
+      "FrontReach": 1.4519,
+      "Stage": "Final exterior (batch 3)",
+      "NewElement": "Steep cedar roof (10 m), two upper balconies, hooded gable windows"
+    },
+    {
+      "Level": 12,
+      "Name": "Cedar chalet with lookout tower",
+      "Tier": 6,
+      "GridWidth": 12,
+      "GridDepth": 25,
+      "Width": 10.985,
+      "Depth": 12.9625,
+      "Height": 12.005,
+      "Eaves": 5.8,
+      "WallHeight": 3.0,
+      "Wood": "Cedar",
+      "Wall": "Granite",
+      "Roof": "Slate",
+      "Chimneys": 2,
+      "Front": "HouseL12Front",
+      "Interior": "",
+      "GridGuides": "",
+      "FurnitureStudy": "",
+      "GridMetres": 0.5,
+      "PlotWidth": 15.2,
+      "PlotDepth": 19.0,
+      "GridOrigin": [
+        0,
+        0,
+        0
+      ],
+      "GridAxisX": [
+        -0.5,
+        0,
+        0
+      ],
+      "GridAxisDepth": [
+        0,
+        0,
+        -0.5
+      ],
+      "DoorAnchor": [
+        0,
+        0.34,
+        0.15
+      ],
+      "SelectAnchor": [
+        0,
+        1.4,
+        0.2
+      ],
+      "GroundAnchor": [
+        0,
+        0,
+        0
+      ],
+      "PetHomeAnchor": [
+        6.4425,
+        0,
+        0.25
+      ],
+      "CollectionAnchor": [
+        -6.4425,
+        0,
+        0.25
+      ],
+      "HomeCameraAnchor": [
+        0,
+        5.40225,
+        13
+      ],
+      "PetsUnlocked": true,
+      "FurnitureSamples": [],
+      "WingWidth": 10.985,
+      "Triangles": 11286,
+      "FrontReach": 1.4519,
+      "Stage": "Final exterior (batch 3)",
+      "NewElement": "Lookout tower (12 m) at the screen-left front corner"
     }
   ],
   "Models": [
     {
       "name": "HouseL01Front",
-      "vertices": 1628,
-      "triangles": 2440,
+      "vertices": 1604,
+      "triangles": 2404,
       "BoundsMin": [
         -2.36,
         0.0,
@@ -1022,15 +1362,15 @@
     },
     {
       "name": "HouseL02Front",
-      "vertices": 2228,
-      "triangles": 3340,
+      "vertices": 2152,
+      "triangles": 3212,
       "BoundsMin": [
         -2.885,
         0.0,
-        -3.48
+        -3.505
       ],
       "BoundsMax": [
-        2.885,
+        2.8507040928220673,
         3.54,
         0.95
       ]
@@ -1082,17 +1422,17 @@
     },
     {
       "name": "HouseL03Front",
-      "vertices": 2364,
-      "triangles": 3544,
+      "vertices": 3090,
+      "triangles": 4632,
       "BoundsMin": [
-        -3.485,
+        -3.585,
         0.0,
         -3.98
       ],
       "BoundsMax": [
-        3.485,
-        4.540000000000001,
-        0.95
+        3.585,
+        4.640000000000001,
+        1.2625000000000002
       ]
     },
     {
@@ -1142,17 +1482,17 @@
     },
     {
       "name": "HouseL04Front",
-      "vertices": 2828,
-      "triangles": 4240,
+      "vertices": 4550,
+      "triangles": 6820,
       "BoundsMin": [
-        -3.485,
+        -3.885,
         0.0,
         -4.98
       ],
       "BoundsMax": [
-        3.485,
-        4.640000000000001,
-        0.95
+        3.885,
+        5.340000000000001,
+        1.2625000000000002
       ]
     },
     {
@@ -1202,17 +1542,17 @@
     },
     {
       "name": "HouseL05Front",
-      "vertices": 3004,
-      "triangles": 4504,
+      "vertices": 3528,
+      "triangles": 5288,
       "BoundsMin": [
-        -3.485,
+        -4.185,
         0.0,
-        -5.98
+        -5.9625
       ],
       "BoundsMax": [
-        3.485,
-        4.74,
-        0.95
+        4.185,
+        5.94,
+        1.3825
       ]
     },
     {
@@ -1262,17 +1602,17 @@
     },
     {
       "name": "HouseL06Front",
-      "vertices": 3572,
-      "triangles": 5356,
+      "vertices": 4160,
+      "triangles": 6236,
       "BoundsMin": [
-        -3.485,
+        -4.485,
         0.0,
-        -6.98
+        -6.9625
       ],
       "BoundsMax": [
-        3.485,
-        4.840000000000001,
-        0.95
+        4.485,
+        6.74,
+        1.2625000000000002
       ]
     },
     {
@@ -1322,17 +1662,17 @@
     },
     {
       "name": "HouseL07Front",
-      "vertices": 4116,
-      "triangles": 6172,
+      "vertices": 4250,
+      "triangles": 6372,
       "BoundsMin": [
-        -3.485,
+        -4.885,
         0.0,
-        -7.9848
+        -7.9625
       ],
       "BoundsMax": [
-        3.485,
-        4.94,
-        0.95
+        4.885,
+        7.74,
+        1.2625000000000002
       ]
     },
     {
@@ -1382,17 +1722,17 @@
     },
     {
       "name": "HouseL08Front",
-      "vertices": 4308,
-      "triangles": 6460,
+      "vertices": 4824,
+      "triangles": 7232,
       "BoundsMin": [
-        -3.485,
+        -5.185,
         0.0,
-        -8.98
+        -8.962499999999999
       ],
       "BoundsMax": [
-        3.485,
-        5.040000000000001,
-        0.95
+        5.185,
+        8.339999999999998,
+        1.2625000000000002
       ]
     },
     {
@@ -1469,6 +1809,1502 @@
         0.6674999999999999,
         0.0675
       ]
+    },
+    {
+      "name": "HouseL09Front",
+      "vertices": 6082,
+      "triangles": 9120,
+      "BoundsMin": [
+        -5.385,
+        0.0,
+        -9.962499999999999
+      ],
+      "BoundsMax": [
+        5.385,
+        8.739999999999998,
+        1.451890581618537
+      ]
+    },
+    {
+      "name": "HouseL10Front",
+      "vertices": 6586,
+      "triangles": 9876,
+      "BoundsMin": [
+        -5.485,
+        0.0,
+        -10.962499999999999
+      ],
+      "BoundsMax": [
+        5.436154058568898,
+        9.339999999999998,
+        1.451890581618537
+      ]
+    },
+    {
+      "name": "HouseL11Front",
+      "vertices": 7226,
+      "triangles": 10836,
+      "BoundsMin": [
+        -5.485,
+        0.0,
+        -11.962499999999999
+      ],
+      "BoundsMax": [
+        5.485,
+        10.139999999999999,
+        1.451890581618537
+      ]
+    },
+    {
+      "name": "HouseL12Front",
+      "vertices": 7527,
+      "triangles": 11286,
+      "BoundsMin": [
+        -5.535,
+        0.0,
+        -12.962499999999999
+      ],
+      "BoundsMax": [
+        5.45,
+        12.004999999999999,
+        1.451890581618537
+      ]
+    }
+  ],
+  "PetHomes": [
+    {
+      "Name": "PetHomeT2",
+      "Look": "Kennel",
+      "Tier": 2,
+      "HouseLevels": [
+        3,
+        4
+      ],
+      "PetsOwned": [
+        1,
+        2
+      ],
+      "Wood": "Birch",
+      "Width": 1.5,
+      "Depth": 1.2650000000000001,
+      "Height": 1.46,
+      "Triangles": 328,
+      "TriangleCeiling": 1500,
+      "BoundsMin": [
+        -0.75,
+        0.0,
+        -0.6325000000000001
+      ],
+      "BoundsMax": [
+        0.75,
+        1.46,
+        0.6325000000000001
+      ],
+      "ActivePetAnchor": [
+        0,
+        0,
+        0.95
+      ],
+      "ActivePetFacing": [
+        0,
+        0,
+        1
+      ],
+      "ActivePetClearance": [
+        0.6,
+        1.2,
+        0.6
+      ],
+      "SourcePath": "Assets/_Game/Art/Settlement/Houses/PetHomes/PetHomeT2.obj",
+      "PrefabPath": "Settlement/Houses/PetHomeT2"
+    },
+    {
+      "Name": "PetHomeT3",
+      "Look": "Fenced run",
+      "Tier": 3,
+      "HouseLevels": [
+        5,
+        6
+      ],
+      "PetsOwned": [
+        2,
+        3
+      ],
+      "Wood": "Mesquite",
+      "Width": 1.8099999999999998,
+      "Depth": 2.17,
+      "Height": 1.38,
+      "Triangles": 520,
+      "TriangleCeiling": 1500,
+      "BoundsMin": [
+        -0.9049999999999999,
+        0.0,
+        -1.085
+      ],
+      "BoundsMax": [
+        0.9049999999999999,
+        1.38,
+        1.085
+      ],
+      "ActivePetAnchor": [
+        0,
+        0,
+        0.95
+      ],
+      "ActivePetFacing": [
+        0,
+        0,
+        1
+      ],
+      "ActivePetClearance": [
+        0.6,
+        1.2,
+        0.6
+      ],
+      "SourcePath": "Assets/_Game/Art/Settlement/Houses/PetHomes/PetHomeT3.obj",
+      "PrefabPath": "Settlement/Houses/PetHomeT3"
+    },
+    {
+      "Name": "PetHomeT4",
+      "Look": "Pen with shelter",
+      "Tier": 4,
+      "HouseLevels": [
+        7,
+        8
+      ],
+      "PetsOwned": [
+        3,
+        4
+      ],
+      "Wood": "Oak",
+      "Width": 1.8099999999999998,
+      "Depth": 2.25,
+      "Height": 1.373292471750758,
+      "Triangles": 452,
+      "TriangleCeiling": 1500,
+      "BoundsMin": [
+        -0.9049999999999999,
+        0.0,
+        -1.125
+      ],
+      "BoundsMax": [
+        0.9049999999999999,
+        1.373292471750758,
+        1.125
+      ],
+      "ActivePetAnchor": [
+        0,
+        0,
+        0.95
+      ],
+      "ActivePetFacing": [
+        0,
+        0,
+        1
+      ],
+      "ActivePetClearance": [
+        0.6,
+        1.2,
+        0.6
+      ],
+      "SourcePath": "Assets/_Game/Art/Settlement/Houses/PetHomes/PetHomeT4.obj",
+      "PrefabPath": "Settlement/Houses/PetHomeT4"
+    },
+    {
+      "Name": "PetHomeT5",
+      "Look": "Maple barn",
+      "Tier": 5,
+      "HouseLevels": [
+        9,
+        10
+      ],
+      "PetsOwned": [
+        5,
+        6
+      ],
+      "Wood": "Maple",
+      "Width": 1.8000000000000003,
+      "Depth": 1.7525,
+      "Height": 2.0300000000000002,
+      "Triangles": 468,
+      "TriangleCeiling": 1500,
+      "BoundsMin": [
+        -0.9000000000000001,
+        0.0,
+        -0.87625
+      ],
+      "BoundsMax": [
+        0.9000000000000001,
+        2.0300000000000002,
+        0.87625
+      ],
+      "ActivePetAnchor": [
+        0,
+        0,
+        0.95
+      ],
+      "ActivePetFacing": [
+        0,
+        0,
+        1
+      ],
+      "ActivePetClearance": [
+        0.6,
+        1.2,
+        0.6
+      ],
+      "SourcePath": "Assets/_Game/Art/Settlement/Houses/PetHomes/PetHomeT5.obj",
+      "PrefabPath": "Settlement/Houses/PetHomeT5"
+    },
+    {
+      "Name": "PetHomeT6",
+      "Look": "Cedar stable",
+      "Tier": 6,
+      "HouseLevels": [
+        11,
+        12
+      ],
+      "PetsOwned": [
+        7,
+        8
+      ],
+      "Wood": "Cedar",
+      "Width": 1.8400000000000003,
+      "Depth": 1.585,
+      "Height": 2.12,
+      "Triangles": 484,
+      "TriangleCeiling": 1500,
+      "BoundsMin": [
+        -0.9200000000000002,
+        0.0,
+        -0.7925
+      ],
+      "BoundsMax": [
+        0.9200000000000002,
+        2.12,
+        0.7925
+      ],
+      "ActivePetAnchor": [
+        0,
+        0,
+        0.95
+      ],
+      "ActivePetFacing": [
+        0,
+        0,
+        1
+      ],
+      "ActivePetClearance": [
+        0.6,
+        1.2,
+        0.6
+      ],
+      "SourcePath": "Assets/_Game/Art/Settlement/Houses/PetHomes/PetHomeT6.obj",
+      "PrefabPath": "Settlement/Houses/PetHomeT6"
+    },
+    {
+      "Name": "PetHomeT7",
+      "Look": "Redwood menagerie",
+      "Tier": 7,
+      "HouseLevels": [
+        13,
+        14
+      ],
+      "PetsOwned": [
+        9,
+        10
+      ],
+      "Wood": "Redwood",
+      "Width": 1.8400000000000003,
+      "Depth": 2.1574999999999998,
+      "Height": 2.24,
+      "Triangles": 496,
+      "TriangleCeiling": 1500,
+      "BoundsMin": [
+        -0.9200000000000002,
+        0.0,
+        -1.0787499999999999
+      ],
+      "BoundsMax": [
+        0.9200000000000002,
+        2.24,
+        1.0787499999999999
+      ],
+      "ActivePetAnchor": [
+        0,
+        0,
+        0.95
+      ],
+      "ActivePetFacing": [
+        0,
+        0,
+        1
+      ],
+      "ActivePetClearance": [
+        0.6,
+        1.2,
+        0.6
+      ],
+      "SourcePath": "Assets/_Game/Art/Settlement/Houses/PetHomes/PetHomeT7.obj",
+      "PrefabPath": "Settlement/Houses/PetHomeT7"
+    },
+    {
+      "Name": "PetHomeT8",
+      "Look": "Ebony pavilion",
+      "Tier": 8,
+      "HouseLevels": [
+        15,
+        16
+      ],
+      "PetsOwned": [
+        11,
+        12
+      ],
+      "Wood": "Ebony",
+      "Width": 1.84,
+      "Depth": 2.36,
+      "Height": 2.2,
+      "Triangles": 456,
+      "TriangleCeiling": 1500,
+      "BoundsMin": [
+        -0.92,
+        0.0,
+        -1.18
+      ],
+      "BoundsMax": [
+        0.92,
+        2.2,
+        1.18
+      ],
+      "ActivePetAnchor": [
+        0,
+        0,
+        0.95
+      ],
+      "ActivePetFacing": [
+        0,
+        0,
+        1
+      ],
+      "ActivePetClearance": [
+        0.6,
+        1.2,
+        0.6
+      ],
+      "SourcePath": "Assets/_Game/Art/Settlement/Houses/PetHomes/PetHomeT8.obj",
+      "PrefabPath": "Settlement/Houses/PetHomeT8"
+    }
+  ],
+  "ExteriorBlockouts": [
+    {
+      "Level": 1,
+      "Stage": "Blockout",
+      "NewElement": "Original shed scale",
+      "Wood": "Pine",
+      "GridWidth": 8,
+      "GridDepth": 5,
+      "WidthTarget": 4.6,
+      "HeightTarget": 2.9,
+      "RearDepthTarget": 3.8,
+      "WingWidthTarget": 4.6,
+      "Width": 4.6,
+      "WingWidth": 4.6,
+      "Height": 2.9,
+      "Depth": 3.8,
+      "FrontReach": 0.23,
+      "Triangles": 290,
+      "PetHomeAnchor": [
+        3.25,
+        0,
+        0.25
+      ],
+      "CollectionAnchor": [
+        -3.25,
+        0,
+        0.25
+      ],
+      "PlotWidth": 15.2,
+      "PlotDepth": 19,
+      "BoundsMin": [
+        -2.3,
+        0.0,
+        -3.8
+      ],
+      "BoundsMax": [
+        2.3,
+        2.9,
+        0.23
+      ],
+      "Name": "HouseL01Block",
+      "ReviewOnly": true,
+      "Blockout": "HouseL01Block",
+      "PrefabPath": "Settlement/Houses/Blockouts/HouseL01Block",
+      "SourcePath": "Assets/_Game/Art/Settlement/Houses/Blockouts/HouseL01Block.obj",
+      "GroundAnchor": [
+        0,
+        0,
+        0
+      ],
+      "DoorAnchor": [
+        0,
+        0.34,
+        0.15
+      ],
+      "SelectAnchor": [
+        0,
+        1.34,
+        0.2
+      ],
+      "HomeCameraAnchor": [
+        0,
+        2.4,
+        13
+      ],
+      "GridMetres": 0.5,
+      "TriangleCeiling": 8000
+    },
+    {
+      "Level": 2,
+      "Stage": "Blockout",
+      "NewElement": "Side lean-to roof",
+      "Wood": "Pine",
+      "GridWidth": 10,
+      "GridDepth": 6,
+      "WidthTarget": 5.6,
+      "HeightTarget": 3.4,
+      "RearDepthTarget": 4.3,
+      "WingWidthTarget": 5.6,
+      "Width": 5.6,
+      "WingWidth": 5.6,
+      "Height": 3.4,
+      "Depth": 4.3,
+      "FrontReach": 0.23,
+      "Triangles": 304,
+      "PetHomeAnchor": [
+        3.75,
+        0,
+        0.25
+      ],
+      "CollectionAnchor": [
+        -3.75,
+        0,
+        0.25
+      ],
+      "PlotWidth": 15.2,
+      "PlotDepth": 19,
+      "BoundsMin": [
+        -2.8,
+        0.0,
+        -4.3
+      ],
+      "BoundsMax": [
+        2.8,
+        3.4,
+        0.23
+      ],
+      "Name": "HouseL02Block",
+      "ReviewOnly": true,
+      "Blockout": "HouseL02Block",
+      "PrefabPath": "Settlement/Houses/Blockouts/HouseL02Block",
+      "SourcePath": "Assets/_Game/Art/Settlement/Houses/Blockouts/HouseL02Block.obj",
+      "GroundAnchor": [
+        0,
+        0,
+        0
+      ],
+      "DoorAnchor": [
+        0,
+        0.34,
+        0.15
+      ],
+      "SelectAnchor": [
+        0,
+        1.34,
+        0.2
+      ],
+      "HomeCameraAnchor": [
+        0,
+        2.4,
+        13
+      ],
+      "GridMetres": 0.5,
+      "TriangleCeiling": 8000
+    },
+    {
+      "Level": 3,
+      "Stage": "Blockout",
+      "NewElement": "Porch roof + chimney",
+      "Wood": "Birch",
+      "GridWidth": 12,
+      "GridDepth": 7,
+      "WidthTarget": 7,
+      "HeightTarget": 4.5,
+      "RearDepthTarget": 4.8,
+      "WingWidthTarget": 7,
+      "Width": 7.0,
+      "WingWidth": 7.0,
+      "Height": 4.5,
+      "Depth": 4.8,
+      "FrontReach": 1.1800000000000002,
+      "Triangles": 408,
+      "PetHomeAnchor": [
+        4.45,
+        0,
+        0.25
+      ],
+      "CollectionAnchor": [
+        -4.45,
+        0,
+        0.25
+      ],
+      "PlotWidth": 15.2,
+      "PlotDepth": 19,
+      "BoundsMin": [
+        -3.5,
+        0.0,
+        -4.8
+      ],
+      "BoundsMax": [
+        3.5,
+        4.5,
+        1.1800000000000002
+      ],
+      "Name": "HouseL03Block",
+      "ReviewOnly": true,
+      "Blockout": "HouseL03Block",
+      "PrefabPath": "Settlement/Houses/Blockouts/HouseL03Block",
+      "SourcePath": "Assets/_Game/Art/Settlement/Houses/Blockouts/HouseL03Block.obj",
+      "GroundAnchor": [
+        0,
+        0,
+        0
+      ],
+      "DoorAnchor": [
+        0,
+        0.34,
+        0.15
+      ],
+      "SelectAnchor": [
+        0,
+        1.34,
+        0.2
+      ],
+      "HomeCameraAnchor": [
+        0,
+        2.4,
+        13
+      ],
+      "GridMetres": 0.5,
+      "TriangleCeiling": 8000
+    },
+    {
+      "Level": 4,
+      "Stage": "Blockout",
+      "NewElement": "Raised rear gable + dormer",
+      "Wood": "Birch",
+      "GridWidth": 12,
+      "GridDepth": 9,
+      "WidthTarget": 7.6,
+      "HeightTarget": 5.2,
+      "RearDepthTarget": 5.8,
+      "WingWidthTarget": 7.6,
+      "Width": 7.6,
+      "WingWidth": 7.6,
+      "Height": 5.2,
+      "Depth": 5.8,
+      "FrontReach": 1.1800000000000002,
+      "Triangles": 652,
+      "PetHomeAnchor": [
+        4.75,
+        0,
+        0.25
+      ],
+      "CollectionAnchor": [
+        -4.75,
+        0,
+        0.25
+      ],
+      "PlotWidth": 15.2,
+      "PlotDepth": 19,
+      "BoundsMin": [
+        -3.8,
+        0.0,
+        -5.8
+      ],
+      "BoundsMax": [
+        3.8,
+        5.2,
+        1.1800000000000002
+      ],
+      "Name": "HouseL04Block",
+      "ReviewOnly": true,
+      "Blockout": "HouseL04Block",
+      "PrefabPath": "Settlement/Houses/Blockouts/HouseL04Block",
+      "SourcePath": "Assets/_Game/Art/Settlement/Houses/Blockouts/HouseL04Block.obj",
+      "GroundAnchor": [
+        0,
+        0,
+        0
+      ],
+      "DoorAnchor": [
+        0,
+        0.34,
+        0.15
+      ],
+      "SelectAnchor": [
+        0,
+        1.34,
+        0.2
+      ],
+      "HomeCameraAnchor": [
+        0,
+        2.4,
+        13
+      ],
+      "GridMetres": 0.5,
+      "TriangleCeiling": 8000
+    },
+    {
+      "Level": 5,
+      "Stage": "Blockout",
+      "NewElement": "Half-storey, dormers, side bay",
+      "Wood": "Mesquite",
+      "GridWidth": 12,
+      "GridDepth": 11,
+      "WidthTarget": 8.2,
+      "HeightTarget": 5.8,
+      "RearDepthTarget": 6.8,
+      "WingWidthTarget": 8.2,
+      "Width": 8.2,
+      "WingWidth": 8.2,
+      "Height": 5.8,
+      "Depth": 6.8,
+      "FrontReach": 1.38,
+      "Triangles": 882,
+      "PetHomeAnchor": [
+        5.05,
+        0,
+        0.25
+      ],
+      "CollectionAnchor": [
+        -5.05,
+        0,
+        0.25
+      ],
+      "PlotWidth": 15.2,
+      "PlotDepth": 19,
+      "BoundsMin": [
+        -4.1,
+        0.0,
+        -6.8
+      ],
+      "BoundsMax": [
+        4.1,
+        5.8,
+        1.38
+      ],
+      "Name": "HouseL05Block",
+      "ReviewOnly": true,
+      "Blockout": "HouseL05Block",
+      "PrefabPath": "Settlement/Houses/Blockouts/HouseL05Block",
+      "SourcePath": "Assets/_Game/Art/Settlement/Houses/Blockouts/HouseL05Block.obj",
+      "GroundAnchor": [
+        0,
+        0,
+        0
+      ],
+      "DoorAnchor": [
+        0,
+        0.34,
+        0.15
+      ],
+      "SelectAnchor": [
+        0,
+        1.34,
+        0.2
+      ],
+      "HomeCameraAnchor": [
+        0,
+        2.61,
+        13
+      ],
+      "GridMetres": 0.5,
+      "TriangleCeiling": 8000
+    },
+    {
+      "Level": 6,
+      "Stage": "Blockout",
+      "NewElement": "Partial second storey + flue",
+      "Wood": "Mesquite",
+      "GridWidth": 12,
+      "GridDepth": 13,
+      "WidthTarget": 8.8,
+      "HeightTarget": 6.6,
+      "RearDepthTarget": 7.8,
+      "WingWidthTarget": 8.8,
+      "Width": 8.8,
+      "WingWidth": 8.8,
+      "Height": 6.6,
+      "Depth": 7.8,
+      "FrontReach": 1.1800000000000002,
+      "Triangles": 808,
+      "PetHomeAnchor": [
+        5.3500000000000005,
+        0,
+        0.25
+      ],
+      "CollectionAnchor": [
+        -5.3500000000000005,
+        0,
+        0.25
+      ],
+      "PlotWidth": 15.2,
+      "PlotDepth": 19,
+      "BoundsMin": [
+        -4.4,
+        0.0,
+        -7.8
+      ],
+      "BoundsMax": [
+        4.4,
+        6.6,
+        1.1800000000000002
+      ],
+      "Name": "HouseL06Block",
+      "ReviewOnly": true,
+      "Blockout": "HouseL06Block",
+      "PrefabPath": "Settlement/Houses/Blockouts/HouseL06Block",
+      "SourcePath": "Assets/_Game/Art/Settlement/Houses/Blockouts/HouseL06Block.obj",
+      "GroundAnchor": [
+        0,
+        0,
+        0
+      ],
+      "DoorAnchor": [
+        0,
+        0.34,
+        0.15
+      ],
+      "SelectAnchor": [
+        0,
+        1.34,
+        0.2
+      ],
+      "HomeCameraAnchor": [
+        0,
+        2.9699999999999998,
+        13
+      ],
+      "GridMetres": 0.5,
+      "TriangleCeiling": 8000
+    },
+    {
+      "Level": 7,
+      "Stage": "Blockout",
+      "NewElement": "Full two storeys + wide porch",
+      "Wood": "Oak",
+      "GridWidth": 12,
+      "GridDepth": 15,
+      "WidthTarget": 9.6,
+      "HeightTarget": 7.6,
+      "RearDepthTarget": 8.8,
+      "WingWidthTarget": 9.6,
+      "Width": 9.6,
+      "WingWidth": 9.6,
+      "Height": 7.6,
+      "Depth": 8.8,
+      "FrontReach": 1.1800000000000002,
+      "Triangles": 716,
+      "PetHomeAnchor": [
+        5.75,
+        0,
+        0.25
+      ],
+      "CollectionAnchor": [
+        -5.75,
+        0,
+        0.25
+      ],
+      "PlotWidth": 15.2,
+      "PlotDepth": 19,
+      "BoundsMin": [
+        -4.8,
+        0.0,
+        -8.8
+      ],
+      "BoundsMax": [
+        4.8,
+        7.6,
+        1.1800000000000002
+      ],
+      "Name": "HouseL07Block",
+      "ReviewOnly": true,
+      "Blockout": "HouseL07Block",
+      "PrefabPath": "Settlement/Houses/Blockouts/HouseL07Block",
+      "SourcePath": "Assets/_Game/Art/Settlement/Houses/Blockouts/HouseL07Block.obj",
+      "GroundAnchor": [
+        0,
+        0,
+        0
+      ],
+      "DoorAnchor": [
+        0,
+        0.34,
+        0.15
+      ],
+      "SelectAnchor": [
+        0,
+        1.34,
+        0.2
+      ],
+      "HomeCameraAnchor": [
+        0,
+        3.42,
+        13
+      ],
+      "GridMetres": 0.5,
+      "TriangleCeiling": 8000
+    },
+    {
+      "Level": 8,
+      "Stage": "Blockout",
+      "NewElement": "Gabled side wing + stone base",
+      "Wood": "Oak",
+      "GridWidth": 12,
+      "GridDepth": 17,
+      "WidthTarget": 10.2,
+      "HeightTarget": 8.2,
+      "RearDepthTarget": 9.8,
+      "WingWidthTarget": 10.2,
+      "Width": 10.2,
+      "WingWidth": 10.2,
+      "Height": 8.2,
+      "Depth": 9.8,
+      "FrontReach": 1.1800000000000002,
+      "Triangles": 802,
+      "PetHomeAnchor": [
+        6.05,
+        0,
+        0.25
+      ],
+      "CollectionAnchor": [
+        -6.05,
+        0,
+        0.25
+      ],
+      "PlotWidth": 15.2,
+      "PlotDepth": 19,
+      "BoundsMin": [
+        -5.1,
+        0.0,
+        -9.8
+      ],
+      "BoundsMax": [
+        5.1,
+        8.2,
+        1.1800000000000002
+      ],
+      "Name": "HouseL08Block",
+      "ReviewOnly": true,
+      "Blockout": "HouseL08Block",
+      "PrefabPath": "Settlement/Houses/Blockouts/HouseL08Block",
+      "SourcePath": "Assets/_Game/Art/Settlement/Houses/Blockouts/HouseL08Block.obj",
+      "GroundAnchor": [
+        0,
+        0,
+        0
+      ],
+      "DoorAnchor": [
+        0,
+        0.34,
+        0.15
+      ],
+      "SelectAnchor": [
+        0,
+        1.34,
+        0.2
+      ],
+      "HomeCameraAnchor": [
+        0,
+        3.69,
+        13
+      ],
+      "GridMetres": 0.5,
+      "TriangleCeiling": 8000
+    },
+    {
+      "Level": 9,
+      "Stage": "Blockout",
+      "NewElement": "Stone ground / maple upper",
+      "Wood": "Maple",
+      "GridWidth": 12,
+      "GridDepth": 19,
+      "WidthTarget": 10.6,
+      "HeightTarget": 8.6,
+      "RearDepthTarget": 10.8,
+      "WingWidthTarget": 10.6,
+      "Width": 10.6,
+      "WingWidth": 10.6,
+      "Height": 8.6,
+      "Depth": 10.8,
+      "FrontReach": 1.1800000000000002,
+      "Triangles": 874,
+      "PetHomeAnchor": [
+        6.25,
+        0,
+        0.25
+      ],
+      "CollectionAnchor": [
+        -6.25,
+        0,
+        0.25
+      ],
+      "PlotWidth": 15.2,
+      "PlotDepth": 19,
+      "BoundsMin": [
+        -5.3,
+        0.0,
+        -10.8
+      ],
+      "BoundsMax": [
+        5.3,
+        8.6,
+        1.1800000000000002
+      ],
+      "Name": "HouseL09Block",
+      "ReviewOnly": true,
+      "Blockout": "HouseL09Block",
+      "PrefabPath": "Settlement/Houses/Blockouts/HouseL09Block",
+      "SourcePath": "Assets/_Game/Art/Settlement/Houses/Blockouts/HouseL09Block.obj",
+      "GroundAnchor": [
+        0,
+        0,
+        0
+      ],
+      "DoorAnchor": [
+        0,
+        0.34,
+        0.15
+      ],
+      "SelectAnchor": [
+        0,
+        1.34,
+        0.2
+      ],
+      "HomeCameraAnchor": [
+        0,
+        3.87,
+        13
+      ],
+      "GridMetres": 0.5,
+      "TriangleCeiling": 12000
+    },
+    {
+      "Level": 10,
+      "Stage": "Blockout revision 1",
+      "NewElement": "9.2 m ridge; deep L-shaped veranda with clear corner return",
+      "Wood": "Maple",
+      "GridWidth": 12,
+      "GridDepth": 21,
+      "WidthTarget": 11,
+      "HeightTarget": 9.2,
+      "RearDepthTarget": 11.8,
+      "WingWidthTarget": 11,
+      "Width": 11.0,
+      "WingWidth": 11.0,
+      "Height": 9.2,
+      "Depth": 11.8,
+      "FrontReach": 1.4,
+      "Triangles": 1012,
+      "PetHomeAnchor": [
+        6.45,
+        0,
+        0.25
+      ],
+      "CollectionAnchor": [
+        -6.45,
+        0,
+        0.25
+      ],
+      "PlotWidth": 15.2,
+      "PlotDepth": 19,
+      "BoundsMin": [
+        -5.5,
+        0.0,
+        -11.8
+      ],
+      "BoundsMax": [
+        5.5,
+        9.2,
+        1.4
+      ],
+      "Name": "HouseL10Block",
+      "ReviewOnly": true,
+      "Blockout": "HouseL10Block",
+      "PrefabPath": "Settlement/Houses/Blockouts/HouseL10Block",
+      "SourcePath": "Assets/_Game/Art/Settlement/Houses/Blockouts/HouseL10Block.obj",
+      "GroundAnchor": [
+        0,
+        0,
+        0
+      ],
+      "DoorAnchor": [
+        0,
+        0.34,
+        0.15
+      ],
+      "SelectAnchor": [
+        0,
+        1.34,
+        0.2
+      ],
+      "HomeCameraAnchor": [
+        0,
+        3.87,
+        13
+      ],
+      "GridMetres": 0.5,
+      "TriangleCeiling": 12000,
+      "Revision": 1
+    },
+    {
+      "Level": 11,
+      "Stage": "Blockout",
+      "NewElement": "Steep roof + balconies",
+      "Wood": "Cedar",
+      "GridWidth": 12,
+      "GridDepth": 23,
+      "WidthTarget": 11,
+      "HeightTarget": 10,
+      "RearDepthTarget": 12.8,
+      "WingWidthTarget": 11,
+      "Width": 11.0,
+      "WingWidth": 11.0,
+      "Height": 10,
+      "Depth": 12.8,
+      "FrontReach": 1.32,
+      "Triangles": 1550,
+      "PetHomeAnchor": [
+        6.45,
+        0,
+        0.25
+      ],
+      "CollectionAnchor": [
+        -6.45,
+        0,
+        0.25
+      ],
+      "PlotWidth": 15.2,
+      "PlotDepth": 19,
+      "BoundsMin": [
+        -5.5,
+        0.0,
+        -12.8
+      ],
+      "BoundsMax": [
+        5.5,
+        10,
+        1.32
+      ],
+      "Name": "HouseL11Block",
+      "ReviewOnly": true,
+      "Blockout": "HouseL11Block",
+      "PrefabPath": "Settlement/Houses/Blockouts/HouseL11Block",
+      "SourcePath": "Assets/_Game/Art/Settlement/Houses/Blockouts/HouseL11Block.obj",
+      "GroundAnchor": [
+        0,
+        0,
+        0
+      ],
+      "DoorAnchor": [
+        0,
+        0.34,
+        0.15
+      ],
+      "SelectAnchor": [
+        0,
+        1.34,
+        0.2
+      ],
+      "HomeCameraAnchor": [
+        0,
+        4.5,
+        13
+      ],
+      "GridMetres": 0.5,
+      "TriangleCeiling": 12000
+    },
+    {
+      "Level": 12,
+      "Stage": "Blockout revision 2",
+      "NewElement": "Exposed side-front lookout tower",
+      "Wood": "Cedar",
+      "GridWidth": 12,
+      "GridDepth": 25,
+      "WidthTarget": 11,
+      "HeightTarget": 12.0,
+      "RearDepthTarget": 13.8,
+      "WingWidthTarget": 11,
+      "Width": 11.0,
+      "WingWidth": 11.0,
+      "Height": 12.0,
+      "Depth": 13.8,
+      "FrontReach": 1.32,
+      "Triangles": 1910,
+      "PetHomeAnchor": [
+        6.45,
+        0,
+        0.25
+      ],
+      "CollectionAnchor": [
+        -6.45,
+        0,
+        0.25
+      ],
+      "PlotWidth": 15.2,
+      "PlotDepth": 19,
+      "BoundsMin": [
+        -5.5,
+        0.0,
+        -13.8
+      ],
+      "BoundsMax": [
+        5.5,
+        12.0,
+        1.32
+      ],
+      "Name": "HouseL12Block",
+      "ReviewOnly": true,
+      "Blockout": "HouseL12Block",
+      "PrefabPath": "Settlement/Houses/Blockouts/HouseL12Block",
+      "SourcePath": "Assets/_Game/Art/Settlement/Houses/Blockouts/HouseL12Block.obj",
+      "GroundAnchor": [
+        0,
+        0,
+        0
+      ],
+      "DoorAnchor": [
+        0,
+        0.34,
+        0.15
+      ],
+      "SelectAnchor": [
+        0,
+        1.34,
+        0.2
+      ],
+      "HomeCameraAnchor": [
+        0,
+        5.4,
+        13
+      ],
+      "GridMetres": 0.5,
+      "TriangleCeiling": 12000,
+      "Revision": 2
+    },
+    {
+      "Level": 13,
+      "Stage": "Blockout revision 3",
+      "NewElement": "Full-height timber gable frame (posts, king post, rafters); symmetric low lean-to wings",
+      "Wood": "Redwood",
+      "GridWidth": 12,
+      "GridDepth": 27,
+      "WidthTarget": 11,
+      "HeightTarget": 12.2,
+      "RearDepthTarget": 14.8,
+      "WingWidthTarget": 13.8,
+      "Width": 11.0,
+      "WingWidth": 13.8,
+      "Height": 12.2,
+      "Depth": 14.8,
+      "FrontReach": 1.32,
+      "Triangles": 2338,
+      "PetHomeAnchor": [
+        6.45,
+        0,
+        0.25
+      ],
+      "CollectionAnchor": [
+        -6.45,
+        0,
+        0.25
+      ],
+      "PlotWidth": 15.2,
+      "PlotDepth": 19,
+      "BoundsMin": [
+        -6.9,
+        0.0,
+        -14.8
+      ],
+      "BoundsMax": [
+        6.9,
+        12.2,
+        1.32
+      ],
+      "Name": "HouseL13Block",
+      "ReviewOnly": true,
+      "Blockout": "HouseL13Block",
+      "PrefabPath": "Settlement/Houses/Blockouts/HouseL13Block",
+      "SourcePath": "Assets/_Game/Art/Settlement/Houses/Blockouts/HouseL13Block.obj",
+      "GroundAnchor": [
+        0,
+        0,
+        0
+      ],
+      "DoorAnchor": [
+        0,
+        0.34,
+        0.15
+      ],
+      "SelectAnchor": [
+        0,
+        1.34,
+        0.2
+      ],
+      "HomeCameraAnchor": [
+        0,
+        5.4,
+        13
+      ],
+      "GridMetres": 0.5,
+      "TriangleCeiling": 12000,
+      "WingRule": {
+        "OuterVertexMaxHeight": 3.8,
+        "RoofInnerHeight": 5.35,
+        "RoofOuterHeight": 3.8,
+        "Setback": 4.14,
+        "BeyondFront": 1.4000000000000004,
+        "Roof": "Symmetric outward-falling lean-to; no street-facing gables"
+      },
+      "Revision": 3
+    },
+    {
+      "Level": 14,
+      "Stage": "Blockout revision 3",
+      "NewElement": "Full-width upper gallery and future paint-band marker",
+      "Wood": "Redwood",
+      "GridWidth": 12,
+      "GridDepth": 29,
+      "WidthTarget": 11,
+      "HeightTarget": 12.4,
+      "RearDepthTarget": 15.8,
+      "WingWidthTarget": 13.8,
+      "Width": 11.0,
+      "WingWidth": 13.8,
+      "Height": 12.4,
+      "Depth": 15.8,
+      "FrontReach": 1.32,
+      "Triangles": 2569,
+      "PetHomeAnchor": [
+        6.45,
+        0,
+        0.25
+      ],
+      "CollectionAnchor": [
+        -6.45,
+        0,
+        0.25
+      ],
+      "PlotWidth": 15.2,
+      "PlotDepth": 19,
+      "BoundsMin": [
+        -6.9,
+        0.0,
+        -15.8
+      ],
+      "BoundsMax": [
+        6.9,
+        12.4,
+        1.32
+      ],
+      "Name": "HouseL14Block",
+      "ReviewOnly": true,
+      "Blockout": "HouseL14Block",
+      "PrefabPath": "Settlement/Houses/Blockouts/HouseL14Block",
+      "SourcePath": "Assets/_Game/Art/Settlement/Houses/Blockouts/HouseL14Block.obj",
+      "GroundAnchor": [
+        0,
+        0,
+        0
+      ],
+      "DoorAnchor": [
+        0,
+        0.34,
+        0.15
+      ],
+      "SelectAnchor": [
+        0,
+        1.34,
+        0.2
+      ],
+      "HomeCameraAnchor": [
+        0,
+        5.4675,
+        13
+      ],
+      "GridMetres": 0.5,
+      "TriangleCeiling": 12000,
+      "WingRule": {
+        "OuterVertexMaxHeight": 3.8,
+        "RoofInnerHeight": 5.35,
+        "RoofOuterHeight": 3.8,
+        "Setback": 4.14,
+        "BeyondFront": 1.4000000000000004,
+        "Roof": "Symmetric outward-falling lean-to; no street-facing gables"
+      },
+      "Revision": 3
+    },
+    {
+      "Level": 15,
+      "Stage": "Blockout revision 3",
+      "NewElement": "Stone terrace: raised plinth, stone parapet and capped pillars either side of the centre steps; low lean-to wings",
+      "Wood": "Ebony",
+      "GridWidth": 12,
+      "GridDepth": 31,
+      "WidthTarget": 11,
+      "HeightTarget": 12.6,
+      "RearDepthTarget": 16.8,
+      "WingWidthTarget": 14.8,
+      "Width": 11.0,
+      "WingWidth": 14.8,
+      "Height": 12.6,
+      "Depth": 16.8,
+      "FrontReach": 1.5,
+      "Triangles": 2725,
+      "PetHomeAnchor": [
+        6.45,
+        0,
+        0.25
+      ],
+      "CollectionAnchor": [
+        -6.45,
+        0,
+        0.25
+      ],
+      "PlotWidth": 15.2,
+      "PlotDepth": 19,
+      "BoundsMin": [
+        -7.4,
+        0.0,
+        -16.8
+      ],
+      "BoundsMax": [
+        7.4,
+        12.6,
+        1.5
+      ],
+      "Name": "HouseL15Block",
+      "ReviewOnly": true,
+      "Blockout": "HouseL15Block",
+      "PrefabPath": "Settlement/Houses/Blockouts/HouseL15Block",
+      "SourcePath": "Assets/_Game/Art/Settlement/Houses/Blockouts/HouseL15Block.obj",
+      "GroundAnchor": [
+        0,
+        0,
+        0
+      ],
+      "DoorAnchor": [
+        0,
+        0.34,
+        0.15
+      ],
+      "SelectAnchor": [
+        0,
+        1.34,
+        0.2
+      ],
+      "HomeCameraAnchor": [
+        0,
+        5.5575,
+        13
+      ],
+      "GridMetres": 0.5,
+      "TriangleCeiling": 12000,
+      "WingRule": {
+        "OuterVertexMaxHeight": 3.8,
+        "RoofInnerHeight": 5.35,
+        "RoofOuterHeight": 3.8,
+        "Setback": 4.14,
+        "BeyondFront": 1.9000000000000004,
+        "Roof": "Symmetric outward-falling lean-to; no street-facing gables"
+      },
+      "Revision": 3
+    },
+    {
+      "Level": 16,
+      "Stage": "Blockout revision 3",
+      "NewElement": "Open belvedere (lantern) on a lower ridge, side tower and full stone terraces",
+      "Wood": "Ebony",
+      "GridWidth": 12,
+      "GridDepth": 33,
+      "WidthTarget": 11,
+      "HeightTarget": 12.9,
+      "RearDepthTarget": 17.8,
+      "WingWidthTarget": 14.8,
+      "Width": 11.0,
+      "WingWidth": 14.8,
+      "Height": 12.9,
+      "Depth": 17.8,
+      "FrontReach": 1.5,
+      "Triangles": 2911,
+      "PetHomeAnchor": [
+        6.45,
+        0,
+        0.25
+      ],
+      "CollectionAnchor": [
+        -6.45,
+        0,
+        0.25
+      ],
+      "PlotWidth": 15.2,
+      "PlotDepth": 19,
+      "BoundsMin": [
+        -7.4,
+        0.0,
+        -17.8
+      ],
+      "BoundsMax": [
+        7.4,
+        12.9,
+        1.5
+      ],
+      "Name": "HouseL16Block",
+      "ReviewOnly": true,
+      "Blockout": "HouseL16Block",
+      "PrefabPath": "Settlement/Houses/Blockouts/HouseL16Block",
+      "SourcePath": "Assets/_Game/Art/Settlement/Houses/Blockouts/HouseL16Block.obj",
+      "GroundAnchor": [
+        0,
+        0,
+        0
+      ],
+      "DoorAnchor": [
+        0,
+        0.34,
+        0.15
+      ],
+      "SelectAnchor": [
+        0,
+        1.34,
+        0.2
+      ],
+      "HomeCameraAnchor": [
+        0,
+        5.760000000000001,
+        13
+      ],
+      "GridMetres": 0.5,
+      "TriangleCeiling": 12000,
+      "WingRule": {
+        "OuterVertexMaxHeight": 3.8,
+        "RoofInnerHeight": 5.35,
+        "RoofOuterHeight": 3.8,
+        "Setback": 4.14,
+        "BeyondFront": 1.9000000000000004,
+        "Roof": "Symmetric outward-falling lean-to; no street-facing gables"
+      },
+      "Revision": 3
     }
   ]
 }

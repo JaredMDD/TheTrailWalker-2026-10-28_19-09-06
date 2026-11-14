@@ -429,7 +429,7 @@ namespace TheTrailWalker.Editor
             var rewards = new HashSet<string>(MissionBook.All.Select(m => m.RewardRecipeId));
             var unplaced = Tier1Recipes.All.Where(r => !r.Retired && !rewards.Contains(r.Id)).Select(r => r.Id).OrderBy(x => x).ToArray();
             Check(unplaced.SequenceEqual(new[] { "recipe.food.apple_oat_compote", "recipe.food.goat_cheese", "recipe.food.mixed_milk_cheese", "recipe.food.premium_apple_pie",
-                    "recipe.food.red_berry_oat_porridge", "recipe.food.roasted_shrimp", "recipe.food.shrimp_pie", "recipe.material.clay_cup", "recipe.misc.pinecone_rabbit" }),
+                    "recipe.food.red_berry_oat_porridge", "recipe.food.shrimp_pie", "recipe.food.strawberry_glazed_shrimp_skewers", "recipe.material.clay_cup", "recipe.misc.pinecone_rabbit" }),
                 "Every active tier-one recipe is a mission reward except the box/bakery recipes, Clay cup (tier-four T4-G9) and the two open-decision cheeses");
             // Every tier-one Material has a use: a recipe input in code, or a later use the plan names (house deposits, tier-two recipes).
             var planUses = new HashSet<string> { "item.pine_plank", "item.fired_bricks", "item.pine_beam", "item.nettle_cloth", "item.reed_braid", "item.pine_panel", "item.limestone_tiles",

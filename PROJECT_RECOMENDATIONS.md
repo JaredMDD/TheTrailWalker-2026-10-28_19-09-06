@@ -1187,17 +1187,19 @@ Existing stews, drinks, and non-roasted dishes do not automatically receive anot
 
 | Recipe ID / output | Unlock tier | Exact ingredients -> yield | Starting hearts per serving |
 | --- | --- | --- | --- |
-| `recipe.food.roasted_shrimp` — Roasted shrimp | 1 | 1 Shrimp + 1 Pine branch -> 1 | 8 |
+| `recipe.food.strawberry_glazed_shrimp_skewers` — Strawberry-glazed shrimp skewers | 1 | 1 Shrimp + 1 Strawberries + 1 Rock salt -> 1 | 8 |
 | `recipe.food.shrimp_pie` — Shrimp pie | 1 | 1 Shrimp + 1 Wheat flour + 1 Cow butter -> 1 | 10 |
-| `recipe.food.roasted_crab` — Roasted crab | 2 | 1 Crab + 2 Birch branches -> 1 | 9 |
+| `recipe.food.truffle_butter_crab` — Truffle-butter crab | 2 | 1 Crab + 1 Truffle + 1 Cow butter -> 1 | 9 |
 | `recipe.food.creamy_crab_soup` — Creamy crab soup | 2 | 1 Crab + 1 Cow cream + 1 Carrot -> 1 | 10 |
 | `recipe.food.honey_blackberry_biscuits` — Honey-blackberry biscuits | 2 | 2 Wheat flour + 1 Honey + 1 Blackberry -> 2 | 9 |
-| `recipe.food.roasted_squid` — Roasted squid | 3 | 1 Squid + 3 Mesquite branches -> 1 | 10 |
+| `recipe.food.crispy_mint_squid` — Crispy mint squid | 3 | 1 Squid + 1 Sunflower oil + 1 Wild mint -> 1 | 10 |
 | `recipe.food.squid_rice_bowl` — Squid rice bowl | 3 | 1 Squid + 1 Rice + 1 Green chili -> 1 | 11 |
 | `recipe.food.mint_cow_cheese_flatbread` — Mint cow-cheese flatbread | 3 | 1 Wheat flour + 1 Cow cheese + 1 Wild mint -> 1 | 10 |
-| `recipe.food.roasted_lobster` — Roasted lobster | 4 | 1 Lobster + 1 Oak log + 2 Oak branches -> 1 | 11 |
+| `recipe.food.coconut_chili_lobster` — Coconut-chili lobster | 4 | 1 Lobster + 1 Coconut + 1 Green chili -> 1 | 11 |
 | `recipe.food.lobster_rice_bowl` — Lobster rice bowl | 4 | 1 Lobster + 1 Rice + 1 Seaweed -> 1 | 12 |
 | `recipe.food.cacao_coconut_tart` — Cacao-coconut tart | 4 | 1 Cacao powder + 1 Coconut + 1 Wheat flour -> 1 | 12 |
+
+**Premium rework, tiers 1-4 (user, November 14, 2026):** the four plain exclusive-seafood roasts (Roasted shrimp, crab, squid, lobster) didn't meet the premium-good theme, as Part 2 section 10 already found for its four on November 5. Each is replaced by a composed dish from ingredients discovered by its tier, keeping its tier and hearts and staying distinct from the seafood's other box dish: Strawberry-glazed shrimp skewers (Strawberries region 4, Rock salt region 3), Truffle-butter crab (Truffle region 10, ranch butter), Crispy mint squid (Sunflower oil from region 17's seeds, Wild mint region 18), Coconut-chili lobster (Coconuts region 24, Green chili region 17). Roasted shrimp was the only one implemented: its recipe is retired and its item kept as legacy food. The roast meshes of all eight exclusive seafoods are retired; the eight composed dishes (these four and Part 2's four) get new meshes from `Tools/Art/generate_balloon_exclusive_items.py`.
 
 **Additional regional meals — proposed values, confirmed stronger-food direction:** these eight non-pie dishes extend the same optional box pool. Apple juice stays the guaranteed one-heart starter; a richer apple dish becomes an optional ten-heart discovery. Every serving below has ten or more total progressive hearts, no durability, and the usual Food mastery/timer rules.
 
@@ -2211,24 +2213,26 @@ The settlement is a side-scrolling selection scene; there is no direct character
 
 ### 13.1 House progression and upgrade deposits
 
-Keep eight **house levels**, distinct from four resource tiers: two house levels use each active tier's materials. **Depth growth (user, November 7, 2026; replaces the earlier vertical growth):** every house is **one storey**. Levels 1-3 widen (8, 10, 12 columns); every upgrade makes the house and its interior **longer toward the back**, never taller. The interior grid is **width x depth** on the floor: the room is seen from the front at an angle with the front wall cut away, row 0 is at the front and upgrades add rows at the back, so placed furniture keeps its coordinates. Deep rooms scroll front to back. Settlement after region four remains within tier one, so the first home/upgrade uses pine/early materials only.
+Keep eight **house levels**, distinct from four resource tiers: two house levels use each active tier's materials. **Depth growth (user, November 7, 2026; replaces the earlier vertical growth; since November 10 it governs the interior only, see the exterior redesign below):** every home interior is **one storey**. Levels 1-3 widen (8, 10, 12 columns); every upgrade makes the house and its interior **longer toward the back**, never taller. The interior grid is **width x depth** on the floor: the room is seen from the front at an angle with the front wall cut away, row 0 is at the front and upgrades add rows at the back, so placed furniture keeps its coordinates. Deep rooms scroll front to back. Settlement after region four remains within tier one, so the first home/upgrade uses pine/early materials only.
 
-| Level | Visual stage | Interior grid (width x depth) | Upgrade deposit to reach it (25 x tier per material type) |
+| Level | Visual stage | Interior grid (width x depth) | Upgrade deposit to reach it (25 x tier per material type; 30 x tier on levels that add a pet slot) |
 | --- | --- | --- | --- |
 | 1 | Small shed | 8 x 5 | Tier 1: welcome quest; 25 pine planks + 25 fired bricks |
 | 2 | Extended shed | 10 x 6 | Tier 1: 25 pine beams + 25 fired bricks + 25 nettle cloth + 25 reed braids + 25 pine panels |
-| 3 | Proper wooden home; pets unlock | 12 x 7 | Tier 2: 50 birch beams + 50 limestone tiles + 50 fine beaver leather + 50 glass panels + 50 mortar |
-| 4 | Back room | 12 x 9 | Tier 2: 50 birch panels + 50 sandstone tiles + 50 fine hemp cloth + 50 fine rabbit leather + 50 copper fittings |
+| 3 | Proper wooden home; pets unlock (1 pet slot) | 12 x 7 | Tier 2: 50 birch beams + 50 limestone tiles + 50 fine beaver leather + 50 glass panels + 50 mortar |
+| 4 | Back room (2 pet slots) | 12 x 9 | Tier 2: 60 birch panels + 60 sandstone tiles + 60 fine hemp cloth + 60 fine rabbit leather + 60 copper fittings |
 | 5 | Long hall | 12 x 11 | Tier 3: 75 mesquite beams + 75 granite tiles + 75 cotton cloth + 75 iron fittings + 75 nails |
-| 6 | Extended hall | 12 x 13 | Tier 3: 75 mesquite panels + 75 slate tiles + 75 fine cotton cloth + 75 glass panels + 75 flax oil |
+| 6 | Extended hall (3 pet slots) | 12 x 13 | Tier 3: 90 mesquite panels + 90 slate tiles + 90 fine cotton cloth + 90 glass panels + 90 flax oil |
 | 7 | Frontier manor | 12 x 15 | Tier 4: 100 oak beams + 100 polished basalt + 100 fine boar leather + 100 glass panels |
-| 8 | Finished homestead | 12 x 17 | Tier 4: 100 oak panels + 100 marble tiles + 100 cut quartz + 100 steel fittings + 100 polished lapis |
+| 8 | Finished homestead (4 pet slots) | 12 x 17 | Tier 4: 120 oak panels + 120 marble tiles + 120 cut quartz + 120 steel fittings + 120 polished lapis |
 
 **Material sinks (design, November 7, 2026):** five deposits gained a material that otherwise had no use or only a mystery-box use. Level 2 swaps Hemp cloth (many recipe uses) for Nettle cloth and adds Pine panels. Level 4 adds Fine rabbit leather, level 5 Nails, level 6 Flax oil (a wood finish; older-tier deposits are allowed, section 9.0.1) and level 8 Polished lapis. No level has more than five material types. Level 1 is unchanged, so the region-four first-home chain (G4, L6, L7) stays as tested. Each new material is a mission reward that unlocks no later than its level's regions: Nettle cloth E15, Pine panel L11, Fine rabbit leather H7, Nails T3-L5, Flax oil T2-G11, Polished lapis T4-G22.
 
-**Tiers 5-8** add house levels 9-16 (two per tier), decorative furniture, four more shop looks and four lumber sections, with no stronger buffs: [Part 2](PROJECT_RECOMENDATIONS_PART_2.md) section 16. **Deposit growth (user, November 5, 2026):** each upgrade asks the same amount of every listed material: **25 x the level's resource tier**, so tier one asks 25, tier two 50, tier three 75 and **tier four 100** per material type. Part 2 continues the rule (125 / 150 / 175 / 200 for tiers 5-8). Fired bricks and Limestone tiles, needed by levels 1-3, are unlocked by tier-one bridge missions L7 and L8 (section 11.6.1). House levels 3-4 need tier two (region seven onward), levels 5-6 tier three (region thirteen onward), levels 7-8 tier four (region nineteen onward), plus relevant material-unlock missions on the new branch graph. No deferred species/global Materials phase is required. Reed braid/Mortar make level-two/three upgrades useful sinks for their region-six sources; level-one home construction remains possible at region-four settlement arrival. House upgrades unlock store listings, not free crafted oven/window/chest outputs.
+**Tiers 5-8** add house levels 9-16 (two per tier), decorative furniture, four more shop looks and four lumber sections, with no stronger buffs: [Part 2](PROJECT_RECOMENDATIONS_PART_2.md) section 16. **Deposit growth (user, November 5, 2026):** each upgrade asks the same amount of every listed material: **25 x the level's resource tier**, so tier one asks 25, tier two 50, tier three 75 and **tier four 100** per material type. Part 2 continues the rule (125 / 150 / 175 / 200 for tiers 5-8). **Pet slots (user, November 10, 2026):** the pet home has no deposit of its own any more; it rises with the house (section 13.5). A house level that adds a pet slot (levels 4, 6, 8 and every level from 9 to 16) asks **30 x tier** per material type instead of 25 x tier, which carries the former pet-home cost. Level 3, where pets unlock, stays at 25 x tier because the first slot was always free. Fired bricks and Limestone tiles, needed by levels 1-3, are unlocked by tier-one bridge missions L7 and L8 (section 11.6.1). House levels 3-4 need tier two (region seven onward), levels 5-6 tier three (region thirteen onward), levels 7-8 tier four (region nineteen onward), plus relevant material-unlock missions on the new branch graph. No deferred species/global Materials phase is required. Reed braid/Mortar make level-two/three upgrades useful sinks for their region-six sources; level-one home construction remains possible at region-four settlement arrival. House upgrades unlock store listings, not free crafted oven/window/chest outputs.
 
 The upgrade menu sits beside the furniture-store button and shows current level, next level, deposited/required units, and missing sources. Deposits transfer materials into house-upgrade escrow immediately; cancellation returns them through a tray. Upgrade completion, cost consumption, grid growth, and unlocks commit together. Use a migration rule if costs change after a save already contains deposits.
+
+**Exterior redesign (user, November 10, 2026; supersedes revision 2's exteriors below):** depth growth applies to the **interior grid only**. The exteriors may grow wider, taller and more complex (storeys, wings, towers, porches), and each level must read from the street camera, which sees only the front. In revision 2, levels 3-8 are nearly the same 7 m gable from the front. Plots grow to **15.2 m**; fronts may reach 11 m, wings 14.8 m and height 13 m. The pet home and collection container sit in 1.9 m strips hugging each front. Upper floors are visual only. The 16 exteriors are one family, reviewed in three stages: concept sheet, true-size blockouts on the street, then final models in batches of four levels. See `Docs/Art/Settlement/house-exterior-redesign-handoff-2026-11-10.md`, which has the per-level progression table. The street already uses the 15.2 m plots and checks the envelope.
 
 **House art revision 2, depth growth (Claude, November 7, 2026):** the eight exteriors are rebuilt as one-storey homes whose wall depth grows 3.0 / 3.5 / 4.0 / 5.0 / 6.0 / 7.0 / 8.0 / 9.0 m (rows x 0.5 m + walls), widths unchanged (4.6 / 5.6 / 6.8 m), roof peak 2.9 -> 4.9 m. Side windows (one per ~1.7 m of wall), timber bays between them and a second chimney from level 6 make the length readable; the front dormers and floor bands are gone. Interiors are floors with back and side walls whose windows match the exterior, a cut front sill with the door threshold, and rafter stubs only on the wall plates so nothing blocks the angled view. Prefab anchors: `GridDepthUnit` (0, 0, -0.5), `ScrollMin/Max` front to back, and `InteriorCameraAnchor` (about 50 degrees down from the front). `HouseArtMetadata.FurnishingGrid` is columns x rows; `GridAxisY` became `GridAxisDepth`. Proposed plot depth 10.6 m (manifest `PlotDepth`). Sheets: `house-design-overview.png` (three-quarter views), `house-interior-overview.png`, `eight-level-lineup.png`. **Pending:** the in-game interior camera, scrolling and placement UI (none is implemented yet), and a device look.
 
@@ -2242,7 +2246,7 @@ The upgrade menu sits beside the furniture-store button and shows current level,
   - no furniture, buffs, costs or save data changed
 - **Fixed in review:** the six-plot street study cut off the outer house on each side (its frame covered about 102 m of a 130 m street). The frame now fits the whole street, so all six plots show. Recaptured; all Milestone 1-8 suites pass.
 - **Open for art:**
-  - the pet home has **one** model, but section 13.5 now gives it four levels (kennel, fenced run, pen with shelter, small barn), so it needs three more looks; Part 2 adds four more
+  - the pet home has **one** model; section 13.5 (November 10) gives it one look per house tier (kennel, fenced run, pen with shelter; Part 2 adds four), handoff `Docs/Art/Settlement/pet-home-levels-handoff-2026-11-10.md`
   - levels 9-16 (Part 2 section 16) are to be designed as one set with these eight
   - the furniture proxies are placeholders for the 48 store furniture types
 - **Pending integration and testing:** plot choice, house placement, upgrade escrow and costs, neighbour countdowns, the upgrade and furniture UI, vertical home scrolling, furniture placement, chests and the shelf, pets at house level 3, and device checks (draw calls, memory, frame time).
@@ -2281,7 +2285,7 @@ Footprints: most furniture 1 x 1, 2 x 1, or 2 x 2; largest 3 x 2. No individual 
 **Interaction details (proposed, confirmed by the user November 7, 2026):**
 - Holding a chest also enters the bird's-eye view to move it (touch opens it, hold moves it), so chests follow the same placement rules.
 - In the bird's-eye view, a **Store** button sends the selected piece to house storage, and the storage list lets the player pick a stored piece to place, which appears at the nearest free space. A chest must be **empty** to be stored; a full chest stays placed.
-- "Nearest free space" means the free position closest to the room's front-centre (the door), searched row by row from the front. Bird's-eye placement snaps to whole grid cells. Furniture keeps its authored orientation (no rotation, as for inventory items).
+- "Nearest free space" means the free position closest to the room's front-centre (the door), searched row by row from the front. Bird's-eye placement snaps to whole grid cells. Furniture keeps its authored orientation (no rotation, as for inventory items). **Superseded (user, November 14, 2026):** tapping the selected piece in the bird's-eye view turns it 90° clockwise; see `Docs/superpowers/specs/2026-11-14-home-revision-design.md` section 6.
 - Long rooms (levels 4-8) scroll front to back in the bird's-eye view, as in the normal view.
 
 **Proposed per-type footprints (width x depth in 0.5 m cells; every type a player owns always fits, using under 60% of the room):**
@@ -2539,7 +2543,7 @@ Recipe-book entries show **Source: Balloon mystery box** and list the ranch as t
 
 ### 13.5 Pet roster, pet home, and idle collection
 
-**Confirmed layout:** house level three unlocks the **Pets section of the home store** for buying companions. The **pet home to the left of the home front** opens selection among owned pets, with one active pet; a **separate home-front collection container** holds its idle materials. Buying does not auto-switch the active pet. The store shows species, price, owned state and loot-weight preview, while selection shows the active companion and collection status. These are settlement game companions, with no combat, tool uses, breeding, hunger or wear requirements.
+**Layout revised (user, November 14, 2026; spec `Docs/superpowers/specs/2026-11-14-home-revision-design.md`):** the active pet, its pet bed and the collection box stand in the interior's entry area below the door; from house level 3 a Pet button on the inside HUD leads to a separate **backyard** holding the pet home and the pet shop. The paragraph below is the earlier layout, kept for the roster and rules. **Confirmed layout (earlier):** house level three unlocks the **Pets section of the home store** for buying companions. The **pet home to the left of the home front** opens selection among owned pets, with one active pet; a **separate home-front collection container** holds its idle materials. Buying does not auto-switch the active pet. The store shows species, price, owned state and loot-weight preview, while selection shows the active companion and collection status. These are settlement game companions, with no combat, tool uses, breeding, hunger or wear requirements.
 
 **Proposed first roster:** six distinct `PetDefinitionId`s. Buy each once for a proposed **1,000 cash**, no gold requirement, duplicate purchase or upkeep. All unlock with house level three; show undiscovered specialties as locked loot, not as access to future regions. Equal purchase price/cadence keeps the choice about supplies, not a stronger paid pet. The first implementation can ship Dog and Pig placeholders before adding the other four. Pets are Q5 purchased companions under the shop label policy; that label does not turn idle drops into Q5 or grant furniture buffs. Palette variants are cosmetic and share the same species table.
 
@@ -2554,16 +2558,18 @@ Recipe-book entries show **Source: Balloon mystery box** and list the ranch as t
 
 **Authored supply groups, not literal ecology:** Wood = exact discovered loose branches, never logs/planks. Stone/ore = discovered loose stone/earth/raw ore/gem IDs (e.g. Pebbles, Clay, Copper ore). Fibers = loose plant fibers only (Hemp, Flax, Cotton, etc.), not finished cloth or hunted outputs. Produce/herbs = exact loose Apples, Tea herbs, Barley, Carrots, Pumpkins, etc., excluding Seeds/Truffle. Seeds = exact Flax seeds and Sunflower seeds; no invented generic seed item. Truffle = only `ingredient.truffle`. Build explicit non-overlapping ID lists, with each item's existing source region/tier. Pelt/feather, meat, fish, farm-only dairy/Lavender, processed materials, money, recipes, equipment and fishery-exclusive seafood are excluded from this initial pet pool. Pets provide bonus gathered materials, never new ingredient identities or a source bypass.
 
-**Pet home upgrades (proposal, user request November 5, 2026):** the pet home has its own levels, and **each level admits one more active pet**. Every active pet keeps its own roll timer, its own weights and its own 16-entry collection container. Output per pet, the 30-minute roll, the eight-hour cap and the 70/30 tier roll are unchanged, so more pets means more pets working, not stronger pets. An admission slot holds one owned pet. Switching follows the existing per-pet settle-then-switch rule, and an empty slot earns nothing. Upgrades are material deposits with the house rules (escrow, cancellation through the tray, atomic completion), at **half the house amount of the same tier** (rounded to 5), using three types: planks for the pen, cloth for bedding, fittings for gates.
+**Pet home levels and ownership slots (user, November 10, 2026; replaces the November 5 proposal of several active pets):** the pet home levels up **automatically with the house** and each level raises **how many pets the player can own**. **Only one pet is ever active** (it alone rolls pickups); the others wait at home. **Purchases are permanent:** no release, no refund. The last level (house 16, Part 2 section 16.5) holds every pet in the roster, so the decision is **which pets come first**, not which are left out forever.
 
-| Pet home level | Active pets | Requires | Deposit |
-| --- | --- | --- | --- |
-| 1 | 1 | House level 3 (pets unlock) | none |
-| 2 | 2 | House level 4 | 25 Birch planks + 25 Flax cloth + 25 Copper fittings |
-| 3 | 3 | House level 6 | 40 Mesquite planks + 40 Cotton cloth + 40 Iron fittings |
-| 4 | 4 | House level 8 | 50 Oak planks + 50 Fine cotton cloth + 50 Steel fittings |
+| House level | 3 | 4 | 6 | 8 |
+| --- | --- | --- | --- | --- |
+| Pets owned (pet home level) | 1 | 2 | 3 | 4 |
 
-With six pets in the roster, four can work at once by the end of tier four; [Part 2](PROJECT_RECOMENDATIONS_PART_2.md) section 16.5 continues to eight. The pet home's look grows with its level (kennel, fenced run, pen with shelter, small barn). Its art is part of the house set.
+- **Tiers 1-4:** four slots for the six common pets, so two commons wait until tier five. The player chooses the specialties first (e.g. Dog for building supplies, Tortoise for ore, Cat for fibres).
+- **Store:** shows slots used and free (`3 of 4`). Buying asks for confirmation ("This pet stays with you. 3 of 4 slots used."). A full pet home names the house level that adds the next slot; an unaffordable or slot-blocked pet stays visible with its preview.
+- **Selection:** the pet home lists owned pets; switching the active pet is free and follows the settle-then-switch rule below. Inactive pets earn nothing but keep their unclaimed collection entries; each pet keeps its own 16-entry queue (24 for exotic pets).
+- **Output is unchanged:** one active pet, 30-minute rolls, eight-hour cap, 70/30 tier roll. More slots add choice, never more output.
+- **Cost:** no pet-home deposit; the house levels that add a slot ask 30 x tier per type (section 13.1).
+- **Look:** one pet home look per house tier, changing with the house: kennel (tier-two house, levels 3-4), fenced run (tier three), pen with shelter (tier four); Part 2 adds four. The active pet is shown beside the pet home. Art: `Docs/Art/Settlement/pet-home-levels-handoff-2026-11-10.md`.
 
 The pet store uses a permanent owned/unowned catalog, not random three-slot stock or the settlement resource-shop visit refresh. Purchase and owned-ID registration are atomic. Pets occupy no backpack space, are selected by ID rather than equipped as an item, and are not warehouse goods. An inactive/unowned pet produces nothing.
 
@@ -2575,7 +2581,7 @@ Persist each opportunity's result once before display. An unclaimed entry remain
 
 **Time/switching:** settle the previous offline interval before a purchase, selection, region-source change or claim. The pet home switches only the next opportunity's pet: any saved fractional opportunity retains its original pet/source snapshot until completed; later opportunities use the new choice. Preserve sub-30-minute carry across short absences, but discard time beyond the eight-hour/space cap. With no active pet there is no accrual or catch-up. On resume use `max(0, nowUtc - offlineStartedUtc)`, cap once, and atomically commit generated entry IDs/seeds, partial interval, consumed interval ID and a monotonic last-seen timestamp. Backward clock movement gives zero progress and cannot move the watermark backward; repeated resume cannot replay an interval. Keep unclaimed results through pet changes and reload. Local-clock manipulation remains an offline limitation; use an injected clock for verification.
 
-**Save/acceptance requirements:** save owned pet IDs/purchases, active ID, pet definitions/weight revision, offline interval and source snapshots, fractional progress, per-opportunity transaction/result, container entries/claim remainders and cap discard state. Validate six rows each totaling 100%, distinct specialties, Dog 85% building materials, Pig Truffle gated at region 10, exact source filters, no pet-only mandatory recipes, no quality/furniture leak, bag-full partial claims, full-container no reroll, switch at 29/31 minutes, eight-hour cap, clock reversal and reload after generation/claim.
+**Save/acceptance requirements:** save owned pet IDs/purchases, active ID, pet definitions/weight revision, offline interval and source snapshots, fractional progress, per-opportunity transaction/result, container entries/claim remainders and cap discard state. Validate the ownership cap per house level (1/2/3/4 at houses 3/4/6/8; purchase refused when full, no release path, cap rises with the house upgrade in the same commit), exactly one active pet, six rows each totaling 100%, distinct specialties, Dog 85% building materials, Pig Truffle gated at region 10, exact source filters, no pet-only mandatory recipes, no quality/furniture leak, bag-full partial claims, full-container no reroll, switch at 29/31 minutes, eight-hour cap, clock reversal and reload after generation/claim.
 
 ## 14. Balloon merchant and mystery boxes
 
@@ -3549,6 +3555,236 @@ Dependencies: successful mechanics slice review.
   7. Check that stamina regenerates in the settlement.
   8. Check that the old save loads.
   - Also look at: the drag feel and tap threshold, where the icon list sits within the phone's safe area, and the plot markers at the phone's aspect ratio. `SETTLEMENT (DEBUG)` reaches the street without walking the approach.
+- **First device visit (user, November 9, 2026):** the user reached the settlement and chose plot 4; nothing wrong so far.
+  - **Settlement menu change (04:41 UTC build, installed):** the list now works like the user menu. One settlement button (new `settlement` icon, a row of three houses) opens Home, Warehouse, Lumber and Return downward, and taps it again to close. It sits just below the feedback line for now, because of the debug buttons and text. **The final position is the top-right corner** once the debug HUD goes.
+  - **Backdrop:** the area behind and around the buildings looks too empty. Proposal: `Docs/Art/Settlement/settlement-backdrop-proposal-2026-11-09.md`.
+    - Layers: verge, street dressing, back yards, a palisade with the entrance arch, a woodland-to-mountain slope, and far mountains.
+    - The backdrop blends region 4 (entrance end, near the wall) into region 5 (departure end, higher up and on the horizon), because the settlement stands between the two.
+    - Phase A reuses existing kits (Claude). Phase B adds street and yard props (other tool).
+    - **User decisions (November 9):** Claude's recommendations, all four: woodland grading into mountain slopes, a full-height palisade, Fern Hollow at the entrance and Cloudstep toward the departure with mountains throughout, and the Phase B props handoff written now. The other tool is busy with tier-three assets, so Phase B waits: `Docs/Art/Settlement/settlement-street-props-handoff-2026-11-09.md`.
+    - **Phase A built (04:55 UTC build, installed; APK 81.71 MB).** `SettlementBackdrop` (fixed seed) builds:
+      - the verge: low region 4/5 cover kept under 1 m and off the road;
+      - back yards: fence corners, log seats and shrubs;
+      - a full palisade with the entrance arch at the left end and a closed departure gate at the right end;
+      - a slope rising 20 m behind the wall, with Fern Hollow woodland grading into Cloudstep pines, scree and ledges;
+      - three massive pines as landmarks;
+      - region 5's `DistantMountainRidge`/`MountainRidgePeak` rows on the horizon.
+
+      `RegionLooks.Settlement` adds a far grey-blue haze. Pieces are combined per material and 30 m chunk. About 290k triangles in the whole backdrop, and only a slice of it is in the portrait view.
+    - **Checks (suite PASS):** the palisade spans the street with both ends closed, the arch and gate are in place, nothing stands on the road within the scroll range, the verge stays under 1 m, the slope rises and the mountains stand, the build is deterministic, the haze is on, and nothing else collides. During tuning, the road check caught verge ferns reaching onto the road.
+    - **Device check:** the look at both street ends and the middle, and frame time in the settlement compared with a camp.
+    - **Device fix before close (05:01 UTC build, installed):** the log seats and the three landmark massive pines have meshes without Read/Write, and combined meshes built from them render nothing on the device. The backdrop now instances such pieces instead of combining them. They're created under an inactive holder and stripped of scripts, colliders and rigidbodies before they activate (the massive pines carry the chopping rig). A new check covers this. Suite PASS.
+- **End of day, November 9, 2026 (state at close):**
+  - **Committed:** `5ad3d31` "Milestone 10 part 1: settlement shell".
+  - **Not committed (user: no commits for now):**
+    - the settlement menu button: `settlement` icon, generator, Settlement partial and its check;
+    - Phase A backdrop: `SettlementBackdrop.cs` (new), `SettlementScenery.cs` (road and backdrop call), `RegionLook.cs` (the `Settlement` look), `MovementPrototype.cs` (uses it), and the backdrop checks in `SettlementShellValidation.cs`;
+    - these plan notes.
+
+    Docs (not committed by rule): `Docs/Art/Settlement/settlement-backdrop-proposal-2026-11-09.md` and `settlement-street-props-handoff-2026-11-09.md`.
+  - **On the phone:** the 05:01 build. Session-v1's sha256 is unchanged (`2519b15e`). The device-save backup from the start of the day is in `Builds/Backups/device-saves-2026-11-09-settlement`.
+  - **Pending user checks:**
+    - the settlement menu (open and close, Return before and after the plot choice);
+    - the backdrop at both ends and the middle, and frame time;
+    - the rest of the eight-step settlement list (steps 3-8; the arch, arrival and plot choice are already confirmed with plot 4).
+  - **Next steps:**
+    - fix whatever the device round finds; thin the far slope if frame time suffers;
+    - commit when the user asks;
+    - then the home spec (Milestone 10 part 2: front, 8×5 interior, furniture, buffs and deposits);
+    - Phase B props when the other tool is free;
+    - move the settlement list to the top-right corner once the debug HUD goes.
+  - **Deferred minors from the settlement shell review:**
+    - the Settlement card's refusal reason is hidden behind the map;
+    - the status line names Fern Hollow while the map marks the origin region as "here";
+    - neighbour seeds can repeat across profiles;
+    - the welcome note is lost if the app closes between the save and the reload;
+    - the plot strip lets taps through;
+    - per-frame lookups in the settlement HUD;
+    - a failed travel save leaves the settlement changed in memory;
+    - the plot-2-to-Warehouse and Lumber-to-plot-3 gaps aren't checked. (Fixed in the follow-up below: every gap is checked.)
+
+**Follow-up — November 10, 2026, 01:38 UTC build (installed; APK 83.0 MB, SHA-256 `5910a38063c0aa43...`): props placement ready, street re-planned for future growth.**
+- **Phase B placement, ready before the art:** `SettlementStreetProps` places the 14 props from the handoff as soon as their prefabs exist under `Resources/Settlement/Street` and `Yards`. A missing prop is skipped, so today's street is unchanged until the art lands.
+  - Lamp posts go in every gap. The well goes in the gap before the Warehouse; the notice board moves to the gap after the lumber frontage, since both don't fit side by side at full house width.
+  - Each house-to-house gap gets a bench or a barrel cluster. Each house gets a yard set (garden bed, fence corner, woodpile or shed), and each shop a themed yard.
+  - Readable props are combined per 30 m chunk. When the yard kit exists, the backdrop drops its log-seat and fence stand-ins.
+  - The other tool is building the props now (user, November 9). The handoff has an update section with the new positions and the checks.
+- **Space planning (user request: room for house levels 9-16 and the eight storefront tier looks):** `Docs/Art/Settlement/settlement-space-envelopes-2026-11-09.md`.
+  - **Measured defects:** the row used the manifest widths, but the real fronts are wider. Farm/Fishery overlapped by 0.3 m and Fishery/Mine by 0.5 m, so their tap boxes overlapped. The Mine porch reached 2.5 m forward, onto the road.
+  - **Storefront slots:** fixed widths (measured width plus at least 1.2 m) that all tier looks must fit: Warehouse 11.0, Bakery 8.5, Ranch 8.5, Farm 9.5, Fishery 9.5, Mine 11.5, Tailor 7.5, Lumber 9.0. Slots stand 1 m apart, and today's gaps are 2.2-2.7 m.
+  - **Houses:** the main building keeps 7.0 m × 19 m for all 16 levels (level 16 is about 17 m of wall); growth goes forward, back or up, never sideways. The player's plot keeps side strips (3.5-5.4 m from the centre) for the pet home and the collection container. (Corrected November 10: a first draft allowed 8.4 m, which collided with the pet home anchor.)
+  - **Depth:** fronts may reach 1.5 m forward (anything further is pushed back). The road now runs z = −9.8 to −2.0, the palisade sits at 28 m (was 22) and the slope starts at 32 m.
+  - The storefront row is about 16 m longer.
+- **Checks (suite PASS):**
+  - Envelopes: slots and spare room, the front line, house width, room behind a level-16 house, and at least 1 m between any two buildings.
+  - Prop placement on stand-in boxes at house levels 1, 1-6 and 8: lamps in all 11 ordinary gaps, well and board in place, nothing on the road or in a building's footprint, yards under 2.4 m and inside the wall, deterministic, no colliders.
+  - Delivered art against the handoff conventions; it shows WAITING until delivered (14 of 14 waiting).
+- **Device check (user):** the street with its wider spacing, no shops overlapping, and taps on Farm, Fishery and Mine. Also check the palisade further back and the scroll length.
+- **Pet home redesign (user, November 10, 2026):** the pet home levels up automatically with the house and caps how many pets the player owns: 1/2/3/4 at houses 3/4/6/8, then one per level 9-16, up to 12, the whole roster. One pet is active at a time, and purchases are permanent. House levels that add a slot ask 30 x tier per type instead of a separate pet-home deposit. See sections 13.1 and 13.5 and Part 2 sections 16.1 and 16.5; the art handoff is `Docs/Art/Settlement/pet-home-levels-handoff-2026-11-10.md` (seven looks, one per house tier). The Spanish plans are not synced.
+  - **Space correction found while writing it:** the pet home (anchor 4.45 m) and the collection container (4.4 m) stand beside the house inside the plot. The house main building is therefore held to 7.0 m (not 8.4 m), with 3.5-5.4 m side strips for those two. A new check covers both prefabs (suite PASS, 01:53 UTC). It changes checks only, so the street on the phone is unchanged.
+- **Phase B props delivered and placed (02:01 UTC build, installed; APK 85.6 MB, SHA-256 `1c4066e4084294f2...`; session-v1 unchanged):** the other tool delivered all 14 props. The report is `Docs/Art/Settlement/StreetProps/final_report.md`. They share one material, `SettlementPropsPalette.mat`, with an emissive lantern swatch.
+  - **Placed without code changes:** the placement layer picked them up as they arrived, 42 pieces in all (lamps, well, notice board, benches, clusters, yard sets and themed shop yards). The log-seat and fence stand-ins are gone.
+  - **Suite PASS:** every prop meets the handoff conventions and matches its manifest's triangle and height rows. The placement checks now also run on the delivered prefabs at house levels 1, 1-6 and 8 (42 extra checks; the lamp is 1.0 m wide with its arm).
+  - **Mirrored child:** the props' visual child is mirrored (scale x = −1, from the OBJ import). `CombineMeshes` keeps winding and normals consistent under that transform (tested), so the combined chunks render correctly.
+  - **Review:** offline portrait renders at the street camera's framing show the well, notice board, lamps, bench and yards in place.
+  - The first offline render showed only the well's shadow: the Editor was still compiling the new shader in the background, and a re-render was correct. Player builds compile shaders ahead of time, but confirm the lanterns and the well on the phone.
+  - **Device check (user):** the props along the street (lantern glow, the well before the Warehouse, the board after the lumber frontage, benches between houses), and frame time in the settlement compared with the 01:38 build.
+- **House exterior redesign planned (user, November 10, 2026):** depth growth applies to the interior grid only; exteriors are free and must read from the front. See section 13.1 and `Docs/Art/Settlement/house-exterior-redesign-handoff-2026-11-10.md`, which has the 16-level progression, the envelope and three review stages (concept, blockouts, final batches).
+  - **Street side, done:** plots 15.2 m (street about 24 m longer). Envelope constants: front 11 m, wings 14.8 m, height 13 m, depth 19 m, and 1.9 m pet strips hugging the front. Checks cover every manifest house and the per-level pet home and container anchors. Suite PASS (02:09 UTC). Today's houses stand about 8.2 m apart until the redesign lands. 02:11 UTC build installed (session-v1 unchanged). The APK is 101.8 MB, up from 85.6 MB at 02:01. The 15.2 m plots add no assets, so the jump is probably art the other tool added to `Resources` in the meantime; it is still within the 150 MB budget. Not investigated.
+  - **Next for the other tool:** stage 1, the concept sheet, for user review. The pet home looks handoff is updated to the hugging anchors.
+- **Pet home looks delivered (other tool, November 10; report `Docs/Art/Settlement/PetHomes/final_report.md`):** `PetHomeT2` (kennel) to `PetHomeT8` (ebony pavilion), on the shared `HousePalette.mat`, each with an `ActivePetAnchor`.
+  - **Palette safety:** `HousePalette.png` grew from 700×4 to 700×12. Compared with the committed LFS version, all 2,800 original texels are identical in the middle rows, and the V = 0.5 point sample still hits an original row. The import is uncompressed with point filtering and no mipmaps, so existing houses cannot shift colour on Android.
+  - **Checks (suite PASS, 02:21 UTC):** `SettlementScenery.PetHomeLook(level)` maps the house level to the look (none before level 3, T2 at 3-4 up to T8 at 15-16). Per look: passive, readable, shared palette, ≤ 1,500 triangles, strip width ≤ 1.9 m, depth ≤ 3 m, front reach ≤ 1.5 m at the anchor (0.88-1.43 m), a grounded `ActivePetAnchor` and a match with its manifest row.
+  - The report's table lists T5 at 456 triangles; the prefab and manifest have 468 (a report typo).
+  - **Not placed yet:** the pet home appears with the home (Milestone 10 part 2) and pets (Milestone 15); no APK change.
+  - **Design note for the exterior redesign review:** at 1.5-1.84 m wide the looks are small beside a future 11 m-wide, 12.5 m-tall level-16 house. If the blockout review finds them lost, widen the strip for tiers 5-8 (the 15.2 m plot has 0.2 m spare per side, or the wings could step back around them).
+- **House exterior redesign, stage 2 (blockouts) street review (02:58 UTC):** the other tool delivered 16 grey blockouts. The user had approved the stage 1 silhouettes directly. Claude's review is `Docs/Art/Settlement/HouseExteriorRedesign/Blockouts/claude-live-street-review.md`.
+  - **Pass:** all 16 fit the envelope, heights never drop, and three street layouts (mixed, all level 16, all top levels) keep every lamp, the well, the board and the house-gap seats placed and clear.
+  - **Fix:** street-dressing gaps are now measured on each building's front band (`StreetBuilding.FrontLeft/FrontRight`). The separation rule is 1 m between fronts and 0.4 m between wings, so adjacent level-15/16 houses keep their lamp and bench.
+  - **Proportion notes for the user:** levels 10-16 fill the portrait view (expected). Levels 12-16 flatten in height (12.0-12.8 m) and need one front-readable change each. Levels 9 and 10 read alike. The pet homes may look small beside levels 13-16.
+  - No APK: blockouts are review-only and the live clamp stays at 8.
+  - **User finding, the split level 16:** level 16 looked split and compressed down the middle. The cause is its 1.9 m-wide, 8.5 m-tall side wings, set back only 3 m, which read as towers jammed against the house; levels 13-14 have 0.8 m slivers. **User decision: low lean-to wings:** ≤ 5.5 m tall, ≥ 4 m behind the front, ≥ 1.2 m wide, with roofs sloping outward from under the main eaves. The rule is in the redesign handoff and enforced by `WingRule`: blockouts L13-L16 are reported as PENDING, and final `HouseL*Front` models must pass. Suite PASS (03:11 UTC).
+  - **Blockout revision 1 handed off (user-approved):** `Docs/Art/Settlement/HouseExteriorRedesign/Blockouts/blockout-revision-handoff-2026-11-10.md`. It covers the lean-to wings (levels 13-16), one front-readable change per top level (12: tower to one side; 13: timber gable; 14: painted gallery; 15: stone terrace; 16: crowning cupola; ridges 12.0-12.9 m), and level 10 at about 9.2 m with a corner-turning veranda. The progression table in the redesign handoff is updated. The suite shows five PENDING lines (wings L13-L16, the L9 → L10 step) until the revision lands. Suite PASS (03:15 UTC).
+  - **Revisions 1-2 live-street review (Claude, November 13, 2026, 17:34 UTC):** suite PASS, 373 checks, 0 PENDING. The wing rule and L10 step pass, and the tower junctions read cleanly. Review and sheet: `Docs/Art/Settlement/HouseExteriorRedesign/Blockouts/claude-live-street-r2/`.
+    - **Finding, camera width:** the street camera keeps a fixed 52° vertical FOV. The 720×1280 frame used in every review sees about 12.1 m at the house line; the test phone (1116×2480) sees only about 9.7 m. From level 8 up the front is wider than the phone screen, and the L10 veranda corner and the L12/L16 towers sit at or off the edges. **Awaiting user decision.** Claude recommends a constant horizontal view of about 12.1 m (vertical FOV derived from the aspect, about 62.7° on the test phone).
+    - **Proportion notes for the user:** L14-L16 are near-identical from the front in grey. Recommended before detailing: a taller, stone-faced L15 terrace and a true open cupola on L16. L9-L11 separate well; L7/L8 remain acceptable.
+  - **Front gardens and blockout revision 3 (Claude, November 13, 2026; suite PASS 18:00 UTC, 396 checks, 0 PENDING).** User decisions: houses show their full height, up to just below the title line (the future hearts bar; it ends 4.1% below the top on the test phone, limit 5.5%); width may scroll; houses move back behind a front garden; Claude now owns house design and implementation (the other tool: tier 3 asset design only).
+    - **Street:**
+      - House plots stand 4 m back (`SettlementScenery.HouseSetback`, `StreetBuilding.FrontZ`). At that distance the phone also sees about 11.4 m across, so every front fits.
+      - Front gardens: a low fence with a gate, a path to the door, garden beds either side, all under 1 m.
+      - The palisade and slope move back 4 m (palisade z 32).
+      - New checks: full height on screen for every blockout and live front; the setback; gardens; yard room.
+    - **Blockouts R3** (`Tools/Art/revise_house_blockouts_r3.py`, L13-L16 only; L1-L12 byte-identical):
+      - Fixed a timber post that split the front door (L13-16); removed the scaffolding-like braces.
+      - L15-16: stone parapet and pillars.
+      - L16: open lantern belvedere on an 11.2 m ridge.
+    - Review: `Docs/Art/Settlement/HouseExteriorRedesign/Blockouts/claude-live-street-r3/` (sheet and notes). The camera-width option from the earlier review is superseded. **Pending:** the user's review, then an APK to check gardens and setback on the phone.
+  - **Plot lanes and fluid street scrolling (Claude, November 13, 2026; suite PASS 18:11 UTC, 408 checks; APK 18:14 UTC installed).**
+    - **Spacing (user: top-level neighbours stood too close):** a 2.8 m lane between plots (`SettlementScenery.PlotLane`). Plots stay 15.2 m of land; centres are 18 m apart. Level-15/16 wings now stand 3.2 m apart (was 0.4 m) and fronts 7 m apart. The house-to-shop gap is unchanged.
+    - **Scrolling (user: "feels rigid… allow for fast gestures"):** `StreetScroll` drives the street camera.
+      - The street follows the finger 1:1.
+      - A flick glides on (speed × 1.6, decaying with a 0.55 s time constant). Repeated flicks the same way within 0.6 s stack ×1.5 each, up to ×4.
+      - The street ends rubber-band and spring back.
+      - A touch on a moving street stops it and is not a tap.
+      - The list buttons and plot choice ease the camera to the building.
+      - 12 new checks cover the physics.
+    - On the phone, a simulated fast flick glided about 59 m, and chained flicks crossed the street.
+    - **Pending:** the user's feel test (glide length and friction are the constants in `StreetScroll`).
+  - **Final house exteriors, batch 1 (levels 1-4) (Claude, November 13, 2026; suite PASS 18:23 UTC, 408 checks).**
+    - `Tools/Art/generate_house_exteriors_final.py` replaces `HouseL01Front`-`HouseL04Front` in place, using the house kit and palette:
+      - L1: as today.
+      - L2: a pine shed with a plank lean-to.
+      - L3: birch and plaster, with a gabled porch and a chimney.
+      - L4: L3 widened, plus a raised back-room gable behind the ridge. The front dormer was tried and dropped (it clashed with the gable timbers).
+    - Triangles: 2,404 / 3,212 / 4,632 / 6,820.
+    - Meshes are Read/Write. Only the four front prefabs were rebuilt.
+    - Manifest rows: measured sizes, anchors at ±(front/2 + 0.95), plot 15.2 × 19.
+    - Interiors, studies and pet homes are untouched. `generate_house_meshes.py` now routes to the final fronts; a full rerun reproduces every file byte for byte.
+    - Renders: `Docs/Art/Settlement/HouseExteriorRedesign/Final/Batch01/`.
+    - **Pending:** the user's look review; APK and phone frame time (phone disconnected); batches 5-8, 9-12, 13-16.
+  - **Final house exteriors, batch 2 (levels 5-8) (Claude, November 13, 2026; suite PASS 21:55 UTC, 408 checks).** Same generator; `HouseL05Front`-`HouseL08Front` replaced in place.
+    - L5 (mesquite and sand plaster): a half-storey (windows under the eaves line and in the gable) and a projecting gabled bay.
+    - L6 (slate roof): a partial second storey, as a jettied upper cross gable on brackets, and a second chimney.
+    - L7 (oak): full two storeys and a porch across the front.
+    - L8: a gabled side wing, a stone skirt, marble sills and a marble porch.
+    - Triangles: 5,288 / 6,236 / 6,372 / 7,232, under the 8,000 budget. To fit it, from level 5 the side windows lose their shutters, the back wall has no window copies, roofs use larger tiles, and the L8 wing is 4 m deep. `house_geometry.roof` gained optional `min_cols`/`tile` parameters (defaults unchanged).
+    - Levels 1-4 and every interior are byte-identical. A full `generate_house_meshes.py` rerun reproduces every house file.
+    - Renders: `Docs/Art/Settlement/HouseExteriorRedesign/Final/Batch02/` (`street-levels-1-8.png`).
+    - **Pending:** the user's look review; APK and phone frame time (phone disconnected); batches 9-12 and 13-16 (these need the house level clamp raised to 16 and the future-wood palette band).
+  - **Batches 1-2 approved and on the phone (November 13, 2026).** The user approved the level 1-8 renders. All suites pass (22:14 UTC, settlement shell 408 checks). The 22:14 UTC build is installed: APK 101.9 MB, SHA-256 `725901c911d39502...`. Saves are backed up to `Builds/Backups/device-saves-20261113-*`, and session-v1 is unchanged (`2519b15e`). This is also the first install with the front gardens, the 4 m setback, the plot lanes and fluid scrolling.
+    - **Debug house-level preview (22:20 UTC build, installed; APK SHA-256 `c6a5730fe7083f92...`; suites PASS; session-v1 unchanged).** A settlement-only `HOUSES: SAVE` button (above CLAIM OVERFLOW) cycles every plot through levels 1 to `SettlementState.MaxLevel`, then back to the saved levels. It rebuilds the street in place (`MovementPrototype.RebuildStreet`, `StreetCamera.Rebind` keeps the scroll position) and never touches the save. It reaches 16 by itself once the clamp is raised.
+    - **Device round passed (user, November 13, 2026):** every open part 1 check is confirmed on the 22:20 build: test-list steps 3-8, the settlement menu, street layout, backdrop and props, final houses L1-L8, gardens and setback, lanes, and scrolling ("movement in it is fluid and background looks nice"). Milestone 10 part 1 is closed on device; the exit-check items that remain (no buff duplication, persisted deposits) belong to part 2. Next: the part 2 spec and house batches 9-12 and 13-16.
+  - **Final house exteriors, batch 3 (levels 9-12) (Claude, November 13, 2026; suites PASS 22:34 UTC; 22:36 UTC build installed, APK SHA-256 `5f39e84daaaafe15...`, session-v1 unchanged).**
+    - Same generator (`generate_house_exteriors_final.py`), following the approved R3 blockouts. All four have a stone or granite ground floor to 3 m and a timber upper storey in the tier wood, with dark trim and slate roofs:
+      - L9 (maple lodge, 10.6 m): long porch roof across the front and an upper cross gable at the screen-left.
+      - L10: the veranda wraps the screen-left corner with a 2.5 m side return and rails; ridge 9.2 m.
+      - L11 (cedar chalet): steep roof to 10 m, two upper balconies on brackets, hooded gable windows.
+      - L12: the chalet body narrows to 9 m and a lookout tower stands at the screen-left corner, finial at 12.0 m (kept under level 13's 12.2 m).
+    - Triangles 9,120 / 9,876 / 10,836 / 11,286 (budget 12,000 for levels 9-16). From level 9, roof tiles are 1.0 m.
+    - **Future woods:** levels 9+ use the palette's upper band (`house_palette_extension.palette_uv`, as the pet homes do); the palette PNG is unchanged. Levels 1-8 OBJs are byte-identical after a full rerun (checked by hash).
+    - **Manifest and builder:** four new `Houses` rows (tier 5-6, grids 12x19 to 12x25). Their `Interior` is empty, and `HouseArtAssets.Build` skips interiors for such rows; the 9-16 interiors come with the interior work. The builder now sets Read/Write on every `*Front.obj` (batch 1 had set it by hand).
+    - **Level cap 16:** `SettlementState.MaxLevel` = 16, per Part 2 section 16.5. Checks: neighbours reach 16 within 60 regions; restore rejects level 17. Plots asked for 13-16 show level 12 until batch 4 lands (existing fallback).
+    - New review helpers: `HouseArtAssets.ReviewViews(level, folder)` and `Lineup(first, last, file)`. Renders: `Docs/Art/Settlement/HouseExteriorRedesign/Final/Batch03/`, including `lineup-levels-1-12.png`.
+    - Fixed in review: L11-L12 dropped the screen-left gable window (it sat behind the cross gable); L12 dropped the centre upper window (it crowded the bay).
+    - **Pending:** the user's look review, on the phone with `HOUSES:` (L9-L12; 13-16 show 12); batch 4 (13-16).
+  - **Milestone 10 part 2 decision (user, November 13, 2026):** level 1 is free when the plot is chosen; house deposits start at level 2. This replaces "welcome quest; 25 pine planks + 25 fired bricks" in section 13.1 (the spec will carry the change).
+    - **Upgrade completion (user offered a timer with a covered house, or instant with a celebration, and left the choice to Claude; Claude chose instant):** the last deposit completes the upgrade at once. The player is moved outside to the home front, sees the new model, and a celebration (fireworks) plays. No timer to persist across app restarts, and no covered-house model per level; it also keeps section 13.1's "commit together" rule.
+    - **Device check (user):** final houses L1-L8 along the street (use `HOUSES:` to step through the levels); gardens and setback, with nothing cut off by the hearts-bar line; lane spacing; glide length and friction of street flicks; frame time in the settlement compared with earlier builds.
+    - **Next:** batches 9-12 and 13-16 (raise the house level clamp to 16 and add the future-wood palette band).
+  - **Milestone 10 part 2, slice 2a built (Claude, November 14, 2026, 03:37 UTC build, installed; APK 101.9 MB, SHA-256 `3dc213591c7db809...`; session-v1 unchanged, `2519b15e`).** Spec `Docs/superpowers/specs/2026-11-13-first-home-design.md`, plan `Docs/superpowers/plans/2026-11-13-first-home-2a.md`, run subagent-driven: each task was implemented, reviewed and fixed, then a whole-branch review and one fix wave. Device-save backup: `Builds/Backups/device-saves-2026-11-14-home2a`.
+    - **What it adds:**
+      - a generated furniture catalog: 48 types, six per level;
+      - home rules: grid per level, centre-first nearest free space, buying with trading cash, house storage;
+      - background-only buffs (craft quality, gear life, food recovery, sale price on player-crafted goods only) and the optional `SavedHome` save block (schema stays 3);
+      - the home front (Enter, Upgrade greyed, Back);
+      - the angled interior, built 200 m below the street; rooms deeper than 4.5 m scroll, so in 2a (level 1) nothing scrolls;
+      - the bird's-eye placement view: hold a piece, drag on whole cells, green or red footprint, commit on release only, Store piece, Return;
+      - the store and storage sheets, inside the house only: rows with icon, name, a purpose line without numbers, price, and a check when the type is placed.
+    - **Final-review fixes:** furniture buys count toward lifetime cash spent; the sheet Close button is a full 48 dp HUD square; a buy saves immediately; a check covers buffed food stopping at full stamina; the craft panel reads the buffs once per refresh.
+    - **Debug cash removed (user, November 14):** the camp's +1,000 CASH button is gone, so furniture is bought only with trading cash. +1 GOLD stays until gold has a mechanic.
+    - **Checks:** full suite PASS (03:35 UTC). `Builds/Validation/Home-checks.txt` holds 250 home checks.
+    - **Device check (user), the 2a phone round:**
+      - tap the house; the front view; Enter;
+      - buy all six level-1 types with cash earned by trading (18,000 in total);
+      - move them by holding (bird's-eye view); store one and re-place it from the storage sheet;
+      - a worktable craft's quality (the craft preview shows the higher quality); the food effect; the sale price of a crafted stack versus a bought one;
+      - close and reopen the app; also drag a piece, background the app mid-drag, relaunch and check the piece sits at its last committed cell.
+    - **Also look at on the phone:**
+      - the interior framing and the solid background past the cut walls;
+      - the bird's-eye view: framing, the right way round, the footprint against the grid lines;
+      - the hold timing, and needing a fresh touch to drag after the hold;
+      - the sheet layout at 1116x2480 and the Close size;
+      - Store, Storage and Store piece are text buttons for now (no icons yet).
+    - **Deferred (non-blocking, from the reviews):**
+      - split `CollectionPrototype.Home.cs` (about 990 lines) into front/interior, bird's-eye and sheets partials;
+      - no automated check of the view wiring (front never opens the store, sheets close on every exit);
+      - the reflection pin on `SavedHome` field names must be updated when Milestone 11 adds chest contents;
+      - the buy confirmation has no backdrop of its own (tapping outside answers NO);
+      - the "one heart" status text after EAT ignores the food buff.
+    - **Next:** superseded by the revision below (the user's first look found the house worked like a menu); then the slice 2b plan (deposits, upgrade with fireworks, `+ DEPOSIT` debug). Nothing committed (user commits on request).
+  - **Milestone 10 part 2, slice 2a revision built (Claude, November 14, 2026, 08:10 UTC build; APK 85.6 MB, SHA-256 `2b2dcb904f85f0d9...`).** Spec `Docs/superpowers/specs/2026-11-14-home-revision-design.md` (user-approved), plan `Docs/superpowers/plans/2026-11-14-home-revision.md`, run subagent-driven: seven tasks, each reviewed, then a whole-revision review (ready, no code defects).
+    - **What changed:**
+      - tapping your house (or the Home icon) glides to it and goes straight inside; the home-front view is gone;
+      - every interior has a plain entry area below the door (empty anchors for the later pet bed and collection box);
+      - a closer, steeper camera fitted to the screen at runtime: the room fills the width and the entry area sits at the bottom;
+      - inside HUD: Return above the inventory button, Store beside it, Upgrade beside the user menu (greyed until 2b), Pet in the middle from house level 3 (note until pets); CRAFT works inside;
+      - one store menu with Furniture and Storage tabs; the furniture catalog is grouped by house level 1-8, locked levels dimmed with their price and "Unlocks at house level N";
+      - tap the selected piece in the bird's-eye view to turn it 90° clockwise ("No room to turn it here." when blocked); rotation is saved (`SavedPiece.rotation`, older saves load at 0; forged rotations refused); a new piece tries turned before going to storage, so the level-1 room now holds 19 worktables;
+      - neighbours at level 1-8 open a look-only, deterministically furnished room (only Return); level 9+ keeps the paper note.
+    - **No scrolling on the test phone:** with the room fitted to the width, every level 1-8 fits the 1116x2480 screen (level 8's back wall reaches 90.6% of the height), so the vertical momentum scroll never starts there. It is built and checked on a deeper test room and runs on shorter 16:9 phones. A closer camera (cropping the sides) would bring it back; the user's call.
+    - **Checks:** full suite PASS (08:10 UTC); `Builds/Validation/Home-checks.txt` holds 436 lines. Interior and front OBJs and front prefabs byte-identical (only the 16 interior/study prefabs and the 8 new `HouseL0xEntry` meshes changed).
+    - **APK size:** 85.6 MB (101.9 MB at the 2a build); the packed-size report shows 81.6 MB of the 150 MB budget. The drop matches the other tool's tier-two material reorganisation in `Resources`; not investigated further.
+    - **Installed (Claude, November 14, 2026, 15:12 UTC):** the 08:10 APK unchanged (SHA-256 `2b2dcb904f85f0d9...`; no code changed since the build); saves backed up to `Builds/Backups/device-saves-2026-11-14-home-revision`; `session-v1.json` unchanged before and after (`2519b15e...`).
+    - **Turn change (user request, November 14, 2026; build 15:41 UTC PASS, APK SHA-256 `bd8ad66c1494d90b...`, installed 15:41 UTC, `session-v1` unchanged):** a tap on the selected piece always turns it, even where the turn does not fit. A turn that fits is saved at once; one that does not stays turned over a red footprint with "No room for it here. Drag it to a free spot." and is saved only when the piece is dropped where it fits (cell and turn together, `HomeState.Move(id, x, z, rotation)`). A drop that does not fit is refused and the piece snaps back, still turned; changing the selection or leaving the view puts it back to its saved turn. The save never holds an overlapping piece. The red refused-turn flash is gone (and with it the deferred "flash lingering into a drag" item). Home-checks 443 lines (7 new). User checked it on the phone: all other checks passed.
+    - **Note position (user request, November 14, 2026; build 15:47 UTC PASS, APK SHA-256 `436f7b470c612ca7...`, installed 15:47 UTC, `session-v1` unchanged):** inside the house (room and bird's-eye) the paper note now sits in the top band like the trade note (safe area x 0.17-0.83, y 0.875-0.975), away from drags and taps on the room; on the street it keeps its mid-screen place. Home-checks 446 lines (3 new).
+    - **Device round closed (user, November 14, 2026):** the revision's device list passed, with the two changes above.
+    - **User decisions (November 14, 2026):** slice 2b's upgrade completion glides out to the street and plays the fireworks over the house; the player taps back in (the home front no longer exists). The interior camera stays as is (no scrolling on the test phone); later house upgrades will show whether it needs to change, so nothing is planned for it now.
+    - **APK size investigated (Claude, November 14, 2026):** the 101.9 → 85.6 MB drop is not content.
+      - Unity's per-asset lists for the 22:14 UTC (Nov 13, 101.9 MB) and 08:10 UTC (85.6 MB) full builds differ only by additions (houses L9-L12, the new icons); nothing was removed. The other tool's material move kept files, GUIDs and contents identical. Packages, player settings and build options are unchanged; Rider (and its .NET 11 SDK) is editor-only: no `csc.rsp`, `global.json` or `Directory.Build` file, and Unity compiles with its own C# 9 toolchain.
+      - The same ~16 MB swing happened before with no asset change (Nov 10: 85.6 → 101.8 MB in ten minutes; Nov 8: 94.91 → 79.01 MB, "unexplained"). The current APK holds 79.9 MB of entries in an 81.6 MB file, so the large builds most likely carried dead space from Gradle's incremental APK packaging. The older APKs are overwritten, so this can't be proven for them, but the next build showed it directly: identical entries (3,237 files, 79.90 MB) and 2.7 MB more file (88.4 MB).
+      - The size report was empty because Unity records packed assets only on full builds. `ApkBudget` now prints the entries' compressed total and the rest of the file (headers, signing, dead space), and says when the folder breakdown isn't recorded.
+      - Found on the way: `com.unity.ai.inference` (Sentis) is a direct package with nothing depending on it and no game code using it, yet it ships 28.5 MB (uncompressed) of compute shaders from its `Resources` folder. Removing it is the user's call.
+      - **Sentis removed (user, November 14, 2026):** the user had not added it knowingly. Its only user was the AI Assistant's local asset search in the Editor (compiled only when the package is present, `SENTIS_AVAILABLE`); nothing in the game or the plans needs on-device AI. Entries dropped from 79.90 to 71.64 MB compressed.
+      - **Fresh APK pack:** `Milestone5Setup.Build` now deletes Gradle's previous `launcher-debug.apk` before building, so every APK is packed fresh. 16:10 UTC build PASS: **75.7 MB** (72.16 MiB; 0.52 MB beyond the entries), SHA-256 `779cbc3d99321662...`, installed 16:11 UTC, `session-v1` unchanged.
+    - **Slice 2b decision (user, November 14, 2026):** the player's house is capped at **level 2** this milestone; most level 3-8 materials aren't items yet. Spec: `Docs/superpowers/specs/2026-11-14-first-home-2b-design.md`, approved November 14 with one change: **no cancelling deposits** (deposits are final; save integrity first).
+  - **Milestone 10 part 2, slice 2b built (Claude, November 14, 2026; 17:39 UTC build PASS, APK 76.1 MB, SHA-256 `03fea7690691b73e...`, installed 17:39 UTC; saves backed up to `Builds/Backups/device-saves-2026-11-14-home-2b`; `session-v1` unchanged).** Plan `Docs/superpowers/plans/2026-11-14-first-home-2b.md`, run subagent-driven: four tasks each reviewed (one fix round on the sheet), a whole-branch review, one fix wave.
+    - **What it adds:** inside the house the Upgrade button opens the upgrade sheet (level 1 → 2): Pine beams, Fired bricks, Nettle cloth, Reed braids, Pine panels, 25 each, with deposited / required, the mission that teaches each, and DEPOSIT (asks first: "Deposits can't be taken back."). Deposits come from the bag, pockets and hooks (lowest quality first, never the overflow) into house escrow (`HouseUpgradeService`, reusing the ledger's trade escrow; `SavedHome.upgradeEscrow`), each saved immediately. The last deposit completes in one step (exact consumption, level 2, room 10×6 with placed pieces shifted one column, the level-2 furniture unlocked), saves, then cuts to the street at the plot with the level-2 house and ~3.6 s of fireworks; tapping the house goes back in. At level 2 the button shows "Your house is as big as it gets for now." A settlement debug button `+ DEPOSIT` grants the missing materials.
+    - **Integrity:** no cancel path; restore refuses only broken references (unknown, non-escrow, shared-with-trade or duplicated IDs); surplus, unrequired or at-cap deposits return to the overflow on load with a note; faint and trade never touch house escrow; a fully deposited house that wasn't completed (failed save, app killed) completes the next time the sheet is opened.
+    - **Checks:** `Home-checks.txt` 527 lines (466 → 527 across the slice, incl. conservation, lowest-quality order, save round trips after each deposit, forged saves, migration, trade coexistence, faint, the completion path).
+    - **Device check (user):** `+ DEPOSIT` on the street, go in, deposit some materials, leave, close and reopen the app (counts kept); deposit the rest; watch the street cut, the level-2 house and fireworks; tap back in: the 10×6 room keeps every piece (shifted one column to stay relative to the door) and its rotation; buy a level-2 type; the cap note on Upgrade. Also check the sheet layout and that DEPOSIT is easy to tap. The fireworks are plain square particles for now.
+    - **Deferred:** `SpatialInventory.IsReserved` / `MoveEscrowToOverflow` to replace two workarounds in the service; a few view-polish items in the ledger.
+    - **Device round passed (user, November 14, 2026):** every 2b check passed on the 17:39 build.
+  - **Milestone 10 complete (November 14, 2026).** Exit check met: normal unlock after region four with debug access separate (part 1), Return goes to the recorded camp (part 1), buffs counted once per placed type (2a), and house upgrades keep deposited materials across restarts (2b). The player's house stops at level 2 until the tier-two materials exist; the backyard, pet home and collection box belong to Milestone 15.
+- **Premium seafood rework, tiers 1-4 (user found the roast meshes off-theme; Claude's design, November 14, 2026; 16:34 UTC build PASS, APK 75.8 MB, SHA-256 `e41d014522e111cd...`, installed 16:34 UTC, `session-v1` unchanged).** See section 9.4.2's rework note.
+  - **Plan:** Roasted shrimp / crab / squid / lobster → Strawberry-glazed shrimp skewers (T1, 8 hearts), Truffle-butter crab (T2, 9), Crispy mint squid (T3, 10), Coconut-chili lobster (T4, 11). Part 2's four had been reworked on November 5 but never got meshes.
+  - **Code:** `recipe.food.roasted_shrimp` retired (its item stays as legacy food, as for the fish roasts); `recipe.food.strawberry_glazed_shrimp_skewers` added (1 Shrimp + 1 Strawberries + 1 Rock salt; through `Tier01Recipes.json` and `generate_tier1_recipes.py`; item 900×501). Checks: Milestone 7 counts (64 tier-one recipes, five retired), a new skewers check, the Milestone 8 box-recipe list and the Phase 1 item snapshot (128 IDs).
+  - **Art:** eight new composed-plate meshes from `generate_balloon_exclusive_items.py` (`composed_seafood`, a new `shrimp` shape), exported alone by a one-off driver because the generator's full run would also invent meshes for the 17 newer Part 2 recipes; prefabs and both art catalogs refreshed without rebuilding other prefabs. Gallery: `Docs/Art/BalloonExclusive/seafood-premium-rework-2026-11-14.png`. The seven unused roasts (crab, lobster, squid, scallop, mussel, octopus, oyster: OBJs, prefabs, crab palette and material) are deleted and batch 28's manifest drops Roasted crab; `RoastedShrimp` stays for the legacy item.
+  - **Generator note:** `generate_balloon_exclusive_items.py`'s full run asserts 42 box recipes, but the plan now has 59 (Part 2 section 10 grew to 33); it needs updating before its next full run.
+    - **Cleanup (16:03 UTC build PASS, APK SHA-256 `2afc83596aab33f8...`, installed 16:04 UTC, `session-v1` unchanged):** one neighbour-level lookup (`NeighbourHouseLevel`; the street note shows at least level 1); `StreetCamera` keeps only `HoldAt`/`SnapToStreet` (the unused `EaseTo`, `ReturnToStreet`, `EaseStep` and the returning mode are gone); a tab change answers an open buy confirmation NO; the bird's-eye buttons' unused text fallback and a stale home-front comment removed. Left as they are: the interior overscroll (camera unchanged) and neighbour room density (passed on the phone).
+    - **Device check (user):** tap your house → inside; the room fills the width with the entry area at the bottom; open Store, browse the catalog by level (locked levels visible), buy the six level-1 types with traded cash; open Storage from the same menu; hold a piece, drag it, tap it to turn it, try turning against a wall; with the worktable placed open CRAFT from inside, craft, check the quality and that the room is unchanged when the panel closes; food and sale effects; tap a neighbour's house and look around (judge clutter and piece directions at levels 5-8); leave, close and reopen the app (rotations and cells kept).
+    - **Deferred after the round:** merge the two neighbour-level helpers; remove the unused street-camera ease code and stale comments; a smaller rubber-band overscroll for interiors before any taller-phone test; neighbour room density (two-thirds inclusion) if it looks cluttered; the buy confirmation stays up across a tab change; the red flash lingering into a drag right after a refused turn.
+    - **Next:** the user's phone round on this build; then the slice 2b plan (deposits, upgrade with fireworks, `+ DEPOSIT` debug). Nothing committed (user commits on request).
+- **Uncommitted additions:** `SettlementStreetProps.cs` (new); `SettlementScenery.cs`, `SettlementBackdrop.cs` and `SettlementShellValidation.cs` changes. Docs (not committed): the envelope document and the props-handoff update.
 
 ### Milestone 11: Home storage and placement limits
 

@@ -233,7 +233,7 @@ namespace TheTrailWalker
             if (!tradeSession.CanList(out string reason)) { tradeFeedback.text = reason; return; }
             int quantity = Mathf.Clamp(tradeQuantity, 1, tradeSelected.Quantity);
             if (!ledger.TryEscrow(tradeSelected, quantity, "escrow-" + Guid.NewGuid().ToString("N"), out ItemEntry escrow, out reason)) { tradeFeedback.text = reason; return; }
-            long quote = SaleQuote.TotalMinor(escrow);
+            long quote = SaleQuote.TotalMinor(escrow, home.Buffs.SalePrice);
             tradeSession.AddPlayerListing(escrow.Id, escrow.Definition, escrow.Quantity, escrow.Quality, quote);
             tradeFeedback.text = $"Listed {escrow.Definition.Name} x{escrow.Quantity:N0}: quote {Money.Format(quote)} cash (100% if bought, 80% at the shredder).";
             if (tradeSelected.Owner != ItemOwner.Backpack && tradeSelected.Owner != ItemOwner.Pocket && tradeSelected.Owner != ItemOwner.Hook) tradeSelected = null;
@@ -282,7 +282,7 @@ namespace TheTrailWalker
             if (tradeSelected != null)
             {
                 tradeQuantity = Mathf.Clamp(tradeQuantity, 1, tradeSelected.Quantity);
-                long quote = SaleQuote.LowestMinor(tradeSelected, tradeQuantity);
+                long quote = SaleQuote.LowestMinor(tradeSelected, tradeQuantity, home.Buffs.SalePrice);
                 long unit = tradeQuantity > 0 ? quote / tradeQuantity : 0;
                 tradeQuote.text = $"{tradeSelected.Definition.Name} x{tradeQuantity:N0} of {tradeSelected.Quantity:N0} ({tradeSelected.QualityLabel}): {Money.Format(unit)} each, total {Money.Format(quote)} cash.\n" +
                                   $"Bought by a trader: {Money.Cash(Money.Payout(quote, 100))}   shredded/time up: {Money.Cash(Money.Payout(quote, 80))}   returned: {Money.Cash(Money.Payout(quote, 70))}";

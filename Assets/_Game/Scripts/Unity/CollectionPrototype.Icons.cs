@@ -18,13 +18,14 @@ namespace TheTrailWalker
         private readonly HashSet<RectTransform> campOnlyButtons = new HashSet<RectTransform>();
         private float menuBarLine;
         private RectTransform mapMenuButton; // camp-only, but also kept in the settlement (settlement shell, section 3)
+        private RectTransform craftMenuButton; // camp-only, but also shown inside the house (CraftAvailable, home revision 4)
 
         private void CreateUserMenu()
         {
             Text user = Button(safe, "MENU", 0, 0, 0, 0, ToggleUserMenu);
             userButton = (RectTransform)user.transform.parent; userButton.name = "User menu";
             HudIconStyle.Apply(user, "user");
-            campOnlyButtons.Add(AddMenuButton("CRAFT", "crafting", () => { if (milestone5) ToggleCraftPanel(); else Say("Crafting needs the camp world."); }));
+            campOnlyButtons.Add(craftMenuButton = AddMenuButton("CRAFT", "crafting", () => { if (milestone5) ToggleCraftPanel(); else Say("Crafting needs the camp world."); }));
             campOnlyButtons.Add(mapMenuButton = AddMenuButton("MAP", "map", OpenMapFromMenu));
             AddMenuButton("GEAR", "equipment", () => { if (milestone4) ToggleGearPanel(); });
             AddMenuButton("SETTINGS", "settings", () => Say("Settings arrive in a later milestone."));
@@ -44,7 +45,7 @@ namespace TheTrailWalker
             int row = 1;
             foreach (RectTransform button in menuButtons)
             {
-                bool show = open && (!campOnlyButtons.Contains(button) || AtCamp || (button == mapMenuButton && phase == TravelPhase.Settlement));
+                bool show = open && (!campOnlyButtons.Contains(button) || (button == craftMenuButton ? CraftHere : AtCamp) || (button == mapMenuButton && phase == TravelPhase.Settlement));
                 button.gameObject.SetActive(show);
                 if (show) PlaceSquare(button, true, menuBarLine, 0, row++);
             }

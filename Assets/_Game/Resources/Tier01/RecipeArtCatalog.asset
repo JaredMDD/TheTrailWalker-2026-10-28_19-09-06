@@ -52,7 +52,7 @@ MonoBehaviour:
     OutputId: item.pine_plank
     Model: PinePlank
     PrefabPath: Tier01/Crafted/PinePlank
-    UnlockSource: Normal mission; branch placement pending
+    UnlockSource: Gatherer G4
     Note: 
     Slot: 
     Tier: 1
@@ -73,7 +73,7 @@ MonoBehaviour:
     OutputId: item.pine_charcoal
     Model: PineCharcoal
     PrefabPath: Tier01/Crafted/PineCharcoal
-    UnlockSource: Normal mission; branch placement pending
+    UnlockSource: Lumberjack L6
     Note: 
     Slot: 
     Tier: 1
@@ -115,7 +115,7 @@ MonoBehaviour:
     OutputId: item.hemp_thread
     Model: HempThread
     PrefabPath: Tier01/Crafted/HempThread
-    UnlockSource: Normal mission; branch placement pending
+    UnlockSource: Explorer E9
     Note: 
     Slot: 
     Tier: 1
@@ -136,7 +136,7 @@ MonoBehaviour:
     OutputId: item.nettle_thread
     Model: NettleThread
     PrefabPath: Tier01/Crafted/NettleThread
-    UnlockSource: Normal mission; branch placement pending
+    UnlockSource: Explorer E16
     Note: 
     Slot: 
     Tier: 1
@@ -157,7 +157,7 @@ MonoBehaviour:
     OutputId: item.hemp_cloth
     Model: HempCloth
     PrefabPath: Tier01/Crafted/HempCloth
-    UnlockSource: Normal mission; branch placement pending
+    UnlockSource: Explorer E1
     Note: 
     Slot: 
     Tier: 1
@@ -178,7 +178,7 @@ MonoBehaviour:
     OutputId: item.nettle_cloth
     Model: NettleCloth
     PrefabPath: Tier01/Crafted/NettleCloth
-    UnlockSource: Normal mission; branch placement pending
+    UnlockSource: Explorer E15
     Note: 
     Slot: 
     Tier: 1
@@ -199,7 +199,7 @@ MonoBehaviour:
     OutputId: item.fine_hemp_cloth
     Model: FineHempCloth
     PrefabPath: Tier01/Crafted/FineHempCloth
-    UnlockSource: Normal mission; branch placement pending
+    UnlockSource: Explorer E10
     Note: 
     Slot: 
     Tier: 1
@@ -224,8 +224,9 @@ MonoBehaviour:
     OutputId: item.cured_rabbit_pelt
     Model: CuredRabbitPelt
     PrefabPath: Tier01/Crafted/CuredRabbitPelt
-    UnlockSource: Normal mission; branch placement pending
-    Note: 
+    UnlockSource: Hunter H5
+    Note: 'Revised November 7, 2026: Animal fat replaces Rock salt (fat-softened
+      fur).'
     Slot: 
     Tier: 1
     Yield: 1
@@ -234,12 +235,12 @@ MonoBehaviour:
     BlockedSource: 0
     CraftingPathSourceIds:
     - animal.rabbit.pelt
-    - ingredient.rock_salt
+    - ingredient.animal_fat
     ConversionRecipeIds: []
     Inputs:
     - ItemId: animal.rabbit.pelt
       Quantity: 2
-    - ItemId: ingredient.rock_salt
+    - ItemId: ingredient.animal_fat
       Quantity: 1
     Visual: {fileID: 8121103745111195061, guid: 940ac5e50ca98e74180daa0f7031c643, type: 3}
   - Id: recipe.material.fine_rabbit_pelt
@@ -248,7 +249,7 @@ MonoBehaviour:
     OutputId: item.fine_rabbit_pelt
     Model: FineRabbitPelt
     PrefabPath: Tier01/Crafted/FineRabbitPelt
-    UnlockSource: Normal mission; branch placement pending
+    UnlockSource: Hunter H6 after Explorer E9
     Note: 
     Slot: 
     Tier: 1
@@ -258,7 +259,7 @@ MonoBehaviour:
     BlockedSource: 0
     CraftingPathSourceIds:
     - animal.rabbit.pelt
-    - ingredient.rock_salt
+    - ingredient.animal_fat
     - material.hemp
     ConversionRecipeIds:
     - recipe.material.cured_rabbit_pelt
@@ -299,8 +300,9 @@ MonoBehaviour:
     OutputId: item.fine_rabbit_leather
     Model: FineRabbitLeather
     PrefabPath: Tier01/Crafted/FineRabbitLeather
-    UnlockSource: Normal mission; branch placement pending
-    Note: Proposed fixed 20-second timer where unspecified.
+    UnlockSource: Hunter H7 after Explorer E16
+    Note: 'Proposed fixed 20-second timer. Revised November 7, 2026: Nettle thread
+      replaces Hemp thread.'
     Slot: 
     Tier: 1
     Yield: 1
@@ -310,14 +312,14 @@ MonoBehaviour:
     CraftingPathSourceIds:
     - animal.rabbit.pelt
     - ingredient.rock_salt
-    - material.hemp
+    - material.nettle_fiber
     ConversionRecipeIds:
-    - recipe.material.hemp_thread
+    - recipe.material.nettle_thread
     - recipe.material.rabbit_leather
     Inputs:
     - ItemId: item.rabbit_leather
       Quantity: 2
-    - ItemId: item.hemp_thread
+    - ItemId: item.nettle_thread
       Quantity: 1
     Visual: {fileID: 3970441247552759102, guid: 3df778c95e744eb47ae5f9c13de1c285, type: 3}
   - Id: recipe.material.plant_stuffing
@@ -326,7 +328,7 @@ MonoBehaviour:
     OutputId: item.plant_stuffing
     Model: PlantStuffing
     PrefabPath: Tier01/Crafted/PlantStuffing
-    UnlockSource: Normal mission; branch placement pending
+    UnlockSource: Hunter H8
     Note: Proposed fixed 10-second timer where unspecified.
     Slot: 
     Tier: 1
@@ -347,7 +349,7 @@ MonoBehaviour:
     OutputId: item.pine_beam
     Model: PineBeam
     PrefabPath: Tier01/Crafted/PineBeam
-    UnlockSource: Normal mission; branch placement pending
+    UnlockSource: Lumberjack L4
     Note: 
     Slot: 
     Tier: 1
@@ -373,7 +375,7 @@ MonoBehaviour:
     OutputId: item.pine_panel
     Model: PinePanel
     PrefabPath: Tier01/Crafted/PinePanel
-    UnlockSource: Normal mission; branch placement pending
+    UnlockSource: Lumberjack L11
     Note: Proposed fixed 10-second timer where unspecified.
     Slot: 
     Tier: 1
@@ -395,7 +397,7 @@ MonoBehaviour:
     OutputId: item.limestone_tiles
     Model: LimestoneTiles
     PrefabPath: Tier01/Crafted/LimestoneTiles
-    UnlockSource: Normal mission; branch placement pending
+    UnlockSource: Lumberjack L8
     Note: 
     Slot: 
     Tier: 1
@@ -416,7 +418,7 @@ MonoBehaviour:
     OutputId: item.polished_pebble
     Model: PolishedPebble
     PrefabPath: Tier01/Crafted/PolishedPebble
-    UnlockSource: Normal mission; branch placement pending
+    UnlockSource: Lumberjack L9
     Note: Proposed fixed 10-second timer where unspecified.
     Slot: 
     Tier: 1
@@ -440,7 +442,7 @@ MonoBehaviour:
     OutputId: item.fired_bricks
     Model: FiredBricks
     PrefabPath: Tier01/Crafted/FiredBricks
-    UnlockSource: Normal mission; branch placement pending
+    UnlockSource: Lumberjack L7
     Note: Proposed fixed 10-second timer where unspecified.
     Slot: 
     Tier: 1
@@ -465,7 +467,8 @@ MonoBehaviour:
     OutputId: item.clay_cup
     Model: ClayCup
     PrefabPath: Tier01/Crafted/ClayCup
-    UnlockSource: Normal mission; branch placement pending
+    UnlockSource: Gatherer T4-G9 (tier-four mission; not in the tier-one catalog
+      yet)
     Note: Proposed fixed 10-second timer where unspecified.
     Slot: 
     Tier: 1
@@ -486,7 +489,7 @@ MonoBehaviour:
     OutputId: ingredient.wheat_flour
     Model: WheatFlour
     PrefabPath: Tier01/Crafted/WheatFlour
-    UnlockSource: Normal mission; branch placement pending
+    UnlockSource: Gatherer G6
     Note: 
     Slot: 
     Tier: 1
@@ -507,7 +510,7 @@ MonoBehaviour:
     OutputId: item.reed_braid
     Model: ReedBraid
     PrefabPath: Tier01/Crafted/ReedBraid
-    UnlockSource: Normal mission; branch placement pending
+    UnlockSource: Gatherer G5
     Note: Proposed fixed 10-second timer where unspecified.
     Slot: 
     Tier: 1
@@ -528,7 +531,7 @@ MonoBehaviour:
     OutputId: item.mortar
     Model: Mortar
     PrefabPath: Tier01/Crafted/Mortar
-    UnlockSource: Normal mission; branch placement pending
+    UnlockSource: Lumberjack L5
     Note: Proposed fixed 10-second timer where unspecified.
     Slot: 
     Tier: 1
@@ -600,7 +603,7 @@ MonoBehaviour:
     OutputId: item.pine_rod_normal
     Model: PineRodNormal
     PrefabPath: Tier01/Crafted/PineRodNormal
-    UnlockSource: Explorer E5 after E4 and Bone source
+    UnlockSource: Explorer E5 (Bone) after E4
     Note: Normal only; base 10 uses; bone hook, no metal reel.
     Slot: 
     Tier: 1
@@ -798,7 +801,7 @@ MonoBehaviour:
     OutputId: item.berry_oat_cakes
     Model: BerryOatCakes
     PrefabPath: Tier01/Crafted/BerryOatCakes
-    UnlockSource: Normal mission; branch placement pending
+    UnlockSource: Gatherer G12
     Note: 
     Slot: 
     Tier: 1
@@ -873,7 +876,8 @@ MonoBehaviour:
     OutputId: item.roasted_rainbow_trout
     Model: RoastedRainbowTrout
     PrefabPath: Tier01/Crafted/RoastedRainbowTrout
-    UnlockSource: Normal mission; branch placement pending
+    UnlockSource: 'Retired November 7, 2026: replaced by Trout mushroom skillet;
+      kept for saves that know it'
     Note: 
     Slot: 
     Tier: 1
@@ -891,13 +895,42 @@ MonoBehaviour:
     - ItemId: material.pine_branch
       Quantity: 1
     Visual: {fileID: 573379020554131531, guid: 786a36460492a754bbceedd8622c6d1a, type: 3}
+  - Id: recipe.food.trout_mushroom_skillet
+    Name: Trout mushroom skillet
+    Category: Food
+    OutputId: item.trout_mushroom_skillet
+    Model: RoastedRainbowTrout
+    PrefabPath: Tier01/Crafted/RoastedRainbowTrout
+    UnlockSource: Explorer E11
+    Note: 'November 7, 2026 fish-variety dish. Stand-in art: the Roasted rainbow
+      trout model until its own model exists.'
+    Slot: 
+    Tier: 1
+    Yield: 1
+    Hearts: 2
+    BaseSeconds: 3
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - fish.rainbow_trout
+    - ingredient.mushrooms
+    - material.pine_branch
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: fish.rainbow_trout
+      Quantity: 1
+    - ItemId: ingredient.mushrooms
+      Quantity: 1
+    - ItemId: material.pine_branch
+      Quantity: 1
+    Visual: {fileID: 573379020554131531, guid: 786a36460492a754bbceedd8622c6d1a, type: 3}
   - Id: recipe.food.roasted_largemouth_bass
     Name: Roasted largemouth bass
     Category: Food
     OutputId: item.roasted_largemouth_bass
     Model: RoastedLargemouthBass
     PrefabPath: Tier01/Crafted/RoastedLargemouthBass
-    UnlockSource: Normal mission; branch placement pending
+    UnlockSource: 'Retired November 7, 2026: replaced by Salt-baked bass; kept for
+      saves that know it'
     Note: 
     Slot: 
     Tier: 1
@@ -915,13 +948,42 @@ MonoBehaviour:
     - ItemId: material.pine_branch
       Quantity: 1
     Visual: {fileID: 9216140963121011348, guid: f4f13200b21f2284db1b5daf3940d5c3, type: 3}
+  - Id: recipe.food.salt_baked_bass
+    Name: Salt-baked bass
+    Category: Food
+    OutputId: item.salt_baked_bass
+    Model: RoastedLargemouthBass
+    PrefabPath: Tier01/Crafted/RoastedLargemouthBass
+    UnlockSource: Explorer E12
+    Note: 'November 7, 2026 fish-variety dish. Stand-in art: the Roasted largemouth
+      bass model until its own model exists.'
+    Slot: 
+    Tier: 1
+    Yield: 1
+    Hearts: 2
+    BaseSeconds: 3
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - fish.largemouth_bass
+    - ingredient.rock_salt
+    - material.pine_branch
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: fish.largemouth_bass
+      Quantity: 1
+    - ItemId: ingredient.rock_salt
+      Quantity: 2
+    - ItemId: material.pine_branch
+      Quantity: 1
+    Visual: {fileID: 9216140963121011348, guid: f4f13200b21f2284db1b5daf3940d5c3, type: 3}
   - Id: recipe.food.roasted_bluegill
     Name: Roasted bluegill
     Category: Food
     OutputId: item.roasted_bluegill
     Model: RoastedBluegill
     PrefabPath: Tier01/Crafted/RoastedBluegill
-    UnlockSource: Normal mission; branch placement pending
+    UnlockSource: 'Retired November 7, 2026: replaced by Pine-nut bluegill; kept
+      for saves that know it'
     Note: 
     Slot: 
     Tier: 1
@@ -939,13 +1001,42 @@ MonoBehaviour:
     - ItemId: material.pine_branch
       Quantity: 1
     Visual: {fileID: 1605516420351888325, guid: 865fee8d9a5d1b9469b2bcf5de9e1ea5, type: 3}
+  - Id: recipe.food.pine_nut_bluegill
+    Name: Pine-nut bluegill
+    Category: Food
+    OutputId: item.pine_nut_bluegill
+    Model: RoastedBluegill
+    PrefabPath: Tier01/Crafted/RoastedBluegill
+    UnlockSource: Explorer E13
+    Note: 'November 7, 2026 fish-variety dish. Stand-in art: the Roasted bluegill
+      model until its own model exists.'
+    Slot: 
+    Tier: 1
+    Yield: 1
+    Hearts: 2
+    BaseSeconds: 3
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - fish.bluegill
+    - ingredient.pine_nuts
+    - material.pine_branch
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: fish.bluegill
+      Quantity: 1
+    - ItemId: ingredient.pine_nuts
+      Quantity: 1
+    - ItemId: material.pine_branch
+      Quantity: 1
+    Visual: {fileID: 1605516420351888325, guid: 865fee8d9a5d1b9469b2bcf5de9e1ea5, type: 3}
   - Id: recipe.food.roasted_yellow_perch
     Name: Roasted yellow perch
     Category: Food
     OutputId: item.roasted_yellow_perch
     Model: RoastedYellowPerch
     PrefabPath: Tier01/Crafted/RoastedYellowPerch
-    UnlockSource: Normal mission; branch placement pending
+    UnlockSource: 'Retired November 7, 2026: replaced by Apple-stuffed perch; kept
+      for saves that know it'
     Note: 
     Slot: 
     Tier: 1
@@ -963,13 +1054,41 @@ MonoBehaviour:
     - ItemId: material.pine_branch
       Quantity: 1
     Visual: {fileID: 2629709712543025170, guid: b29a2e7d970682e46a1ffa004298e80b, type: 3}
+  - Id: recipe.food.apple_stuffed_perch
+    Name: Apple-stuffed perch
+    Category: Food
+    OutputId: item.apple_stuffed_perch
+    Model: RoastedYellowPerch
+    PrefabPath: Tier01/Crafted/RoastedYellowPerch
+    UnlockSource: Explorer E14
+    Note: 'November 7, 2026 fish-variety dish. Stand-in art: the Roasted yellow perch
+      model until its own model exists.'
+    Slot: 
+    Tier: 1
+    Yield: 1
+    Hearts: 2
+    BaseSeconds: 3
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - fish.yellow_perch
+    - food.apples
+    - material.pine_branch
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: fish.yellow_perch
+      Quantity: 1
+    - ItemId: food.apples
+      Quantity: 1
+    - ItemId: material.pine_branch
+      Quantity: 1
+    Visual: {fileID: 2629709712543025170, guid: b29a2e7d970682e46a1ffa004298e80b, type: 3}
   - Id: recipe.food.strawberry_cow_yogurt_drink
     Name: Strawberry cow-yogurt drink
     Category: Food
     OutputId: item.strawberry_cow_yogurt_drink
     Model: StrawberryCowYogurtDrink
     PrefabPath: Tier01/Crafted/StrawberryCowYogurtDrink
-    UnlockSource: Normal mission; branch placement pending
+    UnlockSource: Gatherer G11 after G10 (ranch milk, region 5)
     Note: 
     Slot: 
     Tier: 1
@@ -994,7 +1113,7 @@ MonoBehaviour:
     OutputId: item.cow_cheese_tart
     Model: CowCheeseTart
     PrefabPath: Tier01/Crafted/CowCheeseTart
-    UnlockSource: Normal mission; branch placement pending
+    UnlockSource: Gatherer G15 (ranch milk and eggs)
     Note: 
     Slot: 
     Tier: 1
@@ -1024,7 +1143,7 @@ MonoBehaviour:
     OutputId: ingredient.cow_cream
     Model: CowCream
     PrefabPath: Tier01/Crafted/CowCream
-    UnlockSource: Normal mission; branch placement pending
+    UnlockSource: Gatherer G13 (ranch milk, region 5)
     Note: Food recipe/mastery, refined ingredient output; direct recovery not authored.
     Slot: 
     Tier: 1
@@ -1045,7 +1164,7 @@ MonoBehaviour:
     OutputId: ingredient.cow_butter
     Model: CowButter
     PrefabPath: Tier01/Crafted/CowButter
-    UnlockSource: Normal mission; branch placement pending
+    UnlockSource: Gatherer G14 (ranch milk, region 5)
     Note: Food recipe/mastery, refined ingredient output; direct recovery not authored.
     Slot: 
     Tier: 1
@@ -1067,7 +1186,7 @@ MonoBehaviour:
     OutputId: ingredient.cow_cheese
     Model: CowCheese
     PrefabPath: Tier01/Crafted/CowCheese
-    UnlockSource: Normal mission; branch placement pending
+    UnlockSource: Gatherer G9 (ranch milk, region 5)
     Note: Food recipe/mastery, refined ingredient output; direct recovery not authored.
     Slot: 
     Tier: 1
@@ -1091,7 +1210,7 @@ MonoBehaviour:
     OutputId: ingredient.goat_cheese
     Model: GoatCheese
     PrefabPath: Tier01/Crafted/GoatCheese
-    UnlockSource: Normal mission; branch placement pending
+    UnlockSource: No mission yet (open decision)
     Note: Food recipe/mastery, refined ingredient output; direct recovery not authored.
     Slot: 
     Tier: 1
@@ -1115,7 +1234,7 @@ MonoBehaviour:
     OutputId: ingredient.mixed_milk_cheese
     Model: MixedMilkCheese
     PrefabPath: Tier01/Crafted/MixedMilkCheese
-    UnlockSource: Normal mission; branch placement pending
+    UnlockSource: No mission yet (open decision)
     Note: Food recipe/mastery, refined ingredient output; direct recovery not authored.
       Optional recipe proposal.
     Slot: 
@@ -1143,7 +1262,7 @@ MonoBehaviour:
     OutputId: ingredient.cow_yogurt
     Model: CowYogurt
     PrefabPath: Tier01/Crafted/CowYogurt
-    UnlockSource: Normal mission; branch placement pending
+    UnlockSource: Gatherer G10 (ranch milk, region 5)
     Note: Food recipe/mastery, refined ingredient output; direct recovery not authored.
     Slot: 
     Tier: 1
@@ -1164,7 +1283,7 @@ MonoBehaviour:
     OutputId: item.toasted_pine_nuts
     Model: ToastedPineNuts
     PrefabPath: Tier01/Crafted/ToastedPineNuts
-    UnlockSource: Normal mission; branch placement pending
+    UnlockSource: Gatherer G8
     Note: 
     Slot: 
     Tier: 1
@@ -1188,13 +1307,13 @@ MonoBehaviour:
     OutputId: item.roasted_shrimp
     Model: RoastedShrimp
     PrefabPath: BalloonExclusive/Items/RoastedShrimp
-    UnlockSource: Optional balloon recipe; exact ingredient sources must be discovered
-      and accessible
+    UnlockSource: 'Retired November 14, 2026: replaced by Strawberry-glazed shrimp
+      skewers (premium rework); kept for saves that know it'
     Note: 
     Slot: 
     Tier: 1
     Yield: 1
-    Hearts: 2
+    Hearts: 8
     BaseSeconds: 3
     BlockedSource: 0
     CraftingPathSourceIds:
@@ -1207,6 +1326,34 @@ MonoBehaviour:
     - ItemId: material.pine_branch
       Quantity: 1
     Visual: {fileID: 4545852586312437033, guid: e86f93dc46dae504e9f916db39b91150, type: 3}
+  - Id: recipe.food.strawberry_glazed_shrimp_skewers
+    Name: Strawberry-glazed shrimp skewers
+    Category: Food
+    OutputId: item.strawberry_glazed_shrimp_skewers
+    Model: StrawberryGlazedShrimpSkewers
+    PrefabPath: BalloonExclusive/Items/StrawberryGlazedShrimpSkewers
+    UnlockSource: Optional balloon recipe; exact ingredient sources must be discovered
+      and accessible
+    Note: November 14, 2026 premium rework of Roasted shrimp.
+    Slot: 
+    Tier: 1
+    Yield: 1
+    Hearts: 8
+    BaseSeconds: 3
+    BlockedSource: 0
+    CraftingPathSourceIds:
+    - food.strawberries
+    - ingredient.rock_salt
+    - ingredient.shrimp
+    ConversionRecipeIds: []
+    Inputs:
+    - ItemId: ingredient.shrimp
+      Quantity: 1
+    - ItemId: food.strawberries
+      Quantity: 1
+    - ItemId: ingredient.rock_salt
+      Quantity: 1
+    Visual: {fileID: 7068989253435400089, guid: 27896161306519142b76adcebd848cbc, type: 3}
   - Id: recipe.food.shrimp_pie
     Name: Shrimp pie
     Category: Food
@@ -1219,7 +1366,7 @@ MonoBehaviour:
     Slot: 
     Tier: 1
     Yield: 1
-    Hearts: 3
+    Hearts: 10
     BaseSeconds: 3
     BlockedSource: 0
     CraftingPathSourceIds:
@@ -1250,7 +1397,7 @@ MonoBehaviour:
     Slot: 
     Tier: 1
     Yield: 1
-    Hearts: 6
+    Hearts: 10
     BaseSeconds: 3
     BlockedSource: 0
     CraftingPathSourceIds:
@@ -1278,7 +1425,7 @@ MonoBehaviour:
     Slot: 
     Tier: 1
     Yield: 1
-    Hearts: 6
+    Hearts: 10
     BaseSeconds: 3
     BlockedSource: 0
     CraftingPathSourceIds:
@@ -1353,7 +1500,7 @@ MonoBehaviour:
     OutputId: item.cord_charm
     Model: CordCharm
     PrefabPath: Tier01/Crafted/CordCharm
-    UnlockSource: Normal mission; branch placement pending
+    UnlockSource: Lumberjack L10
     Note: 
     Slot: 
     Tier: 1
@@ -1404,7 +1551,7 @@ MonoBehaviour:
     OutputId: item.pinecone_ornament
     Model: PineconeOrnament
     PrefabPath: Tier01/Crafted/PineconeOrnament
-    UnlockSource: Normal mission; branch placement pending
+    UnlockSource: Gatherer G7
     Note: 
     Slot: 
     Tier: 1

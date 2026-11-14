@@ -19,7 +19,7 @@ namespace TheTrailWalker.Editor
         public static void Prepare()
         {
             KeepFogVariants();
-            Milestone4Setup.Prepare(); Milestone4EquipmentValidation.Run(); Milestone5Validation.Run(); Milestone6Validation.Run(); Milestone7Validation.Run(); Milestone8Validation.Run(); Milestone9Validation.Run(); TierOneRegionsValidation.Run(); Phase1ConsistencyValidation.Run(); SettlementShellValidation.Run();
+            Milestone4Setup.Prepare(); Milestone4EquipmentValidation.Run(); Milestone5Validation.Run(); Milestone6Validation.Run(); Milestone7Validation.Run(); Milestone8Validation.Run(); Milestone9Validation.Run(); TierOneRegionsValidation.Run(); Phase1ConsistencyValidation.Run(); SettlementShellValidation.Run(); HomeValidation.Run();
             Create(BootstrapPath, () => new GameObject("Session", typeof(GameBootstrapper)).GetComponent<GameBootstrapper>().Configure("TravelTrail"));
             Create(TrailPath, () =>
             {
@@ -52,6 +52,10 @@ namespace TheTrailWalker.Editor
         {
             if (EditorUserBuildSettings.activeBuildTarget != BuildTarget.Android) throw new InvalidOperationException("Activate Android first.");
             Prepare(); Directory.CreateDirectory("Builds/Android");
+            // Gradle packs the debug APK incrementally into its previous output, which keeps dead space from replaced entries
+            // (up to ~16 MB seen). Deleting that output makes every APK a fresh pack (November 14, 2026).
+            const string gradleApk = "Library/Bee/Android/Prj/IL2CPP/Gradle/launcher/build/outputs/apk/debug/launcher-debug.apk";
+            if (File.Exists(gradleApk)) File.Delete(gradleApk);
             BuildReport result = BuildPipeline.BuildPlayer(new BuildPlayerOptions { scenes = new[] { BootstrapPath, TrailPath }, target = BuildTarget.Android, targetGroup = BuildTargetGroup.Android, locationPathName = "Builds/Android/TheTrailWalker-Milestone5-Development.apk", options = BuildOptions.Development });
             if (result.summary.result != BuildResult.Succeeded) throw new Exception("Milestone 5 build failed: " + result.summary.result);
             ApkBudget.Enforce("Builds/Android/TheTrailWalker-Milestone5-Development.apk", result);

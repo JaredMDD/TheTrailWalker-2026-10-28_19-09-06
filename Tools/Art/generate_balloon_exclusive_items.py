@@ -7,7 +7,12 @@ from generate_tier01_crafted_items import COLORS,vessel,box
 
 ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'Assets/_Game/Art/Crafting/BalloonExclusive'
 LEGACY=ROOT/'Assets/_Game/Art/Crafting/Tier01/Tier01Recipes.json'
-REUSE={'roasted_shrimp','shrimp_pie','apple_oat_compote','red_berry_oat_porridge','pinecone_rabbit'}
+# Roasted shrimp left the box pool on November 14, 2026 (premium rework); its mesh stays as the legacy item's visual.
+REUSE={'shrimp_pie','apple_oat_compote','red_berry_oat_porridge','pinecone_rabbit'}
+
+def selectively_refined_models():
+    return {r['Model'] for path in (ROOT/'Assets/_Game/Art/Crafting/Tier02').glob('Tier02Batch*Manifest.json')
+            for r in json.loads(path.read_text(encoding='utf-8'))['Items'] if r.get('PreserveExistingHierarchy')}
 
 def recipes():
     p1=(ROOT/'PROJECT_RECOMENDATIONS.md').read_text(encoding='utf-8')
@@ -236,6 +241,14 @@ def seafood(m,kind,c=(0,.14,0),scale=1):
         ell(temp,(0,.0,-.015),(.095,.045,.085),28 if kind=='scallop' else 27,12,5)
         if kind=='scallop':ell(temp,(0,.027,-.018),(.064,.018,.058),22,12,4)
         else:ell(temp,(.025,.028,-.015),(.055,.012,.036),14,8,4)
+    elif kind=='shrimp':
+        # Cooked shrimp curled into a C: tapering segments, a fanned tail and two antennae.
+        pts=[(.17*math.cos(a),0,.17*math.sin(a)) for a in [math.radians(d) for d in (200,235,270,305,340,15)]]
+        for i,p in enumerate(pts):ell(temp,p,(.075-i*.009,.060-i*.006,.065-i*.007),26 if i%2==0 else 27,10,5)
+        tail=pts[-1]
+        for side in (-1,1):ell(temp,(tail[0]+.05,0,tail[2]+side*.035),(.06,.012,.03),22,8,4)
+        for side in (-1,1):tube(temp,[pts[0],(pts[0][0]-.06,.02,pts[0][2]+side*.10),(pts[0][0]-.02,.03,pts[0][2]+side*.22)],.005,24)
+        for i in range(1,4):tube(temp,[(pts[i][0]*.82,-.03,pts[i][2]*.82),(pts[i][0]*.62,-.045,pts[i][2]*.62)],.006,22)
     elif kind=='mussel':
         for side in (-1,1):
             xx=side*.12
@@ -248,7 +261,68 @@ def seafood(m,kind,c=(0,.14,0),scale=1):
     for a,b0,c0 in temp.vertices:m.v((x+a*scale,y+b0*scale,z+c0*scale))
     m.faces += [(a+start,b0+start,c0+start,k) for a,b0,c0,k in temp.faces]
 
+def star_anise(m,c,s=.05):
+    x,y,z=c
+    for i in range(8):a=i*math.tau/8;ell(m,(x+s*.55*math.cos(a),y,z+s*.55*math.sin(a)),(s*.5,s*.22,s*.24),0,6,3)
+    ell(m,(x,y+s*.12,z),(s*.25,s*.15,s*.25),1,6,3)
+
+def composed_seafood(m,key):
+    """Premium reworks (November 5 and 14, 2026): each exclusive seafood as a composed plate, never a plain roast."""
+    if key=='strawberry_glazed_shrimp_skewers':
+        plate(m)
+        for z in (-.13,.13):
+            tube(m,[(-.42,.03,z),(.42,.03,z)],.009,2)
+            for i,x in enumerate((-.27,-.09,.09,.27)):
+                if i%2==0:seafood(m,'shrimp',(x,.05,z),.62)
+                else:
+                    ell(m,(x,.04,z),(.038,.045,.035),25,10,5)
+                    for j in range(4):ell(m,(x+.022*math.cos(j*1.6),.062,z+.022*math.sin(j*1.6)),(.005,.005,.005),29,4,2)
+                    leaf(m,(x,.085,z),.25,13)
+            tube(m,[(-.36,.085,z-.02),(-.12,.09,z+.02),(.12,.088,z-.02),(.36,.085,z+.02)],.008,24)
+        for i in range(10):box(m,(.36*math.cos(i*2.4),-.045,.30*math.sin(i*2.4)),(.016,.012,.016),28)
+    elif key=='truffle_butter_crab':
+        plate(m);seafood(m,'crab',(0,.02,0),.85)
+        box(m,(0,.11,.02),(.10,.04,.08),29)
+        for i in range(8):ell(m,(.30*math.cos(i*2.4+.4),-.04,.26*math.sin(i*2.4+.4)),(.032,.010,.028),16 if i%2 else 0,7,3)
+    elif key=='crispy_mint_squid':
+        plate(m)
+        for i in range(8):
+            a=i*2.4;r=.08+.22*(i%3)/2
+            loop(m,(r*math.cos(a),-.035+.012*(i%2),r*math.sin(a)),.065,.065,.022,23,'xz',12)
+        for i in range(4):tube(m,[(.20*math.cos(i*1.6+.3),-.03,.18*math.sin(i*1.6+.3)),(.27*math.cos(i*1.6+.3),-.02,.24*math.sin(i*1.6+.3))],.014,22)
+        for i in range(5):leaf(m,(.16*math.cos(i*1.3),.0,.13*math.sin(i*1.3)),.7,13)
+    elif key=='coconut_chili_lobster':
+        plate(m);seafood(m,'lobster',(-.06,.02,.04),.72)
+        ell(m,(.29,-.01,-.20),(.13,.09,.13),0,12,5);m.cylinder((.29,.055,-.20),(.29,.062,-.20),.11,.11,12,28,28)
+        for z in (.18,.28):tube(m,[(.18,-.035,z),(.30,-.03,z+.03),(.38,-.035,z-.01)],.022,25);tube(m,[(.17,-.035,z),(.14,-.025,z-.02)],.008,13)
+    elif key=='maple_glazed_scallops':
+        plate(m)
+        for x,z in [(-.17,-.05),(.0,.10),(.17,-.05)]:
+            m.cylinder((x,-.06,z),(x,.01,z),.075,.075,14,28,28)
+            m.cylinder((x,.01,z),(x,.022,z),.07,.07,14,22,22)
+            tube(m,[(x-.05,.03,z),(x,.035,z+.02),(x+.05,.03,z)],.009,21)
+        tube(m,[(-.30,-.055,.22),(-.05,-.05,.26),(.22,-.055,.20),(.30,-.055,.08)],.010,21)
+        box(m,(.20,-.04,.17),(.07,.03,.05),29)
+    elif key=='mussels_thyme_cream':
+        bowl(m,27)
+        for i in range(4):
+            a=i*math.tau/4+.4;seafood(m,'mussel',(.17*math.cos(a),.17,.15*math.sin(a)),.30)
+        for i in range(6):leaf(m,(.22*math.cos(i*1.1),.25,.19*math.sin(i*1.1)),.35,12)
+    elif key=='saffron_sesame_octopus':
+        plate(m);seafood(m,'octopus',(0,.0,0),.72)
+        for i in range(9):tube(m,[(.33*math.cos(i*.7),-.05,.27*math.sin(i*.7)),(.36*math.cos(i*.7+.08),-.05,.30*math.sin(i*.7+.08))],.004,24)
+        for i in range(18):ell(m,(.28*math.cos(i*2.4),-.048,.24*math.sin(i*2.4)),(.010,.005,.006),7,5,2)
+    elif key=='star_anise_butter_oysters':
+        plate(m)
+        for i in range(3):
+            a=i*math.tau/3+.5;seafood(m,'oyster',(.20*math.cos(a),-.01,.18*math.sin(a)),.72)
+            ell(m,(.20*math.cos(a),.04,.18*math.sin(a)),(.035,.014,.03),29,6,3)
+        star_anise(m,(0,-.02,0),.07)
+    else:return False
+    return True
+
 def food(m,key):
+    if composed_seafood(m,key):return
     if key.startswith('roasted_'):
         kind=key.removeprefix('roasted_');plate(m);seafood(m,kind,(0,.06,0),.80)
         # Charred cooking support is illustrative; exact fuel costs remain in the recipe record.
@@ -361,6 +435,8 @@ def misc(m,key):
     else:raise ValueError(key)
 
 def export(row):
+    if row['Model'] in selectively_refined_models():
+        raise RuntimeError('Use the owning selective tier-two batch generator for preserved art: '+row['Model'])
     m=b.Model(row['Model'])
     if row.get('Kind')=='FilledBarrel':filled_barrel(m,row['DrinkKey'])
     elif row.get('Kind')=='BottledDrink':bottled_drink(m,row['DrinkKey'])
@@ -376,15 +452,15 @@ def export(row):
 def main(new_only=False,only_kind=None):
     OUT.mkdir(parents=True,exist_ok=True);b.OUT=OUT;b.COLORS=COLORS;rows=recipes()
     b.palette('Tier01CraftedPalette.png')
-    created=[]
+    created=[];refined=selectively_refined_models()
     for row in rows:
         if row['Reused']:
             old=json.loads(LEGACY.read_text(encoding='utf-8'));row['Triangles']=next(x['Triangles'] for x in old['Models'] if x['Model']==row['Model'])
-        elif (new_only or (only_kind and row.get('Kind')!=only_kind)) and (OUT/(row['Model']+'.obj')).exists():
+        elif (row['Model'] in refined or new_only or (only_kind and row.get('Kind')!=only_kind)) and (OUT/(row['Model']+'.obj')).exists():
             row['Triangles']=sum(line.startswith('f ') for line in (OUT/(row['Model']+'.obj')).read_text(encoding='utf-8').splitlines())
         else:export(row);created.append(row['RecipeId'])
     manifest={'Revision':2,'Items':rows,'FoodCount':sum(x['Category']=='Food' for x in rows),'MiscCount':sum(x['Category']=='Misc' for x in rows),
-              'BarrelCount':sum(x['Category']=='Barrel' for x in rows),'ReusedCount':5,'NewCount':len(rows)-5,
+              'BarrelCount':sum(x['Category']=='Barrel' for x in rows),'ReusedCount':len(REUSE),'NewCount':len(rows)-len(REUSE),
               'Scope':'Finished-output art only; recipe knowledge has no physical scroll model; expansion tiers are not activated. Filled barrels are non-consumable.'}
     (OUT/'BalloonExclusiveManifest.json').write_text(json.dumps(manifest,indent=2)+'\n',encoding='utf-8')
     # Update only the five moved visual paths; recipe data and balance remain intact.

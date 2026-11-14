@@ -86,8 +86,8 @@ MonoBehaviour:
   MaterialTier: 2
   FurnishingGrid: {x: 12, y: 7}
   GridCellMetres: 0.5
-  PlotWidth: 11.2
-  PlotDepth: 10.6
+  PlotWidth: 15.2
+  PlotDepth: 19
   PreviewOnly: 0
   GridAxisX: {x: -0.5, y: 0, z: 0}
   GridAxisDepth: {x: 0, y: 0, z: -0.5}
@@ -179,7 +179,7 @@ Transform:
   m_GameObject: {fileID: 3072028202278800388}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.45, y: 0, z: 0.25}
+  m_LocalPosition: {x: 4.535, y: 0, z: 0.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -241,7 +241,7 @@ Transform:
   m_GameObject: {fileID: 7486019189126099294}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.4, y: 0, z: 0.25}
+  m_LocalPosition: {x: -4.535, y: 0, z: 0.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -271,7 +271,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7965541747652149770}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.9998093, z: -0.019527286, w: 0}
+  m_LocalRotation: {x: 0, y: 0.9998789, z: -0.01556358, w: 0}
   m_LocalPosition: {x: 0, y: 2.4, z: 13}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

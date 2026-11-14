@@ -224,9 +224,9 @@ namespace TheTrailWalker.Editor
             Check(!tier.Any(d => existing.Contains(d.Id)), "no HarvestTierItems ID also appears in PrototypeItems.All");
             Check(tier.All(d => Items.Find(d.Id) == d), "every HarvestTierItems definition resolves through Items.Find");
             uint hash = 2166136261; foreach (ItemDefinition d in PrototypeItems.All) foreach (char c in d.Id + "|") { hash ^= c; hash *= 16777619; }
-            if (PrototypeItems.All.Length != 127 || hash != 644349003u)
-                throw new Exception($"Phase 1 consistency: PrototypeItems.All changed (now {PrototypeItems.All.Length} IDs, hash {hash}). If adding/reordering items was intentional, update the snapshot count (127) and hash (644349003) in Phase1ConsistencyValidation.ItemDefinitionChecks.");
-            Check(true, "PrototypeItems.All is unchanged: 127 IDs in the same order (FNV snapshot)");
+            if (PrototypeItems.All.Length != 128 || hash != 2759444114u)
+                throw new Exception($"Phase 1 consistency: PrototypeItems.All changed (now {PrototypeItems.All.Length} IDs, hash {hash}). If adding/reordering items was intentional, update the snapshot count (128) and hash (2759444114) in Phase1ConsistencyValidation.ItemDefinitionChecks.");
+            Check(true, "PrototypeItems.All is unchanged: 128 IDs in the same order (FNV snapshot; Strawberry-glazed shrimp skewers added November 14, 2026)");
             Check(Items.Find("material.pine_branch") == PrototypeItems.Branch && Items.Find("ingredient.mesquite_pods") == PrototypeItems.MesquitePods, "Items.Find still resolves PrototypeItems first");
         }
     }

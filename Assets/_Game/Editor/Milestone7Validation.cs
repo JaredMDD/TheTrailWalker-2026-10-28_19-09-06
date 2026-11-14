@@ -34,7 +34,7 @@ namespace TheTrailWalker.Editor
             passed.Clear();
             // Catalog integrity.
             bool resolve = RecipeBook.All.All(r => r.Output != null && r.Inputs.All(i => Items.Find(i.ItemId) != null && i.Quantity > 0));
-            Check(Tier1Recipes.All.Length == 63 && RecipeBook.All.Count == 66 && resolve && RecipeBook.All.Select(r => r.Id).Distinct().Count() == 66, "The 63 tier-one recipes (four retired roasts included) and 3 tier-two Elite upgrades resolve every exact input and output item and have unique IDs");
+            Check(Tier1Recipes.All.Length == 64 && RecipeBook.All.Count == 67 && resolve && RecipeBook.All.Select(r => r.Id).Distinct().Count() == 67, "The 64 tier-one recipes (five retired roasts included: four fish, November 7, and Roasted shrimp, November 14) and 3 tier-two Elite upgrades resolve every exact input and output item and have unique IDs");
             Check(RecipeBook.All.All(r => r.Inputs.All(i => ItemTiers.InWindow(r, i.ItemId))), "Every recipe's direct inputs respect its tier window (or the Food pantry exception)");
             var birchTest = new RecipeDefinition("t.birch", "t", RecipeRole.Food, 1, "item.apple_juice", 1, 3, "", new[] { new RecipeInput("ingredient.birch_sap", 1) });
             var futureMaterial = new RecipeDefinition("t.m", "t", RecipeRole.Material, 2, "item.pine_plank", 1, 1, "", new[] { new RecipeInput("ingredient.acorns", 1) });
@@ -167,9 +167,14 @@ namespace TheTrailWalker.Editor
             var dishes = new (string id, string fish, string extra, int quantity)[] {
                 ("trout_mushroom_skillet", "fish.rainbow_trout", "ingredient.mushrooms", 1), ("salt_baked_bass", "fish.largemouth_bass", "ingredient.rock_salt", 2),
                 ("pine_nut_bluegill", "fish.bluegill", "ingredient.pine_nuts", 1), ("apple_stuffed_perch", "fish.yellow_perch", "food.apples", 1) };
-            Check(RecipeBook.All.Where(r => r.Retired).Select(r => r.Id).OrderBy(x => x).SequenceEqual(roasts.Select(f => "recipe.food.roasted_" + f).OrderBy(x => x))
+            Check(RecipeBook.All.Where(r => r.Retired).Select(r => r.Id).OrderBy(x => x).SequenceEqual(roasts.Select(f => "recipe.food.roasted_" + f).Append("recipe.food.roasted_shrimp").OrderBy(x => x))
                 && roasts.All(f => Items.Find("item.roasted_" + f) is ItemDefinition legacy && legacy.FoodHearts == 2),
-                "Exactly the four plain fish roasts are retired, and their items remain as legacy food");
+                "Exactly the four plain fish roasts and Roasted shrimp are retired, and the fish roasts' items remain as legacy food");
+            // November 14, 2026 premium rework: Roasted shrimp's box recipe gives way to Strawberry-glazed shrimp skewers (same tier and hearts).
+            Check(Items.Find("item.roasted_shrimp") is ItemDefinition shrimp && shrimp.FoodHearts == 8
+                && RecipeBook.Find("recipe.food.strawberry_glazed_shrimp_skewers") is RecipeDefinition skewers && !skewers.Retired && skewers.Tier == 1 && skewers.Output != null && skewers.Output.FoodHearts == 8
+                && skewers.Inputs.Length == 3 && skewers.Inputs.All(i => i.Quantity == 1) && skewers.Inputs.Any(i => i.ItemId == "ingredient.shrimp") && skewers.Inputs.Any(i => i.ItemId == "food.strawberries") && skewers.Inputs.Any(i => i.ItemId == "ingredient.rock_salt"),
+                "Roasted shrimp stays as legacy food; Strawberry-glazed shrimp skewers (Shrimp + Strawberries + Rock salt, 8 hearts) replace its box recipe");
             Check(dishes.All(d => RecipeBook.Find("recipe.food." + d.id) is RecipeDefinition r && !r.Retired && r.Role == RecipeRole.Food && r.Tier == 1 && r.Yield == 1
                     && r.Output != null && r.Output.FoodHearts == 2 && r.Output.PreparedFood && r.Inputs.Length == 3
                     && r.Inputs.Any(i => i.ItemId == d.fish && i.Quantity == 1) && r.Inputs.Any(i => i.ItemId == d.extra && i.Quantity == d.quantity)

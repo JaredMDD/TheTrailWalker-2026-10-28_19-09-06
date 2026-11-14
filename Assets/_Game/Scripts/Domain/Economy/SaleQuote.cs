@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
+using TheTrailWalker.Domain.Crafting;
 using TheTrailWalker.Domain.Items;
 
 namespace TheTrailWalker.Domain.Economy
 {
     // Ordinary sale quotes (section 12.2.4): sum of condition-adjusted intrinsic unit values, times (1 + eligible sale
-    // bonus). The sale bonus is a player-crafted furniture buff that does not exist yet (Milestone 10+), so it is zero.
+    // bonus). The sale bonus is the home's market-sign buff, applied to crafted portions only.
     // The camp factor (100% NPC purchase, 80% shredder/expiry, 70% Return) is applied once at payout (Money.Payout).
     public static class SaleQuote
     {
@@ -19,8 +20,11 @@ namespace TheTrailWalker.Domain.Economy
             return Math.Max(0, Math.Min(1, remaining / p.MaxDurability));
         }
 
+        // The home sale bonus applies only to portions the player crafted (profile variant), never to bought goods.
+        public static bool Eligible(ItemEntry entry, PilePortion portion) => portion.Profile.Variant == CraftingService.CraftedVariant;
+
         public static long PortionMinor(ItemEntry entry, PilePortion portion, double saleBonus = 0) =>
-            (long)Math.Floor(portion.Profile.UnitValue * Condition(entry, portion) * (1 + saleBonus) * portion.Quantity + 1e-6);
+            (long)Math.Floor(portion.Profile.UnitValue * Condition(entry, portion) * (1 + (Eligible(entry, portion) ? saleBonus : 0)) * portion.Quantity + 1e-6);
 
         // Full quote of every unit in an entry (a listing's escrow entry holds exactly the listed units).
         public static long TotalMinor(ItemEntry entry, double saleBonus = 0)

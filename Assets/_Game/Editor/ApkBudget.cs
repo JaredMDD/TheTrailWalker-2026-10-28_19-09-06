@@ -29,8 +29,22 @@ namespace TheTrailWalker.Editor
         {
             long total = new FileInfo(apkPath).Length;
             var packed = report.packedAssets.SelectMany(a => a.contents).Select(c => (c.sourceAssetPath, c.packedSize));
-            var lines = new List<string> { $"APK total: {total / 1048576.0:F2} MB (budget {BudgetBytes / 1048576} MB)", "Packed Resources folders, largest first:" };
-            lines.AddRange(ByResourcesFolder(packed).OrderByDescending(p => p.Value).Select(p => $"  Resources/{p.Key}: {p.Value / 1048576.0:F2} MB"));
+            var lines = new List<string> { $"APK total: {total / 1048576.0:F2} MB (budget {BudgetBytes / 1048576} MB)" };
+            // The file can be larger than its entries (dead space left by incremental APK packaging); a large gap here, not
+            // the assets, is what moves the size between builds with the same content (investigated November 14, 2026).
+            try
+            {
+                using (var zip = System.IO.Compression.ZipFile.OpenRead(apkPath))
+                {
+                    long entries = zip.Entries.Sum(e => e.CompressedLength);
+                    lines.Add($"Entries: {zip.Entries.Count} files, {entries / 1048576.0:F2} MB compressed; the rest of the file (headers, signing, any dead space): {(total - entries) / 1048576.0:F2} MB");
+                }
+            }
+            catch (Exception e) { lines.Add("Entries: not measured (" + e.Message + ")"); }
+            var folders = ByResourcesFolder(packed);
+            // Unity records packed assets only on full builds; an incremental build's report has none.
+            lines.Add(folders.Count == 0 ? "Packed Resources folders: not recorded (incremental build; Unity lists packed assets only on full builds)" : "Packed Resources folders, largest first:");
+            lines.AddRange(folders.OrderByDescending(p => p.Value).Select(p => $"  Resources/{p.Key}: {p.Value / 1048576.0:F2} MB"));
             Directory.CreateDirectory("Builds/Validation");
             File.WriteAllLines("Builds/Validation/apk-size.txt", lines);
             if (total > BudgetBytes) throw new Exception($"APK is {total / 1048576.0:F2} MB, over the {BudgetBytes / 1048576} MB budget. See Builds/Validation/apk-size.txt.");

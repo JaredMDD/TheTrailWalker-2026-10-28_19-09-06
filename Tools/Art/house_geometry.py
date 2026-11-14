@@ -53,7 +53,7 @@ def door(m, x, bottom, z, wood, level, height=1.92, width=.98):
     box(m,(x-width*.30,bottom+height*.48,z+.11),(.055,.075,.055),metal)
 
 
-def roof(m, width, depth, eaves, peak, front, color, wood, tiled=True):
+def roof(m, width, depth, eaves, peak, front, color, wood, tiled=True, min_cols=8, tile=.55):
     # Gable ridge runs away from the street; both slopes have full back faces.
     for sign in (-1,1):
         slope=k.unit((sign*width/2,eaves-peak,0))
@@ -63,7 +63,7 @@ def roof(m, width, depth, eaves, peak, front, color, wood, tiled=True):
         axes=(slope,normal,(0,0,1))
         box(m,centre,(length,.10,depth),color,axes=axes,shade=1)
         if tiled:
-            cols=max(8,round(depth/.55))   # long (deep) roofs keep the same tile size
+            cols=max(min_cols,round(depth/tile))   # long (deep) roofs keep the same tile size
             for row in range(5):
                 for col in range(cols):
                     p=k.add((0,peak,front-depth*(col+.5)/cols),k.mul(slope,length*(row+.5)/5))

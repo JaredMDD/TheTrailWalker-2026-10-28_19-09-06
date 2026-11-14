@@ -24,7 +24,7 @@ namespace TheTrailWalker
         private TravelPhase phase;
         private Vector3 moveFrom, moveTo;
         private float moveFromYaw, moveToYaw, moveStarted, standSpeed;
-        private GameObject mapButton, cashButton, goldButton, mapPanel, tollPanel;
+        private GameObject mapButton, goldButton, mapPanel, tollPanel;
         // Camp-only actions (map, crafting, test wallets) show only while seated; older prototypes have no camps to gate.
         private bool AtCamp => !milestone5 || phase == TravelPhase.Seated;
         private Text tollText;
@@ -43,7 +43,7 @@ namespace TheTrailWalker
             TravelCatalog catalog = TravelCatalog.Prototype();
             SegmentDefinition segment = catalog.Outgoing(catalog.StartRegion.FirstCamp.Id);
             int visit = 1;
-            bool inSettlement = false; SettlementState savedSettlement = null;
+            bool inSettlement = false; SettlementState savedSettlement = null; int homeLevel = 1;
             try
             {
                 var store = new SessionSaveStore(SaveDirectory, new SystemClock(), 3);
@@ -54,6 +54,7 @@ namespace TheTrailWalker
                     segment = saved.CurrentSegment;
                     inSettlement = saved.InSettlement;
                     if (inSettlement) savedSettlement = SessionSaveStore.RestoreSettlement(snapshot, SettlementSeed(snapshot));
+                    if (inSettlement) homeLevel = SessionSaveStore.RestoreHome(snapshot).Level;
                     // Reopening mid-segment counts as a new visit to the start camp (ResumeAtCampAfterRestart), which
                     // also leaves a ferry landing: the scene shows that camp's own leg. A continuing reload keeps the walk.
                     if (!saved.Seated && !continueAfterReload && !inSettlement) segment = catalog.Outgoing(saved.CurrentCampId);
@@ -62,7 +63,7 @@ namespace TheTrailWalker
             }
             catch (Exception error) when (error is IOException || error is InvalidDataException) { Debug.LogWarning("[Milestone5] Travel peek failed: " + error.Message); }
             var info = new TravelSceneInfo { Catalog = catalog, Segment = segment, StartVisit = visit };
-            if (inSettlement) { info.Settlement = true; info.HouseLevels = SettlementScenery.HouseLevels(savedSettlement); info.PlayerPlot = SettlementScenery.PlayerPlot(savedSettlement); }
+            if (inSettlement) { info.Settlement = true; info.HouseLevels = SettlementScenery.HouseLevels(savedSettlement, homeLevel); info.PlayerPlot = SettlementScenery.PlayerPlot(savedSettlement); }
             return info;
         }
 
@@ -125,6 +126,7 @@ namespace TheTrailWalker
         private void UpdateTravel()
         {
             if (phase == TravelPhase.Settlement) { UpdateSettlement(); return; }
+            if (HomeOpen) ResetHomeView();   // the phase left the settlement while a home view was open
             if (phase == TravelPhase.Approaching || phase == TravelPhase.Leaving)
             {
                 float t = Mathf.Clamp01((Time.unscaledTime - moveStarted) / SeatMoveSeconds);
@@ -204,6 +206,7 @@ namespace TheTrailWalker
             RollDrops(rolled);
             movement.Reset(); movement.SetPause(MovementPauseReasons.Seated, true); lastDistance = 0;
             phase = TravelPhase.Transition; router.CancelAll(); router.InteractionLocked = true;
+            ResetHomeView();
             lastSavedState = null; SaveNow();
             if (saveBlocked) return;
             Say(arrival);
@@ -237,7 +240,7 @@ namespace TheTrailWalker
         private GameObject settlementDebugButton;
         private void CreateTravelHud()
         {
-            cashButton = Button(safe, "+1,000 CASH", 0.74f, 0.67f, 0.98f, 0.72f, () => { travel.GrantTestCash(1000); statistics.AddCash(1000); SaveNow(); RefreshTravelHud(); Say("Added 1,000 test cash (debug)."); }).transform.parent.gameObject;
+            // +1,000 CASH removed (user, November 14, 2026): furniture is bought with trading cash only. +1 GOLD stays until gold has a mechanic.
             goldButton = Button(safe, "+1 GOLD", 0.74f, 0.725f, 0.98f, 0.775f, () => { travel.GrantTestGold(1); statistics.AddGold(1); SaveNow(); RefreshTravelHud(); Say("Added 1 test gold (debug)."); }).transform.parent.gameObject;
             // Debug entry (camp only; the normal unlock stays the arch after region four).
             settlementDebugButton = Button(safe, "SETTLEMENT (DEBUG)", 0.20f, 0.67f, 0.60f, 0.72f, DebugSettlement).transform.parent.gameObject;
@@ -259,11 +262,11 @@ namespace TheTrailWalker
 
         private void RefreshTravelHud()
         {
-            if (cashButton == null || travel == null) return;
+            if (goldButton == null || travel == null) return;
             bool seated = phase == TravelPhase.Seated;
             if (!seated && phase != TravelPhase.Settlement && mapPanel.activeSelf) CloseMap();   // the settlement keeps its read-only map
             bool wallet = seated && TrailControlsVisible(InSettlementScene);   // debug grants are camp-only, never in the settlement
-            cashButton.SetActive(wallet); goldButton.SetActive(wallet);
+            goldButton.SetActive(wallet);
             if (settlementDebugButton != null) settlementDebugButton.SetActive(wallet);
             SetMenu(menuOpen);
         }

@@ -13,21 +13,6 @@ MonoBehaviour:
   m_Name: BalloonExclusiveArtCatalog
   m_EditorClassIdentifier: Assembly-CSharp::TheTrailWalker.BalloonExclusiveArtCatalog
   Outputs:
-  - RecipeId: recipe.food.roasted_shrimp
-    OutputId: item.roasted_shrimp
-    Name: Roasted shrimp
-    Category: Food
-    IngredientBrief: 1 Shrimp + 1 Pine branch -> 1
-    Kind: PreparedFood
-    DrinkKey: 
-    RequiredRecipeId: 
-    PrerequisiteBrief: 
-    Tier: 1
-    Yield: 1
-    HeartsPerServing: 2
-    FutureTierArtOnly: 0
-    Consumable: 1
-    Visual: {fileID: 4545852586312437033, guid: e86f93dc46dae504e9f916db39b91150, type: 3}
   - RecipeId: recipe.food.shrimp_pie
     OutputId: item.shrimp_pie
     Name: Shrimp pie
@@ -43,21 +28,6 @@ MonoBehaviour:
     FutureTierArtOnly: 0
     Consumable: 1
     Visual: {fileID: 598554920501394127, guid: b64f148d84116274b996a012d3524331, type: 3}
-  - RecipeId: recipe.food.roasted_crab
-    OutputId: item.roasted_crab
-    Name: Roasted crab
-    Category: Food
-    IngredientBrief: 1 Crab + 2 Birch branches -> 1
-    Kind: PreparedFood
-    DrinkKey: 
-    RequiredRecipeId: 
-    PrerequisiteBrief: 
-    Tier: 2
-    Yield: 1
-    HeartsPerServing: 3
-    FutureTierArtOnly: 0
-    Consumable: 1
-    Visual: {fileID: 1529605741565284207, guid: c62a8a0bcf9908549b833d5978b5bfdc, type: 3}
   - RecipeId: recipe.food.creamy_crab_soup
     OutputId: item.creamy_crab_soup
     Name: Creamy crab soup
@@ -88,21 +58,6 @@ MonoBehaviour:
     FutureTierArtOnly: 0
     Consumable: 1
     Visual: {fileID: 718124527377405962, guid: 7a3e2c375b4a68c4293ccd39a551eb22, type: 3}
-  - RecipeId: recipe.food.roasted_squid
-    OutputId: item.roasted_squid
-    Name: Roasted squid
-    Category: Food
-    IngredientBrief: 1 Squid + 3 Mesquite branches -> 1
-    Kind: PreparedFood
-    DrinkKey: 
-    RequiredRecipeId: 
-    PrerequisiteBrief: 
-    Tier: 3
-    Yield: 1
-    HeartsPerServing: 4
-    FutureTierArtOnly: 0
-    Consumable: 1
-    Visual: {fileID: 2764675813082396186, guid: e2ce6934f39af4e4d82651134a86ff6f, type: 3}
   - RecipeId: recipe.food.squid_rice_bowl
     OutputId: item.squid_rice_bowl
     Name: Squid rice bowl
@@ -133,21 +88,6 @@ MonoBehaviour:
     FutureTierArtOnly: 0
     Consumable: 1
     Visual: {fileID: 5904746652096499705, guid: ad0bce5261476144b8d4a03d9cc20588, type: 3}
-  - RecipeId: recipe.food.roasted_lobster
-    OutputId: item.roasted_lobster
-    Name: Roasted lobster
-    Category: Food
-    IngredientBrief: 1 Lobster + 1 Oak log + 2 Oak branches -> 1
-    Kind: PreparedFood
-    DrinkKey: 
-    RequiredRecipeId: 
-    PrerequisiteBrief: 
-    Tier: 4
-    Yield: 1
-    HeartsPerServing: 6
-    FutureTierArtOnly: 0
-    Consumable: 1
-    Visual: {fileID: 6429540043550238148, guid: 229fc3a910d6521438e0677b0d383a99, type: 3}
   - RecipeId: recipe.food.lobster_rice_bowl
     OutputId: item.lobster_rice_bowl
     Name: Lobster rice bowl
@@ -418,21 +358,6 @@ MonoBehaviour:
     FutureTierArtOnly: 1
     Consumable: 0
     Visual: {fileID: 9099511174253724718, guid: 6eb240b022797a7428702fba7fce2c52, type: 3}
-  - RecipeId: recipe.food.roasted_scallop
-    OutputId: item.roasted_scallop
-    Name: Roasted scallop
-    Category: Food
-    IngredientBrief: 1 Scallop + 1 Maple log + 2 Maple branches
-    Kind: PreparedFood
-    DrinkKey: 
-    RequiredRecipeId: 
-    PrerequisiteBrief: 
-    Tier: 5
-    Yield: 1
-    HeartsPerServing: 10
-    FutureTierArtOnly: 1
-    Consumable: 1
-    Visual: {fileID: 6208880869594700258, guid: dc6a1acb170d4ad4682f82a17690ddd3, type: 3}
   - RecipeId: recipe.food.scallop_rye_chowder
     OutputId: item.scallop_rye_chowder
     Name: Scallop rye chowder
@@ -508,21 +433,6 @@ MonoBehaviour:
     FutureTierArtOnly: 1
     Consumable: 1
     Visual: {fileID: 1313439907955575076, guid: bcd433a853693e242b46515eb38a9ba3, type: 3}
-  - RecipeId: recipe.food.roasted_mussel
-    OutputId: item.roasted_mussel
-    Name: Roasted mussel
-    Category: Food
-    IngredientBrief: 1 Mussel + 1 Cedar log + 2 Cedar branches
-    Kind: PreparedFood
-    DrinkKey: 
-    RequiredRecipeId: 
-    PrerequisiteBrief: 
-    Tier: 6
-    Yield: 1
-    HeartsPerServing: 10
-    FutureTierArtOnly: 1
-    Consumable: 1
-    Visual: {fileID: 908478506848312323, guid: 98700253bf0230f4b87e08a8b9e9145f, type: 3}
   - RecipeId: recipe.food.buffalo_amaranth_pot
     OutputId: item.buffalo_amaranth_pot
     Name: Buffalo amaranth pot
@@ -568,21 +478,6 @@ MonoBehaviour:
     FutureTierArtOnly: 1
     Consumable: 1
     Visual: {fileID: 7516160583565421481, guid: eb32767e8e25be34b87bfbcf76dbcb40, type: 3}
-  - RecipeId: recipe.food.roasted_octopus
-    OutputId: item.roasted_octopus
-    Name: Roasted octopus
-    Category: Food
-    IngredientBrief: 1 Octopus + 1 Redwood log + 2 Redwood branches
-    Kind: PreparedFood
-    DrinkKey: 
-    RequiredRecipeId: 
-    PrerequisiteBrief: 
-    Tier: 7
-    Yield: 1
-    HeartsPerServing: 10
-    FutureTierArtOnly: 1
-    Consumable: 1
-    Visual: {fileID: 3444613383837526494, guid: 1d7c697b4607f6642a2410e7ddb5b0b2, type: 3}
   - RecipeId: recipe.misc.bear_claw_lotus_charm
     OutputId: item.bear_claw_lotus_charm
     Name: Bear claw lotus charm
@@ -628,21 +523,6 @@ MonoBehaviour:
     FutureTierArtOnly: 1
     Consumable: 1
     Visual: {fileID: 4142079086504752095, guid: 09514d595a68d184aa09c7427a79c6c6, type: 3}
-  - RecipeId: recipe.food.roasted_oyster
-    OutputId: item.roasted_oyster
-    Name: Roasted oyster
-    Category: Food
-    IngredientBrief: 1 Oyster + 1 Ebony log + 2 Ebony branches
-    Kind: PreparedFood
-    DrinkKey: 
-    RequiredRecipeId: 
-    PrerequisiteBrief: 
-    Tier: 8
-    Yield: 1
-    HeartsPerServing: 10
-    FutureTierArtOnly: 1
-    Consumable: 1
-    Visual: {fileID: 3324249003181373902, guid: a040fb6246596d3428dcc38a7a5d17ce, type: 3}
   - RecipeId: recipe.barrel.apple_cider
     OutputId: item.apple_cider_barrel
     Name: Apple cider barrel
@@ -932,3 +812,123 @@ MonoBehaviour:
     FutureTierArtOnly: 0
     Consumable: 1
     Visual: {fileID: 134924829174080122, guid: b3cffc2369260ee44a91150b51da0cfc, type: 3}
+  - RecipeId: recipe.food.strawberry_glazed_shrimp_skewers
+    OutputId: item.strawberry_glazed_shrimp_skewers
+    Name: Strawberry-glazed shrimp skewers
+    Category: Food
+    IngredientBrief: 1 Shrimp + 1 Strawberries + 1 Rock salt -> 1
+    Kind: PreparedFood
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 1
+    Yield: 1
+    HeartsPerServing: 8
+    FutureTierArtOnly: 0
+    Consumable: 1
+    Visual: {fileID: 7068989253435400089, guid: 27896161306519142b76adcebd848cbc, type: 3}
+  - RecipeId: recipe.food.truffle_butter_crab
+    OutputId: item.truffle_butter_crab
+    Name: Truffle-butter crab
+    Category: Food
+    IngredientBrief: 1 Crab + 1 Truffle + 1 Cow butter -> 1
+    Kind: PreparedFood
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 2
+    Yield: 1
+    HeartsPerServing: 9
+    FutureTierArtOnly: 0
+    Consumable: 1
+    Visual: {fileID: 1490048472396743212, guid: b5f65e2cb3347f54aae2e022a5f13c7f, type: 3}
+  - RecipeId: recipe.food.crispy_mint_squid
+    OutputId: item.crispy_mint_squid
+    Name: Crispy mint squid
+    Category: Food
+    IngredientBrief: 1 Squid + 1 Sunflower oil + 1 Wild mint -> 1
+    Kind: PreparedFood
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 3
+    Yield: 1
+    HeartsPerServing: 10
+    FutureTierArtOnly: 0
+    Consumable: 1
+    Visual: {fileID: 1853339300036672178, guid: 9e195c947fa6c4545b0a0799b21ece3d, type: 3}
+  - RecipeId: recipe.food.coconut_chili_lobster
+    OutputId: item.coconut_chili_lobster
+    Name: Coconut-chili lobster
+    Category: Food
+    IngredientBrief: 1 Lobster + 1 Coconut + 1 Green chili -> 1
+    Kind: PreparedFood
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 4
+    Yield: 1
+    HeartsPerServing: 11
+    FutureTierArtOnly: 0
+    Consumable: 1
+    Visual: {fileID: 1881462260824946091, guid: 8f4d43f3b5ce05f43809ca2460d83099, type: 3}
+  - RecipeId: recipe.food.maple_glazed_scallops
+    OutputId: item.maple_glazed_scallops
+    Name: Maple-glazed scallops
+    Category: Food
+    IngredientBrief: 1 Scallop + 1 Maple syrup + 1 Cow butter
+    Kind: PreparedFood
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 5
+    Yield: 1
+    HeartsPerServing: 11
+    FutureTierArtOnly: 1
+    Consumable: 1
+    Visual: {fileID: 4532987255833363437, guid: 770b8ebdace3d8a4f85a1a3bc6c8949a, type: 3}
+  - RecipeId: recipe.food.mussels_thyme_cream
+    OutputId: item.mussels_thyme_cream
+    Name: Mussels in thyme cream
+    Category: Food
+    IngredientBrief: 2 Mussel + 1 Mountain thyme + 1 Cow cream
+    Kind: PreparedFood
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 6
+    Yield: 1
+    HeartsPerServing: 11
+    FutureTierArtOnly: 1
+    Consumable: 1
+    Visual: {fileID: 1702913639844477016, guid: e71ab383ea6d9fa4d8052a1573f0a99c, type: 3}
+  - RecipeId: recipe.food.saffron_sesame_octopus
+    OutputId: item.saffron_sesame_octopus
+    Name: Saffron sesame octopus
+    Category: Food
+    IngredientBrief: 1 Octopus + 1 Saffron + 1 Sesame oil
+    Kind: PreparedFood
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 7
+    Yield: 1
+    HeartsPerServing: 11
+    FutureTierArtOnly: 1
+    Consumable: 1
+    Visual: {fileID: 6402807752951869614, guid: db38036ce1a8e5f46b55977c3c763d69, type: 3}
+  - RecipeId: recipe.food.star_anise_butter_oysters
+    OutputId: item.star_anise_butter_oysters
+    Name: Oysters in star-anise butter
+    Category: Food
+    IngredientBrief: 1 Oyster + 1 Star anise + 1 Cow butter
+    Kind: PreparedFood
+    DrinkKey: 
+    RequiredRecipeId: 
+    PrerequisiteBrief: 
+    Tier: 8
+    Yield: 1
+    HeartsPerServing: 11
+    FutureTierArtOnly: 1
+    Consumable: 1
+    Visual: {fileID: 3291213621933697089, guid: b0e591ced143f084380f8e48b78464e6, type: 3}

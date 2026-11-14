@@ -237,21 +237,32 @@ def save(m):
 
 
 def main():
-    OUT.mkdir(parents=True,exist_ok=True); pal.write_png(OUT/'HousePalette.png')
+    from house_palette_extension import write_house_palette
+    OUT.mkdir(parents=True,exist_ok=True); write_house_palette(OUT/'HousePalette.png',pal)
+    # Later passive pet-home looks have their own selective generator/builder.
+    prior=json.loads((OUT/'HouseManifest.json').read_text(encoding='utf-8')) if (OUT/'HouseManifest.json').exists() else {}
     models=[]; houses=[]
     for original in LEVELS:
         s=dict(original); front,windows=exterior(s); inside,guides=interior(s,windows); furnishing,items=study(s)
+        # Final exteriors (redesign stage 3, generate_house_exteriors_final.py) replace the depth-growth fronts in place;
+        # the interiors keep the depth-growth openings (redesign rule: interiors are not rebuilt).
+        from generate_house_exteriors_final import FINAL_LEVELS, final_front
+        final_row=None
+        if s['Level'] in FINAL_LEVELS: front,final_row,_=final_front(s['Level'])
         for mesh in (front,inside,guides,furnishing):models.append(save(mesh))
         s.update(Front=front.name,Interior=inside.name,GridGuides=guides.name,FurnitureStudy=furnishing.name,
                  GridMetres=GRID_METRES,PlotWidth=PLOT_WIDTH,PlotDepth=PLOT_DEPTH,GridOrigin=[0,0,0],GridAxisX=[-GRID_METRES,0,0],
                  GridAxisDepth=[0,0,-GRID_METRES],DoorAnchor=[0,.34,.15],SelectAnchor=[0,1.4,.2],GroundAnchor=[0,0,0],
                  PetHomeAnchor=[4.45,0,.25],CollectionAnchor=[-4.4,0,.25],
                  HomeCameraAnchor=[0,max(2.4,s['Height']*.45),13],PetsUnlocked=s['Level']>=3,FurnitureSamples=items)
+        if final_row: s.update(final_row)
         houses.append(s)
     for mesh in attachments():models.append(save(mesh))
     manifest=dict(Revision=2,Growth='depth: one storey; rows are added toward the back of the house',Style='faceted',Scope='Art only. Furnishing studies are optional previews, never owned items.',
                   Coordinates='+Y up; +Z street-facing; +X is screen-left from the street camera; interior rows run toward -Z.',
                   Palette='HousePalette.png',Houses=houses,Models=models)
+    if 'PetHomes' in prior:manifest['PetHomes']=prior['PetHomes']
+    if 'ExteriorBlockouts' in prior:manifest['ExteriorBlockouts']=prior['ExteriorBlockouts']
     (OUT/'HouseManifest.json').write_text(json.dumps(manifest,indent=2)+'\n',encoding='utf-8')
     print('Generated 8 exterior/interior pairs, guides, optional furnishing studies and 2 pet-front attachments.')
 

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using TheTrailWalker.Domain.Inventory;
 using TheTrailWalker.Domain.Items;
+using TheTrailWalker.Domain.Settlement;
 
 namespace TheTrailWalker.Domain.Crafting
 {
@@ -11,6 +12,9 @@ namespace TheTrailWalker.Domain.Crafting
     // outputs and no batch. Nothing is spent when any check fails.
     public static class CraftingService
     {
+        // The profile variant every crafted output carries (the home sale bonus applies only to it).
+        public const string CraftedVariant = "crafted";
+
         public sealed class Outcome
         {
             public bool Success; public string Reason = "";
@@ -19,11 +23,11 @@ namespace TheTrailWalker.Domain.Crafting
             public int ToOverflow;
         }
 
-        public static Outcome Preview(SpatialInventory ledger, CraftingState state, RecipeDefinition recipe, int executions)
+        public static Outcome Preview(SpatialInventory ledger, CraftingState state, RecipeDefinition recipe, int executions, FurnitureBuffs buffs = default(FurnitureBuffs))
         {
             var outcome = new Outcome();
             if (recipe == null) { outcome.Reason = "Unknown recipe"; return outcome; }
-            outcome.Result = CraftStats.Compute(recipe, state.UnitsOf(recipe.Id), Math.Max(1, executions));
+            outcome.Result = CraftStats.Compute(recipe, state.UnitsOf(recipe.Id), Math.Max(1, executions), buffs.CraftQuality, buffs.DurabilityFor(recipe.Output));
             if (!state.Knows(recipe.Id)) { outcome.Reason = "Recipe not learned yet"; return outcome; }
             if (!CraftStats.BatchAllowed(recipe, executions)) { outcome.Reason = recipe.BulkAllowed ? "Choose x1, x10, x100 or x1000" : "Tools, clothing and backpacks are crafted one at a time"; return outcome; }
             foreach (RecipeInput input in recipe.Inputs)
@@ -33,9 +37,9 @@ namespace TheTrailWalker.Domain.Crafting
             return outcome;
         }
 
-        public static Outcome Craft(SpatialInventory ledger, CraftingState state, RecipeDefinition recipe, int executions, DateTime now, Func<string> newId)
+        public static Outcome Craft(SpatialInventory ledger, CraftingState state, RecipeDefinition recipe, int executions, DateTime now, Func<string> newId, FurnitureBuffs buffs = default(FurnitureBuffs))
         {
-            Outcome outcome = Preview(ledger, state, recipe, executions);
+            Outcome outcome = Preview(ledger, state, recipe, executions, buffs);
             if (!outcome.Success) return outcome;
             CraftResult result = outcome.Result;
             var needs = new List<KeyValuePair<string, long>>();
@@ -44,7 +48,7 @@ namespace TheTrailWalker.Domain.Crafting
 
             bool timed = result.Seconds > 0;
             ItemDefinition output = recipe.Output;
-            var profile = new ItemProfile(result.UnitValue, result.MaxDurability, result.MaxDurability);
+            var profile = new ItemProfile(result.UnitValue, result.MaxDurability, result.MaxDurability, CraftedVariant);
             CraftBatch batch = timed ? state.Add(recipe, result, now, newId()) : null;
             // Level up at the moment of crafting (user, November 2, 2026): the next craft of this recipe, even while this
             // batch is still on its timer, already uses the new mastery level and its bonus stats.

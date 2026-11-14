@@ -47,6 +47,8 @@ namespace TheTrailWalker.Persistence
         public TheTrailWalker.Domain.Economy.TradeSessionData trade;
         // Settlement shell (November 8, 2026, optional): the discovered settlement, the player's plot and the neighbours. Older saves have none.
         public SavedSettlement settlement;
+        // First home (November 13, 2026, optional): house level, furniture pieces and first purchases. Older saves have none.
+        public SavedHome home;
         public List<TheTrailWalker.Domain.Economy.TradeRecord> tradeLog = new List<TheTrailWalker.Domain.Economy.TradeRecord>();
     }
     [Serializable] public sealed class SavedSettlement
@@ -58,6 +60,17 @@ namespace TheTrailWalker.Persistence
         public List<SavedNeighbour> neighbours = new List<SavedNeighbour>();
         public List<string> countedRegions = new List<string>();
     }
+    [Serializable] public sealed class SavedHome
+    {
+        // 0 marks "no home block" (older saves), as for the settlement; saves write 1.
+        public int block;
+        public int level = 1;
+        public List<SavedPiece> pieces = new List<SavedPiece>();
+        public List<string> firstPurchases = new List<string>();
+        // Slice 2b (optional): the house's upgrade escrow entry ids in deposit order; JsonUtility gives an empty list when absent.
+        public List<string> upgradeEscrow = new List<string>();
+    }
+    [Serializable] public sealed class SavedPiece { public string id, definition; public bool placed; public int x, z; public int rotation; }
     [Serializable] public sealed class SavedNeighbour { public int plot, level, countdown; }
     [Serializable] public sealed class SavedCount { public string key; public long value; }
     [Serializable] public sealed class SavedStatistics
@@ -342,6 +355,7 @@ namespace TheTrailWalker.Persistence
                 catch (ArgumentException e) { throw new InvalidDataException("Invalid mission progress: " + e.Message); }
             }
             if (data.settlement != null && data.settlement.block != 0) RestoreSettlement(data, 0);
+            TheTrailWalker.Domain.Settlement.HomeState savedHome = data.home != null && data.home.block != 0 ? RestoreHome(data) : null;
             var movement = new MovementState(); movement.Restore(data.distance, data.requestedSpeed, data.speedCap, data.inventoryResume, data.inventoryOpen, data.postHarvest, data.camp);
             // The camp flag belongs to the saved leg too; an unseated schema-3 walk is reset on restart, so only check it otherwise.
             if (data.camp != (data.distance >= pathLength) && pathLength != float.MaxValue && !WalkOnSavedLeg(data)) throw new InvalidDataException("Invalid camp position");
@@ -410,6 +424,14 @@ namespace TheTrailWalker.Persistence
             }
             foreach (var record in wornRecords)
                 if (!record.Key.StartsWith("debug-", StringComparison.Ordinal) && !wornItems.Contains(record.Key)) throw new InvalidDataException("Worn item is missing from inventory ledger");
+            // Slice 2b: every house escrow id names an Escrow item in this save that no trade listing also names.
+            if (savedHome != null)
+            {
+                var tradeEscrow = new List<string>();
+                if (data.trade?.listings != null) foreach (var listing in data.trade.listings) if (listing != null && !string.IsNullOrEmpty(listing.escrowId)) tradeEscrow.Add(listing.escrowId);
+                try { TheTrailWalker.Domain.Settlement.HouseUpgradeService.CheckStructure(savedHome.UpgradeEscrow, inventory.Entries, tradeEscrow); }
+                catch (ArgumentException error) { throw new InvalidDataException("Invalid house deposits: " + error.Message); }
+            }
         }
 
         // Economy 0 -> 1 (Milestone 9): unit values become minor units (1/100 cash). Levelled crafts keep their snapshot (x100);
@@ -447,6 +469,22 @@ namespace TheTrailWalker.Persistence
         {
             var saved = new SavedSettlement { block = 1, discovered = s.Discovered, plotIndex = s.PlotIndex, seed = s.Seed, countedRegions = new List<string>(s.CountedRegions) };
             foreach (var n in s.Neighbours) saved.neighbours.Add(new SavedNeighbour { plot = n.Plot, level = n.Level, countdown = n.Countdown });
+            return saved;
+        }
+
+        // A missing block (older save) is a new level-1 home.
+        public static TheTrailWalker.Domain.Settlement.HomeState RestoreHome(SessionSnapshot data)
+        {
+            SavedHome saved = data?.home;
+            if (saved == null || saved.block == 0) return TheTrailWalker.Domain.Settlement.HomeState.New();
+            if (saved.pieces == null || saved.firstPurchases == null || saved.pieces.Exists(p => p == null)) throw new InvalidDataException("Invalid home block");
+            try { return TheTrailWalker.Domain.Settlement.HomeState.Restore(saved.level, saved.pieces.ConvertAll(p => (p.id, p.definition, p.placed, p.x, p.z, p.rotation)), saved.firstPurchases, saved.upgradeEscrow); }
+            catch (ArgumentException error) { throw new InvalidDataException("Invalid home block: " + error.Message); }
+        }
+        public static SavedHome SaveHome(TheTrailWalker.Domain.Settlement.HomeState h)
+        {
+            var saved = new SavedHome { block = 1, level = h.Level, firstPurchases = new List<string>(h.FirstPurchases), upgradeEscrow = new List<string>(h.UpgradeEscrow) };
+            foreach (var p in h.Pieces) saved.pieces.Add(new SavedPiece { id = p.InstanceId, definition = p.DefinitionId, placed = p.Placed, x = p.X, z = p.Z, rotation = p.Rotation });
             return saved;
         }
 

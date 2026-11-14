@@ -58,6 +58,7 @@ namespace TheTrailWalker.Domain.Items
             new ItemDefinition("ingredient.mixed_milk_cheese", "Mixed-milk cheese", 900, 401, category: ItemCategory.RefinedIngredient),
             new ItemDefinition("ingredient.cow_yogurt", "Cow yogurt", 485, 520, /* apple-sized, user override */ category: ItemCategory.RefinedIngredient),
             new ItemDefinition("item.roasted_shrimp", "Roasted shrimp", 900, 507, foodHearts: 8, preparedFood: true),
+            new ItemDefinition("item.strawberry_glazed_shrimp_skewers", "Strawberry-glazed shrimp skewers", 900, 501, foodHearts: 8, preparedFood: true),
             new ItemDefinition("item.shrimp_pie", "Shrimp pie", 900, 452, foodHearts: 10, preparedFood: true),
             new ItemDefinition("item.apple_oat_compote", "Apple-oat compote", 900, 456, foodHearts: 10, preparedFood: true),
             new ItemDefinition("item.red_berry_oat_porridge", "Red-berry oat porridge", 900, 456, foodHearts: 10, preparedFood: true),
@@ -138,6 +139,7 @@ namespace TheTrailWalker.Domain.Items
                 case "ingredient.cow_yogurt": return "Tier01/Crafted/CowYogurt";
                 case "item.toasted_pine_nuts": return "Tier01/Crafted/ToastedPineNuts";
                 case "item.roasted_shrimp": return "BalloonExclusive/Items/RoastedShrimp";
+                case "item.strawberry_glazed_shrimp_skewers": return "BalloonExclusive/Items/StrawberryGlazedShrimpSkewers";
                 case "item.shrimp_pie": return "BalloonExclusive/Items/ShrimpPie";
                 case "item.apple_oat_compote": return "BalloonExclusive/Items/AppleOatCompote";
                 case "item.red_berry_oat_porridge": return "BalloonExclusive/Items/RedBerryOatPorridge";
