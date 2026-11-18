@@ -70,13 +70,24 @@ namespace TheTrailWalker.Domain.Crafting
         }
 
         // Finished batches: outputs become ready (wherever they are) and the batch closes (mastery was counted at craft start).
-        public static List<CraftBatch> Finish(SpatialInventory ledger, CraftingState state, DateTime now)
+        public static List<CraftBatch> Finish(SpatialInventory ledger, CraftingState state, DateTime now) => Finish(ledger, state, now, null);
+
+        // Outputs that were moved into a chest or onto a rack keep counting down and are marked ready in place.
+        public static List<CraftBatch> Finish(SpatialInventory ledger, CraftingState state, DateTime now, HomeStorage storage)
         {
             List<CraftBatch> ready = state.CompleteReady(now);
             foreach (CraftBatch batch in ready)
             {
                 foreach (ItemEntry item in ledger.Entries)
                     if (batch.ItemIds.Contains(item.Id)) ledger.MarkReady(item);
+                if (storage != null)
+                    foreach (string pieceId in storage.PieceIds)
+                    {
+                        SpatialInventory chest = storage.Chest(pieceId);
+                        if (chest != null) { foreach (ItemEntry item in chest.Entries) if (batch.ItemIds.Contains(item.Id)) chest.MarkReady(item); continue; }
+                        ToolRack rack = storage.Rack(pieceId);
+                        if (rack != null) foreach (ItemEntry item in rack.Entries) if (batch.ItemIds.Contains(item.Id)) rack.MarkReady(item);
+                    }
                 state.Remove(batch);
             }
             return ready;

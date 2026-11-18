@@ -40,12 +40,20 @@ namespace TheTrailWalker.Editor
             UpgradeEscrowChecks();
             UpgradeSheetChecks();
             UpgradeCompletionChecks();
+            ContainerChecks();
+            ContainerCapChecks();
+            ContainerGuardChecks();
+            ContainerCraftChecks();
+            ContainerSaveChecks();
+            ToolRackChecks();
+            ContainerViewChecks();
+            HouseJumpChecks();
             Directory.CreateDirectory("Builds/Validation"); File.WriteAllLines("Builds/Validation/Home-checks.txt", passed);
         }
 
         private static void CatalogChecks()
         {
-            var all = FurnitureCatalog.All;
+            var all = FurnitureCatalog.All.Where(d => !d.IsExtra).ToList();   // the 48 buff types; extras (the tool rack) are counted in ToolRackChecks
             Check(all.Count == 48, "The catalog holds 48 furniture types");
             Check(Enumerable.Range(1, 8).All(l => all.Count(d => d.HouseLevel == l) == 6), "Six furniture types per house level 1-8");
             Check(Enum.GetValues(typeof(BuffCategory)).Cast<BuffCategory>().All(c => all.Count(d => d.Category == c) == 4) && Enum.GetValues(typeof(BuffCategory)).Length == 12, "Four types per category across twelve categories");
@@ -55,14 +63,14 @@ namespace TheTrailWalker.Editor
             Check(all.Where(d => d.Category == BuffCategory.CraftQuality && d.Id != "furniture.l7.master_loom").All(d => d.Strength == 1), "Every other craft quality type has strength 1");
             Check(all.Where(d => d.Category != BuffCategory.CraftQuality).All(d => d.Strength == 1), "Every non-quality type has strength 1");
             Check(Throws(() => FurnitureCatalog.Find("furniture.nope")), "An unknown furniture id is refused");
-            foreach (FurnitureDefinition d in all)
+            foreach (FurnitureDefinition d in FurnitureCatalog.All)
             {
                 var prefab = Resources.Load<GameObject>("Settlement/Furniture/" + d.Asset);
                 Check(prefab != null, d.Id + " prefab loads");
                 var meta = prefab.GetComponent<FurnitureArtMetadata>();
-                Check(meta != null && meta.FurnitureId == d.Id && meta.HouseLevel == d.HouseLevel && meta.PriceCash == d.PriceCash && meta.Footprint == new Vector2Int(d.Width, d.Depth) && meta.IsChest == d.IsChest && meta.BuffCategory == d.Category.ToString(), d.Id + " prefab metadata matches the catalog");
+                Check(meta != null && meta.FurnitureId == d.Id && meta.HouseLevel == d.HouseLevel && meta.PriceCash == d.PriceCash && meta.Footprint == new Vector2Int(d.Width, d.Depth) && meta.IsChest == d.IsChest && meta.IsRack == d.IsRack && meta.BuffCategory == d.Category.ToString(), d.Id + " prefab metadata matches the catalog");
             }
-            Check(FurnitureCatalog.UnlockedAt(1).Count() == 6 && FurnitureCatalog.UnlockedAt(2).Count() == 12, "House level 1 unlocks six types and level 2 unlocks twelve");
+            Check(FurnitureCatalog.UnlockedAt(1).Count(d => !d.IsExtra) == 6 && FurnitureCatalog.UnlockedAt(2).Count(d => !d.IsExtra) == 12, "House level 1 unlocks six types and level 2 unlocks twelve (not counting the tool rack)");
         }
 
         private static FurnitureDefinition F(string id) { return FurnitureCatalog.Find(id); }
@@ -90,7 +98,7 @@ namespace TheTrailWalker.Editor
 
             {
                 var h = HomeState.New(); var wallet = new Wallet(1000000); int k = 0;
-                var list = FurnitureCatalog.UnlockedAt(1).Select(t => h.Buy(t, wallet, "p" + k++)).ToList();
+                var list = FurnitureCatalog.UnlockedAt(1).Where(d => !d.IsExtra).Select(t => h.Buy(t, wallet, "p" + k++)).ToList();
                 Check(list.Count == 6 && list.All(p => p.Placed), "All six level-1 types fit the 8x5 room");
             }
             for (int level = 1; level <= 8; level++)
@@ -428,7 +436,7 @@ namespace TheTrailWalker.Editor
         // the scroll rule and the interior HUD's names and notes.
         private static void InteriorChecks()
         {
-            Check(CollectionPrototype.HomeChestNote == "Chests open in a later update.", "A short tap on a chest shows \"Chests open in a later update.\"");
+            Check(typeof(CollectionPrototype).GetField("HomeChestNote") == null, "The chest later-update note is gone: a tap on a chest or rack opens it");
             Check(Mathf.Approximately(CollectionPrototype.HomeHoldSeconds, 0.4f), "A hold of 0.4 s on a piece enters the bird's-eye view");
             // Home revision 3 framing (user, November 14): a closer, steeper camera fitted at runtime; rooms scroll only when the
             // back wall's top would leave the screen. Synthetic rooms here; the eight real ones are measured in EntryChecks.
@@ -585,7 +593,7 @@ namespace TheTrailWalker.Editor
             Check(P(mid, "a").X == 3 && P(mid, "a").Z == 0 && P(mid, "a").Placed, "A snapshot taken while a piece is selected restores the piece at its committed cell");
             string[] savedFields = typeof(SavedPiece).GetFields().Select(f => f.Name).OrderBy(n => n).ToArray();
             string[] homeFields = typeof(SavedHome).GetFields().Select(f => f.Name).OrderBy(n => n).ToArray();
-            Check(savedFields.SequenceEqual(new[] { "definition", "id", "placed", "rotation", "x", "z" }) && homeFields.SequenceEqual(new[] { "block", "firstPurchases", "level", "pieces", "upgradeEscrow" }), "The save has no dragging or selection state");
+            Check(savedFields.SequenceEqual(new[] { "definition", "id", "placed", "rotation", "x", "z" }) && homeFields.SequenceEqual(new[] { "block", "containers", "firstPurchases", "level", "pieces", "upgradeEscrow" }), "The save has no dragging or selection state");
 
             Check(CollectionPrototype.StoreSelectedPiece(home, "a") == null && !P(home, "a").Placed, "Store piece on the selected piece moves it to storage and deselects");
             Check(!P(SessionSaveStore.RestoreHome(Snap(SessionSaveStore.SaveHome(home))), "a").Placed, "The stored piece stays stored after a save");
@@ -624,7 +632,7 @@ namespace TheTrailWalker.Editor
                 { BuffCategory.CraftQuality, "Helps craft finer goods" }, { BuffCategory.FoodRecovery, "Meals restore more" }, { BuffCategory.SalePrice, "Crafted goods sell for more" },
                 { BuffCategory.BootsLife, "New boots last longer" }, { BuffCategory.ShirtLife, "New shirts last longer" }, { BuffCategory.HatLife, "New hats last longer" },
                 { BuffCategory.PantsLife, "New trousers last longer" }, { BuffCategory.AxeLife, "New axes last longer" }, { BuffCategory.HuntingToolLife, "New hunting tools last longer" },
-                { BuffCategory.RodLife, "New rods last longer" }, { BuffCategory.BackpackLife, "New backpacks last longer" }, { BuffCategory.Storage, "Holds items (opens later)" },
+                { BuffCategory.RodLife, "New rods last longer" }, { BuffCategory.BackpackLife, "New backpacks last longer" }, { BuffCategory.Storage, "Holds your items" },
             };
             var categories = Enum.GetValues(typeof(BuffCategory)).Cast<BuffCategory>().ToList();
             Check(categories.All(c => CollectionPrototype.PurposeLine(c) == purposes[c]), "Every category has its verbatim purpose line");
@@ -632,10 +640,10 @@ namespace TheTrailWalker.Editor
                 "No purpose line contains a digit or a percent sign");
 
             var levelOne = CollectionPrototype.StoreRows(1).ToList();
-            Check(levelOne.Select(d => d.Id).SequenceEqual(FurnitureCatalog.All.Where(d => d.HouseLevel == 1).Select(d => d.Id)), "The level-1 store lists exactly the six level-1 types");
+            Check(levelOne.Select(d => d.Id).SequenceEqual(FurnitureCatalog.All.Where(d => d.HouseLevel == 1).Select(d => d.Id)) && levelOne.Count == 7, "The level-1 store lists exactly the six level-1 types and the tool rack");
             Check(levelOne.All(d => Resources.Load<Sprite>(CollectionPrototype.StoreIconPath(d)) != null), "Every level-1 store icon loads as a Sprite");
             Check(FurnitureCatalog.All.All(d => Resources.Load<Sprite>(CollectionPrototype.StoreIconPath(d)) != null), "Every furniture icon loads as a Sprite");
-            Check(CollectionPrototype.StoreRows(2).Count() == 12 && CollectionPrototype.StoreRows(8).Count() == 48, "Level 2 lists twelve types and level 8 all 48");
+            Check(CollectionPrototype.StoreRows(2).Count() == 13 && CollectionPrototype.StoreRows(8).Count() == 49, "Level 2 lists twelve types and the rack, and level 8 all 48 and the rack");
             var table = F("furniture.l1.worktable");
             Check(CollectionPrototype.StorePriceLabel(table) == "3,000 cash" && CollectionPrototype.StoreBuyPrompt(table) == "Buy Worktable for 3,000 cash?", "A row shows \"3,000 cash\" and the confirmation reads \"Buy Worktable for 3,000 cash?\"");
             Check(CollectionPrototype.StoreNoSpaceNote == "No space; it's in house storage." && CollectionPrototype.StorageNoSpaceNote == "No space for this piece", "The no-space notes read verbatim");
@@ -678,7 +686,7 @@ namespace TheTrailWalker.Editor
             // Store menu (home revision, Task 5): the Furniture catalog groups every type by house level, all eight levels
             // listed, those above the house level locked; the catalog never offers a buy the domain refuses.
             var one = CollectionPrototype.CatalogGroups(1).ToList();
-            Check(one.Count == 8 && one.Select(g => g.level).SequenceEqual(Enumerable.Range(1, 8)) && one.All(g => g.types.Count == 6 && g.types.All(t => t.HouseLevel == g.level)),
+            Check(one.Count == 8 && one.Select(g => g.level).SequenceEqual(Enumerable.Range(1, 8)) && one.All(g => g.types.Count(t => !t.IsExtra) == 6 && g.types.All(t => t.HouseLevel == g.level)),
                 "The catalog lists eight level groups, 1 to 8 in order, six types each");
             Check(!one[0].locked && one.Skip(1).All(g => g.locked), "At house level 1 group 1 is buyable and groups 2-8 are locked");
             var three = CollectionPrototype.CatalogGroups(3).ToList();
@@ -1000,6 +1008,587 @@ namespace TheTrailWalker.Editor
         private static bool StructureRefused(IReadOnlyList<string> ids, IEnumerable<ItemEntry> entries, IEnumerable<string> trade)
         {
             try { HouseUpgradeService.CheckStructure(ids, entries, trade); return false; } catch (ArgumentException) { return true; }
+        }
+
+        // ---------------------------------------------------------------- Milestone 11: containers and atomic transfer
+        private static ItemEntry Mk(SpatialInventory l, string id, ItemDefinition d, int quantity, int quality, ItemOwner owner, int x = 0, int y = 0, bool ready = true)
+        {
+            bool unique = d.GearSlot.HasValue || !d.Stackable;
+            ItemEntry e = l.AddWorld(id, d, quantity, quality, new ItemProfile(100 * quality, unique ? 50 : 0, unique ? 40 : 0), ready);
+            if (owner != ItemOwner.World && !l.RestoreStored(e, owner, x, y)) throw new InvalidOperationException("Test fixture: " + id);
+            return e;
+        }
+        private static SpatialInventory ContainerBag()
+        {
+            var l = new SpatialInventory(8000, 4000);
+            if (!l.Reconfigure(8000, 4000, 2, 2, out _)) throw new InvalidOperationException("Test fixture: bag");
+            return l;
+        }
+        private static SpatialInventory ContainerChest(HomeStorage storage, string pieceId, int widthUnits, int heightUnits)
+        {
+            var c = new SpatialInventory(widthUnits * 1000, heightUnits * 1000); storage.AddChest(pieceId, c); return c;
+        }
+        private static string Snap(SpatialInventory l)
+        {
+            return string.Join("|", l.Entries.OrderBy(e => e.Id, StringComparer.Ordinal).Select(e => e.Id + ":" + e.Owner + ":" + e.X + ":" + e.Y + ":" + e.Ready + ":" + e.Quantity + ":"
+                + string.Join(",", e.Pile.Select(p => p.Quality + "x" + p.Quantity + "@" + p.Profile.UnitValue + "/" + p.Profile.MaxDurability + "/" + p.Profile.Durability))));
+        }
+
+        private static void ContainerChecks()
+        {
+            string reason;
+            var storage = new HomeStorage();
+
+            // Round trip: a stack and an axe go to a chest and back; the bag is unchanged.
+            ItemDefinition branch = PrototypeItems.Branch, axeDef = PrototypeItems.Tool;
+            var bag = ContainerBag(); var chest = ContainerChest(storage, "rt", 6, 6);
+            Mk(bag, "s1", branch, 300, 1, ItemOwner.Backpack, 0, 0);
+            ItemEntry log = Mk(bag, "s2", PrototypeItems.Log, 200, 2, ItemOwner.Backpack, 3000, 0);
+            Mk(bag, "s3", PrototypeItems.Stone, 50, 3, ItemOwner.Backpack, 6000, 0);
+            ItemEntry axe = Mk(bag, "ax", axeDef, 1, 2, ItemOwner.Backpack, 0, 2000);
+            string bagBefore = Snap(bag);
+            Check(bag.Reserve(axe, 1) && bag.Reserve(log, 1), "Container setup: both items held");
+            int bagRev = bag.Revision, chestRev = chest.Revision;
+            Check(bag.TryTransfer(axe, 1, chest, ItemOwner.Backpack, 2000, 0, false, out reason) && bag.TryTransfer(log, 1, chest, ItemOwner.Backpack, 0, 3000, true, out reason), "An axe and a stack move into a chest");
+            Check(bag.Revision > bagRev && chest.Revision > chestRev, "Both ledgers' revisions advance on a transfer");
+            Check(!bag.ContainsId("ax") && !bag.ContainsId("s2") && chest.ContainsId("ax") && chest.ContainsId("s2") && bag.ContainsId("s1") && !chest.ContainsId("s1"), "ContainsId follows each item into the chest");
+            Check(!bag.ReservedBy(axe, 1) && axe.Owner == ItemOwner.Backpack && axe.X == 2000 && axe.Y == 0, "The moved axe leaves the bag's reservations and sits in the chest");
+            Check(chest.Reserve(axe, 2) && chest.Reserve(log, 2), "Container setup: held in the chest");
+            Check(chest.TryTransfer(axe, 2, bag, ItemOwner.Backpack, 0, 2000, false, out reason) && chest.TryTransfer(log, 2, bag, ItemOwner.Backpack, 3000, 0, true, out reason), "The axe and the stack move back");
+            Check(Snap(bag) == bagBefore, "The bag's ids, quantities, piles and profiles are identical after the round trip");
+            Check(bag.ContainsId("ax") && bag.ContainsId("s2") && !chest.ContainsId("ax") && !chest.ContainsId("s2") && chest.Entries.Count == 0, "ContainsId follows each item back and the chest is empty");
+
+            // Merge.
+            var mergeBag = ContainerBag(); var mergeChest = ContainerChest(storage, "mg", 6, 6);
+            ItemEntry partner = Mk(mergeChest, "cp", branch, 700, 2, ItemOwner.Backpack, 0, 0);
+            ItemEntry full = Mk(mergeBag, "bf", branch, 1000, 3, ItemOwner.Backpack, 0, 0);
+            mergeBag.Reserve(full, 1);
+            Check(mergeBag.TryTransfer(full, 1, mergeChest, ItemOwner.Backpack, 0, 0, true, out reason) && partner.Quantity == 1000 && full.Quantity == 700 && full.Owner == ItemOwner.Backpack, "Merging onto a 700 stack moves 300 and the bag keeps 700");
+            Check(partner.Pile.Sum(p => p.Quantity) == 1000 && partner.Pile.Count == 2, "The merged chest stack keeps its portions by quality");
+            ItemEntry partial = Mk(mergeBag, "bp", branch, 200, 1, ItemOwner.Backpack, 0, 3000);
+            ItemEntry nine = Mk(mergeChest, "c9", branch, 900, 1, ItemOwner.Backpack, 0, 3000);
+            mergeBag.Reserve(partial, 1);
+            Check(mergeBag.TryTransfer(partial, 1, mergeChest, ItemOwner.Backpack, 0, 3000, true, out reason) && nine.Quantity == 1000 && partial.Quantity == 100 && partial.Owner == ItemOwner.Backpack, "A 200 stack onto a 900 stack moves 100 and 100 stay");
+            ItemEntry gone = Mk(mergeBag, "bg", branch, 50, 1, ItemOwner.Backpack, 4000, 3000);
+            ItemEntry room = Mk(mergeChest, "cr", branch, 100, 1, ItemOwner.Backpack, 4000, 3000);
+            mergeBag.Reserve(gone, 1);
+            Check(mergeBag.TryTransfer(gone, 1, mergeChest, ItemOwner.Backpack, 4000, 3000, true, out reason) && room.Quantity == 150 && gone.Owner == ItemOwner.Consumed && !mergeBag.ContainsId("bg"), "A stack that merges completely becomes Consumed");
+
+            // Not-ready stacks transfer but never merge, and the chest can mark them ready.
+            var nrBag = ContainerBag(); var nrChest = ContainerChest(storage, "nr", 6, 6);
+            ItemEntry ready = Mk(nrChest, "rd", branch, 100, 1, ItemOwner.Backpack, 0, 0);
+            ItemEntry pending = Mk(nrBag, "pd", branch, 50, 1, ItemOwner.Backpack, 0, 0, false);
+            nrBag.Reserve(pending, 1);
+            Check(nrBag.TryTransfer(pending, 1, nrChest, ItemOwner.Backpack, ready.Width, 0, true, out reason) && ready.Quantity == 100 && pending.Quantity == 50 && nrChest.ContainsId("pd") && !pending.Ready, "A not-ready stack enters the chest without merging");
+            Check(nrChest.MarkReady(pending) && pending.Ready && !nrChest.MarkReady(pending), "The chest marks a stored craft ready");
+
+            // Merge growth in a chest: a partner that cannot grow in place relocates, tops up partially, or refuses with the chest wording.
+            var growBag = ContainerBag(); var growChest = ContainerChest(storage, "gr", 6, 6);
+            ItemEntry grower = Mk(growChest, "g1", branch, 100, 1, ItemOwner.Backpack, 0, 0);
+            Mk(growChest, "gblock", axeDef, 1, 1, ItemOwner.Backpack, grower.Width + 28, 0);
+            ItemEntry feed = Mk(growBag, "gf", branch, 300, 1, ItemOwner.Backpack, 0, 0); growBag.Reserve(feed, 1);
+            Check(growBag.TryTransfer(feed, 1, growChest, ItemOwner.Backpack, 0, 0, true, out reason) && grower.Quantity == 400 && feed.Owner == ItemOwner.Consumed && (grower.X != 0 || grower.Y != 0), "A chest stack that cannot grow in place is relocated to free space");
+            int probe = Mk(new SpatialInventory(8000, 4000), "probe", branch, 100, 1, ItemOwner.World).Width;
+            var narrow = new SpatialInventory(probe + 8, 300); storage.AddChest("narrow", narrow);
+            ItemEntry slim = Mk(narrow, "n1", branch, 100, 1, ItemOwner.Backpack, 0, 0);
+            ItemEntry rich = Mk(growBag, "gr2", branch, 900, 1, ItemOwner.Backpack, 0, 2000); growBag.Reserve(rich, 1);
+            Check(growBag.TryTransfer(rich, 1, narrow, ItemOwner.Backpack, 0, 0, true, out reason) && slim.Quantity > 100 && slim.Quantity < 1000 && rich.Quantity > 0 && rich.Quantity + slim.Quantity == 1000 && rich.Owner == ItemOwner.Backpack, "A chest stack that can only grow a little is topped up partially and the rest stays");
+            var snug = new SpatialInventory(probe, 300); storage.AddChest("snug", snug);
+            ItemEntry packed = Mk(snug, "sn1", branch, 100, 1, ItemOwner.Backpack, 0, 0);
+            ItemEntry more = Mk(growBag, "gr3", branch, 50, 1, ItemOwner.Backpack, 0, 3000); growBag.Reserve(more, 1);
+            string gb = Snap(growBag), gs = Snap(snug);
+            Check(!growBag.TryTransfer(more, 1, snug, ItemOwner.Backpack, 0, 0, true, out reason) && reason == "No space in the chest" && Snap(growBag) == gb && Snap(snug) == gs && packed.Quantity == 100, "A chest stack that cannot grow at all refuses with the chest wording and nothing changes");
+
+            // Refusals change nothing.
+            var smallStorage = new HomeStorage(); var tiny = ContainerChest(smallStorage, "tiny", 2, 2);
+            Mk(tiny, "t1", PrototypeItems.Stone, 1000, 1, ItemOwner.Backpack, 0, 0);
+            var rBag = ContainerBag();
+            ItemEntry bigStack = Mk(rBag, "bs", PrototypeItems.Stone, 1000, 1, ItemOwner.Backpack, 0, 0);
+            rBag.Reserve(bigStack, 1);
+            string b0 = Snap(rBag), c0 = Snap(tiny);
+            Check(!rBag.TryTransfer(bigStack, 1, tiny, ItemOwner.Backpack, 0, 0, true, out reason) && reason == "No space in the chest" && Snap(rBag) == b0 && Snap(tiny) == c0, "A full chest refuses a large stack with the chest wording");
+            ItemEntry hat = Mk(rBag, "hat", PrototypeItems.TestHat, 1, 1, ItemOwner.Backpack, 3000, 0);
+            Check(rBag.Reserve(hat, 5) && rBag.TryWear(hat, 5, out _), "Refusal setup: a worn hat");
+            ItemEntry over = Mk(rBag, "ov", branch, 10, 1, ItemOwner.Overflow);
+            ItemEntry esc = Mk(rBag, "es", branch, 10, 1, ItemOwner.Escrow);
+            ItemEntry world = rBag.AddWorld("wo", branch, 10, 1, new ItemProfile(100), true);
+            ItemEntry loose = Mk(rBag, "lo", branch, 10, 1, ItemOwner.Backpack, 5000, 0);
+            ItemEntry self = Mk(rBag, "sf", branch, 10, 1, ItemOwner.Backpack, 5000, 2000);
+            var roomy = ContainerChest(smallStorage, "roomy", 6, 6);
+            Check(rBag.Reserve(over, 1) && rBag.Reserve(esc, 1) && rBag.Reserve(world, 1) && rBag.Reserve(self, 1), "Refusal setup: held ineligible items");
+            b0 = Snap(rBag); c0 = Snap(roomy);
+            Check(!rBag.TryTransfer(hat, 5, roomy, ItemOwner.Backpack, 0, 0, false, out _) && !rBag.TryTransfer(over, 1, roomy, ItemOwner.Backpack, 0, 0, false, out _)
+                && !rBag.TryTransfer(esc, 1, roomy, ItemOwner.Backpack, 0, 0, false, out _) && !rBag.TryTransfer(world, 1, roomy, ItemOwner.Backpack, 0, 0, false, out _), "Worn, overflow, escrow and world items are refused");
+            Check(!rBag.TryTransfer(loose, 1, roomy, ItemOwner.Backpack, 0, 0, false, out _), "An unreserved item is refused");
+            Check(!rBag.TryTransfer(self, 1, rBag, ItemOwner.Backpack, 100, 100, false, out _), "A transfer onto the same ledger is refused");
+            Check(Snap(rBag) == b0 && Snap(roomy) == c0 && hat.Owner == ItemOwner.Worn, "Every refusal changed nothing");
+
+            // Chest to hook and pocket.
+            var hBag = ContainerBag(); var hChest = ContainerChest(storage, "hk", 6, 6);
+            ItemEntry a1 = Mk(hChest, "a1", axeDef, 1, 1, ItemOwner.Backpack, 0, 0), a2 = Mk(hChest, "a2", axeDef, 1, 1, ItemOwner.Backpack, 1000, 0);
+            ItemEntry cs = Mk(hChest, "cs", PrototypeItems.Berries, 20, 1, ItemOwner.Backpack, 2000, 0);
+            hChest.Reserve(a1, 1); hChest.Reserve(a2, 1); hChest.Reserve(cs, 1);
+            Check(hChest.TryTransfer(a1, 1, hBag, ItemOwner.Hook, 0, 0, false, out _) && a1.Owner == ItemOwner.Hook && a1.X == 0 && hBag.ContainsId("a1") && !hChest.ContainsId("a1"), "An axe goes from the chest to a free hook");
+            string hb = Snap(hBag), hc = Snap(hChest);
+            Check(!hChest.TryTransfer(a2, 1, hBag, ItemOwner.Hook, 0, 0, false, out reason) && reason == "Slot is occupied" && Snap(hBag) == hb && Snap(hChest) == hc, "A taken hook refuses the second axe");
+            Check(!hChest.TryTransfer(cs, 1, hBag, ItemOwner.Hook, 1, 0, false, out _) && !hChest.TryTransfer(a2, 1, hBag, ItemOwner.Pocket, 0, 0, false, out _) && !hChest.TryTransfer(a2, 1, hBag, ItemOwner.Hook, 2, 0, false, out _) && Snap(hBag) == hb && Snap(hChest) == hc, "A stack is not a tool, an axe is not a pocket item, and hook 2 does not exist");
+            Check(hChest.TryTransfer(cs, 1, hBag, ItemOwner.Pocket, 1, 0, false, out _) && cs.Owner == ItemOwner.Pocket && cs.X == 1 && hBag.ContainsId("cs"), "A food stack goes from the chest to a pocket");
+            Check(hBag.Reserve(a1, 3) && hBag.TryTransfer(a1, 3, hChest, ItemOwner.Backpack, 4000, 0, false, out _) && a1.Owner == ItemOwner.Backpack && hChest.ContainsId("a1") && !hBag.ContainsId("a1"), "A hooked axe goes into a chest");
+
+            // Tool rack.
+            var rack = new ToolRack(); var rkBag = ContainerBag();
+            ItemEntry stack = Mk(rkBag, "k0", branch, 10, 1, ItemOwner.Backpack, 0, 0);
+            ItemEntry t1 = Mk(rkBag, "k1", axeDef, 1, 1, ItemOwner.Backpack, 2000, 0), t2 = Mk(rkBag, "k2", axeDef, 1, 1, ItemOwner.Backpack, 3000, 0);
+            rkBag.Reserve(stack, 1); rkBag.Reserve(t1, 1); rkBag.Reserve(t2, 1);
+            Check(!rack.TryPut(rkBag, stack, 1, 0, out reason) && reason == "Only tools, clothes and backpacks go on the rack" && rack.IsEmpty && rkBag.ContainsId("k0"), "A stack is refused by the rack");
+            Check(rack.TryPut(rkBag, t1, 1, 3, out _) && rack[3] == t1 && !rkBag.ContainsId("k1") && !rack.IsEmpty, "A tool hangs on spot 3 and leaves the bag");
+            Check(!rack.TryPut(rkBag, t2, 1, 3, out reason) && reason == "Spot taken" && rkBag.ContainsId("k2") && !rack.TryPut(rkBag, t2, 1, -1, out _) && !rack.TryPut(rkBag, t2, 1, 12, out _) && rkBag.ContainsId("k2"), "Spot 3 is taken and spots -1 and 12 do not exist");
+            Check(!rack.TryMoveSpot(3, 3) && !rack.TryMoveSpot(0, 5) && !rack.TryMoveSpot(3, 12), "Moving an empty spot, a spot onto itself or off the rack is refused");
+            Check(rack.TryPut(rkBag, t2, 1, 7, out _) && !rack.TryMoveSpot(3, 7) && rack[3] == t1 && rack[7] == t2 && rack.TryMoveSpot(7, 0) && rack[0] == t2 && rack[7] == null, "A spot moves only onto a free spot");
+            var fullRack = new ToolRack(); var fillBag = ContainerBag(); bool filled = true;
+            for (int i = 0; i < ToolRack.Spots; i++)
+            {
+                ItemDefinition d = i < 6 ? axeDef : PrototypeItems.TestWearables[i % 5];
+                ItemEntry e = Mk(fillBag, "f" + i, d, 1, 1, ItemOwner.Backpack, (i % 8) * 1000, (i / 8) * 2000, i % 2 == 0);
+                fillBag.Reserve(e, 1);
+                filled &= fullRack.TryPut(fillBag, e, 1, i, out _);
+            }
+            Check(filled && fullRack.Entries.Count() == 12 && Enumerable.Range(0, 12).All(i => fullRack[i] != null) && !fullRack[1].Ready && fullRack[0].Profile.MaxDurability == 50, "Twelve tools and wearables fill the 12 spots, keeping readiness and profile");
+            Check(fullRack.MarkReady(fullRack[1]) && fullRack[1].Ready && !fullRack.MarkReady(fullRack[1]) && !fullRack.MarkReady(t2), "The rack marks a timed craft ready");
+            var tight = new SpatialInventory(2000, 2000); Mk(tight, "block", PrototypeItems.Stone, 1000, 1, ItemOwner.Backpack, 0, 0);
+            string tb = Snap(tight);
+            ItemEntry kept = fullRack[0];
+            Check(!fullRack.TryTake(0, tight, ItemOwner.Backpack, 0, 0, out reason) && fullRack[0] == kept && Snap(tight) == tb && !tight.ContainsId(kept.Id), "A full bag refuses a take and the item stays on the rack");
+            Check(!fullRack.TryTake(0, hBag, ItemOwner.Hook, 2, 0, out reason) && !fullRack.TryTake(0, hBag, ItemOwner.Pocket, 0, 0, out reason) && fullRack[0] == kept && !hBag.ContainsId(kept.Id), "A missing hook and a pocket refuse a rack item");
+            Check(fullRack.TryTake(2, rkBag, ItemOwner.Backpack, 0, 2000, out _) && fullRack[2] == null && rkBag.ContainsId("f2") && !fullRack.TryTake(2, rkBag, ItemOwner.Backpack, 0, 2000, out _), "A take moves the item to the bag and empties the spot");
+            var restored = new ToolRack(); ItemEntry loneAxe = new SpatialInventory().AddWorld("ra", axeDef, 1);
+            Check(restored.Restore(loneAxe, 4) && restored[4] == loneAxe && !restored.Restore(loneAxe, 5) && !restored.Restore(new SpatialInventory().AddWorld("rb", branch, 5), 6), "Restore fills a free spot with a non-stackable item only");
+
+            // Sync and store.
+            var home = HomeState.AtLevel(8); var wallet = new Wallet(100000000); var hs = new HomeStorage();
+            home.Buy(FurnitureCatalog.Find("furniture.l2.pine_chest"), wallet, "pc");
+            home.Buy(FurnitureCatalog.Find("furniture.l6.mesquite_chest"), wallet, "mc");
+            home.Buy(FurnitureCatalog.Find("furniture.l4.birch_chest"), wallet, "bc");
+            home.Buy(FurnitureCatalog.Find("furniture.l1.worktable"), wallet, "wt");
+            home.Store("bc");
+            hs.Sync(home);
+            Check(hs.PieceIds.Count() == 2 && hs.Chest("pc") != null && hs.Chest("mc") != null && hs.Chest("bc") == null && hs.Chest("wt") == null && hs.Rack("pc") == null, "Sync makes a container for each placed chest only");
+            Check(hs.Chest("pc").Width == 6000 && hs.Chest("pc").Height == 6000 && hs.Chest("mc").Width == 24000 && hs.Chest("pc").IsContainer, "Each chest container has its type's size");
+            hs.Sync(home);
+            Check(hs.PieceIds.Count() == 2 && hs.IsEmpty("pc") && hs.IsEmpty("bc") && hs.IsEmpty("nothing"), "A second sync changes nothing, and empty or missing containers read as empty");
+            var homeBag = ContainerBag(); ItemEntry load = Mk(homeBag, "hb", branch, 400, 1, ItemOwner.Backpack, 0, 0);
+            homeBag.Reserve(load, 1);
+            Check(homeBag.TryTransfer(load, 1, hs.Chest("pc"), ItemOwner.Backpack, 0, 0, false, out _) && !hs.IsEmpty("pc") && hs.Entries.Count() == 1, "A chest holding an item is not empty and its entries are listed");
+            Check(!hs.TryStorePiece(home, "pc", out reason) && reason == "Empty it first" && home.Pieces.First(p => p.InstanceId == "pc").Placed && hs.Chest("pc") != null, "Storing a chest that holds an item is refused");
+            hs.Chest("pc").Reserve(load, 2);
+            Check(hs.Chest("pc").TryTransfer(load, 2, homeBag, ItemOwner.Backpack, 0, 0, false, out _) && hs.IsEmpty("pc") && !hs.Entries.Any(), "Emptying the chest returns the item to the bag");
+            Check(hs.TryStorePiece(home, "pc", out _) && !home.Pieces.First(p => p.InstanceId == "pc").Placed && hs.Chest("pc") == null && hs.PieceIds.Count() == 1, "An empty chest stores and its container is removed");
+            Check(home.PlaceFromStorage("pc") && hs.Chest("pc") == null, "Placing the piece alone does not create a container");
+            hs.Sync(home);
+            Check(hs.Chest("pc") != null && hs.IsEmpty("pc") && hs.PieceIds.Count() == 2, "Syncing after placing it again gives a fresh empty container");
+            ItemEntry kept2 = Mk(homeBag, "hk2", branch, 5, 1, ItemOwner.Backpack, 2000, 0); homeBag.Reserve(kept2, 1);
+            Check(homeBag.TryTransfer(kept2, 1, hs.Chest("mc"), ItemOwner.Backpack, 0, 0, false, out _), "Setup: an item in the mesquite chest");
+            home.Store("mc"); hs.Sync(home);
+            Check(hs.Chest("mc") != null && !hs.IsEmpty("mc"), "Sync keeps the container of a stored piece that still holds items");
+            Check(HomeStorage.MaxItemsPerContainer == 1024 && HomeStorage.IsRackDefinition("furniture.l1.tool_rack") && !HomeStorage.IsRackDefinition("furniture.l2.pine_chest")
+                && HomeStorage.IsContainerDefinition(FurnitureCatalog.Find("furniture.l2.pine_chest")) && !HomeStorage.IsContainerDefinition(FurnitureCatalog.Find("furniture.l1.worktable")), "Container definitions are chests and the rack");
+
+            // Sizes.
+            Check(HomeStorage.ChestSize("furniture.l2.pine_chest") == (6, 6) && HomeStorage.ChestSize("furniture.l4.birch_chest") == (12, 6)
+                && HomeStorage.ChestSize("furniture.l6.mesquite_chest") == (24, 6) && HomeStorage.ChestSize("furniture.l8.reinforced_oak_chest") == (48, 6), "Chest sizes are 6x6, 12x6, 24x6 and 48x6");
+            Check(Throws(() => HomeStorage.ChestSize("furniture.l1.worktable")), "The worktable has no chest size");
+        }
+
+        // ---------------------------------------------------------------- Milestone 11 final review: the per-container item cap
+        private static void ContainerCapChecks()
+        {
+            string reason;
+            var storage = new HomeStorage();
+            var bag = ContainerBag();
+            SpatialInventory chest = ContainerChest(storage, "cap", 200, 30);   // 200 x 30 cells; the cap is on entries, not area
+            for (int i = 0; i < HomeStorage.MaxItemsPerContainer; i++) Mk(chest, "f" + i, PrototypeItems.Branch, 1, 1, ItemOwner.Backpack, (i % 100) * 2000, (i / 100) * 2000);
+            Check(chest.Entries.Count(e => e.Owner == ItemOwner.Backpack) == HomeStorage.MaxItemsPerContainer, "Cap setup: a chest holds 1,024 live entries");
+            ItemEntry extra = Mk(bag, "x1", PrototypeItems.Clay, 5, 1, ItemOwner.Backpack, 0, 0); bag.Reserve(extra, 1);
+            string chestBefore = Snap(chest), bagBefore = Snap(bag); int chestRev = chest.Revision, bagRev = bag.Revision;
+            Check(!bag.TryTransfer(extra, 1, chest, ItemOwner.Backpack, 0, 25000, false, out reason) && reason == "No space in the chest", "A full-count chest refuses a further entry with \"No space in the chest\"");
+            Check(Snap(chest) == chestBefore && Snap(bag) == bagBefore && chest.Revision == chestRev && bag.Revision == bagRev && bag.ReservedBy(extra, 1), "A refused insert into a full-count chest changes nothing");
+            bag.Release(extra, 1);
+            ItemEntry same = Mk(bag, "x2", PrototypeItems.Branch, 1, 1, ItemOwner.Backpack, 2000, 0); bag.Reserve(same, 2);
+            Check(bag.TryTransfer(same, 2, chest, ItemOwner.Backpack, 0, 0, true, out reason) && chest.Entries.Count(e => e.Owner == ItemOwner.Backpack) == HomeStorage.MaxItemsPerContainer
+                && chest.Entries.First(e => e.Id == "f0").Quantity == 2 && !bag.ContainsId("x2"), "A merge onto an existing stack still works in a full-count chest (no new entry)");
+            foreach (string id in new[] { "pc", "oc" })
+            {
+                var hs = new HomeStorage(); var h = HomeState.AtLevel(8); var w = new Wallet(100000000000L); int n = 0;
+                h.Buy(F(id == "pc" ? "furniture.l2.pine_chest" : "furniture.l8.reinforced_oak_chest"), w, id); hs.Sync(h);
+                hs.DebugFill(id, () => "cap-fill-" + (++n));
+                Check(hs.Chest(id).Entries.Count(e => e.Owner == ItemOwner.Backpack) <= HomeStorage.MaxItemsPerContainer, "FILL never exceeds the 1,024-item cap (" + id + ")");
+            }
+        }
+
+        // ---------------------------------------------------------------- Milestone 11 final review: stale selection and chest drops
+        private static void ContainerGuardChecks()
+        {
+            var storage = new HomeStorage(); var bag = ContainerBag(); var chest = ContainerChest(storage, "g", 6, 6);
+            ItemEntry axe = Mk(bag, "ga", PrototypeItems.Tool, 1, 2, ItemOwner.Backpack, 0, 2000);
+            ItemEntry stack = Mk(bag, "gs", PrototypeItems.Branch, 10, 1, ItemOwner.Backpack, 3000, 0);
+            Check(bag.Reserve(axe, 1) && bag.TryTransfer(axe, 1, chest, ItemOwner.Backpack, 0, 0, false, out _), "Guard setup: the axe is in the chest");
+            Check(axe.Owner == ItemOwner.Backpack && !bag.ContainsId(axe.Id), "A chest entry still reads as Backpack-owned but is not in the bag ledger");
+            Check(CollectionPrototype.SelectionAfterMove(axe, axe, bag) == null, "After a whole-entry move to a chest the selection no longer refers to the item");
+            Check(CollectionPrototype.SelectionAfterMove(stack, axe, bag) == stack && CollectionPrototype.SelectionAfterMove(stack, stack, bag) == stack && CollectionPrototype.SelectionAfterMove(null, axe, bag) == null,
+                "A selection of another item, or of one still in the bag, is kept");
+            Check(!CollectionPrototype.BagOwnsForEquip(bag, axe) && CollectionPrototype.BagOwnsForEquip(bag, stack) && !CollectionPrototype.BagOwnsForEquip(bag, null),
+                "The equip guard refuses an item the bag ledger does not own and accepts a bag item");
+
+            Check(CollectionPrototype.ChestDropAttempted(new Vector2(3000, 3000), 6000, 6000) && CollectionPrototype.ChestDropAttempted(new Vector2(0, 6000), 6000, 6000)
+                && !CollectionPrototype.ChestDropAttempted(new Vector2(-400, 3000), 6000, 6000) && !CollectionPrototype.ChestDropAttempted(new Vector2(6400, 3000), 6000, 6000)
+                && !CollectionPrototype.ChestDropAttempted(new Vector2(3000, -1), 6000, 6000) && !CollectionPrototype.ChestDropAttempted(new Vector2(3000, 6001), 6000, 6000),
+                "A drop point outside the chest grid is not attempted; one inside is");
+        }
+
+        // ---------------------------------------------------------------- Milestone 11 task 6: debug HOUSE L8 and FILL
+        private static string PlacesOf(HomeState h) { return string.Join("|", h.Pieces.Select(p => p.InstanceId + "@" + p.X + "," + p.Z + "r" + p.Rotation + (p.Placed ? "p" : "s"))); }
+        private static ItemEntry Probe(ItemDefinition d) { return Mk(new SpatialInventory(), "probe-" + d.Id, d, 1, 5, ItemOwner.World); }
+        private static bool AnyFits(SpatialInventory chest, ItemEntry probe, int quantity, bool scan)
+        {
+            if (scan) { for (int y = 0; y < chest.Height; y += 50) for (int x = 0; x < chest.Width; x += 50) if (chest.Fits(probe, quantity, x, y)) return true; return false; }
+            var xs = new SortedSet<int> { 0 }; var ys = new SortedSet<int> { 0 };
+            foreach (ItemEntry e in chest.Entries) { xs.Add(e.X + e.Width); ys.Add(e.Y + e.Height); }
+            foreach (int y in ys) foreach (int x in xs) if (chest.Fits(probe, quantity, x, y)) return true;
+            return false;
+        }
+        private static void HouseJumpChecks()
+        {
+            const string beams = "item.pine_beam";
+            for (int pass = 0; pass < 2; pass++)
+            {
+                bool fullBag = pass == 1; string note = fullBag ? " (full bag)" : "";
+                // Level 1: three placed pieces (one rotated), a rack with a tool, a stored piece, and 20 beams in house escrow.
+                var home = HomeState.New(); var wallet = new Wallet(100000000000L); var storage = new HomeStorage(); var ledger = UpgradeLedger();
+                var table = F("furniture.l1.worktable"); var peg = F("furniture.l1.hat_peg");
+                home.Buy(table, wallet, "a");
+                Check(home.TryAddPlaced(peg, "peg", 0, 4, 0) && home.TryAddPlaced(table, "b", 6, 2, 1), "Jump setup: a peg and a turned worktable");
+                home.Buy(F(RackPieceId), wallet, "rk"); home.Buy(table, wallet, "s"); home.Store("s");
+                storage.Sync(home);
+                storage.Rack("rk").Restore(Mk(new SpatialInventory(), "ax", PrototypeItems.Tool, 1, 2, ItemOwner.World), 0);
+                Put(ledger, "beams", beams, 20, 3, ItemOwner.Backpack, 0, 0);
+                Check(HouseUpgradeService.Deposit(home, ledger, beams, NewEscrowId, out _) == 20 && home.UpgradeEscrow.Count > 0, "Jump setup: 20 beams in house escrow");
+                if (fullBag) for (int row = 0; row < 12; row++) for (int col = 0; col < 4; col++) Mk(ledger, "blk" + row + "-" + col, PrototypeItems.Branch, 1000, 1, ItemOwner.Backpack, col * 1810, row * 310);
+                var before = home.Pieces.ToDictionary(p => p.InstanceId, p => (p.X, p.Z, p.Rotation, p.Placed));
+                string storageBefore = StorageSig(storage);
+                Check(HouseUpgradeService.DebugJumpToLevel(home, ledger, 8) == 20, "The jump returns the 20 escrowed units" + note);
+                Check(home.Level == 8 && home.GridWidth == 12 && home.GridDepth == 17, "The jump reaches level 8, 12 x 17" + note);
+                Check(home.Pieces.All(p => { var b = before[p.InstanceId]; return p.Placed == b.Placed && p.Z == b.Z && p.Rotation == b.Rotation && p.X == b.X + (b.Placed ? 2 : 0); }), "Each placed piece shifts two columns (8 to 10 to 12); Z and rotation are unchanged" + note);
+                Check(StorageSig(storage) == storageBefore && storage.Rack("rk") != null, "Containers are unchanged and still keyed by piece id" + note);
+                Check(home.UpgradeEscrow.Count == 0 && Units(ledger, beams, ItemOwner.Escrow) == 0, "Escrow is empty after the jump" + note);
+                Check(fullBag ? Units(ledger, beams, ItemOwner.Overflow) == 20 && Units(ledger, beams, BagOwners) == 0 : Units(ledger, beams, BagOwners) == 20 && Units(ledger, beams, ItemOwner.Overflow) == 0, "The beams are back in the " + (fullBag ? "overflow" : "bag") + note);
+                Check(FurnitureCatalog.All.Where(d => d.IsChest).All(d => home.CanBuy(d, new Wallet(100000000000L), out _)), "Every chest type is buyable at level 8" + note);
+                Check(!home.CanUpgrade, "A level 8 house cannot upgrade" + note);
+                SessionSnapshot snap = UpgradeSnapshot(home, ledger); snap.home.containers = SessionSaveStore.SaveContainers(storage);
+                snap = Roundtrip(snap);
+                SessionSaveStore.Validate(snap, float.MaxValue, out _);
+                Check(SessionSaveStore.RestoreHome(snap).Level == 8, "A save round trip after the jump is valid" + note);
+                string totals = Totals(ledger), placesNow = PlacesOf(home);
+                Check(HouseUpgradeService.DebugJumpToLevel(home, ledger, 8) == 0 && home.Level == 8 && Totals(ledger) == totals && PlacesOf(home) == placesNow, "A second jump is a no-op" + note);
+            }
+
+            // A level 2 home with a chest keeps its contents through the jump.
+            var h2 = HomeState.AtLevel(2); var st2 = new HomeStorage(); var l2 = UpgradeLedger(); var w2 = new Wallet(100000000000L);
+            h2.Buy(F("furniture.l2.pine_chest"), w2, "pc"); st2.Sync(h2);
+            Mk(st2.Chest("pc"), "c1", PrototypeItems.Branch, 300, 1, ItemOwner.Backpack, 0, 0);
+            int x0 = P(h2, "pc").X; string sig = StorageSig(st2);
+            HouseUpgradeService.DebugJumpToLevel(h2, l2, 8);
+            Check(h2.Level == 8 && P(h2, "pc").X == x0 + 1 && StorageSig(st2) == sig, "A chest keeps its contents and key through the jump");
+            Check(HouseUpgradeService.DebugJumpToLevel(h2, l2, 3) == 0 && h2.Level == 8, "Jumping to a lower level does nothing");
+
+            // FILL.
+            var hf = HomeState.AtLevel(8); var sf = new HomeStorage(); var wf = new Wallet(100000000000L); int ids = 0;
+            hf.Buy(F("furniture.l8.reinforced_oak_chest"), wf, "oc"); hf.Buy(F("furniture.l2.pine_chest"), wf, "pc"); hf.Buy(F(RackPieceId), wf, "rk"); sf.Sync(hf);
+            Func<string> next = () => "dbg-fill-" + (++ids);
+            ItemDefinition[] cycle = { PrototypeItems.Branch, PrototypeItems.Clay, PrototypeItems.Flint, PrototypeItems.Hemp, PrototypeItems.Apples, PrototypeItems.Pebbles };
+            Check(sf.DebugFill("rk", next) == 0 && sf.Rack("rk").IsEmpty, "FILL does nothing on a rack");
+            Check(sf.DebugFill("missing", next) == 0, "FILL does nothing for an unknown piece");
+            foreach (string id in new[] { "pc", "oc" })
+            {
+                SpatialInventory c = sf.Chest(id);
+                int stacks = sf.DebugFill(id, next);
+                var live = c.Entries.Where(e => e.Owner == ItemOwner.Backpack).ToList();
+                Check(stacks > 0 && live.Count == stacks && live.All(e => e.Quantity == 1000 && e.Quality == 5), "FILL adds Q5 stacks of 1,000 (" + id + ")");
+                Check(cycle.All(d => live.Any(e => e.Definition.Id == d.Id)), "FILL cycles the six tier-one materials (" + id + ")");
+                bool overlap = false, outside = false;
+                for (int i = 0; i < live.Count; i++)
+                {
+                    if (live[i].X < 0 || live[i].Y < 0 || live[i].X + live[i].Width > c.Width || live[i].Y + live[i].Height > c.Height) outside = true;
+                    for (int j = i + 1; j < live.Count; j++) if (SpatialInventory.Overlaps(live[i].X, live[i].Y, live[i].Width, live[i].Height, live[j].X, live[j].Y, live[j].Width, live[j].Height)) overlap = true;
+                }
+                Check(!overlap && !outside, "FILL stacks do not overlap and stay inside (" + id + ")");
+                Check(!cycle.Any(d => AnyFits(c, Probe(d), 1000, id == "pc")), "Another 1,000 stack of any material no longer fits (" + id + ")");
+                // FILL packs whole 1,000 stacks, so a small stack can still fit a leftover gap in the wide chest; the 6 x 6 pine chest has none.
+                if (id == "pc") Check(!cycle.Any(d => AnyFits(c, Probe(d), 1, true)), "A further one-unit item does not fit (pine chest)");
+                Check(sf.DebugFill(id, next) == 0, "A second FILL adds nothing (" + id + ")");
+            }
+        }
+
+        // ---------------------------------------------------------------- Milestone 11 task 3: container save, restore and validation
+        private sealed class SaveFix { public HomeState Home; public HomeStorage Storage; public SpatialInventory Bag, Pine, Oak; public ToolRack Rack; }
+        private const string RackPieceId = "furniture.l1.tool_rack";
+        private static SaveFix ContainerSaveFixture(bool full)
+        {
+            var fx = new SaveFix { Home = HomeState.AtLevel(8), Storage = new HomeStorage(), Bag = ContainerBag() };
+            var wallet = new Wallet(100000000000L);
+            fx.Home.Buy(F("furniture.l2.pine_chest"), wallet, "pc");
+            if (full) { fx.Home.Buy(F("furniture.l8.reinforced_oak_chest"), wallet, "oc"); fx.Home.Buy(F("furniture.l1.worktable"), wallet, "wt"); fx.Home.Buy(F(RackPieceId), wallet, "rk"); }
+            fx.Storage.Sync(fx.Home);
+            fx.Pine = fx.Storage.Chest("pc");
+            Mk(fx.Bag, "b1", PrototypeItems.Branch, 10, 1, ItemOwner.Backpack, 0, 0);
+            if (!full) return fx;
+            fx.Oak = fx.Storage.Chest("oc"); fx.Rack = fx.Storage.Rack("rk");
+            Mk(fx.Pine, "c1", PrototypeItems.Branch, 300, 1, ItemOwner.Backpack, 0, 0);
+            ItemEntry log = fx.Pine.AddWorld("c2", PrototypeItems.Log, 200, 1, new ItemProfile(100));
+            if (!fx.Pine.RestorePile(log, new List<PilePortion> { new PilePortion(1, new ItemProfile(100), 50), new PilePortion(2, new ItemProfile(250), 100), new PilePortion(3, new ItemProfile(400), 50) })
+                || !fx.Pine.RestoreStored(log, ItemOwner.Backpack, 3000, 0)) throw new InvalidOperationException("Test fixture: piled stack");
+            Mk(fx.Pine, "c3", PrototypeItems.Stone, 50, 3, ItemOwner.Backpack, 0, 3000, false);
+            Mk(fx.Oak, "o1", PrototypeItems.Apples, 20, 1, ItemOwner.Backpack, 40000, 0);
+            var scratch = new SpatialInventory();
+            fx.Rack.Restore(Mk(scratch, "ax", PrototypeItems.Tool, 1, 2, ItemOwner.World), 0);
+            ItemEntry shirt = Mk(scratch, "sh", PrototypeItems.TestWearables[2], 1, 2, ItemOwner.World);
+            scratch.RestoreWear(shirt, true, 12.5);
+            fx.Rack.Restore(shirt, 11);
+            return fx;
+        }
+        private static SessionSnapshot ContainerSaveSnapshot(SaveFix fx)
+        {
+            SessionSnapshot s = UpgradeSnapshot(fx.Home, fx.Bag);
+            s.home.containers = SessionSaveStore.SaveContainers(fx.Storage);
+            s.crafting = new SavedCrafting();
+            s.crafting.batches.Add(new SavedBatch { id = "batch1", recipeId = "recipe.food.apple_juice", startedUtc = "2026-11-14T12:00:00.0000000Z", readyAtUtc = "2026-11-14T12:05:00.0000000Z", executions = 1, outputUnits = 1, itemIds = new List<string> { "c3" } });
+            return s;
+        }
+        private static SessionSnapshot Roundtrip(SessionSnapshot s) { return JsonUtility.FromJson<SessionSnapshot>(JsonUtility.ToJson(s)); }
+        private static SessionSnapshot ForgedSnapshot() { return Roundtrip(ContainerSaveSnapshot(ContainerSaveFixture(true))); }
+        private static SavedContainer Box(SessionSnapshot s, string id) { return s.home.containers.First(c => c.pieceId == id); }
+        private static SavedItem SItem(SessionSnapshot s, string box, string id) { return Box(s, box).items.First(i => i.id == id); }
+        private static HomeStorage RestoreBoxes(SessionSnapshot s)
+        {
+            var taken = new HashSet<string>(s.items.Select(i => i.id)); var pending = new HashSet<string>();
+            if (s.crafting != null) foreach (SavedBatch b in s.crafting.batches) foreach (string id in b.itemIds) pending.Add(id);
+            return SessionSaveStore.RestoreContainers(s, SessionSaveStore.RestoreHome(s), taken, pending);
+        }
+        private static bool BoxesRefused(SessionSnapshot s)
+        {
+            try { RestoreBoxes(s); return false; } catch (InvalidDataException e) { return e.Message.StartsWith("Invalid home storage"); }
+        }
+        private static bool BoxesRefused(Action<SessionSnapshot> forge) { SessionSnapshot s = ForgedSnapshot(); forge(s); return BoxesRefused(s); }
+        private static string ChestSig(SpatialInventory c)
+        {
+            return Snap(c) + "#" + string.Join(",", c.Entries.OrderBy(e => e.Id, StringComparer.Ordinal).Select(e => e.Id + ":" + e.HasWearRemaining + ":" + e.WearRemaining + ":" + e.Profile.Variant));
+        }
+        private static string RackSig(ToolRack r)
+        {
+            return string.Join("|", Enumerable.Range(0, ToolRack.Spots).Where(i => r[i] != null).Select(i => i + ":" + r[i].Id + ":" + r[i].Ready + ":" + r[i].HasWearRemaining + ":" + r[i].WearRemaining + ":"
+                + string.Join(",", r[i].Pile.Select(p => p.Quality + "x" + p.Quantity + "@" + p.Profile.UnitValue + "/" + p.Profile.MaxDurability + "/" + p.Profile.Durability))));
+        }
+        private static string StorageSig(HomeStorage st)
+        {
+            return string.Join("##", st.PieceIds.OrderBy(i => i, StringComparer.Ordinal).Select(id => id + "=" + (st.Chest(id) != null ? ChestSig(st.Chest(id)) : RackSig(st.Rack(id)))));
+        }
+
+        // ---------------------------------------------------------------- Milestone 11 task 4: the tool rack
+        private static void ToolRackChecks()
+        {
+            var all = FurnitureCatalog.All;
+            Check(all.Count == 49 && all.Count(d => !d.IsExtra) == 48 && all.Count(d => d.IsExtra) == 1, "The catalog has 49 rows: 48 types and one extra");
+            var types = all.Where(d => !d.IsExtra).ToList();
+            Check(Enumerable.Range(1, 8).All(l => types.Count(d => d.HouseLevel == l) == 6)
+                && Enum.GetValues(typeof(BuffCategory)).Cast<BuffCategory>().All(c => types.Count(d => d.Category == c) == 4), "The six-per-level and four-per-category rules hold over the 48 types");
+            FurnitureDefinition rack = F(RackPieceId);
+            Check(rack.Name == "Tool rack" && rack.Asset == "FurnitureToolRack" && rack.HouseLevel == 1 && rack.PriceCash == 3000 && rack.Width == 2 && rack.Depth == 1 && rack.IsRack && rack.IsExtra && !rack.IsChest && rack.Strength == 0,
+                "The tool rack is level 1, 3,000, 2x1, an extra rack with no strength and not a chest");
+            Check(all.Where(d => d != rack).All(d => !d.IsRack && (!d.IsExtra)) && HomeStorage.IsRackDefinition(RackPieceId) && !HomeStorage.IsRackDefinition("furniture.l1.worktable") && !HomeStorage.IsRackDefinition("furniture.nope"), "Only the tool rack is a rack, and IsRackDefinition reads the flag");
+            HomeState home = HomeState.New(); var wallet = new Wallet(3000);
+            FurnitureBuffs before = home.Buffs;
+            FurniturePiece bought = home.Buy(rack, wallet, "rk1");
+            Check(bought.Placed && wallet.Cash == 0 && BuffsEqual(home.Buffs, before) && home.Buffs.CraftQuality == 0 && home.Buffs.FoodRecovery == 0 && home.Buffs.SalePrice == 0, "Buying the rack at level 1 places it and changes no buff");
+            bool seen = false;
+            for (int seed = 1; seed <= 20; seed++)
+                for (int plot = 0; plot < TheTrailWalker.Domain.Travel.SettlementState.PlotCount; plot++)
+                    for (int level = 1; level <= HomeState.MaxLevel; level++)
+                        seen |= NeighbourHome.Furnish(seed, plot, level).Pieces.Any(p => p.Definition.IsExtra || p.Definition.IsRack);
+            Check(!seen, "No neighbour room at any level holds the tool rack");
+            var group = CollectionPrototype.CatalogGroups(1).First();
+            Check(group.types.Count == 7 && group.types.Take(6).All(d => !d.IsExtra) && group.types[6] == rack && group.types[6].Name == "Tool rack", "The level-1 catalog group lists the six types, then the Tool rack");
+            string line = CollectionPrototype.PurposeLine(rack);
+            Check(line == "Holds tools and spare gear" && !line.Any(char.IsDigit) && !line.Contains("%"), "The tool rack's purpose line is \"Holds tools and spare gear\" with no digit or percent sign");
+        }
+
+        // The container panel (Milestone 11 task 5): visible chest columns and the view budget, a held chest entry released by
+        // the cancel path, the note texts, and CloseContainer on every exit path.
+        private static void ContainerViewChecks()
+        {
+            Check(CollectionPrototype.ChestVisibleColumns(0f, 6f, 1f, 48) == (0, 7) && CollectionPrototype.ChestVisibleColumns(20f, 6f, 1f, 48) == (19, 27),
+                "A 48-wide chest viewed 6 wide shows columns 0-7 at scroll 0 and 19-27 at scroll 20 (margin 1)");
+            // The densest real fill (Task 6's debug FILL has not run): single stacks of the smallest-footprint stackable item in
+            // the game (every definition Items.Find knows), packed edge to edge over a 48 x 6 chest.
+            var full = new SpatialInventory(48000, 6000);
+            ItemDefinition smallest = null; int sw = int.MaxValue, sh = int.MaxValue;
+            var probe = new SpatialInventory(48000, 6000);
+            foreach (ItemDefinition d in PrototypeItems.All.Concat(HarvestTierItems.All))
+            {
+                if (!d.Stackable || probe.ContainsId("probe-" + d.Id)) continue;
+                ItemEntry p = probe.AddWorld("probe-" + d.Id, d, 1);
+                if ((long)p.Width * p.Height < (long)sw * sh) { smallest = d; sw = p.Width; sh = p.Height; }
+            }
+            int filled = 0;
+            for (int y = 0; y + sh <= 6000; y += sh)
+                for (int x = 0; x + sw <= 48000; x += sw)
+                { ItemEntry e = full.AddWorld("f" + filled, smallest, 1); if (full.RestoreStored(e, ItemOwner.Backpack, x, y)) filled++; }
+            int worst = 0; bool allDrawn = true;
+            for (int s = 0; s <= 42 * 4; s++)
+            {
+                (int first, int last) = CollectionPrototype.ChestVisibleColumns(s / 4f, 6f, 1f, 48);
+                var inView = full.Entries.Where(e => e.Owner == ItemOwner.Backpack && e.X < (last + 1) * 1000 && e.X + e.Width > first * 1000).ToList();
+                var drawn = CollectionPrototype.ChestEntriesInColumns(full, first, last).ToList();
+                worst = Math.Max(worst, inView.Count);
+                allDrawn &= drawn.Count == inView.Count && !inView.Except(drawn).Any();
+            }
+            Check(allDrawn, "Every chest entry intersecting the visible columns (plus the margin) is drawn: no cap leaves a visible item undrawn");
+            Check(filled > 288 && worst > 0 && worst <= CollectionPrototype.ChestViewBudget,
+                "The densest real 48x6 fill (" + filled + " single " + (smallest != null ? smallest.Name : "?") + " stacks) has at most " + worst + " entries in any visible range (budget " + CollectionPrototype.ChestViewBudget + ")");
+
+            var chest = new SpatialInventory(6000, 6000);
+            ItemEntry held = chest.AddWorld("held", PrototypeItems.Branch, 40, 2);
+            chest.RestoreStored(held, ItemOwner.Backpack, 1000, 2000);
+            bool reserved = chest.Reserve(held, 5);
+            CollectionPrototype.CancelContainerHold(chest, held, 5);
+            Check(reserved && !chest.ReservedBy(held, 5) && held.Owner == ItemOwner.Backpack && held.X == 1000 && held.Y == 2000 && held.Quantity == 40 && chest.ContainsId("held") && chest.Reserve(held, 6),
+                "A chest entry held by pointer 5 is released by the container cancel path and stays at its source (same x, y and quantity)");
+
+            Check(CollectionPrototype.ChestNoSpaceNote == "No space in the chest" && CollectionPrototype.RackSpotTakenNote == "Spot taken"
+                && CollectionPrototype.RackOnlyGearNote == "Only tools, clothes and backpacks go on the rack" && CollectionPrototype.EmptyItFirstNote == "Empty it first",
+                "The container notes read \"No space in the chest\", \"Spot taken\", \"Only tools, clothes and backpacks go on the rack\" and \"Empty it first\"");
+            string[] exits = { "return", "bag", "leave-house", "travel", "faint", "leave-settlement", "birds-eye" };
+            Check(exits.All(CollectionPrototype.ContainerClosesOn) && !CollectionPrototype.ContainerClosesOn("scroll"), "CloseContainer runs on Return, the bag button, leaving the house, travel, a faint, leaving the settlement and entering the bird's-eye view");
+        }
+
+        private static bool BuffsEqual(FurnitureBuffs a, FurnitureBuffs b) => a.CraftQuality == b.CraftQuality && a.FoodRecovery == b.FoodRecovery && a.SalePrice == b.SalePrice && Enum.GetValues(typeof(BuffCategory)).Cast<BuffCategory>().All(c => a.DurabilityOf(c) == b.DurabilityOf(c));
+
+        private static void ContainerSaveChecks()
+        {
+            string reason;
+            SaveFix fx = ContainerSaveFixture(true);
+            SessionSnapshot snap = ContainerSaveSnapshot(fx);
+            SessionSnapshot back = Roundtrip(snap);
+            bool valid = true; try { SessionSaveStore.Validate(back, float.MaxValue, out _); } catch (InvalidDataException) { valid = false; }
+            Check(FurnitureCatalog.All.Any(d => d.Id == RackPieceId && d.IsRack), "The tool rack definition exists (the rack save and restore checks below always run)");
+            Check(valid && back.home.containers.Count == 3, "A snapshot with a pine chest, an oak chest and a rack validates through JSON");
+            HomeStorage got = RestoreBoxes(back);
+            Check(got.PieceIds.Count() == 3, "Restored storage holds one container per placed chest or rack");
+            Check(StorageSig(got) == StorageSig(fx.Storage), "Every id, position, spot, pile, profile, ready flag and wear round-trips");
+            Check(got.Chest("pc").IsContainer && got.Chest("oc").Width == 48000 && got.Chest("pc").Width == 6000 && got.Chest("oc").ContainsId("o1") && got.Chest("oc").Entries.First().X == 40000, "Restored chests are containers with their own sizes");
+            ItemEntry piled = got.Chest("pc").Entries.First(e => e.Id == "c2");
+            Check(piled.Pile.Count == 3 && piled.Quantity == 200 && !got.Chest("pc").Entries.First(e => e.Id == "c3").Ready && got.Chest("pc").Entries.First(e => e.Id == "c1").Ready, "A 3-portion pile and a not-ready stack survive");
+            // The rack as the save writes it, with or without its piece: x is the spot, y is 0, every field written like the bag's.
+            var rackOnly = new HomeStorage(); rackOnly.AddRack("rkx", fx.Rack);
+            SavedContainer rackBox = SessionSaveStore.SaveContainers(rackOnly)[0];
+            SavedItem savedShirt = rackBox.items.First(i => i.id == "sh");
+            Check(rackBox.kind == "rack" && rackBox.items.Count == 2 && rackBox.items.First(i => i.id == "ax").x == 0 && savedShirt.x == 11 && rackBox.items.All(i => i.y == 0 && i.owner == "Backpack") && savedShirt.hasWear && savedShirt.wearRemaining == 12.5 && savedShirt.pile.Count == 1, "A rack is saved with x = spot, y = 0 and the shirt's wear");
+            Check(got.Rack("rk")[0].Id == "ax" && got.Rack("rk")[11].Id == "sh" && got.Rack("rk")[11].HasWearRemaining && got.Rack("rk")[11].WearRemaining == 12.5 && got.Rack("rk").Entries.Count() == 2, "The rack keeps the axe at spot 0 and the worn-then-removed shirt at spot 11");
+            Check(JsonUtility.ToJson(Roundtrip(ContainerSaveSnapshot(new SaveFix { Home = SessionSaveStore.RestoreHome(back), Storage = got, Bag = fx.Bag }))) == JsonUtility.ToJson(back), "Saving the restored storage writes the same JSON");
+
+            // Forged cases.
+            Check(BoxesRefused(s => Box(s, "pc").pieceId = "nope"), "A container for an unknown piece is refused");
+            Check(BoxesRefused(s => s.home.pieces.First(p => p.id == "pc").placed = false), "A container for a stored piece is refused");
+            Check(BoxesRefused(s => { Box(s, "pc").pieceId = "wt"; }), "A container for a non-container piece is refused");
+            Check(BoxesRefused(s => s.home.containers.Add(new SavedContainer { pieceId = "pc", kind = "chest" })), "A duplicate container is refused");
+            Check(BoxesRefused(s => Box(s, "pc").kind = "rack") && BoxesRefused(s => Box(s, "pc").kind = "bin") && BoxesRefused(s => Box(s, "rk").kind = "chest"), "A kind that does not match the piece is refused");
+            Check(BoxesRefused(s => SItem(s, "pc", "c1").id = "b1"), "An item id already in the bag is refused");
+            Check(BoxesRefused(s => SItem(s, "pc", "c2").id = "c1"), "An id repeated inside a chest is refused");
+            Check(BoxesRefused(s => SItem(s, "oc", "o1").id = "c1") && (BoxesRefused(s => SItem(s, "rk", "ax").id = "c1") && BoxesRefused(s => SItem(s, "oc", "o1").id = "sh")), "An id repeated across containers is refused");
+            Check(BoxesRefused(s => { SavedItem c2 = SItem(s, "pc", "c2"), c1 = SItem(s, "pc", "c1"); c2.x = c1.x; c2.y = c1.y; }), "Overlapping chest items are refused");
+            Check(BoxesRefused(s => SItem(s, "pc", "c1").x = 6000) && BoxesRefused(s => SItem(s, "pc", "c1").x = -1000) && BoxesRefused(s => SItem(s, "oc", "o1").x = 48000) && BoxesRefused(s => SItem(s, "pc", "c3").y = 6000), "Chest items outside the chest are refused");
+            {
+                Check(BoxesRefused(s => SItem(s, "rk", "ax").x = 12) && BoxesRefused(s => SItem(s, "rk", "ax").x = -1), "A rack spot outside 0-11 is refused");
+                Check(BoxesRefused(s => SItem(s, "rk", "sh").x = 0) && BoxesRefused(s => SItem(s, "rk", "ax").y = 3000), "A repeated rack spot and a rack row other than 0 are refused");
+                Check(BoxesRefused(s => { SavedItem a = SItem(s, "rk", "ax"); a.definitionId = PrototypeItems.Branch.Id; a.quantity = 5; }), "A stackable item on the rack is refused");
+            }
+            Check(BoxesRefused(s => SItem(s, "pc", "c1").ready = false), "A not-ready item outside every batch is refused");
+            Check(BoxesRefused(s => s.crafting.batches.Clear()), "A not-ready item whose batch is gone is refused");
+            Check(BoxesRefused(s => { SavedContainer pc = Box(s, "pc"); for (int i = 0; i < 1025; i++) pc.items.Add(new SavedItem { id = "bulk" + i, definitionId = PrototypeItems.Stone.Id, owner = "Backpack", quantity = 1, quality = 1, ready = true, unitValue = 100 }); }), "More than 1,024 items in a container is refused");
+            Check(BoxesRefused(s => SItem(s, "pc", "c1").definitionId = "item.nope"), "An unknown item definition is refused as home storage");
+            Check(BoxesRefused(s => SItem(s, "pc", "c1").trailDistance = float.NaN) && BoxesRefused(s => SItem(s, "oc", "o1").trailDistance = float.PositiveInfinity) && BoxesRefused(s => SItem(s, "pc", "c1").trailDistance = -1f)
+                && BoxesRefused(s => SItem(s, "pc", "c1").trailDistance = 20000f) && BoxesRefused(s => SItem(s, "pc", "c1").worldX = float.NaN) && BoxesRefused(s => SItem(s, "pc", "c1").worldZ = float.NegativeInfinity), "A NaN, infinite, negative or out-of-range trail distance or world coordinate on a container item is refused");
+            Check(BoxesRefused(s => SItem(s, "pc", "c1").owner = "Pocket") && BoxesRefused(s => SItem(s, "pc", "c1").quantity = 5000) && BoxesRefused(s => Box(s, "pc").items.Add(null)), "A bad owner, quantity or null item is refused");
+
+            // The bag and a chest never share an id, checked by full validation.
+            SessionSnapshot dup = ForgedSnapshot(); SItem(dup, "pc", "c1").id = "b1";
+            Check(ValidateRefused(dup), "The same id in the bag and a chest fails validation");
+            SessionSnapshot dupPending = ForgedSnapshot(); dupPending.crafting.batches[0].itemIds.Clear();
+            Check(ValidateRefused(dupPending), "A not-ready chest item outside every batch fails validation");
+
+            // Older save: a placed chest and no containers field.
+            SaveFix older = ContainerSaveFixture(false);
+            SessionSnapshot oldSnap = UpgradeSnapshot(older.Home, older.Bag);
+            string json = JsonUtility.ToJson(oldSnap).Replace("\"containers\":[],", "");
+            Check(!json.Contains("containers"), "Setup: the older save has no containers field");
+            SessionSnapshot loaded = JsonUtility.FromJson<SessionSnapshot>(json);
+            bool oldValid = true; try { SessionSaveStore.Validate(loaded, float.MaxValue, out _); } catch (InvalidDataException) { oldValid = false; }
+            HomeStorage oldStorage = SessionSaveStore.RestoreContainers(loaded, SessionSaveStore.RestoreHome(loaded), new HashSet<string> { "b1" }, new HashSet<string>());
+            Check(oldValid && oldStorage.Chest("pc") != null && oldStorage.Chest("pc").Entries.Count == 0 && oldStorage.IsEmpty("pc"), "An older save with a placed chest and no containers loads with an empty chest");
+
+            // The Store button guard on a restored non-empty chest.
+            HomeState restoredHome = SessionSaveStore.RestoreHome(back);
+            Check(!got.TryStorePiece(restoredHome, "pc", out reason) && reason == "Empty it first" && restoredHome.Pieces.First(p => p.InstanceId == "pc").Placed && got.Chest("pc").Entries.Count == 3, "Storing a restored non-empty chest is refused with Empty it first");
+            Check(!got.TryStorePiece(restoredHome, "rk", out reason) && reason == "Empty it first", "Storing a restored non-empty rack is refused with Empty it first");
+            Check(CollectionPrototype.StoreSelectedPiece(restoredHome, got, "pc", out reason) == "pc" && reason == "Empty it first", "The bird's-eye Store keeps the piece selected and returns the reason");
+        }
+
+        private static void ContainerCraftChecks()
+        {
+            var crafting = new TheTrailWalker.Domain.Crafting.CraftingState();
+            var juice = TheTrailWalker.Domain.Crafting.RecipeBook.Find("recipe.food.apple_juice");
+            var axeRecipe = TheTrailWalker.Domain.Crafting.RecipeBook.Find("recipe.tool.pine_axe_normal");
+            crafting.Learn(juice.Id); crafting.Learn(axeRecipe.Id);
+            var t0 = new DateTime(2026, 11, 14, 12, 0, 0, DateTimeKind.Utc);
+            ItemDefinition branch = PrototypeItems.Branch;
+            string reason;
+
+            // Pending crafts moved into a chest and onto a rack still finish.
+            var storage = new HomeStorage(); var bag = ContainerBag(); var chest = ContainerChest(storage, "cc", 6, 6); var rack = new ToolRack(); storage.AddRack("rk", rack);
+            Mk(bag, "i-ap", PrototypeItems.Apples, 3, 1, ItemOwner.Backpack, 0, 0);
+            Mk(bag, "i-br", branch, 2, 1, ItemOwner.Backpack, 3000, 0);
+            Mk(bag, "i-fl", PrototypeItems.Flint, 2, 1, ItemOwner.Backpack, 6000, 0);
+            var food = TheTrailWalker.Domain.Crafting.CraftingService.Craft(bag, crafting, juice, 1, t0, HookId);
+            var tool = TheTrailWalker.Domain.Crafting.CraftingService.Craft(bag, crafting, axeRecipe, 1, t0, HookId);
+            Check(food.Success && tool.Success && food.Batch != null && tool.Batch != null && !food.Outputs[0].Ready && !tool.Outputs[0].Ready, "Setup: a timed food and a timed tool are pending in the bag");
+            ItemEntry pf = food.Outputs[0], pt = tool.Outputs[0];
+            Check(bag.Reserve(pf, 1) && bag.TryTransfer(pf, 1, chest, ItemOwner.Backpack, 0, 0, false, out reason) && bag.Reserve(pt, 1) && rack.TryPut(bag, pt, 1, 2, out reason), "Setup: the pending food is in a chest and the pending tool on a rack");
+            DateTime early = food.Batch.ReadyAtUtc < tool.Batch.ReadyAtUtc ? food.Batch.ReadyAtUtc : tool.Batch.ReadyAtUtc;
+            DateTime late = food.Batch.ReadyAtUtc > tool.Batch.ReadyAtUtc ? food.Batch.ReadyAtUtc : tool.Batch.ReadyAtUtc;
+            Check(TheTrailWalker.Domain.Crafting.CraftingService.Finish(bag, crafting, early.AddSeconds(-1), storage).Count == 0 && !pf.Ready && !pt.Ready, "One second before it is due, neither stored output is ready");
+            var done = TheTrailWalker.Domain.Crafting.CraftingService.Finish(bag, crafting, late, storage);
+            Check(done.Count == 2 && pf.Ready && pt.Ready && crafting.Batches.Count == 0 && chest.ContainsId(pf.Id) && rack[2] == pt, "At readyAt both are ready in place and the batches close");
+
+            // A pending item held in the chest is still marked ready.
+            var bag2 = ContainerBag(); var chest2 = ContainerChest(storage, "cc2", 6, 6);
+            Mk(bag2, "j-ap", PrototypeItems.Apples, 3, 1, ItemOwner.Backpack, 0, 0);
+            var made = TheTrailWalker.Domain.Crafting.CraftingService.Craft(bag2, crafting, juice, 1, t0, HookId);
+            ItemEntry held = made.Outputs[0];
+            Check(bag2.Reserve(held, 1) && bag2.TryTransfer(held, 1, chest2, ItemOwner.Backpack, 0, 0, false, out reason) && chest2.Reserve(held, 2), "Setup: the pending item is held in the chest");
+            TheTrailWalker.Domain.Crafting.CraftingService.Finish(bag2, crafting, made.Batch.ReadyAtUtc, storage);
+            Check(held.Ready && chest2.ReservedBy(held, 2), "A held pending item in a chest is marked ready and stays held");
+
+            // Isolation: chest contents never count for the bag.
+            var iso = new HomeStorage(); var isoBag = ContainerBag(); var isoChest = ContainerChest(iso, "ic", 6, 6);
+            ItemEntry inChest = Mk(isoChest, "c50", branch, 50, 1, ItemOwner.Backpack, 0, 0);
+            Mk(isoBag, "b10", branch, 10, 1, ItemOwner.Backpack, 0, 0);
+            string pine = branch.Id;
+            Check(isoBag.CountIngredient(pine) == 10 && HouseUpgradeService.Available(isoBag, pine) == 10, "Ingredient and upgrade counts see only the bag's 10");
+            Check(!isoBag.TryConsumeIngredients(new List<KeyValuePair<string, long>> { new KeyValuePair<string, long>(pine, 20) }) && isoBag.CountIngredient(pine) == 10 && inChest.Quantity == 50, "Consuming 20 fails with only 10 in the bag");
+            SpatialInventory.LossPlan plan =isoBag.PlanFaintLoss("ev", n => 0);
+            Check(plan.Entries.Count > 0 && plan.Entries.All(l => !iso.PieceIds.Contains(l.Id) && l.Id != "c50"), "A faint loss plan never names a container item");
+            Check(!isoBag.TryEscrow(inChest, 10, "esc", out _, out _) && inChest.Owner == ItemOwner.Backpack && inChest.Quantity == 50, "A chest entry cannot be escrowed by the bag");
+            string chestBefore = Snap(isoChest);
+            Check(isoBag.AutoSort(out reason) && Snap(isoChest) == chestBefore, "Sorting the bag leaves the chest untouched");
+            Check(isoBag.ConsumeForMission(pine, 50) == 10 && inChest.Quantity == 50 && Snap(isoChest) == chestBefore, "A mission delivery of 50 takes only the bag's 10");
         }
 
         private static void UpgradeEscrowChecks()

@@ -46,6 +46,8 @@ namespace TheTrailWalker
         {
             public ItemEntry Item; public Bundle Bundle; public Vector2 Start, Position, Offset;
             public float Started; public bool World, Side, Dragging; public RectTransform Ghost;
+            // Home storage (CollectionPrototype.HomeStorage.cs): the chest the item is held in (null: the bag), or the rack spot.
+            public SpatialInventory Source; public int RackSpot = -1;
         }
         private SpatialInventory ledger;
         private MovementState movement;
@@ -322,7 +324,7 @@ namespace TheTrailWalker
             if (inventoryOpen) LayoutBag(true);
             float top = inventoryOpen ? bagFrame.anchorMax.y : 0;
             aperture.anchorMin = new Vector2(0, top); aperture.anchorMax = new Vector2(1, top + 0.035f);
-            LayoutSquares(top + BarLineGap);
+            LayoutSquares((inventoryOpen && ContainerOpen ? Mathf.Max(top, ContainerTop) : top) + BarLineGap);   // above an open container panel
             dropPocket.gameObject.SetActive(inventoryOpen && TrailControlsVisible(InSettlementScene)); // nothing is dropped onto the street
             inventoryLabel.text = inventoryOpen ? "RETURN" : "BAG"; // only shown until the icons import
             SyncBagButtonIcon();
@@ -351,6 +353,7 @@ namespace TheTrailWalker
             laidOutWidth = safe.rect.width;
             RebuildSidePanels(cell, height);
             SetScroll(resetScroll ? -hooks : bagScroll);
+            LayoutContainer();   // an open chest or rack sits above the bag (CollectionPrototype.HomeStorage.cs)
             LayoutGearPanel(); LayoutCraftPanel();
         }
         private void SetScroll(float offset)
@@ -433,6 +436,7 @@ namespace TheTrailWalker
         private void ToggleInventory()
         {
             if (saveBlocked || (milestone4 && stamina.Fainted) || TravelInputLocked) return;
+            if (inventoryOpen) CloseContainer();   // the return icon closes an open chest or rack with the bag
             router.CancelAll(); inventoryOpen = !inventoryOpen; SetMenu(false);
             if (!inventoryOpen && gearPanel != null) { gearPanel.SetActive(false); detailsPanel.SetActive(false); }
             if (!inventoryOpen && craftPanel != null) craftPanel.SetActive(false);
@@ -447,7 +451,8 @@ namespace TheTrailWalker
             resetPending = false;
             try
             {
-                saveStore.ArchiveForReset(); saveBlocked = false; lastSavedState = null; crafting = new CraftingState(); missions = new TheTrailWalker.Domain.Missions.MissionState(); settlement = TheTrailWalker.Domain.Travel.SettlementState.New(0); home = TheTrailWalker.Domain.Settlement.HomeState.New();
+                saveStore.ArchiveForReset(); saveBlocked = false; lastSavedState = null; crafting = new CraftingState(); missions = new TheTrailWalker.Domain.Missions.MissionState(); settlement = TheTrailWalker.Domain.Travel.SettlementState.New(0); home = TheTrailWalker.Domain.Settlement.HomeState.New(); homeStorage = new TheTrailWalker.Domain.Settlement.HomeStorage();
+                CloseContainer();
                 if (inventoryOpen) { movement.CloseInventory(); inventoryOpen = false; LayoutBackpack(); }
                 router.CancelAll(); movement.Reset();
                 if (milestone4) { equipment = new EquipmentState(); stamina = new StaminaState(); router.InteractionLocked = false; movement.SetSpeedCap(MovementState.StarterSpeedCap); faintEventId = null; faintLoss.Clear(); if (gearPanel != null) gearPanel.SetActive(false); }
@@ -655,6 +660,7 @@ namespace TheTrailWalker
         {
             if (saveBlocked || (milestone4 && stamina.Fainted)) return;
             if (!inventoryOpen) { Say("Open the backpack to move its contents"); return; }
+            if (ContainerPointerBegin(pointer, position)) return;   // the open chest or rack panel
             if (SideCellAt(position, out bool hook, out int index))
             {
                 ItemOwner owner = hook ? ItemOwner.Hook : ItemOwner.Pocket;
@@ -685,6 +691,7 @@ namespace TheTrailWalker
         public void Move(int pointer, Vector2 position)
         {
             if (SettlementPointerMove(pointer, position)) return;
+            if (ContainerScrollMove(pointer, position)) return;
             if (scrollPointer == pointer)
             {
                 RectTransformUtility.ScreenPointToLocalPointInRectangle(safe, position, null, out Vector2 now);
@@ -693,7 +700,7 @@ namespace TheTrailWalker
             }
             if (!contacts.TryGetValue(pointer, out Contact contact)) return;
             // Holding a dragged item near either screen edge scrolls toward the hooks or pockets.
-            if (contact.Dragging && !contact.World && inventoryOpen)
+            if (contact.Dragging && !contact.World && inventoryOpen && !ContainerEdgeScroll(position))
             {
                 float step = safe.rect.width * Time.unscaledDeltaTime;
                 if (position.x < Screen.width * 0.08f) SetScroll(bagScroll + step);
@@ -713,9 +720,11 @@ namespace TheTrailWalker
         {
             if (SettlementPointerEnd(pointer, position, canceled)) return;
             if (scrollPointer == pointer) { if (!canceled) Move(pointer, position); scrollPointer = null; return; }
+            if (ContainerScrollEnd(pointer, position, canceled)) return;
             if (!contacts.TryGetValue(pointer, out Contact contact)) return;
             if (!canceled) Move(pointer, position);
             if (!contacts.ContainsKey(pointer)) return; // Quick storage already committed.
+            if (EndContainerContact(pointer, contact, position, canceled)) return;   // to, from or within the chest or rack
             if (!canceled && contact.Dragging && !contact.World && inventoryOpen && dropPocket.gameObject.activeSelf && RectTransformUtility.RectangleContainsScreenPoint(dropPocket, position))
             { DropToTrail(pointer, contact); return; }
             if (!canceled && contact.Dragging && !contact.World && inventoryOpen && SideCellAt(position, out bool hook, out int index))
@@ -736,6 +745,7 @@ namespace TheTrailWalker
         }
         private void Commit(int pointer, Contact contact, bool quick, Vector2 position)
         {
+            if (contact.Source != null || contact.RackSpot >= 0) { EndContainerContact(pointer, contact, position, false); return; }
             bool success = false; string reason = "Drop inside the backpack; source unchanged";
             string pickedId = contact.World ? contact.Item.Definition.Id : null; int pickedBefore = contact.Item.Quantity;
             if (contact.World && !Reachable(contact.Bundle, out reason)) { }
@@ -757,11 +767,12 @@ namespace TheTrailWalker
         }
         private void Release(int pointer, Contact contact)
         {
-            ledger.Release(contact.Item, pointer); if (contact.Ghost != null) Destroy(contact.Ghost.gameObject); contacts.Remove(pointer);
+            if (contact.Source != null) CancelContainerHold(contact.Source, contact.Item, pointer); else ledger.Release(contact.Item, pointer);
+            if (contact.Ghost != null) Destroy(contact.Ghost.gameObject); contacts.Remove(pointer);
         }
         public void CancelAll()
         {
-            foreach (var pair in contacts) { ledger.Release(pair.Value.Item, pair.Key); if (pair.Value.Ghost != null) Destroy(pair.Value.Ghost.gameObject); }
+            foreach (var pair in contacts) { if (pair.Value.Source != null) CancelContainerHold(pair.Value.Source, pair.Value.Item, pair.Key); else ledger.Release(pair.Value.Item, pair.Key); if (pair.Value.Ghost != null) Destroy(pair.Value.Ghost.gameObject); }
             contacts.Clear(); scrollPointer = null; CancelSettlementPointer();
         }
         private void Redraw()
@@ -996,6 +1007,7 @@ namespace TheTrailWalker
         private void BeginFaint()
         {
             statistics.AddFaint();
+            CloseContainer();
             if (inventoryOpen) { movement.CloseInventory(); inventoryOpen = false; LayoutBackpack(); }
             if (gearPanel != null) gearPanel.SetActive(false);
             if (detailsPanel != null) detailsPanel.SetActive(false);
@@ -1158,7 +1170,7 @@ namespace TheTrailWalker
         private bool EquipItem(ItemEntry item)
         {
             if (saveBlocked || stamina.Fainted || !inventoryOpen) return false;
-            if (item == null || item.Owner != ItemOwner.Backpack || !item.Definition.GearSlot.HasValue) { Say("Choose a spare wearable from the backpack."); return false; }
+            if (!BagOwnsForEquip(ledger, item) || !item.Definition.GearSlot.HasValue) { Say("Choose a spare wearable from the backpack."); return false; }
             if (item.Profile.MaxDurability > 0 && item.Profile.Durability <= 0) { Say("That wearable has no remaining durability."); return false; }
             if (!item.Ready) { Say("Still crafting: it can be equipped when its timer finishes."); return false; }
             GearSlot slot = item.Definition.GearSlot.Value;

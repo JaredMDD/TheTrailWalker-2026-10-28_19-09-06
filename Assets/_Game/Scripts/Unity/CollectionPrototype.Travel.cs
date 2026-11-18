@@ -264,7 +264,7 @@ namespace TheTrailWalker
         {
             if (goldButton == null || travel == null) return;
             bool seated = phase == TravelPhase.Seated;
-            if (!seated && phase != TravelPhase.Settlement && mapPanel.activeSelf) CloseMap();   // the settlement keeps its read-only map
+            if (!seated && phase != TravelPhase.Settlement && mapPanel.activeSelf) CloseMap();   // the settlement map travels by region, so it stays open there
             bool wallet = seated && TrailControlsVisible(InSettlementScene);   // debug grants are camp-only, never in the settlement
             goldButton.SetActive(wallet);
             if (settlementDebugButton != null) settlementDebugButton.SetActive(wallet);

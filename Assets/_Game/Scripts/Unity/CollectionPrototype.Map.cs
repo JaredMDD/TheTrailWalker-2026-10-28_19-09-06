@@ -51,10 +51,11 @@ namespace TheTrailWalker
         // Settlement card (house icon) in the region list: only when discovered, seated at a camp and not in the settlement.
         // Public so the Editor checks assembly can call it.
         public static bool ShowSettlementCard(bool discovered, bool seated, bool inSettlement) => discovered && seated && !inSettlement;
-        // In the settlement the map is read-only (region cards say "Use Return to travel" and never travel).
-        public static bool MapTravelAllowed(bool inSettlement) => !inSettlement;
-        public const string MapReadOnlyNote = "Use Return to travel";
-        private bool MapReadOnly => !MapTravelAllowed(phase == TravelPhase.Settlement);
+        // In the settlement the map travels by region only: a region goes to its first camp; the camp page's camps are read-only.
+        public static bool MapRegionTravelAllowed(bool inSettlement) => true;
+        public static bool MapCampTravelAllowed(bool inSettlement) => !inSettlement;
+        public const string SettlementCampPageNote = "From the settlement, travel goes to the region's first camp.";
+        private bool MapCampsReadOnly => !MapCampTravelAllowed(phase == TravelPhase.Settlement);
 
         private void OpenMap()
         {
@@ -62,7 +63,7 @@ namespace TheTrailWalker
             if (inventoryOpen) ToggleInventory();
             if (craftPanel != null) craftPanel.SetActive(false);
             if (gearPanel != null) gearPanel.SetActive(false);
-            mapRegionId = travel.CurrentRegion.Id; mapRegionList = MapReadOnly;   // the settlement map opens on the region list
+            mapRegionId = travel.CurrentRegion.Id; mapRegionList = phase == TravelPhase.Settlement;   // the settlement map opens on the region list
             BuildMapPage();
             mapPanel.transform.SetAsLastSibling(); // in front of the HUD squares
             mapPanel.SetActive(true);
@@ -174,7 +175,7 @@ namespace TheTrailWalker
             RectTransform rect = Rect("Region title", mapPage, 0.16f, 0.882f, 0.84f, 0.968f);
             Image hit = rect.gameObject.AddComponent<Image>(); hit.color = Color.clear;
             var button = rect.gameObject.AddComponent<Button>(); button.targetGraphic = hit;
-            button.onClick.AddListener(() => { if (MapReadOnly) { MapNote(MapReadOnlyNote); return; } mapRegionList = !mapRegionList; BuildMapPage(); });
+            button.onClick.AddListener(() => { mapRegionList = !mapRegionList; BuildMapPage(); });
             MapText(rect, title, 0.03f, 0.35f, 0.97f, 0.97f, 34, MapInk).fontStyle = FontStyle.Bold;
             MapText(rect, subtitle, 0.1f, 0.02f, 0.9f, 0.34f, 17, MapFaded);
         }
@@ -198,7 +199,7 @@ namespace TheTrailWalker
         // Tapping a discovered row opens its camps; the arrow on the right travels to its first camp once reached.
         private void BuildRegionList(TravelCatalog catalog)
         {
-            bool readOnly = MapReadOnly;
+            bool inSettlementMap = phase == TravelPhase.Settlement;
             bool card = ShowSettlementCard(settlement.Discovered, phase == TravelPhase.Seated, phase == TravelPhase.Settlement);
             int count = catalog.Regions.Count, slots = count + (card ? 1 : 0); float top = 0.86f, bottom = 0.06f;
             float row = Mathf.Min(0.11f, (top - bottom) / Mathf.Max(1, slots));
@@ -217,7 +218,7 @@ namespace TheTrailWalker
                 if (discovered)
                 {
                     var open = rect.gameObject.AddComponent<Button>(); open.targetGraphic = plate;
-                    string id = region.Id; open.onClick.AddListener(() => { if (readOnly) { MapNote(MapReadOnlyNote); return; } mapRegionId = id; mapRegionList = false; BuildMapPage(); });
+                    string id = region.Id; open.onClick.AddListener(() => { mapRegionId = id; mapRegionList = false; BuildMapPage(); });
                 }
                 // Thumbnail: the region's own map sheet, edged in the region colour.
                 RectTransform swatch = Rect("Swatch", rect, 0.015f, 0.1f, 0.175f, 0.9f);
@@ -234,7 +235,7 @@ namespace TheTrailWalker
                 // Travel arrow: to the region's first camp (in the current region, back to its first camp).
                 bool firstReached = travel.VisitedCamps.Contains(region.FirstCamp.Id);
                 bool atFirst = here && travel.CurrentCampId == region.FirstCamp.Id;
-                bool canGo = discovered && firstReached && !atFirst;
+                bool canGo = discovered && (inSettlementMap || (firstReached && !atFirst));
                 RectTransform go = Rect("Travel", rect, 0.83f, 0.1f, 0.985f, 0.9f);
                 Image goPlate = go.gameObject.AddComponent<Image>(); goPlate.color = canGo ? new Color(1f, 0.93f, 0.75f, 0.95f) : new Color(0.8f, 0.76f, 0.68f, 0.4f);
                 var goButton = go.gameObject.AddComponent<Button>(); goButton.targetGraphic = goPlate; goButton.interactable = canGo;
@@ -245,7 +246,7 @@ namespace TheTrailWalker
                     if (silhouette != null) silhouette.GetComponent<Image>().color = new Color(1, 1, 1, 0.35f);
                 }
                 string regionId = region.Id, firstCamp = region.FirstCamp.Id;
-                goButton.onClick.AddListener(() => { if (readOnly) { MapNote(MapReadOnlyNote); return; } if (here) SelectCamp(firstCamp); else SelectRegion(regionId); });
+                goButton.onClick.AddListener(() => { if (here && !inSettlementMap) SelectCamp(firstCamp); else SelectRegion(regionId); });
             }
         }
 
@@ -304,9 +305,9 @@ namespace TheTrailWalker
             if (tab != null) { plate.sprite = tab; plate.type = Image.Type.Simple; }
             plate.color = current ? new Color(1f, 0.9f, 0.6f, 1f) : reached ? new Color(0.95f, 0.9f, 0.8f, 1f) : new Color(0.75f, 0.7f, 0.6f, 0.55f);
             var button = rect.gameObject.AddComponent<Button>(); button.targetGraphic = plate;
-            button.interactable = selectable;
+            button.interactable = selectable || MapCampsReadOnly;   // in the settlement a tap shows the note
             string id = camp.Id, regionId = camp.RegionId;
-            button.onClick.AddListener(() => { if (sameRegion) SelectCamp(id); else SelectRegion(regionId); });
+            button.onClick.AddListener(() => { if (MapCampsReadOnly) { MapNote(SettlementCampPageNote); return; } if (sameRegion) SelectCamp(id); else SelectRegion(regionId); });
             // Campfire icon on the road side, the name on the outer side.
             RectTransform icon = Rect("Campfire", rect, right ? 0.02f : 0.80f, 0.06f, right ? 0.2f : 0.98f, 0.94f);
             Image iconImage = icon.gameObject.AddComponent<Image>(); iconImage.color = Color.clear;

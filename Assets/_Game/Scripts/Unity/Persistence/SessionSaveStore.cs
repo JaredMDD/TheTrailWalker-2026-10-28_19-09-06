@@ -66,10 +66,15 @@ namespace TheTrailWalker.Persistence
         public int block;
         public int level = 1;
         public List<SavedPiece> pieces = new List<SavedPiece>();
+        // Milestone 11 (optional): chest and rack contents; JsonUtility gives an empty list when absent (older saves).
+        public List<SavedContainer> containers = new List<SavedContainer>();
         public List<string> firstPurchases = new List<string>();
         // Slice 2b (optional): the house's upgrade escrow entry ids in deposit order; JsonUtility gives an empty list when absent.
         public List<string> upgradeEscrow = new List<string>();
     }
+    // Milestone 11 (optional): one placed chest or tool rack's contents. kind is "chest" or "rack"; chest items keep owner
+    // "Backpack" with their x,y in the chest's thousandths, rack items use x = spot (0-11) and y = 0.
+    [Serializable] public sealed class SavedContainer { public string pieceId, kind; public List<SavedItem> items = new List<SavedItem>(); }
     [Serializable] public sealed class SavedPiece { public string id, definition; public bool placed; public int x, z; public int rotation; }
     [Serializable] public sealed class SavedNeighbour { public int plot, level, countdown; }
     [Serializable] public sealed class SavedCount { public string key; public long value; }
@@ -399,18 +404,7 @@ namespace TheTrailWalker.Persistence
                     if (item.hasWear && !worn.infinite && Math.Abs(item.wearRemaining - worn.remainingDistance) > 0.0001) throw new InvalidDataException("Worn item durability and gear slot disagree");
                     if (!worn.infinite && item.maxDurability > 0 && worn.remainingDistance > item.maxDurability + 0.0001) throw new InvalidDataException("Worn item exceeds its maximum durability");
                 }
-                var entry = inventory.AddWorld(item.id, def, item.quantity, item.quality, new ItemProfile(item.unitValue, item.maxDurability, item.durability, item.variant), item.ready, item.trailDistance);
-                if (!inventory.RestoreWear(entry, item.hasWear, item.wearRemaining)) throw new InvalidDataException("Invalid spare wear state");
-                if (item.pile != null && item.pile.Count > 0)
-                {
-                    var portions = new List<PilePortion>(item.pile.Count);
-                    foreach (SavedPortion saved in item.pile)
-                    {
-                        if (saved == null) throw new InvalidDataException("Invalid stack pile");
-                        portions.Add(new PilePortion(saved.quality, new ItemProfile(saved.unitValue, saved.maxDurability, saved.durability, saved.variant), saved.quantity));
-                    }
-                    if (!inventory.RestorePile(entry, portions)) throw new InvalidDataException("Stack pile does not match its quantity");
-                }
+                ItemEntry entry = BuildEntry(inventory, item);
                 if (owner != ItemOwner.World && !inventory.RestoreStored(entry, owner, item.x, item.y)
                     // Footprint migration (October 31, 2026, larger tools): a backpack item that no longer fits its old spot
                     // goes to overflow (CLAIM OVERFLOW returns it) instead of invalidating the save.
@@ -424,6 +418,11 @@ namespace TheTrailWalker.Persistence
             }
             foreach (var record in wornRecords)
                 if (!record.Key.StartsWith("debug-", StringComparison.Ordinal) && !wornItems.Contains(record.Key)) throw new InvalidDataException("Worn item is missing from inventory ledger");
+            if (savedHome != null)
+            {
+                var takenIds = new HashSet<string>(); foreach (SavedItem bagItem in data.items) takenIds.Add(bagItem.id);
+                RestoreContainers(data, savedHome, takenIds, PendingBatchItemIds(data));
+            }
             // Slice 2b: every house escrow id names an Escrow item in this save that no trade listing also names.
             if (savedHome != null)
             {
@@ -432,6 +431,128 @@ namespace TheTrailWalker.Persistence
                 try { TheTrailWalker.Domain.Settlement.HouseUpgradeService.CheckStructure(savedHome.UpgradeEscrow, inventory.Entries, tradeEscrow); }
                 catch (ArgumentException error) { throw new InvalidDataException("Invalid house deposits: " + error.Message); }
             }
+        }
+
+        // Definition lookup, AddWorld, spare wear and pile for one saved item, into a private ledger. Callers place the entry.
+        private static ItemEntry BuildEntry(SpatialInventory into, SavedItem item)
+        {
+            ItemDefinition def = TheTrailWalker.Domain.Crafting.Items.Find(item.definitionId);
+            if (def == null) throw new InvalidDataException("Unknown item definition: " + item.definitionId);
+            var entry = into.AddWorld(item.id, def, item.quantity, item.quality, new ItemProfile(item.unitValue, item.maxDurability, item.durability, item.variant), item.ready, item.trailDistance);
+            if (!into.RestoreWear(entry, item.hasWear, item.wearRemaining)) throw new InvalidDataException("Invalid spare wear state");
+            if (item.pile != null && item.pile.Count > 0)
+            {
+                var portions = new List<PilePortion>(item.pile.Count);
+                foreach (SavedPortion saved in item.pile)
+                {
+                    if (saved == null) throw new InvalidDataException("Invalid stack pile");
+                    portions.Add(new PilePortion(saved.quality, new ItemProfile(saved.unitValue, saved.maxDurability, saved.durability, saved.variant), saved.quantity));
+                }
+                if (!into.RestorePile(entry, portions)) throw new InvalidDataException("Stack pile does not match its quantity");
+            }
+            return entry;
+        }
+
+        private static HashSet<string> PendingBatchItemIds(SessionSnapshot data)
+        {
+            var ids = new HashSet<string>();
+            if (data?.crafting?.batches != null) foreach (SavedBatch batch in data.crafting.batches) if (batch?.itemIds != null) foreach (string id in batch.itemIds) ids.Add(id);
+            return ids;
+        }
+
+        // Milestone 11: chest and rack contents of a loaded save, with the taken and pending ids derived from the snapshot.
+        public static TheTrailWalker.Domain.Settlement.HomeStorage RestoreContainers(SessionSnapshot data, TheTrailWalker.Domain.Settlement.HomeState home)
+        {
+            var taken = new HashSet<string>(); if (data?.items != null) foreach (SavedItem item in data.items) if (item != null) taken.Add(item.id);
+            return RestoreContainers(data, home, taken, PendingBatchItemIds(data));
+        }
+        // The ids never overlap the bag's or each other's, and a not-ready item must belong to an outstanding batch. Nothing is
+        // returned unless every container is valid; placed chests and racks without a record start empty.
+        public static TheTrailWalker.Domain.Settlement.HomeStorage RestoreContainers(SessionSnapshot data, TheTrailWalker.Domain.Settlement.HomeState home, ISet<string> takenIds, ISet<string> pendingBatchItemIds)
+        {
+            var storage = new TheTrailWalker.Domain.Settlement.HomeStorage();
+            List<SavedContainer> saved = data?.home != null && data.home.block != 0 ? data.home.containers : null;
+            if (saved != null && saved.Count > 0)
+            {
+                var seenContainers = new HashSet<string>(); var seenItems = new HashSet<string>(takenIds ?? new HashSet<string>());
+                try
+                {
+                    foreach (SavedContainer box in saved)
+                    {
+                        if (box == null || string.IsNullOrEmpty(box.pieceId) || box.items == null || !seenContainers.Add(box.pieceId)) throw new InvalidDataException("bad or duplicate container");
+                        TheTrailWalker.Domain.Settlement.FurniturePiece piece = null;
+                        foreach (var candidate in home.Pieces) if (candidate.InstanceId == box.pieceId) { piece = candidate; break; }
+                        if (piece == null || !piece.Placed || !TheTrailWalker.Domain.Settlement.HomeStorage.IsContainerDefinition(piece.Definition)) throw new InvalidDataException("not a placed chest or rack");
+                        bool chestPiece = piece.Definition.IsChest;
+                        if (box.kind != (chestPiece ? "chest" : "rack")) throw new InvalidDataException("container kind does not match its piece");
+                        if (box.items.Count > TheTrailWalker.Domain.Settlement.HomeStorage.MaxItemsPerContainer) throw new InvalidDataException("too many items");
+                        SpatialInventory chest = null; TheTrailWalker.Domain.Settlement.ToolRack rack = null; var scratch = new SpatialInventory();
+                        if (chestPiece)
+                        {
+                            (int width, int height) = TheTrailWalker.Domain.Settlement.HomeStorage.ChestSize(piece.DefinitionId);
+                            chest = new SpatialInventory(width * 1000, height * 1000); chest.IsContainer = true;
+                        }
+                        else rack = new TheTrailWalker.Domain.Settlement.ToolRack();
+                        foreach (SavedItem item in box.items)
+                        {
+                            if (item == null || string.IsNullOrWhiteSpace(item.id) || !seenItems.Add(item.id) || item.owner != nameof(ItemOwner.Backpack) || item.dropped || !string.IsNullOrEmpty(item.segmentId)
+                                || float.IsNaN(item.trailDistance) || float.IsInfinity(item.trailDistance) || item.trailDistance < 0 || item.trailDistance > 10000f
+                                || float.IsNaN(item.worldX) || float.IsInfinity(item.worldX) || float.IsNaN(item.worldY) || float.IsInfinity(item.worldY) || float.IsNaN(item.worldZ) || float.IsInfinity(item.worldZ)
+                                || (!item.ready && (pendingBatchItemIds == null || !pendingBatchItemIds.Contains(item.id)))) throw new InvalidDataException("bad item record");
+                            if (chestPiece)
+                            {
+                                ItemEntry entry = BuildEntry(chest, item);
+                                if (!chest.RestoreStored(entry, ItemOwner.Backpack, item.x, item.y)) throw new InvalidDataException("item overlaps or leaves the chest");
+                            }
+                            else
+                            {
+                                if (item.y != 0) throw new InvalidDataException("bad rack spot");
+                                ItemEntry entry = BuildEntry(scratch, item);
+                                if (!rack.Restore(entry, item.x)) throw new InvalidDataException("bad, repeated or stackable rack item");
+                            }
+                        }
+                        if (chestPiece) storage.AddChest(box.pieceId, chest); else storage.AddRack(box.pieceId, rack);
+                    }
+                }
+                catch (ArgumentException error) { throw new InvalidDataException("Invalid home storage: " + error.Message); }
+                catch (InvalidDataException error) when (!error.Message.StartsWith("Invalid home storage")) { throw new InvalidDataException("Invalid home storage: " + error.Message); }
+            }
+            storage.Sync(home);
+            return storage;
+        }
+
+        public static List<SavedContainer> SaveContainers(TheTrailWalker.Domain.Settlement.HomeStorage storage)
+        {
+            var result = new List<SavedContainer>();
+            if (storage == null) return result;
+            var ids = new List<string>(storage.PieceIds); ids.Sort(StringComparer.Ordinal);
+            foreach (string pieceId in ids)
+            {
+                SpatialInventory chest = storage.Chest(pieceId);
+                var box = new SavedContainer { pieceId = pieceId, kind = chest != null ? "chest" : "rack" };
+                if (chest != null)
+                {
+                    foreach (ItemEntry item in chest.Entries) if (item.Owner == ItemOwner.Backpack) box.items.Add(SaveContainerItem(item, item.X, item.Y));
+                    box.items.Sort((a, b) => string.CompareOrdinal(a.id, b.id));
+                }
+                else
+                {
+                    TheTrailWalker.Domain.Settlement.ToolRack rack = storage.Rack(pieceId);
+                    for (int spot = 0; spot < TheTrailWalker.Domain.Settlement.ToolRack.Spots; spot++) if (rack[spot] != null) box.items.Add(SaveContainerItem(rack[spot], spot, 0));
+                }
+                result.Add(box);
+            }
+            return result;
+        }
+        private static SavedItem SaveContainerItem(ItemEntry item, int x, int y)
+        {
+            var saved = new SavedItem { id = item.Id, definitionId = item.Definition.Id, owner = nameof(ItemOwner.Backpack), quantity = item.Quantity,
+                quality = item.Quality, ready = item.Ready, x = x, y = y, unitValue = item.Profile.UnitValue,
+                maxDurability = item.Profile.MaxDurability, durability = item.Profile.Durability, variant = item.Profile.Variant,
+                hasWear = item.HasWearRemaining, wearRemaining = item.WearRemaining, trailDistance = item.TrailDistance, pile = new List<SavedPortion>() };
+            foreach (PilePortion p in item.Pile)
+                saved.pile.Add(new SavedPortion { quality = p.Quality, quantity = p.Quantity, unitValue = p.Profile.UnitValue, maxDurability = p.Profile.MaxDurability, durability = p.Profile.Durability, variant = p.Profile.Variant });
+            return saved;
         }
 
         // Economy 0 -> 1 (Milestone 9): unit values become minor units (1/100 cash). Levelled crafts keep their snapshot (x100);

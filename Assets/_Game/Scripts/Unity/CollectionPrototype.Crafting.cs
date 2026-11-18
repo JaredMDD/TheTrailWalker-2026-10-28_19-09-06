@@ -92,7 +92,7 @@ namespace TheTrailWalker
             nextCraftTick = Time.unscaledTime + 0.25f;
             if (crafting.Batches.Count > 0)
             {
-                List<CraftBatch> done = CraftingService.Finish(ledger, crafting, DateTime.UtcNow);
+                List<CraftBatch> done = CraftingService.Finish(ledger, crafting, DateTime.UtcNow, homeStorage);
                 if (done.Count > 0)
                 {
                     var names = new List<string>();

@@ -19,8 +19,8 @@ namespace TheTrailWalker.Editor
 
         [Serializable] public sealed class Piece
         {
-            public string Id, Name, Asset, Category, LidAsset; public int Level, FootprintWidth, FootprintDepth, PriceCash, Triangles; public bool IsChest;
-            public float[] BoundsMin, BoundsMax, LidHinge;
+            public string Id, Name, Asset, Category, LidAsset; public int Level, FootprintWidth, FootprintDepth, PriceCash, Triangles; public bool IsChest, IsExtra, IsRack;
+            public float[] BoundsMin, BoundsMax, LidHinge, PegBox, Spots;   // PegBox: metres; Spots: 12 x (x, y, z) hang-volume centres, row-major from the top-left
         }
         [Serializable] sealed class Manifest { public float GridMetres; public Piece[] Furniture; }
         static Manifest Load() => JsonUtility.FromJson<Manifest>(File.ReadAllText(Source + "FurnitureManifest.json"));
@@ -56,7 +56,15 @@ namespace TheTrailWalker.Editor
                     var data = root.AddComponent<FurnitureArtMetadata>();
                     data.FurnitureId = piece.Id; data.DisplayName = piece.Name; data.BuffCategory = piece.Category; data.HouseLevel = piece.Level;
                     data.PriceCash = piece.PriceCash; data.Footprint = new Vector2Int(piece.FootprintWidth, piece.FootprintDepth);
-                    data.GridCellMetres = manifest.GridMetres; data.IsChest = piece.IsChest;
+                    data.GridCellMetres = manifest.GridMetres; data.IsChest = piece.IsChest; data.IsRack = piece.IsRack;
+                    if (piece.IsRack)
+                        for (int i = 0; i < 12; i++)
+                        {
+                            var anchor = new GameObject($"Spot{i:00}").AddComponent<FurnitureSpotAnchor>();
+                            anchor.transform.SetParent(root.transform, false);
+                            anchor.transform.localPosition = new Vector3(piece.Spots[i * 3], piece.Spots[i * 3 + 1], piece.Spots[i * 3 + 2]);
+                            anchor.PegBox = new Vector3(piece.PegBox[0], piece.PegBox[1], piece.PegBox[2]);
+                        }
                     // Selection volume for the hold (or chest touch) gesture: the footprint box up to the model height.
                     var box = root.AddComponent<BoxCollider>();
                     float w = piece.FootprintWidth * manifest.GridMetres, d = piece.FootprintDepth * manifest.GridMetres, h = Mathf.Max(.3f, piece.BoundsMax[1]);
@@ -90,13 +98,13 @@ namespace TheTrailWalker.Editor
             foreach (var p in manifest.Furniture)
             {
                 Check(ids.Add(p.Id) && p.Id.StartsWith($"furniture.l{p.Level}.", StringComparison.Ordinal), $"{p.Id}: unique ID with its house level");
-                perLevel[p.Level] = (perLevel.TryGetValue(p.Level, out int n) ? n : 0) + 1;
+                if (!p.IsExtra) perLevel[p.Level] = (perLevel.TryGetValue(p.Level, out int n) ? n : 0) + 1;   // the six-per-level rules count the 48 types, not extras
                 Check(p.FootprintWidth >= 1 && p.FootprintDepth >= 1 && p.FootprintWidth * p.FootprintDepth <= 6 && Mathf.Max(p.FootprintWidth, p.FootprintDepth) <= 3,
                     $"{p.Name}: footprint {p.FootprintWidth}x{p.FootprintDepth} within 3x2 (15% of the level-1 room)");
                 Check(p.PriceCash > 0, $"{p.Name}: has a store price ({p.PriceCash:N0} cash) and no recipe");
                 Check(p.Triangles <= 600, $"{p.Name}: {p.Triangles} triangles within the 600 budget");
                 var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(Target + p.Asset + ".prefab");
-                Check(prefab != null && prefab.GetComponent<FurnitureArtMetadata>() is FurnitureArtMetadata m && m.FurnitureId == p.Id && m.Footprint == new Vector2Int(p.FootprintWidth, p.FootprintDepth) && m.IsChest == p.IsChest,
+                Check(prefab != null && prefab.GetComponent<FurnitureArtMetadata>() is FurnitureArtMetadata m && m.FurnitureId == p.Id && m.Footprint == new Vector2Int(p.FootprintWidth, p.FootprintDepth) && m.IsChest == p.IsChest && m.IsRack == p.IsRack,
                     $"{p.Name}: prefab carries its metadata");
                 if (p.IsChest) Check(prefab.transform.Find("LidPivot") is Transform lid && lid.childCount == 1, $"{p.Name}: chest has a hinged lid (LidPivot) for the touch-to-open action");
                 var view = UnityEngine.Object.Instantiate(prefab);
@@ -114,7 +122,7 @@ namespace TheTrailWalker.Editor
             foreach (var pair in perLevel)
             {
                 var wood = new[] { "", "Pine", "Pine", "Birch", "Birch", "Mesquite", "Mesquite", "Oak", "Oak" }[pair.Key];
-                var cats = new HashSet<string>(); foreach (var p in manifest.Furniture) if (p.Level == pair.Key) cats.Add(p.Category);
+                var cats = new HashSet<string>(); foreach (var p in manifest.Furniture) if (p.Level == pair.Key && !p.IsExtra) cats.Add(p.Category);
                 Check(cats.Count == 6, $"House level {pair.Key}: six different buff categories ({wood} level)");
             }
             // Every type owned so far must fit in its room at once (buffs only count while placed).
@@ -122,11 +130,50 @@ namespace TheTrailWalker.Editor
                 { 5, new Vector2Int(12, 11) }, { 6, new Vector2Int(12, 13) }, { 7, new Vector2Int(12, 15) }, { 8, new Vector2Int(12, 17) } };
             foreach (var level in perLevel.Keys)
             {
-                var owned = Array.FindAll(manifest.Furniture, p => p.Level <= level);
+                var owned = Array.FindAll(manifest.Furniture, p => p.Level <= level && !p.IsExtra);
                 Check(Layout(owned, rooms[level], out _), $"All {owned.Length} types owned at level {level} fit its {rooms[level].x}x{rooms[level].y} room together");
             }
+            RackChecks(manifest, Check);
             Directory.CreateDirectory("Builds/Validation"); File.WriteAllLines("Builds/Validation/Furniture-art-checks.txt", passed);
             return passed;
+        }
+
+        // The tool rack (Milestone 11): a free-standing pegboard with twelve hang spots, 3 columns x 4 rows, row-major from the top-left.
+        static void RackChecks(Manifest manifest, Action<bool, string> check)
+        {
+            var rack = Array.Find(manifest.Furniture, p => p.Id == "furniture.l1.tool_rack");
+            check(rack != null && rack.IsRack && rack.IsExtra && !rack.IsChest && rack.Level == 1 && rack.FootprintWidth == 2 && rack.FootprintDepth == 1 && rack.PriceCash == 3000, "Tool rack: level 1, 2x1, 3,000 cash, an extra rack row");
+            if (rack == null) return;
+            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(Target + rack.Asset + ".prefab");
+            check(prefab != null && prefab.GetComponent<FurnitureArtMetadata>() is FurnitureArtMetadata md && md.IsRack && !md.IsChest, "Tool rack: prefab exists and is flagged IsRack");
+            check(rack.Triangles < 600, $"Tool rack: {rack.Triangles} triangles under 600");
+            var view = UnityEngine.Object.Instantiate(prefab);
+            try
+            {
+                var bounds = new Bounds(); bool first = true;
+                foreach (var r in view.GetComponentsInChildren<Renderer>()) { if (first) { bounds = r.bounds; first = false; } else bounds.Encapsulate(r.bounds); }
+                float w = rack.FootprintWidth * manifest.GridMetres, d = rack.FootprintDepth * manifest.GridMetres;
+                check(bounds.min.x >= -w - .011f && bounds.max.x <= .011f && bounds.min.z >= -d - .011f && bounds.max.z <= .011f && bounds.max.y < 2.0f, $"Tool rack: mesh inside its 2x1 footprint and {bounds.max.y:0.00} m tall (under 2.0)");
+                var spots = view.GetComponentsInChildren<FurnitureSpotAnchor>();
+                bool names = true, inside = true, boxes = true;
+                for (int i = 0; i < 12; i++)
+                {
+                    var t = view.transform.Find($"Spot{i:00}"); var a = t != null ? t.GetComponent<FurnitureSpotAnchor>() : null;
+                    if (a == null) { names = false; continue; }
+                    var p = t.localPosition; var h = a.PegBox / 2;
+                    inside &= p.x - h.x >= -w - .011f && p.x + h.x <= .011f && p.z - h.z >= -d - .011f && p.z + h.z <= .011f && p.y - h.y >= -.002f && p.y + h.y <= 2.0f;
+                    boxes &= a.PegBox.x > 0 && a.PegBox.y > 0 && a.PegBox.z > 0;
+                }
+                check(spots.Length == 12 && names, "Tool rack: twelve Spot00-Spot11 anchors");
+                check(inside, "Tool rack: every anchor and its peg box sit inside the footprint");
+                check(boxes, "Tool rack: every anchor has a positive peg box");
+                Vector3 P(int i) { var t = view.transform.Find($"Spot{i:00}"); return t != null ? t.localPosition : new Vector3(float.NaN, float.NaN, float.NaN); }
+                check(P(0).y > P(8).y && P(0).x > P(3).x && Mathf.Approximately(P(0).y, P(3).y) && Mathf.Approximately(P(8).y, P(11).y) && Mathf.Approximately(P(0).x, P(8).x) && Mathf.Approximately(P(3).x, P(11).x) && P(4).y < P(0).y && P(4).y > P(8).y,
+                    "Tool rack: 4 across x 3 rows, row-major: Spot00 top-left, Spot03 top-right, Spot08 bottom-left, Spot11 bottom-right (+X is screen-left)");
+            }
+            finally { UnityEngine.Object.DestroyImmediate(view); }
+            var icon = AssetImporter.GetAtPath(Icons + rack.Asset + ".png") as TextureImporter;
+            check(icon != null && icon.textureType == TextureImporterType.Sprite && AssetDatabase.LoadAssetAtPath<Sprite>(Icons + rack.Asset + ".png") != null, "Tool rack: store icon imports as a sprite");
         }
 
         // The confirmed "nearest free space" rule: positions nearest the door (front centre), searched row by row from the

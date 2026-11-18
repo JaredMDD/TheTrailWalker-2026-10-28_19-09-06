@@ -53,7 +53,6 @@ namespace TheTrailWalker
         public static bool CraftAvailable(bool atCamp, bool insideHouse) => atCamp || insideHouse;
         private bool CraftHere => CraftAvailable(AtCamp, !NeighbourView && (homeView == HomeView.Interior || homeView == HomeView.BirdsEye));
 
-        public const string HomeChestNote = "Chests open in a later update.";
         public const float HomeHoldSeconds = 0.4f;
 
         // The furniture touch boxes share the street selection boxes' layer (Default: those boxes sit on fresh roots).
@@ -323,6 +322,7 @@ namespace TheTrailWalker
         // faint), also mid-glide: no home view, the house torn down, and the camera snapped to the street pose.
         private void ResetHomeView()
         {
+            CloseContainer();   // an open chest or rack closes on every exit path, also outside a home view
             if (!HomeOpen) return;
             homeEntering = false;
             homeView = HomeView.None;
@@ -433,6 +433,7 @@ namespace TheTrailWalker
             if (settlementNote != null && settlementNote.activeSelf) settlementNote.SetActive(false);
             interiorRoot = root;
             pieceViews = InstancePieces(root, shown);
+            if (neighbourHome == null) RebuildAllRackPegs();   // hung items on every rack's pegs (CollectionPrototype.HomeStorage.cs)
             float fov = cameraView != null ? cameraView.fieldOfView : StreetCamera.FieldOfView;
             float aspect = cameraView != null ? cameraView.aspect : (Screen.height > 0 ? (float)Screen.width / Screen.height : 1116f / 2480f);
             interiorFrame = InteriorFraming(root, fov, aspect);
@@ -473,6 +474,7 @@ namespace TheTrailWalker
         // scroll, no views, no prefab, HUD hidden.
         private void TearDownInterior()
         {
+            CloseContainer();
             CloseHomeSheets();
             TearDownBirdsEye();
             CancelInteriorPointer();
@@ -494,7 +496,7 @@ namespace TheTrailWalker
         private string interiorPiece;
 
         // One finger: a vertical drag scrolls the room (StreetScroll on Z), a hold of HomeHoldSeconds on a piece enters
-        // the bird's-eye view with it, a short tap on a chest shows the later-update note; nothing else reacts.
+        // the bird's-eye view with it, a short tap on a chest or the tool rack opens it above the bag; nothing else reacts.
         private bool InteriorPointerBegin(int pointer, Vector2 position)
         {
             if (interiorPointer.HasValue) return true;
@@ -525,7 +527,7 @@ namespace TheTrailWalker
             bool held = interiorHeld;
             interiorPointer = null; interiorDragging = false; interiorCaught = false; interiorHeld = false; interiorPiece = null;
             if (interiorScroll != null) { if (canceled || held) interiorScroll.Cancel(); else interiorScroll.End(Time.unscaledTime); }
-            if (tap && piece != null && IsChestPiece(piece)) ShowSettlementNote(HomeChestNote);
+            if (tap && piece != null && IsContainerPiece(piece)) OpenContainer(piece);
         }
         private void CancelInteriorPointer()
         {
@@ -559,9 +561,9 @@ namespace TheTrailWalker
             }
             return found;
         }
-        private bool IsChestPiece(string instanceId)
+        private bool IsContainerPiece(string instanceId)
         {
-            foreach (FurniturePiece p in home.Pieces) if (p.InstanceId == instanceId) return FurnitureCatalog.Find(p.DefinitionId).IsChest;
+            foreach (FurniturePiece p in home.Pieces) if (p.InstanceId == instanceId) return HomeStorage.IsContainerDefinition(FurnitureCatalog.Find(p.DefinitionId));
             return false;
         }
     }

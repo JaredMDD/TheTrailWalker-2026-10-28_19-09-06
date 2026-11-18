@@ -15,6 +15,7 @@ namespace TheTrailWalker.Domain.Settlement
             int n = 0;
             foreach (FurnitureDefinition d in FurnitureCatalog.UnlockedAt(level))   // catalog order
             {
+                if (d.IsExtra) continue;                                              // extras (the tool rack) are never furnished
                 if (rng.Next(3) == 0) continue;                                       // included with chance 2/3
                 int rotation = rng.Next(4);
                 string id = "neighbour." + n;

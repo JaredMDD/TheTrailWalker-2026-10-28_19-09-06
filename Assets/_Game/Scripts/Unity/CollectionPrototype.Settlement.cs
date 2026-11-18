@@ -18,12 +18,18 @@ namespace TheTrailWalker
 
         // First home (spec 2026-11-13): the player's house level and furniture, saved and restored with the session.
         private TheTrailWalker.Domain.Settlement.HomeState home = TheTrailWalker.Domain.Settlement.HomeState.New();
+        private TheTrailWalker.Domain.Settlement.HomeStorage homeStorage = new TheTrailWalker.Domain.Settlement.HomeStorage();
 
         // Set by the load-time migration; the startup code saves and tells the player once the prototype is initialized.
         private bool houseMigrationPending;
 
         private SavedSettlement SaveSettlementForSnapshot() => SessionSaveStore.SaveSettlement(settlement);
-        private SavedHome SaveHomeForSnapshot() => SessionSaveStore.SaveHome(home);
+        private SavedHome SaveHomeForSnapshot()
+        {
+            SavedHome saved = SessionSaveStore.SaveHome(home);
+            saved.containers = SessionSaveStore.SaveContainers(homeStorage);
+            return saved;
+        }
 
         // A save without a settlement block gets a fresh state whose seed is derived from the save, so it is deterministic per
         // profile: FNV-1a over the travel visit number and the current camp id.
@@ -31,6 +37,7 @@ namespace TheTrailWalker
         {
             settlement = SessionSaveStore.RestoreSettlement(snapshot, SettlementSeed(snapshot));
             home = SessionSaveStore.RestoreHome(snapshot);
+            homeStorage = SessionSaveStore.RestoreContainers(snapshot, home);
             // Slice 2b (spec section 6): deposits the next level can't use (unrequired, above the requirement, at the cap) go
             // to the overflow as whole entries instead of refusing the save. During the startup restore SaveNow is a no-op
             // (not yet initialized), so the move is flagged and the startup code saves and tells the player right after initialization.
@@ -184,6 +191,21 @@ namespace TheTrailWalker
             }
             Say("Debug: added " + string.Join(", ", parts) + ".");
         }
+        // Debug HOUSE L8 (Milestone 11 test phase): returns the deposits to the bag and grows the house to level 8 so every chest size can
+        // be bought. The button is visible exactly when + DEPOSIT is (never inside a home view), so only the street needs rebuilding.
+        public const string DebugJumpCaption = "HOUSE L8";
+        private Text houseJumpButton;
+        private void DebugJumpHouse()
+        {
+            if (saveBlocked || HomeOpen) return;
+            TheTrailWalker.Domain.Settlement.HouseUpgradeService.DebugJumpToLevel(home, ledger, TheTrailWalker.Domain.Settlement.HomeState.MaxLevel);
+            SaveNow(true);
+            if (UpgradeSheetOpen) CloseUpgradeSheet();
+            houseLevelPreview = 0;
+            if (houseLevelButton != null) houseLevelButton.text = HouseLevelCaption;
+            RebuildStreetWith(SettlementScenery.HouseLevels(settlement, home.Level));
+            Say("Debug: house set to level 8.");
+        }
         private GameObject settlementNote, settlementConfirm;
         private Text settlementNoteText, settlementConfirmText;
         private System.Action settlementConfirmed;
@@ -208,6 +230,7 @@ namespace TheTrailWalker
             // the save's levels. View only: nothing is saved, and leaving the settlement shows the saved street again.
             houseLevelButton = Button(safe, HouseLevelCaption, 0.47f, 0.61f, 0.72f, 0.66f, CycleHouseLevelPreview);
             houseDepositButton = Button(safe, DebugDepositCaption, 0.47f, 0.67f, 0.72f, 0.72f, DebugDeposit);
+            houseJumpButton = Button(safe, DebugJumpCaption, 0.47f, 0.49f, 0.72f, 0.54f, DebugJumpHouse);   // the next free row (0.55 holds CLAIM OVERFLOW)
 
             // Icon-only list from the upper-right corner downward; captions stay on the hidden labels (accessibility names).
             settlementList = Rect("Settlement list", safe, 0, 0, 1, 1);
@@ -293,6 +316,7 @@ namespace TheTrailWalker
                 bool visible = HouseDebugButtonVisible(HomeOpen);
                 if (debug.activeSelf != visible) debug.SetActive(visible);
                 if (houseDepositButton != null) { GameObject deposit = houseDepositButton.transform.parent.gameObject; if (deposit.activeSelf != visible) deposit.SetActive(visible); }
+                if (houseJumpButton != null) { GameObject jump = houseJumpButton.transform.parent.gameObject; if (jump.activeSelf != visible) jump.SetActive(visible); }
             }
             if (!covered)
             {

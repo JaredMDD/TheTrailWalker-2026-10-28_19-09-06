@@ -26,10 +26,12 @@ namespace TheTrailWalker.Domain.Settlement
         public readonly int Width, Depth;
         public readonly long PriceCash;
         public readonly bool IsChest;
+        public readonly bool IsExtra;   // not one of the 48 buff types: no buff, not furnished into neighbour homes
+        public readonly bool IsRack;    // the tool rack: holds tools and spare clothing on pegs
 
-        public FurnitureDefinition(string id, string name, string asset, int houseLevel, BuffCategory category, int strength, int width, int depth, long priceCash, bool isChest)
+        public FurnitureDefinition(string id, string name, string asset, int houseLevel, BuffCategory category, int strength, int width, int depth, long priceCash, bool isChest, bool isExtra, bool isRack)
         {
-            Id = id; Name = name; Asset = asset; HouseLevel = houseLevel; Category = category; Strength = strength; Width = width; Depth = depth; PriceCash = priceCash; IsChest = isChest;
+            Id = id; Name = name; Asset = asset; HouseLevel = houseLevel; Category = category; Strength = strength; Width = width; Depth = depth; PriceCash = priceCash; IsChest = isChest; IsExtra = isExtra; IsRack = isRack;
         }
     }
 
@@ -65,10 +67,10 @@ def main():
         rows = json.load(f)["Furniture"]
     lines = []
     for r in rows:
-        strength = 2 if r["Id"] in DOUBLE_STRENGTH else 1
-        lines.append("            new FurnitureDefinition({}, {}, {}, {}, BuffCategory.{}, {}, {}, {}, {}L, {}),".format(
+        strength = 0 if r.get("IsExtra") else (2 if r["Id"] in DOUBLE_STRENGTH else 1)
+        lines.append("            new FurnitureDefinition({}, {}, {}, {}, BuffCategory.{}, {}, {}, {}, {}L, isChest: {}, isExtra: {}, isRack: {}),".format(
             lit(r["Id"]), lit(r["Name"]), lit(r["Asset"]), r["Level"], r["Category"], strength,
-            r["FootprintWidth"], r["FootprintDepth"], r["PriceCash"], "true" if r["IsChest"] else "false"))
+            r["FootprintWidth"], r["FootprintDepth"], r["PriceCash"], "true" if r["IsChest"] else "false", "true" if r.get("IsExtra") else "false", "true" if r.get("IsRack") else "false"))
     with open(OUTPUT, "w", encoding="utf-8", newline="\n") as f:
         f.write(HEADER + "\n".join(lines) + "\n" + FOOTER)
     print("Wrote {} furniture rows to {}".format(len(rows), OUTPUT))

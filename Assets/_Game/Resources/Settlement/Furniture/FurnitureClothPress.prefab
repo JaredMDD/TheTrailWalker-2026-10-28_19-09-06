@@ -176,6 +176,7 @@ MonoBehaviour:
   Footprint: {x: 2, y: 2}
   GridCellMetres: 0.5
   IsChest: 0
+  IsRack: 0
 --- !u!65 &4257192064656227703
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using TheTrailWalker.Domain.Economy;
 using TheTrailWalker.Domain.Items;
 using TheTrailWalker.Domain.Travel;
@@ -301,7 +302,8 @@ namespace TheTrailWalker
             float size = 0.95f, x = 6;
             float height = ((RectTransform)tradeStockContent.parent).rect.height;
             float side = Mathf.Max(40, height * size);
-            foreach (ItemEntry item in ledger.Entries)
+            // Misc and other crafts first, materials last: players mostly sell crafts and keep materials (user, Nov 17, 2026).
+            foreach (ItemEntry item in ledger.Entries.OrderByDescending(e => ItemPrices.CategoryOf(e.Definition)))
             {
                 if ((item.Owner != ItemOwner.Backpack && item.Owner != ItemOwner.Pocket && item.Owner != ItemOwner.Hook) || !item.Ready || item.Quantity < 1) continue;
                 ItemEntry captured = item;

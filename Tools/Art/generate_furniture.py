@@ -32,6 +32,7 @@ CATALOG = [
     ('furniture.l1.boot_bench', 'Boot bench', 1, 'BootsLife', (2, 1), 3000, False),
     ('furniture.l1.sewing_basket', 'Sewing basket', 1, 'ShirtLife', (1, 1), 3000, False),
     ('furniture.l1.hat_peg', 'Hat peg', 1, 'HatLife', (1, 1), 3000, False),
+    ('furniture.l1.tool_rack', 'Tool rack', 1, 'Storage', (2, 1), 3000, False),   # extra: no buff, holds tools and spare clothing
     ('furniture.l2.trouser_rack', 'Trouser rack', 2, 'PantsLife', (2, 1), 6000, False),
     ('furniture.l2.chopping_block', 'Chopping block', 2, 'AxeLife', (1, 1), 6000, False),
     ('furniture.l2.sling_stand', 'Sling stand', 2, 'HuntingToolLife', (1, 1), 6000, False),
@@ -75,6 +76,9 @@ CATALOG = [
     ('furniture.l8.expedition_workbench', 'Expedition workbench', 8, 'BackpackLife', (3, 2), 2000000, False),
     ('furniture.l8.reinforced_oak_chest', 'Reinforced oak chest', 8, 'Storage', (3, 1), 2000000, True),
 ]
+# Extra rows are not among the 48 buff types: no buff, never furnished into neighbour homes (Milestone 11).
+EXTRA = {'furniture.l1.tool_rack'}
+RACKS = {'furniture.l1.tool_rack'}
 WOOD = {1: 'Pine', 2: 'Pine', 3: 'Birch', 4: 'Birch', 5: 'Mesquite', 6: 'Mesquite', 7: 'Oak', 8: 'Oak'}
 METAL = {1: 'Iron', 2: 'Iron', 3: 'Iron', 4: 'Copper', 5: 'Iron', 6: 'Iron', 7: 'Iron', 8: 'Steel'}   # as the house trim
 
@@ -203,6 +207,40 @@ def hat_peg(m, W, D):
     g.box(m, (pegs[1][0], pegs[1][1]-.12, pegs[1][2]), (.05, .24, .03), 'Cloth')            # scarf hanging from a peg
 
 
+RACK_PEG_BOX = (.22, .40, .12)   # metres: the volume one hung tool or garment occupies below its peg
+
+
+def rack_layout(W, D):
+    """Peg tips and hang volumes for the tool rack: 4 columns x 3 rows, row-major from the top-left (Spot00-Spot03 the top row, left to right)."""
+    cx, cz = -W/2, -D/2; front = cz-.08+.025
+    spots = []
+    for row in range(3):
+        for col in range(4):
+            peg_y = 1.35-row*.40
+            spots.append((cx-(col-1.5)*.20, peg_y-.15, front+.06))   # +X is screen-left, so column 0 sits at +X
+    return spots
+
+
+def tool_rack(m, W, D):
+    # Free-standing pine pegboard (extra piece, no buff): two posts on foot boards, a pegged board, a cap rail, 4 x 3 pegs (4 across, 3 rows).
+    cx, cz = -W/2, -D/2; bz = cz-.08; front = bz+.025
+    for sx in (-1, 1):
+        x = cx+sx*(W/2-.05)
+        g.box(m, (x, .03, cz), (.09, .06, D-.08), 'WoodDark')                      # foot board
+        g.box(m, (x, .90, bz), (.07, 1.76, .07), 'Pine')                            # post
+    g.box(m, (cx, .90, bz), (W-.16, 1.25, .05), 'PineLight')                         # the pegboard
+    for i in range(3):                                                                  # plank seams and grain on the front face
+        g.box(m, (cx-.20+i*.20, .90, front+.002), (.010, 1.23, .006), 'WoodDark')
+    for y in (1.52, .28):
+        g.box(m, (cx, y, bz), (W-.16, .06, .075), 'Pine')                           # top and bottom rails
+    g.box(m, (cx, 1.80, bz), (W-.10, .05, .09), 'WoodDark')                          # cap rail across the posts
+    g.box(m, (cx, .12, cz+.02), (W-.20, .035, .05), 'Pine')                          # low stretcher between the feet
+    for (x, y, z) in rack_layout(W, D):
+        py = y+.15
+        cyl(m, (x, py, front), (x, py+.025, front+.13), .020, 'WoodDark', 6)
+        g.box(m, (x, py+.027, front+.135), (.045, .045, .02), 'Pine')               # peg head
+
+
 # ------------------------------------------------------------------ batch B: level 2 (pine)
 
 def trouser_rack(m, W, D, wood='Pine'):
@@ -292,11 +330,18 @@ def bag_frame(m, W, D, wood='Pine'):
     cyl(m, (cx-.15, .60, cz+.0), (cx+.15, .60, cz+.0), .055, 'CreamCloth', 6)      # bedroll strapped at the bottom
 
 
-def chest_body(m, W, D, wood='Pine', metal='Iron'):
+def chest_body(m, W, D, wood='Pine', metal='Iron', hollow=False):
     # Chest body only (the lid is a separate part, see chest_lid). Metal corners and bands; front lock plate.
     cx, cz = -W/2, -D/2; h = .40
     g.box(m, (cx, .03, cz), (W-.04, .06, D-.04), 'WoodDark')                       # plinth
-    g.box(m, (cx, .06+h/2, cz), (W-.08, h, D-.08), wood)
+    if hollow:
+        # Tier-two birch chest: visible cavity beneath its existing hinged lid.
+        ow,od,t=W-.08,D-.08,.025
+        for sx in (-1,1):g.box(m,(cx+sx*(ow/2-t/2),.06+h/2,cz),(t,h,od),wood)
+        for sz in (-1,1):g.box(m,(cx,.06+h/2,cz+sz*(od/2-t/2)),(ow-2*t,h,t),wood)
+        g.box(m,(cx,.08,cz),(ow-2*t,.04,od-2*t),'WoodDark')
+    else:
+        g.box(m, (cx, .06+h/2, cz), (W-.08, h, D-.08), wood)
     for i in range(3): g.box(m, (cx, .10+i*.13, cz+(D-.08)/2+.004), (W-.10, .012, .01), 'WoodDark')   # plank seams
     for sx in (-1, 1):
         g.box(m, (cx+sx*(W/2-.08), .06+h/2, cz+(D-.08)/2+.008), (.05, h, .012), metal)
@@ -541,7 +586,7 @@ def leather_table(m, W, D, wood='Birch'):
     g.box(m, (cx-.32, top+.27, cz-.28), (.27, .03, .16), 'CreamCloth')
 
 
-def birch_chest(m, W, D, wood='Birch'): chest_body(m, W, D, wood, 'Copper')
+def birch_chest(m, W, D, wood='Birch'): chest_body(m, W, D, wood, 'Copper', hollow=True)
 
 
 # ------------------------------------------------------------------ batch C: level 5 (mesquite, iron fittings)
@@ -976,7 +1021,7 @@ def reinforced_oak_chest(m, W, D, wood='Oak'):
     for x in (cx-W/4, cx+W/4): g.box(m, (x, .26, cz+(D-.08)/2+.008), (.05, .40, .012), 'Steel')   # extra bands
 
 
-BUILDERS = {'Worktable': worktable, 'Bedroll': bedroll, 'Market sign': market_sign, 'Boot bench': boot_bench,
+BUILDERS = {'Tool rack': tool_rack, 'Worktable': worktable, 'Bedroll': bedroll, 'Market sign': market_sign, 'Boot bench': boot_bench,
             'Sewing basket': sewing_basket, 'Hat peg': hat_peg,
             'Trouser rack': trouser_rack, 'Chopping block': chopping_block, 'Sling stand': sling_stand, 'Rod rack': rod_rack,
             'Bag frame': bag_frame, 'Pine chest': pine_chest, 'Loom': loom, 'Clay cookstove': clay_cookstove,
@@ -1012,13 +1057,14 @@ def main():
             verts += [(p[0]+hinge[0], p[1]+hinge[1], p[2]+hinge[2]) for p in lid.vertices]   # closed lid in footprint space
             extra = dict(LidAsset=lid_info['name'], LidHinge=list(hinge), LidTriangles=lid_info['triangles'])
             info['triangles'] += lid_info['triangles']
+        if display == 'Tool rack': extra = dict(PegBox=list(RACK_PEG_BOX), Spots=[c for s in rack_layout(W, D) for c in s])
         lo = [min(v[i] for v in verts) for i in range(3)]; hi = [max(v[i] for v in verts) for i in range(3)]
         # Footprint contract: inside [-W, 0] x [-D, 0] (1 cm tolerance), on the floor, at most 2.0 m tall.
         assert lo[0] >= -W-.01 and hi[0] <= .01 and lo[2] >= -D-.01 and hi[2] <= .01, (display, lo, hi)
         assert lo[1] >= -.001 and hi[1] <= 2.0, (display, lo, hi)
         assert info['triangles'] <= 600, (display, info['triangles'], 'over the 600-triangle budget')
         rows.append(dict(Id=fid, Name=display, Asset=info['name'], Level=level, Category=category, FootprintWidth=fw,
-                         FootprintDepth=fd, PriceCash=price, IsChest=chest, Triangles=info['triangles'],
+                         FootprintDepth=fd, PriceCash=price, IsChest=chest, IsExtra=fid in EXTRA, IsRack=fid in RACKS, Triangles=info['triangles'],
                          BoundsMin=lo, BoundsMax=hi, **extra))
         print('%-24s %4d tris  %dx%d  height %.2f m' % (info['name'], info['triangles'], fw, fd, hi[1]))
     (OUT/'FurnitureManifest.json').write_text(json.dumps(dict(

@@ -142,6 +142,15 @@ namespace TheTrailWalker.Domain.Settlement
         internal void CompleteUpgrade()
         {
             if (!CanUpgrade) throw new InvalidOperationException("The house cannot be upgraded further.");
+            GrowOneLevel();
+            upgradeEscrow.Clear();
+        }
+
+        // The growth step shared with the debug jump: one level up, the new grid, placed pieces shifted to stay centred.
+        // It never touches the escrow and has no player cap (only MaxLevel).
+        internal void GrowOneLevel()
+        {
+            if (Level >= MaxLevel) throw new InvalidOperationException("The house is at the highest level there is.");
             int oldWidth = GridWidth;
             Level++;
             var grid = Grid(Level);
@@ -149,7 +158,6 @@ namespace TheTrailWalker.Domain.Settlement
             int shift = (GridWidth - oldWidth) / 2;
             foreach (FurniturePiece p in pieces)
                 if (p.Placed) p.X += shift;
-            upgradeEscrow.Clear();
         }
 
         // Places a piece outright (no wallet, no first-purchase record) when it fits; internal to the domain so only

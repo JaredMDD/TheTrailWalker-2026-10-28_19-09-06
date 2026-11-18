@@ -40,6 +40,14 @@ namespace TheTrailWalker
             if (home != null && selected != null) home.Store(selected);
             return null;
         }
+        // With house storage: a chest or rack that still holds items stays placed and selected, and the reason is returned.
+        public static string StoreSelectedPiece(HomeState home, HomeStorage storage, string selected, out string reason)
+        {
+            reason = null;
+            if (home == null || selected == null) return null;
+            if (storage == null) { home.Store(selected); return null; }
+            return storage.TryStorePiece(home, selected, out reason) ? null : selected;
+        }
         public static bool CellInGrid(int x, int z, int gridWidth, int gridDepth) => x >= 0 && z >= 0 && x < gridWidth && z < gridDepth;
         // The dragged piece's cell: the finger's cell minus where on the piece it was grabbed, clamped so the footprint stays
         // inside the room (it can still be red over other pieces).
@@ -84,6 +92,7 @@ namespace TheTrailWalker
         {
             if (homeView != HomeView.Interior || instanceId == null || interiorRoot == null || cameraView == null || StreetView == null || !pieceViews.ContainsKey(instanceId)) return;
             interiorScroll?.Cancel();
+            CloseContainer();   // the chest or rack panel never stays open over the bird's-eye view
             if (settlementNote != null && settlementNote.activeSelf) settlementNote.SetActive(false);
             homeView = HomeView.BirdsEye;
             birdsInert = interiorPointer.HasValue;
@@ -185,7 +194,9 @@ namespace TheTrailWalker
             if (selectedPiece == null) { ShowSettlementNote(HomeSelectFirstNote); return; }
             CancelInteriorPointer();
             string id = selectedPiece;
-            selectedPiece = StoreSelectedPiece(home, id);
+            string next = StoreSelectedPiece(home, homeStorage, id, out string refusal);
+            if (refusal != null) { ShowSettlementNote(EmptyItFirstNote); return; }   // the only refusal: the chest or rack still holds items
+            selectedPiece = next;
             if (pieceViews.TryGetValue(id, out GameObject view)) { if (view != null) DestroyImmediate(view); pieceViews.Remove(id); }
             UpdateFootprint();
             SaveNow();

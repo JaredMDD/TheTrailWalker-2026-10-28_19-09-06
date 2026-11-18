@@ -78,21 +78,23 @@ namespace TheTrailWalker.Domain.Inventory
             if (moved <= 0) { reason = "Stack already has 1,000"; return false; }
             // A partial source remains in its original position and still blocks growth.
             ItemEntry ignore = moved == source.Quantity ? source : null;
-            if (!Fits(target, target.Quantity + moved, target.X, target.Y, ignore))
-            {
-                // The grown stack does not fit in place: move just that stack to free space, otherwise top up only as far as it fits.
-                if (TryFindSpot(target, target.Quantity + moved, ignore, out int freeX, out int freeY)) { target.X = freeX; target.Y = freeY; }
-                else
-                {
-                    int lo = 0, hi = moved - 1;
-                    while (lo < hi) { int mid = (lo + hi + 1) / 2; if (Fits(target, target.Quantity + mid, target.X, target.Y)) lo = mid; else hi = mid - 1; }
-                    if (lo == 0) { reason = "Larger stack would overlap or leave the bag"; return false; }
-                    moved = lo;
-                }
-            }
+            if (!TryGrow(target, ref moved, ignore, out int growX, out int growY)) { reason = "Larger stack would overlap or leave the bag"; return false; }
+            target.X = growX; target.Y = growY;
             source.MoveLowestTo(target, moved);
             if (source.Quantity == 0) source.Owner = ItemOwner.Consumed;
             Revision++; reason = "Merged " + moved + (source.Quantity > 0 ? "; remainder stays at source" : ""); return true;
+        }
+        // Growing a stack by `moved` units: in place when it fits, else relocated to free space, else topped up only as far as it
+        // fits (moved shrinks). False when not even one unit fits. Shared by in-bag merges and bag/chest transfers.
+        private bool TryGrow(ItemEntry stack, ref int moved, ItemEntry ignore, out int x, out int y)
+        {
+            x = stack.X; y = stack.Y;
+            if (Fits(stack, stack.Quantity + moved, x, y, ignore)) return true;
+            if (TryFindSpot(stack, stack.Quantity + moved, ignore, out int freeX, out int freeY)) { x = freeX; y = freeY; return true; }
+            int lo = 0, hi = moved - 1;
+            while (lo < hi) { int mid = (lo + hi + 1) / 2; if (Fits(stack, stack.Quantity + mid, x, y)) lo = mid; else hi = mid - 1; }
+            if (lo == 0) return false;
+            moved = lo; return true;
         }
         public bool TryQuickStore(ItemEntry item, int pointer, out string reason)
         {
@@ -148,6 +150,81 @@ namespace TheTrailWalker.Domain.Inventory
             foreach (ItemEntry existing in entries)
                 if (existing.Owner == target && existing.X == index) { reason = "Slot is occupied"; return false; }
             item.Owner = target; item.X = index; item.Y = 0; Revision++; reason = "Stored in " + (hook ? "hook" : "pocket"); return true;
+        }
+
+        // ---------------------------------------------------------------- home storage (Milestone 11)
+
+        // True for a chest ledger (set by HomeStorage); only changes the wording of a "no space" refusal.
+        public bool IsContainer { get; internal set; }
+        // True while the entry is live in this ledger; a fully merged (consumed) entry no longer counts.
+        public bool ContainsId(string id) => id != null && identities.TryGetValue(id, out ItemEntry existing) && existing.Owner != ItemOwner.Consumed;
+        private static bool IsCarried(ItemEntry item) => item.Owner == ItemOwner.Backpack || item.Owner == ItemOwner.Pocket || item.Owner == ItemOwner.Hook;
+
+        // Whether a detached entry can join this ledger at the given owner and position; changes nothing.
+        private bool CanAttach(ItemEntry item, ItemOwner owner, int x, int y, out string reason)
+        {
+            reason = "Item is unavailable or the slot is invalid";
+            if (item == null || item.Quantity < 1 || identities.ContainsKey(item.Id)) return false;
+            if (owner == ItemOwner.Backpack)
+            {
+                if (IsContainer && LiveCount() >= TheTrailWalker.Domain.Settlement.HomeStorage.MaxItemsPerContainer) { reason = "No space in the chest"; return false; }
+                if (Fits(item, item.Quantity, x, y)) return true;
+                reason = IsContainer ? "No space in the chest" : "No space: item stays where it was"; return false;
+            }
+            if (owner != ItemOwner.Pocket && owner != ItemOwner.Hook) return false;
+            bool hook = owner == ItemOwner.Hook;
+            if (x < 0 || x >= (hook ? HookCount : PocketCount)) return false;
+            if (hook ? !IsTool(item.Definition) : !item.Definition.Stackable)
+            { reason = hook ? "Hooks hold tools (one per hook)" : "Pockets hold eligible resource or food stacks"; return false; }
+            foreach (ItemEntry existing in entries)
+                if (existing.Owner == owner && existing.X == x) { reason = "Slot is occupied"; return false; }
+            return true;
+        }
+        // Live entries in this ledger (consumed ones no longer count); a container is capped at HomeStorage.MaxItemsPerContainer.
+        private int LiveCount() { int n = 0; foreach (ItemEntry e in entries) if (e.Owner != ItemOwner.Consumed) n++; return n; }
+        private void AddEntry(ItemEntry item, ItemOwner owner, int x, int y)
+        {
+            item.Owner = owner; item.X = x; item.Y = owner == ItemOwner.Backpack ? y : 0;
+            identities.Add(item.Id, item); entries.Add(item); Revision++;
+        }
+        // Removes an owned, reserved, carried entry from this ledger (entries, identity and reservation) and hands it to the caller.
+        internal bool Detach(ItemEntry item, int pointer)
+        {
+            if (!Owns(item) || !ReservedBy(item, pointer) || !IsCarried(item)) return false;
+            entries.Remove(item); identities.Remove(item.Id); reservations.Remove(item.Id);
+            item.Owner = ItemOwner.World; item.X = item.Y = 0; Revision++; return true;
+        }
+        internal bool Attach(ItemEntry item, ItemOwner owner, int x, int y) => TryAttach(item, owner, x, y, out _);
+        internal bool TryAttach(ItemEntry item, ItemOwner owner, int x, int y, out string reason)
+        {
+            reason = "Item is unavailable";
+            if (item == null || item.Owner != ItemOwner.World || !CanAttach(item, owner, x, y, out reason)) return false;
+            AddEntry(item, owner, x, y); return true;
+        }
+
+        // One atomic move between two ledgers (bag and chest). Everything is decided before either side changes.
+        public bool TryTransfer(ItemEntry item, int pointer, SpatialInventory target, ItemOwner targetOwner, int x, int y, bool merge, out string reason)
+        {
+            reason = "Item is unavailable";
+            if (target == null || target == this || !Owns(item) || !ReservedBy(item, pointer) || !IsCarried(item) || target.identities.ContainsKey(item.Id)) return false;
+            ItemEntry partner = null;
+            if (merge && targetOwner == ItemOwner.Backpack)
+                foreach (ItemEntry other in target.entries)
+                    if (other.Owner == ItemOwner.Backpack && other.Quantity < 1000 && !target.reservations.ContainsKey(other.Id) && item.CanMerge(other) && Touches(x, y, item.Width, item.Height, other))
+                    { partner = other; break; }
+            if (partner == null)
+            {
+                if (!target.CanAttach(item, targetOwner, x, y, out reason)) return false;
+                Detach(item, pointer); target.AddEntry(item, targetOwner, x, y);
+                reason = "Moved " + item.Definition.Name; return true;
+            }
+            int moved = Math.Min(item.Quantity, 1000 - partner.Quantity);
+            if (!target.TryGrow(partner, ref moved, null, out int px, out int py)) { reason = target.IsContainer ? "No space in the chest" : "Larger stack would overlap or leave the bag"; return false; }
+            partner.X = px; partner.Y = py;
+            item.MoveLowestTo(partner, moved);
+            if (item.Quantity == 0) item.Owner = ItemOwner.Consumed;
+            Revision++; target.Revision++;
+            reason = "Merged " + moved + (item.Quantity > 0 ? "; remainder stays at source" : ""); return true;
         }
 
         // ---------------------------------------------------------------- crafting (Milestone 7)

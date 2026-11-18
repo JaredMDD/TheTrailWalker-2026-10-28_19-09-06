@@ -158,6 +158,26 @@ namespace TheTrailWalker.Domain.Settlement
             return moved;
         }
 
+        // Debug (test phase): returns every house escrow entry to the bag (a free spot, otherwise the overflow), clears the list,
+        // then grows the house to the level (at most MaxLevel). Returns the units returned; a no-op at or above the level.
+        public static int DebugJumpToLevel(HomeState home, SpatialInventory ledger, int level)
+        {
+            level = Math.Min(level, HomeState.MaxLevel);
+            if (home.Level >= level) return 0;
+            int returned = 0;
+            foreach (ItemEntry e in HouseEntries(home, ledger))
+            {
+                int units = e.Quantity;
+                e.Owner = ItemOwner.World;   // StoreBought only re-homes World entries
+                if (!ledger.StoreBought(e, out _)) { e.Owner = ItemOwner.Escrow; continue; }   // kept deposited, never dropped
+                home.RemoveUpgradeEscrow(e.Id);
+                returned += units;
+            }
+            foreach (string id in home.UpgradeEscrow.ToList()) home.RemoveUpgradeEscrow(id);   // ids naming no live entry go too
+            while (home.Level < level) home.GrowOneLevel();
+            return returned;
+        }
+
         // Debug: the units still missing for the next level, at Q5, into the bag (overflow when full). Never touches deposits.
         public static List<(string itemId, int quantity)> DebugGrant(HomeState home, SpatialInventory ledger)
         {

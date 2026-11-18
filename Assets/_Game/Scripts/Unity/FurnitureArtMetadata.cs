@@ -12,5 +12,6 @@ namespace TheTrailWalker
         public Vector2Int Footprint;          // grid cells: columns x rows toward the back
         public float GridCellMetres = .5f;
         public bool IsChest;                  // only chests have a touch action (open the chest inventory)
+        public bool IsRack;                   // the tool rack: a peg board with twelve FurnitureSpotAnchor children (Spot00-Spot11)
     }
 }

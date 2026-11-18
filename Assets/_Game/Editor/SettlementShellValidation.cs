@@ -26,6 +26,7 @@ namespace TheTrailWalker.Editor
             PropChecks();
             BlockoutChecks();
             HudChecks();
+            SettlementMapTravelChecks();
             Directory.CreateDirectory("Builds/Validation"); File.WriteAllLines("Builds/Validation/Settlement-shell-checks.txt", passed);
         }
 
@@ -36,6 +37,25 @@ namespace TheTrailWalker.Editor
             var cycles = new List<KeyValuePair<string, int>> { new KeyValuePair<string, int>(c.Outgoing(camp).Id, 1) };
             if (approachCycle) cycles.Add(new KeyValuePair<string, int>("segment.settlement.approach", 1));
             return TravelState.Restore(c, camp, seated, camp, 10, 5000, visited, regions, new[] { "region.03", "region.04" }, cycles, 0, false, approach, inSettlement, inSettlement ? camp : null);
+        }
+
+        // Task 7: map travel from the settlement goes to the region's first camp and becomes the last visited camp.
+        private static void SettlementMapTravelChecks()
+        {
+            TravelCatalog catalog = TravelCatalog.Prototype();
+            TravelState state = Camp(catalog, "camp.03.01", true);
+            state.TravelToSettlement(true, false);
+            Check(state.InSettlement && state.CanTravelToRegion("region.01", false, out _) && state.CanTravelToRegion("region.03", false, out _), "In the settlement any discovered region (including the return camp's) can be travelled to");
+            Check(!state.CanTravelToRegion("region.09", false, out _) && !state.CanTravelToRegion("region.01", true, out _), "In the settlement an unknown region or a busy player cannot travel");
+            int visit = state.VisitNumber;
+            state.TravelToRegion("region.01", false);
+            Check(state.Seated && !state.InSettlement && state.SettlementReturnCampId == null && state.CurrentCampId == catalog.Region("region.01").FirstCamp.Id && state.LastTrailCampId == state.CurrentCampId && state.VisitNumber == visit + 1,
+                "Settlement map travel lands seated at the region's first camp as the last visited camp");
+            state.TravelToSettlement(true, false); state.ReturnFromSettlement();
+            Check(state.Seated && state.CurrentCampId == "camp.01.01", "Return after map travel goes back to that region's first camp");
+            TravelState outside = Camp(catalog, "camp.03.01", true);
+            Check(!outside.CanTravelToRegion("region.03", false, out string why) && why == "Choose a camp in this region instead", "Outside the settlement the current region is still refused with the old reason");
+            Check(state.VisitNumber == visit + 2 && CollectionPrototype.SettlementSeed(visit + 1, "camp.01.01") != CollectionPrototype.SettlementSeed(visit, "camp.03.01"), "Settlement arrival after map travel gets a new visit id (restock)");
         }
 
         private static void TravelChecks()
@@ -746,8 +766,9 @@ namespace TheTrailWalker.Editor
             Check(CollectionPrototype.ShowSettlementCard(true, true, false), "The Settlement card shows when discovered and seated at a camp");
             Check(!CollectionPrototype.ShowSettlementCard(false, true, false) && !CollectionPrototype.ShowSettlementCard(true, false, false) && !CollectionPrototype.ShowSettlementCard(true, true, true),
                 "The Settlement card is hidden when undiscovered, not seated, or in the settlement");
-            Check(!CollectionPrototype.MapTravelAllowed(true) && CollectionPrototype.MapTravelAllowed(false), "The map never travels in the settlement and travels at camps");
-            Check(CollectionPrototype.MapReadOnlyNote == "Use Return to travel", "The read-only map note reads \"Use Return to travel\"");
+            Check(CollectionPrototype.MapRegionTravelAllowed(true) && CollectionPrototype.MapRegionTravelAllowed(false), "Region travel is allowed on the map in the settlement and at camps");
+            Check(CollectionPrototype.MapCampTravelAllowed(false) && !CollectionPrototype.MapCampTravelAllowed(true), "Camp travel on the map is refused in the settlement and allowed at camps");
+            Check(CollectionPrototype.SettlementCampPageNote == "From the settlement, travel goes to the region's first camp.", "The settlement camp page note reads the first-camp text");
             var undiscoveredState = SettlementState.New(0);
             Check(!CollectionPrototype.ShowSettlementCard(undiscoveredState.Discovered, true, false), "A fresh profile's map shows no Settlement card (non-settlement map unchanged)");
 

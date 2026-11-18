@@ -380,8 +380,9 @@ namespace TheTrailWalker.Domain.Travel
             reason = "";
             RegionDefinition region = catalog.Region(regionId);
             if (region == null) { reason = "This region is not available yet"; return false; }
-            if (!Seated || busy) { reason = "Travel is only available while seated at a camp and not trading or recovering"; return false; }
-            if (region.Id == CurrentCamp.RegionId) { reason = "Choose a camp in this region instead"; return false; }
+            // From the settlement any discovered region (the return camp's too) arrives at its first camp.
+            if (busy || (!InSettlement && !Seated)) { reason = "Travel is only available while seated at a camp and not trading or recovering"; return false; }
+            if (!InSettlement && region.Id == CurrentCamp.RegionId) { reason = "Choose a camp in this region instead"; return false; }
             if (!discovered.Contains(region.Id)) { reason = region.Name + " has not been discovered"; return false; }
             return true;
         }

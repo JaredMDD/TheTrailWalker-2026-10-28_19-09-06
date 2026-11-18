@@ -31,9 +31,11 @@ namespace TheTrailWalker
                 case BuffCategory.HuntingToolLife: return "New hunting tools last longer";
                 case BuffCategory.RodLife: return "New rods last longer";
                 case BuffCategory.BackpackLife: return "New backpacks last longer";
-                default: return "Holds items (opens later)";   // Storage
+                default: return "Holds your items";   // Storage
             }
         }
+        // A piece's own purpose line: the tool rack has no buff category of its own to describe, the rest follow their category.
+        public static string PurposeLine(FurnitureDefinition d) => d.IsRack ? "Holds tools and spare gear" : PurposeLine(d.Category);
         // The store lists every type unlocked at the home's level, in catalog order.
         public static IEnumerable<FurnitureDefinition> StoreRows(int houseLevel) => FurnitureCatalog.UnlockedAt(houseLevel);
         public static string StoreIconPath(FurnitureDefinition d) => "UI/Furniture/" + d.Asset;
@@ -230,7 +232,7 @@ namespace TheTrailWalker
                     if (locked && icon.sprite != null) icon.color = new Color(1f, 1f, 1f, HomeLockedAlpha);
                     Text name = Label(row, d.Name, 0.22f, 0.50f, 0.70f, 0.95f, 23); name.color = Dim(Ink, locked); name.fontStyle = FontStyle.Bold; name.alignment = TextAnchor.MiddleLeft;
                     name.resizeTextForBestFit = true; name.resizeTextMinSize = 12; name.resizeTextMaxSize = 23;
-                    Text purpose = Label(row, locked ? LockedLine(level) : PurposeLine(d.Category), 0.22f, 0.05f, 0.84f, 0.50f, 18); purpose.color = FadedInk; purpose.alignment = TextAnchor.MiddleLeft;
+                    Text purpose = Label(row, locked ? LockedLine(level) : PurposeLine(d), 0.22f, 0.05f, 0.84f, 0.50f, 18); purpose.color = FadedInk; purpose.alignment = TextAnchor.MiddleLeft;
                     if (locked) purpose.fontStyle = FontStyle.Italic;
                     purpose.resizeTextForBestFit = true; purpose.resizeTextMinSize = 11; purpose.resizeTextMaxSize = 18;
                     Text price = Label(row, StorePriceLabel(d), 0.68f, 0.50f, 0.98f, 0.95f, 20); price.color = Dim(Ink, locked); price.alignment = TextAnchor.MiddleRight;
