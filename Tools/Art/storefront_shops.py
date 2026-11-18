@@ -441,12 +441,26 @@ def warehouse_counter():
     # Ledger and inkwell by the keeper; the offer anchors are the two deposit boxes and the gold scale.
     box(m, (-.45, T+.02, .45), (.42, .04, .30), 'Ledger'); box(m, (-.45, T+.045, .45), (.38, .01, .27), 'Paper')
     box(m, (.15, T+.04, .40), (.06, .08, .06), 'Coal')
-    for x in (OFFERS[0][0], OFFERS[1][0]): crate(m, (x, T, .48), (.46, .34, .36), 'TimberLight')
     x = OFFERS[2][0]
     box(m, (x, T+.02, .48), (.22, .04, .18), 'Brass'); box(m, (x, T+.17, .48), (.03, .3, .03), 'Gold'); box(m, (x, T+.32, .48), (.40, .02, .02), 'Gold')
     for dx in (-.19, .19):
         box(m, (x+dx, T+.22, .48), (.12, .02, .12), 'Gold'); box(m, (x+dx, T+.27, .48), (.01, .1, .01), 'Gold')
     return m, OFFERS
+
+CRATE = (.46, .34, .36)   # deposit crate size (x, y, z); the lid is a separate part that hinges on its back top edge
+
+def deposit_crate_parts():
+    """Body (origin at the floor centre) and Lid (origin at the back hinge edge, lid extends toward +Z)."""
+    body = k.Mesh('DepositCrateBody', pal); w, h, d = CRATE
+    # Pale wood with brass bands and corner edges, so the two interactable crates stand out from the dark stock behind (user, Nov 18).
+    box(body, (0, h/2, 0), CRATE, 'Trim'); box(body, (0, .05, 0), (w+.012, .05, d+.012), 'Brass')
+    box(body, (0, h-.03, 0), (w+.012, .04, d+.012), 'Brass')
+    for sx in (-1, 1):
+        for sz in (-1, 1): box(body, (sx*(w/2-.0115), h/2, sz*(d/2-.0115)), (.035, h, .035), 'Brass')   # outer faces flush with the bands
+    lid = k.Mesh('DepositCrateLid', pal)
+    box(lid, (0, .02, d/2), (w+.02, .04, d+.02), 'Trim'); box(lid, (0, .02, d/2), (w+.032, .05, .05), 'Brass')
+    box(lid, (0, .02, d+.005), (w+.032, .05, .03), 'Brass')
+    return body, lid
 
 # Proposed street order between the two groups of houses (open decision; see the plan, section 13.4).
 SHOPS = [
@@ -467,6 +481,7 @@ def main():
         stats += [front.save(OUT, HEADER), counter_mesh.save(OUT, HEADER)]
         shops.append(dict(Name=name, Front=name+'Front', Counter=name+'Counter', Keeper=keeper, Width=width,
                           OfferAnchors=[list(o) for o in offers], OfferAnchorsFlat=[c for o in offers for c in o], OfferKinds=kinds))
+    stats += [part.save(OUT, HEADER) for part in deposit_crate_parts()]
     manifest = dict(Revision=2, Style='faceted', CounterTop=COUNTER_TOP, Shops=shops, Parts=stats,
                     Scope='Art only: street front and counter view per shop. No shop logic, stock, prices or selection.')
     (OUT/'StorefrontManifest.json').write_text(json.dumps(manifest, indent=2)+'\n', encoding='utf-8')

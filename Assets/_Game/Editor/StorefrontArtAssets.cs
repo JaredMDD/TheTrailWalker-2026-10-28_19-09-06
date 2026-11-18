@@ -40,10 +40,7 @@ namespace TheTrailWalker.Editor
             mat.SetFloat("_Smoothness", .05f); mat.enableInstancing = true; EditorUtility.SetDirty(mat);
             foreach (var path in Directory.GetFiles(Source, "*.obj"))
             {
-                var importer = (ModelImporter)AssetImporter.GetAtPath(path.Replace('\\', '/'));
-                importer.globalScale = 1; importer.importAnimation = false; importer.importCameras = false; importer.importLights = false; importer.addCollider = false;
-                importer.materialImportMode = ModelImporterMaterialImportMode.None;
-                importer.importNormals = ModelImporterNormals.Calculate; importer.normalSmoothingAngle = 0; importer.SaveAndReimport();
+                ImportMesh(path.Replace('\\', '/'));
             }
             foreach (var shop in manifest.Shops)
             {
@@ -52,6 +49,31 @@ namespace TheTrailWalker.Editor
             }
             AssetDatabase.SaveAssets();
             Debug.Log("Storefronts: " + manifest.Shops.Length + " shop(s), street front and counter view prefabs (art only).");
+        }
+
+        static void ImportMesh(string path)
+        {
+            var importer = (ModelImporter)AssetImporter.GetAtPath(path);
+            importer.globalScale = 1; importer.importAnimation = false; importer.importCameras = false; importer.importLights = false; importer.addCollider = false;
+            importer.materialImportMode = ModelImporterMaterialImportMode.None;
+            importer.importNormals = ModelImporterNormals.Calculate; importer.normalSmoothingAngle = 0; importer.SaveAndReimport();
+        }
+
+        // Narrow path (Milestone 12): the deposit crate prefab and the warehouse counter only; leaves every other shop prefab untouched.
+        // Lid origin is the back hinge edge; it rests open, tilted back away from the customer camera (at +Z).
+        public static void BuildDepositCrate()
+        {
+            if (EditorApplication.isPlayingOrWillChangePlaymode) throw new InvalidOperationException("Build outside Play mode.");
+            AssetDatabase.Refresh();
+            foreach (var part in new[] { "DepositCrateBody", "DepositCrateLid", "WarehouseCounter" }) ImportMesh(Source + part + ".obj");
+            var mat = AssetDatabase.LoadAssetAtPath<Material>(Target + "StorefrontPalette.mat");
+            var root = new GameObject("DepositCrate"); Part(root.transform, "DepositCrateBody", mat); Part(root.transform, "DepositCrateLid", mat);
+            root.transform.Find("DepositCrateBody").name = "Body"; var lid = root.transform.Find("DepositCrateLid"); lid.name = "Lid";
+            lid.localPosition = new Vector3(0, .34f, -.18f); lid.localRotation = Quaternion.Euler(-100, 0, 0);
+            Save(root, "DepositCrate");
+            var shop = Array.Find(Load().Shops, s => s.Name == "Warehouse");
+            Save(Counter(shop, mat), "WarehouseCounter");
+            AssetDatabase.SaveAssets();
         }
 
         static void Save(GameObject root, string name)

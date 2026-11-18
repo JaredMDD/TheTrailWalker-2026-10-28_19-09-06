@@ -21,6 +21,8 @@ namespace TheTrailWalker
     {
         private TradeSession tradeSession;
         private List<TradeRecord> tradeLog = new List<TradeRecord>();
+        private WarehouseState warehouse = new WarehouseState();
+        private List<TradeRecord> warehouseLog = new List<TradeRecord>();
         private GameObject tradePanel, tradeNote;
         private Text tradeTimer, tradeWallet, tradeQuote, tradeFeedback, tradeNoteTitle, tradeNoteTimer;
         private RectTransform tradeBelt, tradeStockContent;

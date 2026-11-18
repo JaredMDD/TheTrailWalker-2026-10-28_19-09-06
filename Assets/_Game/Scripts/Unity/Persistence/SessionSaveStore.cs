@@ -50,7 +50,13 @@ namespace TheTrailWalker.Persistence
         // First home (November 13, 2026, optional): house level, furniture pieces and first purchases. Older saves have none.
         public SavedHome home;
         public List<TheTrailWalker.Domain.Economy.TradeRecord> tradeLog = new List<TheTrailWalker.Domain.Economy.TradeRecord>();
+        // Milestone 12 (optional): the settlement warehouse's crates and cycle, and its transaction log. block 0 = absent (older saves).
+        public SavedWarehouse warehouse;
+        public List<TheTrailWalker.Domain.Economy.TradeRecord> warehouseLog = new List<TheTrailWalker.Domain.Economy.TradeRecord>();
     }
+    [Serializable] public sealed class SavedWarehouse { public int block; public List<SavedCrate> crates = new List<SavedCrate>(); public int cycleCrates; public long cycleCash; }
+    [Serializable] public sealed class SavedCrate { public string itemId; public List<SavedWarehouseUnit> units = new List<SavedWarehouseUnit>(); }
+    [Serializable] public sealed class SavedWarehouseUnit { public string escrowId; public int quantity; public long valueMinor; }
     [Serializable] public sealed class SavedSettlement
     {
         // JsonUtility writes an absent block as a default object, so 0 marks "no settlement block" (older saves); saves write 1.
@@ -431,6 +437,57 @@ namespace TheTrailWalker.Persistence
                 try { TheTrailWalker.Domain.Settlement.HouseUpgradeService.CheckStructure(savedHome.UpgradeEscrow, inventory.Entries, tradeEscrow); }
                 catch (ArgumentException error) { throw new InvalidDataException("Invalid house deposits: " + error.Message); }
             }
+            RestoreWarehouse(data, inventory.Entries);
+        }
+
+        public static SavedWarehouse SaveWarehouse(TheTrailWalker.Domain.Economy.WarehouseState state)
+        {
+            var saved = new SavedWarehouse { block = 1, cycleCrates = state.CycleCrates, cycleCash = state.CycleCash };
+            foreach (var crate in state.Crates)
+            {
+                var box = new SavedCrate { itemId = crate.ItemId };
+                foreach (var unit in crate.Units) box.units.Add(new SavedWarehouseUnit { escrowId = unit.EscrowId, quantity = unit.Quantity, valueMinor = unit.ValueMinor });
+                saved.crates.Add(box);
+            }
+            return saved;
+        }
+
+        // Milestone 12: absent block = empty crates and a fresh cycle. Every unit must name its own Escrow entry in the bag ledger.
+        public static TheTrailWalker.Domain.Economy.WarehouseState RestoreWarehouse(SessionSnapshot data, IReadOnlyList<ItemEntry> bagEntries)
+        {
+            var state = new TheTrailWalker.Domain.Economy.WarehouseState();
+            SavedWarehouse saved = data?.warehouse;
+            if (saved == null || saved.block == 0) return state;
+            const int Max = TheTrailWalker.Domain.Economy.WarehouseState.CrateUnits - 1;
+            if (saved.crates == null || saved.crates.Count != state.Crates.Length || saved.cycleCrates < 0 || saved.cycleCrates > Max || saved.cycleCash < 0) throw new InvalidDataException("Invalid warehouse: crates or cycle");
+            var used = new HashSet<string>();
+            if (data.home != null && data.home.block != 0 && data.home.upgradeEscrow != null) foreach (string id in data.home.upgradeEscrow) used.Add(id);
+            if (data.trade?.listings != null) foreach (var listing in data.trade.listings) if (listing != null && !string.IsNullOrEmpty(listing.escrowId)) used.Add(listing.escrowId);
+            for (int i = 0; i < saved.crates.Count; i++)
+            {
+                SavedCrate box = saved.crates[i];
+                if (box == null || box.units == null) throw new InvalidDataException("Invalid warehouse: crate " + (i + 1));
+                if (box.units.Count == 0)
+                {
+                    if (!string.IsNullOrEmpty(box.itemId)) throw new InvalidDataException("Invalid warehouse: empty crate names an item");
+                    continue;
+                }
+                if (string.IsNullOrEmpty(box.itemId)) throw new InvalidDataException("Invalid warehouse: crate has units but no item");
+                int count = 0;
+                foreach (SavedWarehouseUnit unit in box.units)
+                {
+                    ItemEntry entry = null;
+                    if (unit == null || string.IsNullOrEmpty(unit.escrowId) || !used.Add(unit.escrowId) || unit.quantity < 1 || unit.valueMinor < 0) throw new InvalidDataException("Invalid warehouse: bad or shared escrow id");
+                    foreach (ItemEntry e in bagEntries) if (e.Id == unit.escrowId) { entry = e; break; }
+                    if (entry == null || entry.Owner != ItemOwner.Escrow || entry.Definition.Id != box.itemId || entry.Quantity != unit.quantity) throw new InvalidDataException("Invalid warehouse: escrow entry does not match");
+                    count += unit.quantity;
+                    if (count > Max) throw new InvalidDataException("Invalid warehouse: crate holds too many units");
+                    state.Crates[i].Units.Add(new TheTrailWalker.Domain.Economy.WarehouseUnit { EscrowId = unit.escrowId, Quantity = unit.quantity, ValueMinor = unit.valueMinor });
+                }
+                state.Crates[i].ItemId = box.itemId;
+            }
+            state.CycleCrates = saved.cycleCrates; state.CycleCash = saved.cycleCash;
+            return state;
         }
 
         // Definition lookup, AddWorld, spare wear and pile for one saved item, into a private ledger. Callers place the entry.

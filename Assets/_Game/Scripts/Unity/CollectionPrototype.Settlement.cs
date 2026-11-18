@@ -68,7 +68,7 @@ namespace TheTrailWalker
             switch (b.Kind)
             {
                 case StreetBuildingKind.House: return isPlayerPlot ? "Your home" : $"A neighbour's home (level {level})";   // the player's plot opens the home instead (task 5)
-                case StreetBuildingKind.Warehouse: return "The warehouse opens in Milestone 12";
+                case StreetBuildingKind.Warehouse: return "The warehouse";
                 case StreetBuildingKind.LumberField: return "The lumber field opens in Milestone 13";
                 default: return ShopDisplayName(b.Id) + " opens in Milestone 14";
             }
@@ -351,6 +351,7 @@ namespace TheTrailWalker
                 }
             }
             UpdateHome(SettlementPanelsCovered);
+            UpdateWarehouse();
             if (settlementNote.activeSelf && Time.unscaledTime >= settlementNoteHideAt) settlementNote.SetActive(false);
         }
 
@@ -399,6 +400,7 @@ namespace TheTrailWalker
             if (HomeOpen) return;
             if (key == "return") { AskReturn(); return; }
             if (key == "home") { OpenHome(); return; }
+            if (key == "warehouse") { OpenWarehouse(); return; }
             StreetBuilding b = Street?.Find(key);
             if (b == null) return;
             StreetView?.GlideTo(b.CentreX);
@@ -409,6 +411,7 @@ namespace TheTrailWalker
         {
             if (phase != TravelPhase.Settlement || saveBlocked || (stamina != null && stamina.Fainted)) return;
             if (HomeOpen) return;
+            if (b.Kind == StreetBuildingKind.Warehouse) { OpenWarehouse(); return; }
             switch (SettlementTapAction(b, PlotChoiceOpen, settlement.PlotIndex, b.Kind == StreetBuildingKind.House ? NeighbourHouseLevel(b.Plot) : 0))
             {
                 case StreetTapAction.ChoosePlot: AskPlot(b); return;

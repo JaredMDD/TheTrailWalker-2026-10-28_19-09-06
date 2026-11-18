@@ -292,8 +292,8 @@
     },
     {
       "name": "WarehouseCounter",
-      "vertices": 1206,
-      "triangles": 1792
+      "vertices": 1158,
+      "triangles": 1720
     },
     {
       "name": "BakeryFront",
@@ -354,6 +354,16 @@
       "name": "TailorCounter",
       "vertices": 1142,
       "triangles": 1888
+    },
+    {
+      "name": "DepositCrateBody",
+      "vertices": 56,
+      "triangles": 84
+    },
+    {
+      "name": "DepositCrateLid",
+      "vertices": 24,
+      "triangles": 36
     }
   ],
   "Scope": "Art only: street front and counter view per shop. No shop logic, stock, prices or selection."
