@@ -196,11 +196,11 @@ namespace TheTrailWalker
 
         // Debug house-level preview: rebuilds the street with other house levels, keeping the camera where it is. View only;
         // the save is untouched.
-        public void RebuildStreet(int[] houseLevels, int playerPlot)
+        public void RebuildStreet(int[] houseLevels, int playerPlot, int shopTier)
         {
             if (Street == null) return;
             if (Street.Root != null) Destroy(Street.Root.gameObject);
-            Street = SettlementScenery.Build(transform, houseLevels, playerPlot);
+            Street = SettlementScenery.Build(transform, houseLevels, playerPlot, shopTier);
             StreetView?.Rebind(Street);
         }
 
@@ -233,7 +233,7 @@ namespace TheTrailWalker
         private void CreateWorld()
         {
             bool settlement = milestone5Enabled && travelScene.Settlement;
-            if (settlement) Street = SettlementScenery.Build(transform, travelScene.HouseLevels, travelScene.PlayerPlot);
+            if (settlement) Street = SettlementScenery.Build(transform, travelScene.HouseLevels, travelScene.PlayerPlot, travelScene.ShopTier);
             else if (milestone5Enabled)
             {
                 ITrailPath ground = path;

@@ -98,6 +98,7 @@ namespace TheTrailWalker
             holder.SetParent(world.transform, false);
             holder.SetPositionAndRotation(MovementPrototype.InteriorWorldPosition, Quaternion.identity);
             Transform counter = Instantiate(prefab, holder, false).transform;
+            CounterLamps.Hang(counter, "Lumber");
             foreach (Collider c in counter.GetComponentsInChildren<Collider>(true)) Destroy(c);
             lumberDoorPivot = FindChild(counter, "DoorPivot"); lumberLedgerAnchor = FindChild(counter, "LedgerSelectAnchor"); lumberDoorAnchor = FindChild(counter, "DoorSelectAnchor");
             lumberDoorTime = -1f;

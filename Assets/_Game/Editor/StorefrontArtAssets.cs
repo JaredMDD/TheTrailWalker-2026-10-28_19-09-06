@@ -45,7 +45,7 @@ namespace TheTrailWalker.Editor
             foreach (var shop in manifest.Shops)
             {
                 if (shop.Name == "Lumber") { LumberFieldArtAssets.BuildStorefront(); continue; }
-                Save(Front(shop, mat), shop.Name + "Front");
+                Save(Front(shop.Name + "Front", shop.Front, mat), shop.Name + "Front");
                 Save(Counter(shop, mat), shop.Name + "Counter");
             }
             AssetDatabase.SaveAssets();
@@ -77,14 +77,38 @@ namespace TheTrailWalker.Editor
             AssetDatabase.SaveAssets();
         }
 
+        // Narrow path (Milestone 14): the tier 2 (birch) street fronts <Shop>FrontT2 only, on StorefrontPaletteT2; leaves every tier 1
+        // prefab, mesh and material untouched (the lumber front comes from LumberFieldArtAssets.BuildFrontT2).
+        public static void BuildTier2Fronts()
+        {
+            if (EditorApplication.isPlayingOrWillChangePlaymode) throw new InvalidOperationException("Build outside Play mode.");
+            AssetDatabase.Refresh();
+            var palette = Source + "StorefrontPaletteT2.png";
+            var tex = (TextureImporter)AssetImporter.GetAtPath(palette);
+            tex.filterMode = FilterMode.Point; tex.mipmapEnabled = false; tex.wrapMode = TextureWrapMode.Clamp; tex.npotScale = TextureImporterNPOTScale.None;
+            // Alpha holds the surface-detail type (the FacetedDetail shader): keep it exact.
+            tex.alphaSource = TextureImporterAlphaSource.FromInput; tex.alphaIsTransparency = false; tex.textureCompression = TextureImporterCompression.Uncompressed; tex.SaveAndReimport();
+            // The tier 1 material's shader and detail settings, on the tier 2 strip.
+            var mat = AssetDatabase.LoadAssetAtPath<Material>(Target + "StorefrontPaletteT2.mat");
+            if (mat == null) { mat = new Material(AssetDatabase.LoadAssetAtPath<Material>(Target + "StorefrontPalette.mat")); AssetDatabase.CreateAsset(mat, Target + "StorefrontPaletteT2.mat"); }
+            mat.SetTexture("_BaseMap", AssetDatabase.LoadAssetAtPath<Texture2D>(palette)); EditorUtility.SetDirty(mat);
+            foreach (var shop in Load().Shops)
+            {
+                if (shop.Name == "Lumber") { LumberFieldArtAssets.BuildFrontT2(); continue; }
+                ImportMesh(Source + shop.Name + "FrontT2.obj");
+                Save(Front(shop.Name + "FrontT2", shop.Name + "FrontT2", mat), shop.Name + "FrontT2");
+            }
+            AssetDatabase.SaveAssets();
+        }
+
         static void Save(GameObject root, string name)
         {
             try { PrefabUtility.SaveAsPrefabAsset(root, Target + name + ".prefab"); } finally { UnityEngine.Object.DestroyImmediate(root); }
         }
 
-        static GameObject Front(Shop shop, Material mat)
+        static GameObject Front(string name, string mesh, Material mat)
         {
-            var root = new GameObject(shop.Name + "Front"); Part(root.transform, shop.Front, mat);
+            var root = new GameObject(name); Part(root.transform, mesh, mat);
             // Selection marker for the side-scrolling street (art marker only).
             var select = new GameObject("SelectAnchor").transform; select.SetParent(root.transform, false); select.localPosition = new Vector3(0, 1.4f, .2f);
             return root;

@@ -452,5 +452,7 @@ namespace TheTrailWalker.Travel
         public bool Settlement;
         public int[] HouseLevels;
         public int PlayerPlot = -1;
+        // The shops' reached tier (ShopService.ReachedTier from the saved regions and debug tier): picks the storefront looks.
+        public int ShopTier = 1;
     }
 }

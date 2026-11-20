@@ -3965,6 +3965,31 @@ Dependencies: 13.
 
 **Exit check:** fishery always has two fish/one exclusive at Q5/cash and no reset budget can exceed 1,000; seafood source restrictions hold. Boxes keep six entries, eligible unlearned recipes grant once even with full bags, duplicates/exhausted pools fall back deterministically, and reload never rerolls. All physical rewards stay Q5; knowledge does not create a product/stack/quality/mastery-ten grant. Ordinary gear stays finite, conveyor quality unchanged, and no mandatory progression relies on box luck.
 
+**Slice 1: settlement shops (November 20, 2026; spec `Docs/superpowers/specs/2026-11-20-milestone-14-shops-and-balloon-design.md` sections 5-6.1, plan `Docs/superpowers/plans/2026-11-20-milestone-14-slice-1-shops.md`).** Scope: the farm, mine, tailor, ranch and fishery. The bakery, the balloon merchant, recipe offers and the tier 3-4 storefront looks are later slices.
+
+**Decisions (slice 1):**
+- Every store good is Q5; each offer is one 1,000-unit stack and the player buys any amount from 1 up to the units left; three distinct items per shop; price = 4 x the Q5 level-one value, except ranch meats (Chicken 50, Duck 100, Lamb 180, Beef 300 cash) (spec).
+- Stock rolls once per visit; a visit starts only when arriving from the trail (arch or map), never on reload or when moving between settlement views (spec).
+- A full bag blocks the purchase: the whole amount must fit, nothing goes to overflow (spec).
+- Goods priced by an override (ranch meats, tier 2-4 processed textiles) also get a sale value of floor(price / 8), so they sell at the warehouse for a sensible amount and a shop is never a money source (Claude).
+- Fine cotton cloth costs 352 (3 cotton cloth + 1 beeswax, by the x8 rule) (Claude).
+- Each purchase adds one entry to the settlement's trade log, so shop spending shows in the transaction reports (Claude).
+- Tier 2 storefront looks are birch with oilskin awnings and copper fittings; each shop keeps its shape. The counters keep their tier 1 build (Claude).
+- Phone round (user): items for sale got price tags in the warehouse label style, showing the name and "N cash" or "Sold out", with a brass stripe. Every counter (the five shops, the warehouse and the lumber counter) got two hanging lanterns with warm, shadowless lights.
+
+**Built (Claude, November 20, 2026):**
+- Domain: `Domain/Items/ShopItems.cs`, `Domain/Settlement/ShopCatalog.cs` (tier 1-4 pools and prices) and `Domain/Settlement/Shops.cs` (per-visit stock, atomic purchase with the offer revision check).
+- Saving: an optional `shops` block in `SessionSaveStore.cs`; the visit advances on both arrival paths.
+- Counter and sheet: `Unity/CollectionPrototype.Shops.cs` (counter view, three offers with price tags, paper purchase sheet, debug TIER +1 that also rebuilds the street); the settlement list was compacted to clear the MENU square.
+- Models: `Unity/Tier2ShopVisuals.cs` maps the tier 2 goods to their models; raw chicken meat got its own model (`Tools/Art/generate_chicken_meat.py`, `Editor/ChickenMeatAssets.cs`).
+- Storefronts: eight `<Front>T2` prefabs from narrow builders (`StorefrontArtAssets.BuildTier2Fronts()`, `LumberFieldArtAssets.BuildFrontT2()`); the street picks them from the reached tier (`SettlementScenery.FrontFor`), with a tier 1 fallback.
+- Lamps: `Unity/Travel/CounterLamps.cs` hangs the lanterns when a counter opens (`Tools/Art/generate_counter_lamp.py`, `Editor/CounterLampAssets.cs`). `Shaders/FacetedDetail.shader` now takes URP additional lights; it is unchanged where no extra light is in view, and the APK grew by 0.05 MB.
+- Checks: `Editor/Milestone14Validation.cs`, chained in `Milestone5Setup.cs`.
+- Debug button to remove before release: TIER +1 (with WOOD T2-T4, +24 H and HOUSE L8).
+- Commit note: `StorefrontPaletteT2.png` still needs its line in `Editor/FacetedDetailMaterials.cs` (the other tool's uncommitted file) when the files are split for the commit.
+- Phone rounds (user, November 20, 2026): round 1 asked for price tags and counter lamps; round 3 (tags + lamps) passed every check.
+- Status: full suite PASS and APK built 19:45 UTC November 20, 2026 (SHA-256 `ab7a0e29…`), installed on the nubia NX769J after a save backup (`.superpowers/save-backups/2026-11-20-before-m14-shops/`); the installed copy matches and `session-v1.json` is unchanged (`2519b15e`). Ready for the final review, then commit on request.
+
 ### Milestone 15: Pets, offline reconciliation, and remaining furniture
 
 Dependencies: 14.

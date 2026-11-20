@@ -42,7 +42,7 @@ namespace TheTrailWalker.Domain.Crafting
         private static Dictionary<string, ItemDefinition> byId;
         public static ItemDefinition Find(string id)
         {
-            if (byId == null) { byId = new Dictionary<string, ItemDefinition>(); foreach (ItemDefinition d in PrototypeItems.All) byId[d.Id] = d; foreach (ItemDefinition d in HarvestTierItems.All) if (!byId.ContainsKey(d.Id)) byId[d.Id] = d; }
+            if (byId == null) { byId = new Dictionary<string, ItemDefinition>(); foreach (ItemDefinition d in PrototypeItems.All) byId[d.Id] = d; foreach (ItemDefinition d in HarvestTierItems.All) if (!byId.ContainsKey(d.Id)) byId[d.Id] = d; foreach (ItemDefinition d in ShopItems.All) if (!byId.ContainsKey(d.Id)) byId[d.Id] = d; }
             return id != null && byId.TryGetValue(id, out ItemDefinition definition) ? definition : null;
         }
     }

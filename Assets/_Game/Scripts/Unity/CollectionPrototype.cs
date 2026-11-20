@@ -446,6 +446,8 @@ namespace TheTrailWalker
             SaveNow();
         }
         private TheTrailWalker.Domain.Settlement.LumberFieldState lumber = new TheTrailWalker.Domain.Settlement.LumberFieldState();
+        private TheTrailWalker.Domain.Settlement.ShopState shops = new TheTrailWalker.Domain.Settlement.ShopState();
+        private void AdvanceShopVisit() => TheTrailWalker.Domain.Settlement.ShopService.AdvanceVisit(shops);
 
         private void ConfirmReset()
         {
@@ -453,7 +455,7 @@ namespace TheTrailWalker
             resetPending = false;
             try
             {
-                saveStore.ArchiveForReset(); saveBlocked = false; lastSavedState = null; crafting = new CraftingState(); missions = new TheTrailWalker.Domain.Missions.MissionState(); settlement = TheTrailWalker.Domain.Travel.SettlementState.New(0); home = TheTrailWalker.Domain.Settlement.HomeState.New(); homeStorage = new TheTrailWalker.Domain.Settlement.HomeStorage(); warehouse = new TheTrailWalker.Domain.Economy.WarehouseState(); warehouseLog = new List<TheTrailWalker.Domain.Economy.TradeRecord>(); lumber = new TheTrailWalker.Domain.Settlement.LumberFieldState();
+                saveStore.ArchiveForReset(); saveBlocked = false; lastSavedState = null; crafting = new CraftingState(); missions = new TheTrailWalker.Domain.Missions.MissionState(); settlement = TheTrailWalker.Domain.Travel.SettlementState.New(0); home = TheTrailWalker.Domain.Settlement.HomeState.New(); homeStorage = new TheTrailWalker.Domain.Settlement.HomeStorage(); warehouse = new TheTrailWalker.Domain.Economy.WarehouseState(); warehouseLog = new List<TheTrailWalker.Domain.Economy.TradeRecord>(); lumber = new TheTrailWalker.Domain.Settlement.LumberFieldState(); shops = new TheTrailWalker.Domain.Settlement.ShopState();
                 CloseContainer();
                 if (inventoryOpen) { movement.CloseInventory(); inventoryOpen = false; LayoutBackpack(); }
                 router.CancelAll(); movement.Reset();
@@ -1443,7 +1445,7 @@ namespace TheTrailWalker
                             quality = gear.Quality, remainingDistance = gear.RemainingDistance, infinite = gear.Infinite });
                     }
                 }
-                if (milestone5) { snapshot.economy = 1; snapshot.trade = tradeSession?.Data; snapshot.tradeLog = new List<TheTrailWalker.Domain.Economy.TradeRecord>(tradeLog); snapshot.warehouse = SessionSaveStore.SaveWarehouse(warehouse); snapshot.lumber = SessionSaveStore.SaveLumber(lumber); snapshot.warehouseLog = new List<TheTrailWalker.Domain.Economy.TradeRecord>(warehouseLog); snapshot.segmentId = travel.CurrentSegment.Id; snapshot.travel = SessionSaveStore.SaveTravel(travel); snapshot.settlement = SaveSettlementForSnapshot(); snapshot.home = SaveHomeForSnapshot(); snapshot.harvested = HarvestedForSave(); snapshot.crafting = SaveCrafting(); snapshot.missions = SaveMissions(); snapshot.statistics = SaveStatistics(); }
+                if (milestone5) { snapshot.economy = 1; snapshot.trade = tradeSession?.Data; snapshot.tradeLog = new List<TheTrailWalker.Domain.Economy.TradeRecord>(tradeLog); snapshot.warehouse = SessionSaveStore.SaveWarehouse(warehouse); snapshot.lumber = SessionSaveStore.SaveLumber(lumber); snapshot.shops = SessionSaveStore.SaveShops(shops); snapshot.warehouseLog = new List<TheTrailWalker.Domain.Economy.TradeRecord>(warehouseLog); snapshot.segmentId = travel.CurrentSegment.Id; snapshot.travel = SessionSaveStore.SaveTravel(travel); snapshot.settlement = SaveSettlementForSnapshot(); snapshot.home = SaveHomeForSnapshot(); snapshot.harvested = HarvestedForSave(); snapshot.crafting = SaveCrafting(); snapshot.missions = SaveMissions(); snapshot.statistics = SaveStatistics(); }
                 AppendSavedItems(snapshot, ledger, milestone5, travel.CurrentSegment.Id,
                     item => { Bundle bundle = bundles.Find(b => b.Item == item); return bundle == null ? Vector3.zero : bundle.View.transform.position; },
                     item => item.Owner == ItemOwner.Worn && item.Definition.GearSlot.HasValue ? equipment?.Get(item.Definition.GearSlot.Value) : null);
@@ -1498,7 +1500,7 @@ namespace TheTrailWalker
         {
             PrepareRestore(snapshot, milestone5);
             SessionSaveStore.Validate(snapshot, path.Length, out ledger);
-            if (milestone5) { RestoreTrade(snapshot); travel = SessionSaveStore.RestoreTravel(snapshot, scene.Catalog); RestoreHarvested(snapshot.harvested); RestoreCrafting(snapshot.crafting); RestoreMissions(snapshot.missions); RestoreStatistics(snapshot.statistics); RestoreSettlementFromSnapshot(snapshot); warehouse = SessionSaveStore.RestoreWarehouse(snapshot, ledger.Entries); warehouseLog = snapshot.warehouseLog ?? new List<TheTrailWalker.Domain.Economy.TradeRecord>(); lumber = SessionSaveStore.RestoreLumber(snapshot); }
+            if (milestone5) { RestoreTrade(snapshot); travel = SessionSaveStore.RestoreTravel(snapshot, scene.Catalog); RestoreHarvested(snapshot.harvested); RestoreCrafting(snapshot.crafting); RestoreMissions(snapshot.missions); RestoreStatistics(snapshot.statistics); RestoreSettlementFromSnapshot(snapshot); warehouse = SessionSaveStore.RestoreWarehouse(snapshot, ledger.Entries); warehouseLog = snapshot.warehouseLog ?? new List<TheTrailWalker.Domain.Economy.TradeRecord>(); lumber = SessionSaveStore.RestoreLumber(snapshot); shops = SessionSaveStore.RestoreShops(snapshot); }
             if (milestone4)
             {
                 equipment = new EquipmentState();

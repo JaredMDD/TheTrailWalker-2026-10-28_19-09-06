@@ -43,7 +43,7 @@ namespace TheTrailWalker
             TravelCatalog catalog = TravelCatalog.Prototype();
             SegmentDefinition segment = catalog.Outgoing(catalog.StartRegion.FirstCamp.Id);
             int visit = 1;
-            bool inSettlement = false; SettlementState savedSettlement = null; int homeLevel = 1;
+            bool inSettlement = false; SettlementState savedSettlement = null; int homeLevel = 1, shopTier = 1;
             try
             {
                 var store = new SessionSaveStore(SaveDirectory, new SystemClock(), 3);
@@ -55,6 +55,12 @@ namespace TheTrailWalker
                     inSettlement = saved.InSettlement;
                     if (inSettlement) savedSettlement = SessionSaveStore.RestoreSettlement(snapshot, SettlementSeed(snapshot));
                     if (inSettlement) homeLevel = SessionSaveStore.RestoreHome(snapshot).Level;
+                    if (inSettlement)
+                    {
+                        var regions = new List<int>();
+                        foreach (string id in saved.DiscoveredRegions) { RegionDefinition r = catalog.Region(id); if (r != null) regions.Add(r.Number); }
+                        shopTier = Domain.Settlement.ShopService.ReachedTier(SessionSaveStore.RestoreShops(snapshot), regions);
+                    }
                     // Reopening mid-segment counts as a new visit to the start camp (ResumeAtCampAfterRestart), which
                     // also leaves a ferry landing: the scene shows that camp's own leg. A continuing reload keeps the walk.
                     if (!saved.Seated && !continueAfterReload && !inSettlement) segment = catalog.Outgoing(saved.CurrentCampId);
@@ -63,7 +69,7 @@ namespace TheTrailWalker
             }
             catch (Exception error) when (error is IOException || error is InvalidDataException) { Debug.LogWarning("[Milestone5] Travel peek failed: " + error.Message); }
             var info = new TravelSceneInfo { Catalog = catalog, Segment = segment, StartVisit = visit };
-            if (inSettlement) { info.Settlement = true; info.HouseLevels = SettlementScenery.HouseLevels(savedSettlement, homeLevel); info.PlayerPlot = SettlementScenery.PlayerPlot(savedSettlement); }
+            if (inSettlement) { info.Settlement = true; info.HouseLevels = SettlementScenery.HouseLevels(savedSettlement, homeLevel); info.PlayerPlot = SettlementScenery.PlayerPlot(savedSettlement); info.ShopTier = shopTier; }
             return info;
         }
 
@@ -293,7 +299,7 @@ namespace TheTrailWalker
             if (!travel.CanTravelToSettlement(discovered, TravelBusy, out string reason)) { MapNote(reason); return; }
             CloseMap();
             settlementWelcomePending = true;
-            CommitTravel(() => { string rolled = travel.TravelToSettlement(discovered, TravelBusy); ApplySettlementArrival(); return rolled; }, SettlementWelcome);
+            CommitTravel(() => { string rolled = travel.TravelToSettlement(discovered, TravelBusy); ApplySettlementArrival(); AdvanceShopVisit(); return rolled; }, SettlementWelcome);
             if (saveBlocked) settlementWelcomePending = false;
         }
         private void SelectSettlement() => TravelToSettlementFromCamp(false);

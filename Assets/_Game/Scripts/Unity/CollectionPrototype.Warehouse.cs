@@ -118,6 +118,7 @@ namespace TheTrailWalker
             holder.SetParent(world.transform, false);
             holder.SetPositionAndRotation(MovementPrototype.InteriorWorldPosition, Quaternion.identity);
             Transform counter = Instantiate(counterPrefab, holder, false).transform;
+            CounterLamps.Hang(counter, "Warehouse");
             foreach (Collider c in counter.GetComponentsInChildren<Collider>(true)) Destroy(c);
             var bounds = new Bounds[2];
             for (int i = 0; i < 2; i++)

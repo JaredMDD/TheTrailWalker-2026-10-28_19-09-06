@@ -378,6 +378,41 @@
       "triangles": 36
     },
     {
+      "name": "WarehouseFrontT2",
+      "vertices": 1388,
+      "triangles": 2088
+    },
+    {
+      "name": "BakeryFrontT2",
+      "vertices": 3445,
+      "triangles": 5553
+    },
+    {
+      "name": "RanchFrontT2",
+      "vertices": 1116,
+      "triangles": 1704
+    },
+    {
+      "name": "FarmFrontT2",
+      "vertices": 2660,
+      "triangles": 4548
+    },
+    {
+      "name": "FisheryFrontT2",
+      "vertices": 1466,
+      "triangles": 2268
+    },
+    {
+      "name": "MineFrontT2",
+      "vertices": 1234,
+      "triangles": 2012
+    },
+    {
+      "name": "TailorFrontT2",
+      "vertices": 1108,
+      "triangles": 1748
+    },
+    {
       "name": "LumberFront",
       "triangles": 2801
     },
@@ -396,6 +431,10 @@
     {
       "name": "LumberDoorLeaf",
       "triangles": 96
+    },
+    {
+      "name": "LumberFrontT2",
+      "triangles": 3341
     }
   ],
   "Scope": "Art only: street front and counter view per shop. No shop logic, stock, prices or selection."

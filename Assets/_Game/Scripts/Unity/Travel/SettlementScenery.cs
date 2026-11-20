@@ -110,6 +110,12 @@ namespace TheTrailWalker.Travel
         public static int PlayerPlot(SettlementState state) => state == null ? -1 : state.PlotIndex;
 
         public static SettlementStreet Build(Transform parent, int[] houseLevels, int playerPlot) => Build(parent, houseLevels, playerPlot, null, false);
+        public static SettlementStreet Build(Transform parent, int[] houseLevels, int playerPlot, int reachedTier)
+            => Build(parent, houseLevels, playerPlot, null, false, Resources.Load<GameObject>, reachedTier);
+
+        // Storefront look by the shops' reached tier (Milestone 14, Task 6): tier 2 and up show the birch <Front>T2 (the only
+        // upgraded look so far); Build falls back to the tier 1 front when that prefab is missing.
+        public static string FrontFor(string front, int reachedTier) => reachedTier >= 2 ? front + "T2" : front;
 
         // lumberFrontWidthOverride replaces the LumberFront width (so the live branch is testable with another size);
         // forcePlaceholder builds the 8 m fence-and-pines placeholder even though LumberFront exists.
@@ -118,7 +124,7 @@ namespace TheTrailWalker.Travel
 
         // The loader maps a Resources path to a prefab (null when missing); the checks inject one to force the missing-art path.
         // Missing art never throws (a save in the settlement must always load): it logs a warning and builds a placeholder cube.
-        public static SettlementStreet Build(Transform parent, int[] houseLevels, int playerPlot, float? lumberFrontWidthOverride, bool forcePlaceholder, System.Func<string, GameObject> load)
+        public static SettlementStreet Build(Transform parent, int[] houseLevels, int playerPlot, float? lumberFrontWidthOverride, bool forcePlaceholder, System.Func<string, GameObject> load, int reachedTier = 1)
         {
             if (houseLevels == null || houseLevels.Length != SettlementState.PlotCount) throw new System.ArgumentException("Six house levels are required.", nameof(houseLevels));
             var street = new GameObject("Settlement street").transform; street.SetParent(parent, false);
@@ -136,8 +142,10 @@ namespace TheTrailWalker.Travel
                 float centre = x + slot / 2f;
                 string id = lumber ? "lumber" : i == 0 ? "warehouse" : "shop." + name.ToLowerInvariant();
                 var root = new GameObject(id).transform; root.SetParent(street, false); root.localPosition = new Vector3(centre, 0f, 0f);
-                if (lumber) { BuildLumber(root, lumberFront, width, load); lumberCentre = centre; lumberWidth = slot; }
-                else Place(root, front, "Settlement/Storefronts/" + front, load, width);
+                string look = FrontFor(front, reachedTier);
+                if (look != front && load("Settlement/Storefronts/" + look) == null) look = front;
+                if (lumber) { BuildLumber(root, lumberFront, width, load, look); lumberCentre = centre; lumberWidth = slot; }
+                else Place(root, look, "Settlement/Storefronts/" + look, load, width);
                 KeepBehindFrontLine(root);
                 AddSelectionBox(root);
                 buildings.Add(new StreetBuilding { Id = id, Kind = lumber ? StreetBuildingKind.LumberField : i == 0 ? StreetBuildingKind.Warehouse : StreetBuildingKind.Shop, CentreX = centre, Root = root });
@@ -205,9 +213,9 @@ namespace TheTrailWalker.Travel
         }
 
         // Lumber frontage: LumberFront when it exists, otherwise two fence sections with MassivePineA/B/C behind them.
-        private static void BuildLumber(Transform root, GameObject front, float width, System.Func<string, GameObject> load)
+        private static void BuildLumber(Transform root, GameObject front, float width, System.Func<string, GameObject> load, string look)
         {
-            if (front != null) { Place(root, "LumberFront", "Settlement/Storefronts/LumberFront", load, width); return; }
+            if (front != null) { Place(root, look, "Settlement/Storefronts/" + look, load, width); return; }
             for (int i = 0; i < 2; i++)
             {
                 Transform fence = Place(root, "FenceSection", "Settlement/Route/FenceSection", load, width / 2f);

@@ -73,7 +73,8 @@ namespace TheTrailWalker
                 ?? Region03ResourceVisuals.Attach(pickup, definition) ?? Region04ResourceVisuals.Attach(pickup, definition)
                 ?? Region05ResourceVisuals.Attach(pickup, definition) ?? Region06ResourceVisuals.Attach(pickup, definition)
                 ?? Harvest.Tier1DropVisuals.Attach(pickup, definition)
-                ?? Region01ResourceVisuals.AttachPath(pickup, Tier1CraftedItems.VisualPath(definition.Id));
+                ?? Region01ResourceVisuals.AttachPath(pickup, Tier1CraftedItems.VisualPath(definition.Id))
+                ?? Region01ResourceVisuals.AttachPath(pickup, Tier2ShopVisuals.PathFor(definition.Id));
             if (visual != null) visual.transform.localScale = Shape(definition);
             return visual;
         }

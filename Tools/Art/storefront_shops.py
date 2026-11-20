@@ -5,6 +5,7 @@ Run: python Tools/Art/generate_storefront_meshes.py   (writes every shop)
 """
 from generate_storefront_meshes import *          # shared kit, palette and the bakery
 import generate_storefront_meshes as gs
+import copy
 
 # ------------------------------------------------------------------ general shapes
 
@@ -447,6 +448,102 @@ def warehouse_counter():
         box(m, (x+dx, T+.22, .48), (.12, .02, .12), 'Gold'); box(m, (x+dx, T+.27, .48), (.01, .1, .01), 'Gold')
     return m, OFFERS
 
+# ------------------------------------------------------------------ tier 2 looks (Milestone 14): the birch tier
+
+# One wood per tier (pine to ebony): tier 2 is birch. Each <Shop>FrontT2 is the tier 1 build (same massing, sign icon
+# and goods) retargeted to pal2, which keeps every tier 1 slot in order and recolours the wood, roof, plaster and
+# awning slots (pale birch timber, cool slate and reed roofs, limewash, oilskin awnings), plus the shop's additions:
+# birch-bark posts with black lenticels, copper fittings and oilskin canopies. pal2 has extra slots, so the tier 2 fronts
+# use their own strip (StorefrontPaletteT2.png) and the tier 1 OBJs and palette stay byte-identical.
+T2_RECOLOURS = [('Timber', '#CBB48C'), ('TimberLight', '#E0CFAA'), ('Plank', '#D9C6A0'), ('PlankDark', '#BCA37B'), ('PostDark', '#A68E68'),
+                ('Plaster', '#DADCD3'), ('RoofRed', '#5E6F74'), ('RoofDark', '#47565C'), ('Thatch', '#A49C76'), ('ThatchDark', '#7D7759'),
+                ('AwningRed', '#2E6A6D'), ('AwningCream', '#DCD2B4'), ('FabricGreen', '#C08F34')]
+T2_COLOURS = [('BirchBark', '#ECE8DE', 'bark'), ('Lenticel', '#2A2724'), ('CopperFit', '#C27842', 'metal'), ('Verdigris', '#6FA092', 'metal'),
+              ('OilTeal', '#2E6A6D', 'cloth'), ('OilSlate', '#55646C', 'cloth'), ('OilOchre', '#C29032', 'cloth'), ('Flax', '#D8CEB0', 'cloth')]
+
+def tier2_palette(base):
+    p = copy.deepcopy(base)
+    for name, color in T2_RECOLOURS: p.colors[p.names.index(name)] = tuple(int(color[i:i+2], 16) for i in (1, 3, 5))
+    for name, color, *detail in T2_COLOURS: p.add(name, color, *detail)
+    return p
+
+pal2 = tier2_palette(pal)
+
+def bark_post(m, c, size, dashes=None):
+    """Birch-bark sleeve over a post (centre c, post size): white bark with black lenticel dashes on the street face."""
+    w, h, d = size; n = dashes or max(1, int(h/.42)); box(m, c, (w+.03, h, d+.03), 'BirchBark')
+    for a in range(n):
+        box(m, (c[0]+(.025 if a % 2 else -.02), c[1]-h/2+h*(a+.5)/n, c[2]+d/2+.018), (w*(.62 if a % 3 else .45), .028, .012), 'Lenticel')
+
+def vane(m, x, y, z):
+    """Copper weathervane: rod, arrow and tail fin turned along the street."""
+    box(m, (x, y+.35, z), (.035, .7, .035), 'CopperFit'); box(m, (x, y+.62, z), (.62, .035, .035), 'CopperFit')
+    box(m, (x+.34, y+.62, z), (.12, .1, .02), 'CopperFit', taper=.2); box(m, (x-.28, y+.62, z), (.14, .16, .02), 'Verdigris')
+
+def warehouse_t2(m):
+    W2 = 8.6
+    box(m, (0, 8.68, -3.0), (.3, .12, 6.8), 'CopperFit'); vane(m, 0, 8.72, -3.0)
+    for x in (-1.8, 1.8): bark_post(m, (x, 1.75, .08), (.2, 3.1, .14), 5)
+    for x0, x1 in ((-1.7, 0), (0, 1.7)):
+        for y in (.8, 2.7): box(m, (x0+.18 if x0 < 0 else x1-.18, y, .11), (.26, .16, .03), 'CopperFit')
+    for x in (-.14, .14): box(m, (x, 1.75, .12), (.05, .32, .05), 'CopperFit')
+    awning(m, 2.35, 3.65, 2.95, .8, colors=('OilSlate', 'Flax'), z=.05, stripes=4)
+    box(m, (0, 6.42, .19), (W2+.2, .05, .05), 'CopperFit')
+    return m
+
+def bakery_t2(m):
+    R = gs.RIDGE
+    box(m, (0, R+.15, -2.2), (.22, .08, 5.6), 'CopperFit')
+    box(m, (2.0, R+.56, -2.9), (.92, .06, .92), 'CopperFit'); box(m, (2.0, R+.66, -2.9), (.5, .14, .5), 'Verdigris', taper=.4)
+    box(m, (1.1, 3.0, .38), (1.45, .05, .55), 'CopperFit', axes=((1, 0, 0), (0, 1, .35), (0, -.35, 1)))
+    for x in (.45, 1.75): box(m, (x, 2.86, .5), (.03, .3, .03), 'CopperFit', axes=((1, 0, 0), (0, 1, -.9), (0, .9, 1)))
+    for x in (-gs.W/2-.02, gs.W/2+.02): bark_post(m, (x, (gs.GROUND+gs.FLOOR1)/2, .05), (.16, gs.FLOOR1-gs.GROUND, .14))
+    return m
+
+def ranch_t2(m):
+    box(m, (0, 6.5, -2.5), (.26, .12, 5.8), 'CopperFit'); vane(m, 0, 6.55, -2.5)
+    for x in (-3.28, 3.28): bark_post(m, (x, 1.85, .02), (.18, 3.1, .16), 3)
+    for x0, x1 in ((-1.55, 0), (0, 1.55)):
+        for y in (.9, 2.45): box(m, (x0+.22 if x0 < 0 else x1-.22, y, .16), (.32, .1, .03), 'CopperFit')
+    awning(m, -.8, .8, 5.38, .5, colors=('OilOchre', 'Flax'), z=.1, stripes=3)
+    return m
+
+def farm_t2(m):
+    for x in (-3.0, -1.0, 1.0, 3.0): bark_post(m, (x, 1.55, .85), (.14, 2.9, .14), 5)
+    vane(m, 0, 5.75, -2.0)
+    for x in (-2.75, 2.75): box(m, (x, .9, .72), (.16, .06, .06), 'CopperFit')
+    box(m, (0, .9, .76), (5.8, .04, .03), 'CopperFit')
+    return m
+
+def fishery_t2(m):
+    awning(m, .15, 2.45, 3.4, .95, colors=('OilOchre', 'Flax'), z=-.55, stripes=6)
+    for x in (-2.7, -.9, .9, 2.7): bark_post(m, (x, .2, .7), (.18, 1.2, .18), 2)
+    for x in (-2.8, 2.8): bark_post(m, (x, 1.35, .9), (.08, 1.0, .08), 2)
+    for t, rr in ((.12, .9), (.88, .9)): ring_band(m, (-2.3, .86, .3), .86+.8*t, .28*rr+.014, 'CopperFit')
+    box(m, (0, 3.8, -.47), (5.4, .05, .05), 'CopperFit')
+    return m
+
+def mine_t2(m):
+    for x in (-1.28, 1.28): bark_post(m, (x, 1.5, -.25), (.24, 3.0, .24), 6)
+    slab(m, (1.9, 2.73), (4.1, 2.33), 1.32, -.62, .03, 'CopperFit', 'Verdigris')
+    for x in (-1.75, 1.75): box(m, (x, 2.6, .05), (.28, .05, .28), 'CopperFit', taper=.5)
+    box(m, (-2.45, .93, .88), (1.1, .04, .62), 'OilTeal'); box(m, (-2.45, .72, 1.18), (1.1, .4, .03), 'OilTeal')
+    return m
+
+def tailor_t2(m):
+    box(m, (0, 9.05, -1.89), (.2, .1, 4.6), 'CopperFit'); box(m, (0, 9.3, .14), (.05, .5, .05), 'CopperFit')
+    box(m, (0, 9.6, .14), (.14, .14, .14), 'Verdigris', taper=.3)
+    box(m, (-.9, 3.14, .52), (2.75, .05, .24), 'CopperFit')
+    for wx in (-1.6, 1.6): box(m, (wx, 3.96, .5), (1.02, .03, .03), 'CopperFit')
+    box(m, (1.45, 2.88, .12), (1.05, .05, .25), 'CopperFit')
+    return m
+
+def tier2_front(front_fn, extras):
+    m = front_fn(); m.name += 'T2'; m.palette = pal2   # same slot indices: pal2 extends pal
+    return extras(m)
+
+TIER2 = {'Warehouse': warehouse_t2, 'Bakery': bakery_t2, 'Ranch': ranch_t2, 'Farm': farm_t2, 'Fishery': fishery_t2, 'Mine': mine_t2, 'Tailor': tailor_t2}
+
 CRATE = (.46, .34, .36)   # deposit crate size (x, y, z); the lid is a separate part that hinges on its back top edge
 
 def deposit_crate_parts():
@@ -482,6 +579,8 @@ def main():
         shops.append(dict(Name=name, Front=name+'Front', Counter=name+'Counter', Keeper=keeper, Width=width,
                           OfferAnchors=[list(o) for o in offers], OfferAnchorsFlat=[c for o in offers for c in o], OfferKinds=kinds))
     stats += [part.save(OUT, HEADER) for part in deposit_crate_parts()]
+    pal2.write_png(OUT/'StorefrontPaletteT2.png')
+    stats += [tier2_front(front_fn, TIER2[name]).save(OUT, HEADER) for name, front_fn, *_ in SHOPS]
     # Dedicated lumber authoring owns its doorway/ledger hierarchy and palette.
     # Preserve its registration when regenerating the seven older storefronts.
     existing=OUT/'StorefrontManifest.json'

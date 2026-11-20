@@ -18,18 +18,29 @@ public static class LumberFieldArtAssets {
  static Manifest Load()=>JsonConvert.DeserializeObject<Manifest>(File.ReadAllText(Source+"LumberFieldArtManifest.json"));
  static Vector3 V(float[] a)=>new Vector3(a[0],a[1],a[2]);
  static string PathFor(string name)=>"Assets/_Game/Resources/"+Load().Assemblies.Single(x=>x.Name==name).PrefabPath+".prefab";
- static string MatPath(string group)=>group=="Forester"?"Assets/_Game/Resources/Characters/Shopkeepers/ForesterArt.mat":"Assets/_Game/Resources/Settlement/Storefronts/LumberArt.mat";
+ // LumberT2: the tier 2 (birch) front has its own, longer palette strip, so its own material.
+ static string MatPath(string group)=>group=="Forester"?"Assets/_Game/Resources/Characters/Shopkeepers/ForesterArt.mat":group=="LumberT2"?"Assets/_Game/Resources/Settlement/Storefronts/LumberArtT2.mat":"Assets/_Game/Resources/Settlement/Storefronts/LumberArt.mat";
  static void Prepare() {
   if(EditorApplication.isPlayingOrWillChangePlaymode)throw new Exception("Build outside Play mode");AssetDatabase.Refresh();var manifest=Load();
-  foreach(var p in manifest.Pieces) {
-   var tex=(TextureImporter)AssetImporter.GetAtPath(p.PalettePath);tex.filterMode=FilterMode.Point;tex.mipmapEnabled=false;tex.wrapMode=TextureWrapMode.Clamp;tex.alphaSource=TextureImporterAlphaSource.FromInput;tex.alphaIsTransparency=false;tex.textureCompression=TextureImporterCompression.Uncompressed;tex.npotScale=TextureImporterNPOTScale.None;tex.maxTextureSize=4096;tex.SaveAndReimport();
-   var imp=(ModelImporter)AssetImporter.GetAtPath(p.SourcePath);imp.globalScale=1;imp.isReadable=true;imp.addCollider=false;imp.importAnimation=false;imp.importCameras=false;imp.importLights=false;imp.materialImportMode=ModelImporterMaterialImportMode.None;imp.importNormals=ModelImporterNormals.Calculate;imp.normalSmoothingAngle=0;imp.SaveAndReimport();
-  }
-  foreach(var group in new[]{"Lumber","Forester"}) {
-   string path=MatPath(group);Directory.CreateDirectory(System.IO.Path.GetDirectoryName(path));var material=AssetDatabase.LoadAssetAtPath<Material>(path);
-   if(material==null){material=new Material(Shader.Find("TheTrailWalker/FacetedDetail"));AssetDatabase.CreateAsset(material,path);}
-   var row=manifest.Pieces.First(p=>p.MaterialGroup==group);FacetedDetailMaterials.Configure(material,AssetDatabase.LoadAssetAtPath<Texture2D>(row.PalettePath));material.SetColor("_BaseColor",Color.white);material.SetFloat("_DetailScale",2);material.SetFloat("_DetailStrength",.35f);EditorUtility.SetDirty(material);
-  }
+  foreach(var p in manifest.Pieces.Where(x=>x.MaterialGroup!="LumberT2"))PreparePiece(p);
+  foreach(var group in new[]{"Lumber","Forester"})PrepareMaterial(manifest,group);
+ }
+ static void PreparePiece(Piece p) {
+  var tex=(TextureImporter)AssetImporter.GetAtPath(p.PalettePath);tex.filterMode=FilterMode.Point;tex.mipmapEnabled=false;tex.wrapMode=TextureWrapMode.Clamp;tex.alphaSource=TextureImporterAlphaSource.FromInput;tex.alphaIsTransparency=false;tex.textureCompression=TextureImporterCompression.Uncompressed;tex.npotScale=TextureImporterNPOTScale.None;tex.maxTextureSize=4096;tex.SaveAndReimport();
+  var imp=(ModelImporter)AssetImporter.GetAtPath(p.SourcePath);imp.globalScale=1;imp.isReadable=true;imp.addCollider=false;imp.importAnimation=false;imp.importCameras=false;imp.importLights=false;imp.materialImportMode=ModelImporterMaterialImportMode.None;imp.importNormals=ModelImporterNormals.Calculate;imp.normalSmoothingAngle=0;imp.SaveAndReimport();
+ }
+ static void PrepareMaterial(Manifest manifest,string group) {
+  string path=MatPath(group);Directory.CreateDirectory(System.IO.Path.GetDirectoryName(path));var material=AssetDatabase.LoadAssetAtPath<Material>(path);
+  if(material==null){material=new Material(Shader.Find("TheTrailWalker/FacetedDetail"));AssetDatabase.CreateAsset(material,path);}
+  var row=manifest.Pieces.First(p=>p.MaterialGroup==group);FacetedDetailMaterials.Configure(material,AssetDatabase.LoadAssetAtPath<Texture2D>(row.PalettePath));material.SetColor("_BaseColor",Color.white);material.SetFloat("_DetailScale",2);material.SetFloat("_DetailStrength",.35f);EditorUtility.SetDirty(material);
+ }
+ // Narrow path (Milestone 14): only the tier 2 LumberFrontT2 (its piece, material and prefab, plus its StorefrontManifest part row);
+ // never re-imports or rebuilds the tier 1 lumber pieces and prefabs.
+ public static void BuildFrontT2() {
+  if(EditorApplication.isPlayingOrWillChangePlaymode)throw new Exception("Build outside Play mode");AssetDatabase.Refresh();var manifest=Load();
+  var piece=manifest.Pieces.Single(p=>p.Model=="LumberFrontT2");PreparePiece(piece);PrepareMaterial(manifest,"LumberT2");BuildOne("LumberFrontT2");
+  const string store="Assets/_Game/Art/Settlement/Storefronts/StorefrontManifest.json";
+  var s=JObject.Parse(File.ReadAllText(store));Upsert((JArray)s["Parts"],new JObject{{"name",piece.Model},{"triangles",piece.Triangles}},"name");File.WriteAllText(store,s.ToString(Formatting.Indented)+"\n");
  }
  static void BuildOne(string name) {
   var m=Load();var a=m.Assemblies.Single(x=>x.Name==name);var root=new GameObject(name);var nodes=new Dictionary<string,Transform>();

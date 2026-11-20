@@ -26,7 +26,27 @@ namespace TheTrailWalker.Domain.Economy
             { "ingredient.birch_sap", 6 }, { "ingredient.mesquite_pods", 12 }, { "ingredient.acorns", 20 },
             { "animal.rabbit.pelt", 8 }, { "animal.rabbit.meat", 6 }, { "material.bone", 4 }, { "ingredient.animal_fat", 5 },
             { "fish.rainbow_trout", 10 }, { "fish.largemouth_bass", 12 }, { "fish.bluegill", 8 }, { "fish.yellow_perch", 10 },
-            { "food.milk.cow", 6 }, { "food.milk.goat", 8 }, { "ingredient.egg", 4 }, { "ingredient.shrimp", 12 } };
+            { "food.milk.cow", 6 }, { "food.milk.goat", 8 }, { "ingredient.egg", 4 }, { "ingredient.shrimp", 12 },
+            // Shop pool goods (shop listings spec 5.1-5.5); the shop price is 4 x the Q5 value, so 8 x these bases.
+            { "food.blackberries", 5 }, { "ingredient.carrots", 5 }, { "ingredient.barley", 5 }, { "food.blueberries", 5 }, { "ingredient.flax_seeds", 5 }, { "ingredient.tomatoes", 5 },
+            { "ingredient.rice", 6 }, { "ingredient.honey", 8 }, { "ingredient.lavender", 6 },
+            { "ingredient.corn", 10 }, { "ingredient.beans", 10 }, { "ingredient.chickpeas", 10 }, { "ingredient.soybeans", 10 }, { "ingredient.sugar_cane", 10 }, { "ingredient.sunflower_seeds", 10 },
+            { "ingredient.pumpkins", 12 }, { "ingredient.green_chili", 12 }, { "ingredient.wild_mint", 12 }, { "ingredient.potatoes", 18 }, { "ingredient.seaweed", 18 },
+            { "food.coconuts", 20 }, { "ingredient.cacao_beans", 22 }, { "ingredient.coffee_beans", 22 }, { "ingredient.vanilla_pods", 25 },
+            { "material.sandstone", 3 }, { "material.yellow_ochre", 3 }, { "material.copper_ore", 4 }, { "material.quartz", 4 }, { "material.tin_ore", 4 },
+            { "material.granite", 6 }, { "material.slate", 6 }, { "material.iron_ore", 7 }, { "material.silver_ore", 9 }, { "material.turquoise", 10 },
+            { "material.marble", 10 }, { "material.basalt", 10 }, { "material.obsidian", 12 }, { "material.gold_ore", 14 }, { "material.lapis_lazuli", 15 },
+            { "material.emerald", 20 }, { "material.ruby", 20 }, { "material.sapphire", 20 }, { "material.diamond", 25 },
+            { "material.flax_fiber", 3 }, { "material.cattail_fiber", 3 }, { "material.cotton_fiber", 6 }, { "material.agave_fiber", 6 }, { "material.bamboo_fiber", 10 },
+            { "fish.common_carp", 25 }, { "fish.channel_catfish", 28 }, { "fish.northern_pike", 30 }, { "fish.walleye", 30 },
+            { "fish.brown_trout", 55 }, { "fish.lake_trout", 58 }, { "fish.salmon", 60 }, { "fish.sturgeon", 65 },
+            { "fish.longnose_gar", 90 }, { "fish.red_drum", 95 }, { "fish.red_snapper", 100 }, { "fish.tuna", 110 },
+            // Override-priced shop goods: floor(shop price / 8), so selling never beats the shop price.
+            { "animal.chicken.meat", 6 }, { "animal.duck.meat", 12 }, { "animal.lamb.meat", 22 }, { "animal.beef.meat", 37 },
+            { "item.flax_cord", 4 }, { "item.flax_stuffing", 4 }, { "item.flax_cloth", 6 }, { "item.cattail_cord", 9 }, { "item.fine_flax_cloth", 19 },
+            { "item.cotton_cord", 9 }, { "item.cotton_thread", 6 }, { "item.cotton_stuffing", 9 }, { "item.cotton_cloth", 12 }, { "item.agave_cord", 18 },
+            { "item.fine_cotton_cloth", 44 }, { "item.bamboo_cloth", 20 },
+            { "fishery.crab", 36 }, { "fishery.squid", 70 }, { "fishery.lobster", 120 } };
         private static readonly long[] Basic = { 1, 3, 6, 10 }, Other = { 20, 60, 120, 200 };
         private static readonly long[] Misc = { 600, 1800, 3600, 6000 }, Backpack = { 350, 1050, 2100, 3500 }, Clothing = { 220, 660, 1320, 2200 },
             Tool = { 140, 420, 840, 1400 }, Food = { 60, 180, 360, 600 };

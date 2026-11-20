@@ -731,16 +731,16 @@ namespace TheTrailWalker.Editor
             Check(Resources.Load<Sprite>("UI/Icons/settlement") != null && CollectionPrototype.SettlementListRowY(0) < 0f && CollectionPrototype.SettlementListRowY(1) < CollectionPrototype.SettlementListRowY(0),
                 "The settlement menu button has its icon, and the open list stacks downward below it");
             Check(!CollectionPrototype.TrailControlsVisible(true) && CollectionPrototype.TrailControlsVisible(false), "Trail-only controls are hidden in the settlement and shown on the trail");
-            Check(CollectionPrototype.SettlementListKeys(false).SequenceEqual(new[] { "return" }) && CollectionPrototype.SettlementListKeys(true).SequenceEqual(new[] { "home", "warehouse", "lumber", "return" }),
-                "The settlement list shows only Return before the plot choice, then Home, Warehouse, Lumber and Return");
-            var allKeys = new[] { "home", "warehouse", "lumber", "return" };
+            Check(CollectionPrototype.SettlementListKeys(false).SequenceEqual(new[] { "return" }) && CollectionPrototype.SettlementListKeys(true).SequenceEqual(new[] { "home", "warehouse", "lumber", "farm", "mine", "tailor", "ranch", "fishery", "return" }),
+                "The settlement list shows only Return before the plot choice, then Home, Warehouse, Lumber, the five shops and Return");
+            var allKeys = new[] { "home", "warehouse", "lumber", "farm", "mine", "tailor", "ranch", "fishery", "return" };
             bool SlotsContiguous(bool chosen)
             {
                 int[] slots = allKeys.Select(k => CollectionPrototype.SettlementListSlot(k, chosen)).Where(s => s >= 0).OrderBy(s => s).ToArray();
                 return slots.Length == CollectionPrototype.SettlementListKeys(chosen).Length && slots.Select((s, i) => s == i).All(x => x);
             }
             Check(CollectionPrototype.SettlementListSlot("return", false) == 0 && CollectionPrototype.SettlementListSlot("home", false) == -1 && SlotsContiguous(false) && SlotsContiguous(true)
-                && CollectionPrototype.SettlementListSlot("home", true) == 0 && CollectionPrototype.SettlementListSlot("return", true) == 3,
+                && CollectionPrototype.SettlementListSlot("home", true) == 0 && CollectionPrototype.SettlementListSlot("return", true) == 8,
                 "Visible list buttons take contiguous slots from the top (a lone Return takes slot 1)");
 
             // Arrival: a fresh profile's placeholder state is reseeded from the live visit and camp, then discovered; never reseeded once discovered.

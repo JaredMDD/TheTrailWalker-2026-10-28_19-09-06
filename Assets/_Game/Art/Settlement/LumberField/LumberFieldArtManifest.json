@@ -1498,6 +1498,55 @@
         "LumberZoneT4"
       ],
       "Triangles": 1264
+    },
+    {
+      "Name": "LumberFrontT2",
+      "Nodes": [
+        {
+          "Name": "FrontVisual",
+          "Parent": null,
+          "LocalPosition": [
+            0,
+            0,
+            0
+          ],
+          "Model": "LumberFrontT2",
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "SelectAnchor",
+          "Parent": null,
+          "LocalPosition": [
+            0,
+            1.4,
+            0.2
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        }
+      ],
+      "TriangleCeiling": 3500,
+      "PrefabPath": "Settlement/Storefronts/LumberFrontT2",
+      "Width": 7.8,
+      "ShopId": "shop.lumber",
+      "Tier": 2,
+      "Awning": "ochre oilskin/flax (tier 2 birch look)",
+      "Pieces": [
+        "LumberFrontT2"
+      ],
+      "Triangles": 3341
     }
   ],
   "Pieces": [
@@ -1698,6 +1747,24 @@
         16.120001
       ],
       "MaterialGroup": "Lumber"
+    },
+    {
+      "Name": "LumberFrontT2",
+      "Model": "LumberFrontT2",
+      "SourcePath": "Assets/_Game/Art/Settlement/LumberField/LumberFrontT2.obj",
+      "PalettePath": "Assets/_Game/Art/Settlement/LumberField/LumberFrontT2Palette.png",
+      "Triangles": 3341,
+      "BoundsMin": [
+        -3.67,
+        -0.007737,
+        -4.11
+      ],
+      "BoundsMax": [
+        3.788836,
+        5.63,
+        0.9584
+      ],
+      "MaterialGroup": "LumberT2"
     }
   ],
   "Sign": "Original axe-cross-log relief; no text; SVG master in docs",

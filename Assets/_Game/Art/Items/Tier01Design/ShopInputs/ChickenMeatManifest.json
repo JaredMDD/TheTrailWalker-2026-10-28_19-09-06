@@ -1,0 +1,19 @@
+{
+  "Name": "ChickenMeat",
+  "Model": "ChickenMeat",
+  "SourcePath": "Assets/_Game/Art/Items/Tier01Design/ShopInputs/ChickenMeat.obj",
+  "PalettePath": "Assets/_Game/Art/Items/Tier01Design/Palettes/ChickenMeatPalette.png",
+  "PrefabPath": "Tier01/ShopInputs/ChickenMeat",
+  "ItemId": "animal.chicken.meat",
+  "Triangles": 352,
+  "BoundsMin": [
+    -0.43,
+    -0.24672202915713914,
+    -0.20165000000000002
+  ],
+  "BoundsMax": [
+    0.44,
+    0.22635048546526523,
+    0.193325
+  ]
+}

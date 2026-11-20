@@ -2,7 +2,8 @@
 // tinted by _BaseColor) multiplied by a grayscale detail texture chosen per colour: the palette alpha holds the
 // detail type (alpha = type*8 + 4; 255 = none), the type picks a tile of the 8x4 _DetailMap atlas, and the tile is
 // projected onto each face in object space (triplanar, _DetailScale tiles per metre). No mesh UV changes needed.
-// Lighting: URP main light with shadows, spherical-harmonics ambient and fog (lanterns are painted, not lit).
+// Lighting: URP main light with shadows, spherical-harmonics ambient and fog, plus per-pixel additional point lights
+// (diffuse, unshadowed: the counter lamps, Milestone 14). Painted lanterns elsewhere stay unlit.
 Shader "TheTrailWalker/FacetedDetail"
 {
     Properties
@@ -41,6 +42,8 @@ Shader "TheTrailWalker/FacetedDetail"
             #pragma multi_compile_fragment _ _SHADOWS_SOFT _SHADOWS_SOFT_LOW _SHADOWS_SOFT_MEDIUM _SHADOWS_SOFT_HIGH
             #pragma multi_compile_fog
             #pragma multi_compile_instancing
+            #pragma multi_compile_fragment _ _ADDITIONAL_LIGHTS
+            #pragma multi_compile _ _CLUSTER_LIGHT_LOOP
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
 
             struct Attributes { float4 positionOS : POSITION; float3 normalOS : NORMAL; float2 uv : TEXCOORD0; UNITY_VERTEX_INPUT_INSTANCE_ID };
@@ -99,6 +102,15 @@ Shader "TheTrailWalker/FacetedDetail"
                 Light light = GetMainLight(TransformWorldToShadowCoord(input.positionWS));
                 half ndl = saturate(dot(normal, light.direction));
                 half3 color = albedo * (light.color * (ndl * light.shadowAttenuation * light.distanceAttenuation) + SampleSH(normal));
+                #if defined(_ADDITIONAL_LIGHTS)
+                InputData inputData = (InputData)0;   // LIGHT_LOOP_BEGIN reads these two under the cluster light loop
+                inputData.positionWS = input.positionWS; inputData.normalizedScreenSpaceUV = GetNormalizedScreenSpaceUV(input.positionCS);
+                uint count = GetAdditionalLightsCount();
+                LIGHT_LOOP_BEGIN(count)
+                    Light extra = GetAdditionalLight(lightIndex, input.positionWS);
+                    color += albedo * extra.color * (saturate(dot(normal, extra.direction)) * extra.distanceAttenuation);
+                LIGHT_LOOP_END
+                #endif
                 color = MixFog(color, input.fog);
                 return half4(color, 1);
             }

@@ -53,10 +53,14 @@ namespace TheTrailWalker.Persistence
         // Milestone 12 (optional): the settlement warehouse's crates and cycle, and its transaction log. block 0 = absent (older saves).
         public SavedWarehouse warehouse;
         public SavedLumber lumber;   // Milestone 13; block 0 = absent
+        public SavedShops shops;     // Milestone 14; block 0 = absent
         public List<TheTrailWalker.Domain.Economy.TradeRecord> warehouseLog = new List<TheTrailWalker.Domain.Economy.TradeRecord>();
     }
     [Serializable] public sealed class SavedWarehouse { public int block; public List<SavedCrate> crates = new List<SavedCrate>(); public int cycleCrates; public long cycleCash; }
     [Serializable] public sealed class SavedLumber { public int block; public int unlockedTier, lastZone, debugWoodTier; public long clockOffsetMinutes; public List<SavedMassiveTree> trees = new List<SavedMassiveTree>(); }
+    [Serializable] public sealed class SavedShops { public int block; public int visitId, debugTier; public List<SavedShopStock> stock = new List<SavedShopStock>(); }
+    [Serializable] public sealed class SavedShopStock { public string shopId; public int visit; public List<SavedShopOffer> offers = new List<SavedShopOffer>(); }
+    [Serializable] public sealed class SavedShopOffer { public string itemId; public long unitPriceMinor; public int unitsLeft, revision; }
     [Serializable] public sealed class SavedMassiveTree { public long fellUtcTicks; public int fellCount; public List<SavedPendingReward> pending = new List<SavedPendingReward>(); }
     [Serializable] public sealed class SavedPendingReward { public string itemId; public int quality; public long units; }
     [Serializable] public sealed class SavedCrate { public string itemId; public List<SavedWarehouseUnit> units = new List<SavedWarehouseUnit>(); }
@@ -443,6 +447,7 @@ namespace TheTrailWalker.Persistence
             }
             RestoreWarehouse(data, inventory.Entries);
             RestoreLumber(data);
+            RestoreShops(data);
         }
 
         public const string LumberPilePrefix = "lumber-";
@@ -506,6 +511,54 @@ namespace TheTrailWalker.Persistence
                         tree.Pending.Add(new TheTrailWalker.Domain.Settlement.PendingReward { ItemId = row.itemId, Quality = row.quality, Units = row.units });
                     }
                 }
+            }
+            return state;
+        }
+
+        public static SavedShops SaveShops(TheTrailWalker.Domain.Settlement.ShopState s)
+        {
+            var saved = new SavedShops { block = 1, visitId = s.VisitId, debugTier = s.DebugTier };
+            foreach (var kv in s.Stock)
+            {
+                var box = new SavedShopStock { shopId = kv.Key, visit = kv.Value.Visit };
+                foreach (var o in kv.Value.Offers) box.offers.Add(new SavedShopOffer { itemId = o.ItemId, unitPriceMinor = o.UnitPriceMinor, unitsLeft = o.UnitsLeft, revision = o.Revision });
+                saved.stock.Add(box);
+            }
+            return saved;
+        }
+
+        // Milestone 14: absent block = visit 0, nothing rolled yet. Empty slots (short pools) save as a null or "" item id.
+        public static TheTrailWalker.Domain.Settlement.ShopState RestoreShops(SessionSnapshot data)
+        {
+            var state = new TheTrailWalker.Domain.Settlement.ShopState();
+            SavedShops saved = data?.shops;
+            if (saved == null || saved.block == 0) return state;
+            const int MaxUnits = TheTrailWalker.Domain.Settlement.ShopService.StartUnits;
+            if (saved.visitId < 0 || saved.debugTier < 0 || saved.debugTier > 4 || saved.stock == null) throw new InvalidDataException("Invalid shops: visit or debug tier");
+            state.VisitId = saved.visitId; state.DebugTier = saved.debugTier;
+            foreach (SavedShopStock box in saved.stock)
+            {
+                if (box == null || box.offers == null || box.visit < 0 || box.visit > saved.visitId || box.offers.Count != 3 || state.Stock.ContainsKey(box.shopId ?? "")) throw new InvalidDataException("Invalid shops: stock row");
+                var rows = new List<TheTrailWalker.Domain.Settlement.ShopEntry>();
+                foreach (var e in TheTrailWalker.Domain.Settlement.ShopCatalog.All) if (e.ShopId == box.shopId) rows.Add(e);
+                if (rows.Count == 0) throw new InvalidDataException("Invalid shops: unknown shop " + box.shopId);
+                var offers = new TheTrailWalker.Domain.Settlement.ShopOffer[3];
+                for (int i = 0; i < 3; i++)
+                {
+                    SavedShopOffer row = box.offers[i];
+                    if (row == null || row.revision < 0 || row.unitsLeft < 0 || row.unitsLeft > MaxUnits) throw new InvalidDataException("Invalid shops: offer " + box.shopId + "-" + i);
+                    if (string.IsNullOrEmpty(row.itemId))
+                    {
+                        if (row.unitsLeft != 0) throw new InvalidDataException("Invalid shops: empty slot has units");
+                        offers[i] = new TheTrailWalker.Domain.Settlement.ShopOffer { Revision = row.revision };
+                        continue;
+                    }
+                    var entry = rows.Find(e => e.ItemId == row.itemId);
+                    if (row.unitPriceMinor <= 0) throw new InvalidDataException("Invalid shops: price of " + row.itemId);
+                    if (entry == null) { offers = null; break; } // item left the pool in a retune: drop the shop so it rerolls; a saved price survives a retune
+                    offers[i] = new TheTrailWalker.Domain.Settlement.ShopOffer { ItemId = row.itemId, UnitPriceMinor = row.unitPriceMinor, UnitsLeft = row.unitsLeft, Revision = row.revision };
+                }
+                if (offers != null) state.Stock[box.shopId] = (box.visit, offers);
             }
             return state;
         }
