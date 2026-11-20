@@ -445,13 +445,15 @@ namespace TheTrailWalker
             Say(inventoryOpen ? "Hold a bag item, then drag to move or touch a compatible stack." : "Walking intent restored. World pickups remain in range only.");
             SaveNow();
         }
+        private TheTrailWalker.Domain.Settlement.LumberFieldState lumber = new TheTrailWalker.Domain.Settlement.LumberFieldState();
+
         private void ConfirmReset()
         {
             if (!resetPending || Time.unscaledTime > resetDeadline) { resetPending = true; resetDeadline = Time.unscaledTime + 5f; Say("Tap RESET SAVE again within five seconds to archive this profile and start over."); return; }
             resetPending = false;
             try
             {
-                saveStore.ArchiveForReset(); saveBlocked = false; lastSavedState = null; crafting = new CraftingState(); missions = new TheTrailWalker.Domain.Missions.MissionState(); settlement = TheTrailWalker.Domain.Travel.SettlementState.New(0); home = TheTrailWalker.Domain.Settlement.HomeState.New(); homeStorage = new TheTrailWalker.Domain.Settlement.HomeStorage(); warehouse = new TheTrailWalker.Domain.Economy.WarehouseState(); warehouseLog = new List<TheTrailWalker.Domain.Economy.TradeRecord>();
+                saveStore.ArchiveForReset(); saveBlocked = false; lastSavedState = null; crafting = new CraftingState(); missions = new TheTrailWalker.Domain.Missions.MissionState(); settlement = TheTrailWalker.Domain.Travel.SettlementState.New(0); home = TheTrailWalker.Domain.Settlement.HomeState.New(); homeStorage = new TheTrailWalker.Domain.Settlement.HomeStorage(); warehouse = new TheTrailWalker.Domain.Economy.WarehouseState(); warehouseLog = new List<TheTrailWalker.Domain.Economy.TradeRecord>(); lumber = new TheTrailWalker.Domain.Settlement.LumberFieldState();
                 CloseContainer();
                 if (inventoryOpen) { movement.CloseInventory(); inventoryOpen = false; LayoutBackpack(); }
                 router.CancelAll(); movement.Reset();
@@ -623,6 +625,8 @@ namespace TheTrailWalker
         }
         private bool Reachable(Bundle bundle, out string reason)
         {
+            reason = "";
+            if (bundle.Item.Id.StartsWith(SessionSaveStore.LumberPilePrefix, StringComparison.Ordinal)) return true;   // lumber piles: framed by the pickup screen, the trunk may sit in front
             reason = "Pickup is outside the visible view";
             Vector3 viewport = cameraView.WorldToViewportPoint(bundle.Collider.bounds.center);
             if (!InVisibleView(viewport, cameraView.nearClipPlane, cameraView.farClipPlane)) return false;
@@ -642,7 +646,7 @@ namespace TheTrailWalker
         }
         public bool Begin(int pointer, Vector2 position)
         {
-            if (InSettlementScene) return SettlementPointerBegin(pointer, position); // street drag and tap; no pickups or harvest
+            if (InSettlementScene) return PickupPointerBegin(pointer, position) || SettlementPointerBegin(pointer, position); // lumber piles, else street drag and tap
             if (saveBlocked || (milestone4 && stamina.Fainted)) return false;
             // Interactables first: their selection colliders are triggers, which the pickup ray below ignores (and that
             // ray finds nothing at all when only an interactable is under the finger).
@@ -758,8 +762,11 @@ namespace TheTrailWalker
                 success = ledger.TryPlace(contact.Item, pointer, Mathf.RoundToInt(point.x), Mathf.RoundToInt(point.y), true, out reason);
             }
             if (success) accepted++; else rejected++;
-            if (success && pickedId != null) statistics.AddGathered(pickedId, contact.Item.Owner == ItemOwner.World ? pickedBefore - contact.Item.Quantity : pickedBefore);
-            Release(pointer, contact); Say(reason); Redraw(); if (success) SaveNow(); WriteReport(success ? "transfer" : "rejected");
+            if (success && pickedId != null) statistics.AddGathered(pickedId, Stored(contact.Item, pickedBefore));
+            Release(pointer, contact); Say(PileRefusal(contact.Item, reason));
+            bool pile = success && contact.World && contact.Item.Id.StartsWith(SessionSaveStore.LumberPilePrefix, StringComparison.Ordinal);
+            if (pile) LumberTaken(contact.Item, Stored(contact.Item, pickedBefore));   // the Take and the bag change share its one save
+            Redraw(); if (success && !pile) SaveNow(); WriteReport(success ? "transfer" : "rejected");
         }
         private Vector2 BagPoint(Vector2 screen)
         {
@@ -862,7 +869,7 @@ namespace TheTrailWalker
             if (milestone4) AdvanceSurvival(Time.deltaTime);
             if (milestone5 && initialized && travel != null) UpdateTravel();
             if (milestone5 && initialized && travel != null) UpdateTrade();
-            if (milestone5 && TrailControlsVisible(InSettlementScene)) UpdateHarvest();
+            if (milestone5 && (TrailControlsVisible(InSettlementScene) || active != null)) UpdateHarvest();   // active: a massive cut in the settlement
             if (milestone5) UpdateCrafting();
             SyncScreenReturn();
             if (milestone5 && initialized && travel != null) UpdateMissions();
@@ -892,7 +899,7 @@ namespace TheTrailWalker
                         ((BoxCollider)bundle.Collider).center = bundle.MeshCentre + bundle.Visual.localPosition;
                     }
                     else bundle.View.transform.localScale = new Vector3(bundle.Item.Width / 2000f, 0.3f * scale, bundle.Item.Height / 1500f);
-                    bundle.Badge.gameObject.SetActive(false); // trail items show only their model
+                    bundle.Badge.gameObject.SetActive(bundle.Badge.text.Length > 0); // trail items show only their model; lumber piles carry a label
                 }
                 else bundle.Badge.gameObject.SetActive(false);
             }
@@ -1423,7 +1430,7 @@ namespace TheTrailWalker
             try
             {
                 var snapshot = new SessionSnapshot { version = milestone5 ? 3 : milestone4 ? 2 : 1, distance = movement.Distance, requestedSpeed = movement.RequestedSpeed,
-                    speedCap = movement.SpeedCap, inventoryResume = movement.InventoryResumeSpeed, inventoryOpen = SavedBagOpen(WarehouseOpen, warehouseBagWasOpen, inventoryOpen),
+                    speedCap = movement.SpeedCap, inventoryResume = movement.InventoryResumeSpeed, inventoryOpen = SavedBagOpen(WarehouseOpen || PickupOpen, WarehouseOpen ? warehouseBagWasOpen : pickupBagWasOpen, inventoryOpen),
                     postHarvest = movement.PostHarvestStop, camp = (movement.Pauses & MovementPauseReasons.Camp) != 0, yaw = orbit.Yaw };
                 if (milestone4)
                 {
@@ -1436,21 +1443,10 @@ namespace TheTrailWalker
                             quality = gear.Quality, remainingDistance = gear.RemainingDistance, infinite = gear.Infinite });
                     }
                 }
-                if (milestone5) { snapshot.economy = 1; snapshot.trade = tradeSession?.Data; snapshot.tradeLog = new List<TheTrailWalker.Domain.Economy.TradeRecord>(tradeLog); snapshot.warehouse = SessionSaveStore.SaveWarehouse(warehouse); snapshot.warehouseLog = new List<TheTrailWalker.Domain.Economy.TradeRecord>(warehouseLog); snapshot.segmentId = travel.CurrentSegment.Id; snapshot.travel = SessionSaveStore.SaveTravel(travel); snapshot.settlement = SaveSettlementForSnapshot(); snapshot.home = SaveHomeForSnapshot(); snapshot.harvested = HarvestedForSave(); snapshot.crafting = SaveCrafting(); snapshot.missions = SaveMissions(); snapshot.statistics = SaveStatistics(); }
-                foreach (ItemEntry item in ledger.Entries)
-                {
-                    if (item.Owner == ItemOwner.Consumed) continue;
-                    if (milestone5 && item.Owner == ItemOwner.World && item.SegmentId == null) ledger.AssignSegment(item, travel.CurrentSegment.Id);
-                    Bundle bundle = bundles.Find(b => b.Item == item);
-                    Vector3 position = bundle == null ? Vector3.zero : bundle.View.transform.position;
-                    WornGear worn = item.Owner == ItemOwner.Worn && item.Definition.GearSlot.HasValue ? equipment?.Get(item.Definition.GearSlot.Value) : null;
-                    snapshot.items.Add(new SavedItem { id = item.Id, definitionId = item.Definition.Id, owner = item.Owner.ToString(), quantity = item.Quantity,
-                        quality = item.Quality, ready = item.Ready, x = item.X, y = item.Y, unitValue = item.Profile.UnitValue,
-                        maxDurability = item.Profile.MaxDurability, durability = item.Profile.Durability, variant = item.Profile.Variant,
-                        hasWear = worn != null ? !worn.Infinite : item.HasWearRemaining, wearRemaining = worn != null ? worn.RemainingDistance : item.WearRemaining,
-                        dropped = item.Owner == ItemOwner.World && item.Dropped, trailDistance = item.TrailDistance, worldX = position.x, worldY = position.y, worldZ = position.z, pile = SavedPile(item),
-                        segmentId = milestone5 && item.Owner == ItemOwner.World ? item.SegmentId : null });
-                }
+                if (milestone5) { snapshot.economy = 1; snapshot.trade = tradeSession?.Data; snapshot.tradeLog = new List<TheTrailWalker.Domain.Economy.TradeRecord>(tradeLog); snapshot.warehouse = SessionSaveStore.SaveWarehouse(warehouse); snapshot.lumber = SessionSaveStore.SaveLumber(lumber); snapshot.warehouseLog = new List<TheTrailWalker.Domain.Economy.TradeRecord>(warehouseLog); snapshot.segmentId = travel.CurrentSegment.Id; snapshot.travel = SessionSaveStore.SaveTravel(travel); snapshot.settlement = SaveSettlementForSnapshot(); snapshot.home = SaveHomeForSnapshot(); snapshot.harvested = HarvestedForSave(); snapshot.crafting = SaveCrafting(); snapshot.missions = SaveMissions(); snapshot.statistics = SaveStatistics(); }
+                AppendSavedItems(snapshot, ledger, milestone5, travel.CurrentSegment.Id,
+                    item => { Bundle bundle = bundles.Find(b => b.Item == item); return bundle == null ? Vector3.zero : bundle.View.transform.position; },
+                    item => item.Owner == ItemOwner.Worn && item.Definition.GearSlot.HasValue ? equipment?.Get(item.Definition.GearSlot.Value) : null);
                 built = watch.Elapsed.TotalMilliseconds;
                 string state = JsonUtility.ToJson(snapshot);
                 compared = watch.Elapsed.TotalMilliseconds;
@@ -1475,11 +1471,34 @@ namespace TheTrailWalker
             Say("Save failed. Progress is paused; do not close the app. " + error.Message);
             Debug.LogException(error);
         }
+        // The item list of a save: lumber piles and consumed entries are left out (see SessionSaveStore.Persistable).
+        public static void AppendSavedItems(SessionSnapshot snapshot, SpatialInventory ledger, bool milestone5, string segmentId, Func<ItemEntry, Vector3> positionOf, Func<ItemEntry, WornGear> wornOf)
+        {
+            foreach (ItemEntry item in SessionSaveStore.Persistable(ledger.Entries))
+            {
+                if (milestone5 && item.Owner == ItemOwner.World && item.SegmentId == null) ledger.AssignSegment(item, segmentId);
+                Vector3 position = positionOf(item);
+                WornGear worn = wornOf(item);
+                snapshot.items.Add(new SavedItem { id = item.Id, definitionId = item.Definition.Id, owner = item.Owner.ToString(), quantity = item.Quantity,
+                    quality = item.Quality, ready = item.Ready, x = item.X, y = item.Y, unitValue = item.Profile.UnitValue,
+                    maxDurability = item.Profile.MaxDurability, durability = item.Profile.Durability, variant = item.Profile.Variant,
+                    hasWear = worn != null ? !worn.Infinite : item.HasWearRemaining, wearRemaining = worn != null ? worn.RemainingDistance : item.WearRemaining,
+                    dropped = item.Owner == ItemOwner.World && item.Dropped, trailDistance = item.TrailDistance, worldX = position.x, worldY = position.y, worldZ = position.z, pile = SavedPile(item),
+                    segmentId = milestone5 && item.Owner == ItemOwner.World ? item.SegmentId : null });
+            }
+        }
+
+        public static void PrepareRestore(SessionSnapshot snapshot, bool milestone5)
+        {
+            SessionSaveStore.DropLumberPiles(snapshot);   // never trust a saved lumber pile
+            if (milestone5) SessionSaveStore.MigrateEconomy(snapshot);   // Milestone 9: item values in minor units
+        }
+
         private void RestoreSnapshot(SessionSnapshot snapshot)
         {
-            if (milestone5) SessionSaveStore.MigrateEconomy(snapshot);   // Milestone 9: item values in minor units
+            PrepareRestore(snapshot, milestone5);
             SessionSaveStore.Validate(snapshot, path.Length, out ledger);
-            if (milestone5) { RestoreTrade(snapshot); travel = SessionSaveStore.RestoreTravel(snapshot, scene.Catalog); RestoreHarvested(snapshot.harvested); RestoreCrafting(snapshot.crafting); RestoreMissions(snapshot.missions); RestoreStatistics(snapshot.statistics); RestoreSettlementFromSnapshot(snapshot); warehouse = SessionSaveStore.RestoreWarehouse(snapshot, ledger.Entries); warehouseLog = snapshot.warehouseLog ?? new List<TheTrailWalker.Domain.Economy.TradeRecord>(); }
+            if (milestone5) { RestoreTrade(snapshot); travel = SessionSaveStore.RestoreTravel(snapshot, scene.Catalog); RestoreHarvested(snapshot.harvested); RestoreCrafting(snapshot.crafting); RestoreMissions(snapshot.missions); RestoreStatistics(snapshot.statistics); RestoreSettlementFromSnapshot(snapshot); warehouse = SessionSaveStore.RestoreWarehouse(snapshot, ledger.Entries); warehouseLog = snapshot.warehouseLog ?? new List<TheTrailWalker.Domain.Economy.TradeRecord>(); lumber = SessionSaveStore.RestoreLumber(snapshot); }
             if (milestone4)
             {
                 equipment = new EquipmentState();

@@ -69,7 +69,7 @@ namespace TheTrailWalker
             {
                 case StreetBuildingKind.House: return isPlayerPlot ? "Your home" : $"A neighbour's home (level {level})";   // the player's plot opens the home instead (task 5)
                 case StreetBuildingKind.Warehouse: return "The warehouse";
-                case StreetBuildingKind.LumberField: return "The lumber field opens in Milestone 13";
+                case StreetBuildingKind.LumberField: return "The lumber field";   // the building and its list entry open the counter instead (OpensLumberCounter)
                 default: return ShopDisplayName(b.Id) + " opens in Milestone 14";
             }
         }
@@ -352,6 +352,7 @@ namespace TheTrailWalker
             }
             UpdateHome(SettlementPanelsCovered);
             UpdateWarehouse();
+            UpdateLumber();
             if (settlementNote.activeSelf && Time.unscaledTime >= settlementNoteHideAt) settlementNote.SetActive(false);
         }
 
@@ -359,13 +360,15 @@ namespace TheTrailWalker
         // and away from the drags and taps on the room (user, November 14, 2026); on the street it stays mid-screen.
         public static readonly Vector4 HomeNoteBand = new Vector4(0.17f, 0.875f, 0.83f, 0.975f);   // x0, y0, x1, y1 of the safe area
         public static readonly Vector4 StreetNoteBand = new Vector4(0.04f, 0.40f, 1f, 0.55f);
+        public static readonly Vector4 LumberNoteBand = new Vector4(0.15f, 0.42f, 0.85f, 0.58f);   // centred over the lumber counter and zone
         private void PlaceSettlementNote(bool insideHouse)
         {
             var rect = (RectTransform)settlementNote.transform;
-            Vector4 band = insideHouse ? HomeNoteBand : StreetNoteBand;
+            bool lumber = LumberOpen;
+            Vector4 band = lumber ? LumberNoteBand : insideHouse ? HomeNoteBand : StreetNoteBand;
             rect.anchorMin = new Vector2(band.x, band.y); rect.anchorMax = new Vector2(band.z, band.w);
             rect.offsetMin = rect.offsetMax = Vector2.zero;
-            if (!insideHouse) ClearOfSettlementList(rect);   // taps on the list never land on the note
+            if (!lumber && !insideHouse) ClearOfSettlementList(rect);   // taps on the list never land on the note
         }
 
         private void ShowSettlementNote(string text)
@@ -401,6 +404,7 @@ namespace TheTrailWalker
             if (key == "return") { AskReturn(); return; }
             if (key == "home") { OpenHome(); return; }
             if (key == "warehouse") { OpenWarehouse(); return; }
+            if (OpensLumberCounter(key, StreetBuildingKind.House)) { OpenLumberCounter(); return; }
             StreetBuilding b = Street?.Find(key);
             if (b == null) return;
             StreetView?.GlideTo(b.CentreX);
@@ -412,6 +416,7 @@ namespace TheTrailWalker
             if (phase != TravelPhase.Settlement || saveBlocked || (stamina != null && stamina.Fainted)) return;
             if (HomeOpen) return;
             if (b.Kind == StreetBuildingKind.Warehouse) { OpenWarehouse(); return; }
+            if (OpensLumberCounter(null, b.Kind)) { OpenLumberCounter(); return; }
             switch (SettlementTapAction(b, PlotChoiceOpen, settlement.PlotIndex, b.Kind == StreetBuildingKind.House ? NeighbourHouseLevel(b.Plot) : 0))
             {
                 case StreetTapAction.ChoosePlot: AskPlot(b); return;
@@ -461,6 +466,7 @@ namespace TheTrailWalker
         private bool SettlementPointerBegin(int pointer, Vector2 position)
         {
             if (homeView == HomeView.Interior || homeView == HomeView.BirdsEye) return InteriorPointerBegin(pointer, position);   // the interior's and bird's-eye view's own touch (Home.cs)
+            if (LumberOpen) return LumberPointerBegin(pointer, position);
             if (HomeOpen) return true;   // the home views own the screen: no street drag or tap
             if (streetPointer.HasValue) return true;   // one finger scrolls; extra fingers are swallowed (no orbit or pinch)
             streetPointer = pointer; streetStart = streetLast = position; streetDragging = false;
@@ -470,6 +476,7 @@ namespace TheTrailWalker
         private bool SettlementPointerMove(int pointer, Vector2 position)
         {
             if (interiorPointer == pointer) { InteriorPointerMove(position); return true; }
+            if (LumberPointerMove(pointer, position)) return true;
             if (streetPointer != pointer) return false;
             // A mostly horizontal move past a small slop starts the drag; the slop is then applied too, so nothing jumps.
             if (!streetDragging && Mathf.Abs(position.x - streetStart.x) > Screen.height * 0.008f) { streetDragging = true; streetLast = streetStart; }
@@ -482,6 +489,7 @@ namespace TheTrailWalker
         private bool SettlementPointerEnd(int pointer, Vector2 position, bool canceled)
         {
             if (interiorPointer == pointer) { InteriorPointerEnd(position, canceled); return true; }
+            if (LumberPointerEnd(pointer, position, canceled)) return true;
             if (streetPointer != pointer) return false;
             if (!canceled) SettlementPointerMove(pointer, position);
             bool tap = !canceled && !streetDragging && !streetCaught;
@@ -490,7 +498,7 @@ namespace TheTrailWalker
             if (tap && TapStreet(position, out StreetBuilding b)) SettlementTap(b);
             return true;
         }
-        private void CancelSettlementPointer() { streetPointer = null; streetDragging = false; streetCaught = false; StreetView?.CancelDrag(); CancelInteriorPointer(); }
+        private void CancelSettlementPointer() { lumberPointer = null; streetPointer = null; streetDragging = false; streetCaught = false; StreetView?.CancelDrag(); CancelInteriorPointer(); }
 
         private readonly RaycastHit[] streetHits = new RaycastHit[8];
         private bool TapStreet(Vector2 screen, out StreetBuilding found)

@@ -1,0 +1,1705 @@
+{
+  "Revision": 1,
+  "Scope": "Passive settlement art only; no runtime UI/unlocks/travel/respawn changes",
+  "Assemblies": [
+    {
+      "Name": "LumberFront",
+      "Nodes": [
+        {
+          "Name": "FrontVisual",
+          "Parent": null,
+          "LocalPosition": [
+            0,
+            0,
+            0
+          ],
+          "Model": "LumberFront",
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "SelectAnchor",
+          "Parent": null,
+          "LocalPosition": [
+            0,
+            1.4,
+            0.2
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        }
+      ],
+      "TriangleCeiling": 4000,
+      "PrefabPath": "Settlement/Storefronts/LumberFront",
+      "Width": 7.8,
+      "ShopId": "shop.lumber",
+      "Awning": "petrol teal/cream; new dedicated color",
+      "Pieces": [
+        "LumberFront"
+      ],
+      "Triangles": 2801
+    },
+    {
+      "Name": "ShopkeeperForester",
+      "Nodes": [
+        {
+          "Name": "TorsoPivot",
+          "Parent": null,
+          "LocalPosition": [
+            0,
+            0.94,
+            0
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "Body",
+          "Parent": "TorsoPivot",
+          "LocalPosition": [
+            0,
+            0,
+            0
+          ],
+          "Model": "ForesterBody",
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "HeadPivot",
+          "Parent": "TorsoPivot",
+          "LocalPosition": [
+            0,
+            0.49,
+            0
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "Head",
+          "Parent": "HeadPivot",
+          "LocalPosition": [
+            0,
+            0,
+            0
+          ],
+          "Model": "ForesterHead",
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        }
+      ],
+      "TriangleCeiling": 2300,
+      "PrefabPath": "Characters/Shopkeepers/ShopkeeperForester",
+      "Keeper": "Forester",
+      "ShopId": "shop.lumber",
+      "TorsoPivot": 0.94,
+      "HeadUp": 0.49,
+      "Pieces": [
+        "ForesterBody",
+        "ForesterHead"
+      ],
+      "Triangles": 1570
+    },
+    {
+      "Name": "LumberCounter",
+      "Nodes": [
+        {
+          "Name": "RoomVisual",
+          "Parent": null,
+          "LocalPosition": [
+            0,
+            0,
+            0
+          ],
+          "Model": "LumberCounter",
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "DoorFrame",
+          "Parent": null,
+          "LocalPosition": [
+            0,
+            0,
+            0
+          ],
+          "Model": "LumberDoorFrame",
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "DoorPivot",
+          "Parent": null,
+          "LocalPosition": [
+            -3.15,
+            0,
+            -1.86
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "DoorLeaf",
+          "Parent": "DoorPivot",
+          "LocalPosition": [
+            0,
+            0,
+            0
+          ],
+          "Model": "LumberDoorLeaf",
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "Ledger",
+          "Parent": null,
+          "LocalPosition": [
+            0,
+            0,
+            0
+          ],
+          "Model": "LumberLedger",
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "LedgerAnchor",
+          "Parent": null,
+          "LocalPosition": [
+            0.55,
+            1.1,
+            0.48
+          ],
+          "Model": null,
+          "LocalRotation": [
+            -80,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "LedgerSelectAnchor",
+          "Parent": null,
+          "LocalPosition": [
+            0.55,
+            1.13,
+            0.48
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "DoorSelectAnchor",
+          "Parent": null,
+          "LocalPosition": [
+            -2.575,
+            1.1,
+            -1.82
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "DoorwayCameraAnchor",
+          "Parent": null,
+          "LocalPosition": [
+            -2.575,
+            1.55,
+            -1.1
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": [
+            -2.575,
+            1.4,
+            -4
+          ]
+        },
+        {
+          "Name": "CustomerCameraAnchor",
+          "Parent": null,
+          "LocalPosition": [
+            0,
+            1.55,
+            3
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": [
+            0,
+            1.35,
+            0
+          ]
+        },
+        {
+          "Name": "Shopkeeper",
+          "Parent": null,
+          "LocalPosition": [
+            0,
+            0,
+            0
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": "ShopkeeperForester",
+          "LookAt": null
+        }
+      ],
+      "TriangleCeiling": 6000,
+      "PrefabPath": "Settlement/Storefronts/LumberCounter",
+      "ShopId": "shop.lumber",
+      "CounterTop": 1.02,
+      "DoorOpenAngle": 100,
+      "DoorRotationAxis": "local Y; inward negative Z",
+      "DoorOpening": [
+        -3.15,
+        -2.0,
+        0,
+        2.35
+      ],
+      "LedgerSurfaceSize": [
+        0.65,
+        0.37
+      ],
+      "OfferAnchors": [],
+      "Pieces": [
+        "LumberDoorFrame",
+        "LumberCounter",
+        "LumberLedger",
+        "LumberDoorLeaf"
+      ],
+      "Triangles": 3354
+    },
+    {
+      "Name": "LumberZoneT1",
+      "Nodes": [
+        {
+          "Name": "ZoneVisual",
+          "Parent": null,
+          "LocalPosition": [
+            0,
+            0,
+            0
+          ],
+          "Model": "LumberZoneT1",
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "ExitSelectAnchor",
+          "Parent": null,
+          "LocalPosition": [
+            0,
+            1.1,
+            21.2
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "ZoneCameraAnchor",
+          "Parent": null,
+          "LocalPosition": [
+            0,
+            35,
+            53
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": [
+            0,
+            1,
+            -9.9
+          ]
+        },
+        {
+          "Name": "PickupCameraAnchor",
+          "Parent": null,
+          "LocalPosition": [
+            0,
+            1.6,
+            7
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "Name": "TreeAnchor1",
+          "Parent": null,
+          "LocalPosition": [
+            -11,
+            0,
+            0
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "TreeAnchor2",
+          "Parent": null,
+          "LocalPosition": [
+            0,
+            0,
+            0
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "TreeAnchor3",
+          "Parent": null,
+          "LocalPosition": [
+            11,
+            0,
+            0
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "TreeAnchor4",
+          "Parent": null,
+          "LocalPosition": [
+            -11,
+            0,
+            -22
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "TreeAnchor5",
+          "Parent": null,
+          "LocalPosition": [
+            0,
+            0,
+            -22
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "TreeAnchor6",
+          "Parent": null,
+          "LocalPosition": [
+            11,
+            0,
+            -22
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "BackdropAnchor1",
+          "Parent": null,
+          "LocalPosition": [
+            -11,
+            0,
+            -49
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "BackdropAnchor2",
+          "Parent": null,
+          "LocalPosition": [
+            0,
+            0,
+            -49
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "BackdropAnchor3",
+          "Parent": null,
+          "LocalPosition": [
+            11,
+            0,
+            -49
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        }
+      ],
+      "TriangleCeiling": 3000,
+      "PrefabPath": "Settlement/LumberField/LumberZoneT1",
+      "Tier": 1,
+      "Species": "Pine",
+      "ColumnSpacing": 11,
+      "RowSpacing": 22,
+      "FrontClearance": 19,
+      "BackFenceZ": -30,
+      "Width": 37.68772,
+      "FrontZ": 21,
+      "TreeAnchors": [
+        [
+          -11,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          11,
+          0,
+          0
+        ],
+        [
+          -11,
+          0,
+          -22
+        ],
+        [
+          0,
+          0,
+          -22
+        ],
+        [
+          11,
+          0,
+          -22
+        ]
+      ],
+      "StandingBoundsX": [
+        -3.657154,
+        4.030566
+      ],
+      "StandingMinZ": -3.840192,
+      "SweepMaxZ": 14.414978391647857,
+      "Margin": 3,
+      "FallAngle": 85,
+      "FallAxis": "local X",
+      "TreeYawDegrees": 0,
+      "VariantSequence": [
+        "A",
+        "B",
+        "C",
+        "C",
+        "A",
+        "B"
+      ],
+      "Pieces": [
+        "LumberZoneT1"
+      ],
+      "Triangles": 900
+    },
+    {
+      "Name": "LumberZoneT2",
+      "Nodes": [
+        {
+          "Name": "ZoneVisual",
+          "Parent": null,
+          "LocalPosition": [
+            0,
+            0,
+            0
+          ],
+          "Model": "LumberZoneT2",
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "ExitSelectAnchor",
+          "Parent": null,
+          "LocalPosition": [
+            0,
+            1.1,
+            17.2
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "ZoneCameraAnchor",
+          "Parent": null,
+          "LocalPosition": [
+            0,
+            35,
+            49
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": [
+            0,
+            1,
+            -8.1
+          ]
+        },
+        {
+          "Name": "PickupCameraAnchor",
+          "Parent": null,
+          "LocalPosition": [
+            0,
+            1.6,
+            7
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "Name": "TreeAnchor1",
+          "Parent": null,
+          "LocalPosition": [
+            -12,
+            0,
+            0
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "TreeAnchor2",
+          "Parent": null,
+          "LocalPosition": [
+            0,
+            0,
+            0
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "TreeAnchor3",
+          "Parent": null,
+          "LocalPosition": [
+            12,
+            0,
+            0
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "TreeAnchor4",
+          "Parent": null,
+          "LocalPosition": [
+            -12,
+            0,
+            -18
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "TreeAnchor5",
+          "Parent": null,
+          "LocalPosition": [
+            0,
+            0,
+            -18
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "TreeAnchor6",
+          "Parent": null,
+          "LocalPosition": [
+            12,
+            0,
+            -18
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "BackdropAnchor1",
+          "Parent": null,
+          "LocalPosition": [
+            -12,
+            0,
+            -45
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "BackdropAnchor2",
+          "Parent": null,
+          "LocalPosition": [
+            0,
+            0,
+            -45
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "BackdropAnchor3",
+          "Parent": null,
+          "LocalPosition": [
+            12,
+            0,
+            -45
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        }
+      ],
+      "TriangleCeiling": 3000,
+      "PrefabPath": "Settlement/LumberField/LumberZoneT2",
+      "Tier": 2,
+      "Species": "Birch",
+      "ColumnSpacing": 12,
+      "RowSpacing": 18,
+      "FrontClearance": 15,
+      "BackFenceZ": -26,
+      "Width": 40.985527,
+      "FrontZ": 17,
+      "TreeAnchors": [
+        [
+          -12,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          12,
+          0,
+          0
+        ],
+        [
+          -12,
+          0,
+          -18
+        ],
+        [
+          0,
+          0,
+          -18
+        ],
+        [
+          12,
+          0,
+          -18
+        ]
+      ],
+      "StandingBoundsX": [
+        -4.66048,
+        4.325047
+      ],
+      "StandingMinZ": -3.850429,
+      "SweepMaxZ": 10.708667197871064,
+      "Margin": 3,
+      "FallAngle": 85,
+      "FallAxis": "local X",
+      "TreeYawDegrees": 0,
+      "VariantSequence": [
+        "A",
+        "B",
+        "C",
+        "C",
+        "A",
+        "B"
+      ],
+      "Pieces": [
+        "LumberZoneT2"
+      ],
+      "Triangles": 924
+    },
+    {
+      "Name": "LumberZoneT3",
+      "Nodes": [
+        {
+          "Name": "ZoneVisual",
+          "Parent": null,
+          "LocalPosition": [
+            0,
+            0,
+            0
+          ],
+          "Model": "LumberZoneT3",
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "ExitSelectAnchor",
+          "Parent": null,
+          "LocalPosition": [
+            0,
+            1.1,
+            14.2
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "ZoneCameraAnchor",
+          "Parent": null,
+          "LocalPosition": [
+            0,
+            36.60615,
+            46
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": [
+            0,
+            1,
+            -7.65
+          ]
+        },
+        {
+          "Name": "PickupCameraAnchor",
+          "Parent": null,
+          "LocalPosition": [
+            0,
+            1.6,
+            7
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "Name": "TreeAnchor1",
+          "Parent": null,
+          "LocalPosition": [
+            -16,
+            0,
+            0
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "TreeAnchor2",
+          "Parent": null,
+          "LocalPosition": [
+            0,
+            0,
+            0
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "TreeAnchor3",
+          "Parent": null,
+          "LocalPosition": [
+            16,
+            0,
+            0
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "TreeAnchor4",
+          "Parent": null,
+          "LocalPosition": [
+            -16,
+            0,
+            -17
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "TreeAnchor5",
+          "Parent": null,
+          "LocalPosition": [
+            0,
+            0,
+            -17
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "TreeAnchor6",
+          "Parent": null,
+          "LocalPosition": [
+            16,
+            0,
+            -17
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "BackdropAnchor1",
+          "Parent": null,
+          "LocalPosition": [
+            -16,
+            0,
+            -46
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "BackdropAnchor2",
+          "Parent": null,
+          "LocalPosition": [
+            0,
+            0,
+            -46
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "BackdropAnchor3",
+          "Parent": null,
+          "LocalPosition": [
+            16,
+            0,
+            -46
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        }
+      ],
+      "TriangleCeiling": 3000,
+      "PrefabPath": "Settlement/LumberField/LumberZoneT3",
+      "Tier": 3,
+      "Species": "Mesquite",
+      "ColumnSpacing": 16,
+      "RowSpacing": 17,
+      "FrontClearance": 12,
+      "BackFenceZ": -27,
+      "Width": 52.2945,
+      "FrontZ": 14,
+      "TreeAnchors": [
+        [
+          -16,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          16,
+          0,
+          0
+        ],
+        [
+          -16,
+          0,
+          -17
+        ],
+        [
+          0,
+          0,
+          -17
+        ],
+        [
+          16,
+          0,
+          -17
+        ]
+      ],
+      "StandingBoundsX": [
+        -5.606488,
+        6.688012
+      ],
+      "StandingMinZ": -5.416293,
+      "SweepMaxZ": 7.964987483706286,
+      "Margin": 3,
+      "FallAngle": 85,
+      "FallAxis": "local X",
+      "TreeYawDegrees": 0,
+      "VariantSequence": [
+        "A",
+        "B",
+        "C",
+        "C",
+        "A",
+        "B"
+      ],
+      "Pieces": [
+        "LumberZoneT3"
+      ],
+      "Triangles": 1044
+    },
+    {
+      "Name": "LumberZoneT4",
+      "Nodes": [
+        {
+          "Name": "ZoneVisual",
+          "Parent": null,
+          "LocalPosition": [
+            0,
+            0,
+            0
+          ],
+          "Model": "LumberZoneT4",
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "ExitSelectAnchor",
+          "Parent": null,
+          "LocalPosition": [
+            0,
+            1.1,
+            16.2
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "ZoneCameraAnchor",
+          "Parent": null,
+          "LocalPosition": [
+            0,
+            44.933413699999996,
+            48
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": [
+            0,
+            1,
+            -9.450000000000001
+          ]
+        },
+        {
+          "Name": "PickupCameraAnchor",
+          "Parent": null,
+          "LocalPosition": [
+            0,
+            1.6,
+            7
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": [
+            0,
+            1,
+            0
+          ]
+        },
+        {
+          "Name": "TreeAnchor1",
+          "Parent": null,
+          "LocalPosition": [
+            -20,
+            0,
+            0
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "TreeAnchor2",
+          "Parent": null,
+          "LocalPosition": [
+            0,
+            0,
+            0
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "TreeAnchor3",
+          "Parent": null,
+          "LocalPosition": [
+            20,
+            0,
+            0
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "TreeAnchor4",
+          "Parent": null,
+          "LocalPosition": [
+            -20,
+            0,
+            -21
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "TreeAnchor5",
+          "Parent": null,
+          "LocalPosition": [
+            0,
+            0,
+            -21
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "TreeAnchor6",
+          "Parent": null,
+          "LocalPosition": [
+            20,
+            0,
+            -21
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        }
+      ],
+      "TriangleCeiling": 3000,
+      "PrefabPath": "Settlement/LumberField/LumberZoneT4",
+      "Tier": 4,
+      "Species": "Oak",
+      "ColumnSpacing": 20,
+      "RowSpacing": 21,
+      "FrontClearance": 14,
+      "BackFenceZ": -34,
+      "Width": 64.190591,
+      "FrontZ": 16,
+      "TreeAnchors": [
+        [
+          -20,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          20,
+          0,
+          0
+        ],
+        [
+          -20,
+          0,
+          -21
+        ],
+        [
+          0,
+          0,
+          -21
+        ],
+        [
+          20,
+          0,
+          -21
+        ]
+      ],
+      "StandingBoundsX": [
+        -8.018808,
+        8.171783
+      ],
+      "StandingMinZ": -8.106312,
+      "SweepMaxZ": 9.835968066257934,
+      "Margin": 3,
+      "FallAngle": 85,
+      "FallAxis": "local X",
+      "TreeYawDegrees": 0,
+      "VariantSequence": [
+        "A",
+        "B",
+        "C",
+        "C",
+        "A",
+        "B"
+      ],
+      "Pieces": [
+        "LumberZoneT4"
+      ],
+      "Triangles": 1264
+    }
+  ],
+  "Pieces": [
+    {
+      "Name": "LumberFront",
+      "Model": "LumberFront",
+      "SourcePath": "Assets/_Game/Art/Settlement/LumberField/LumberFront.obj",
+      "PalettePath": "Assets/_Game/Art/Settlement/LumberField/LumberFrontPalette.png",
+      "Triangles": 2801,
+      "BoundsMin": [
+        -3.67,
+        -0.007737,
+        -4.05
+      ],
+      "BoundsMax": [
+        3.788836,
+        5.63,
+        0.9584
+      ],
+      "MaterialGroup": "Lumber"
+    },
+    {
+      "Name": "ForesterBody",
+      "Model": "ForesterBody",
+      "SourcePath": "Assets/_Game/Art/Characters/Shopkeepers/ForesterBody.obj",
+      "PalettePath": "Assets/_Game/Art/Settlement/LumberField/ForesterBodyPalette.png",
+      "Triangles": 916,
+      "BoundsMin": [
+        -0.297905,
+        -0.08,
+        -0.125
+      ],
+      "BoundsMax": [
+        0.297905,
+        0.542297,
+        0.521094
+      ],
+      "MaterialGroup": "Forester"
+    },
+    {
+      "Name": "ForesterHead",
+      "Model": "ForesterHead",
+      "SourcePath": "Assets/_Game/Art/Characters/Shopkeepers/ForesterHead.obj",
+      "PalettePath": "Assets/_Game/Art/Settlement/LumberField/ForesterHeadPalette.png",
+      "Triangles": 654,
+      "BoundsMin": [
+        -0.102929,
+        0.012,
+        -0.129857
+      ],
+      "BoundsMax": [
+        0.102929,
+        0.312,
+        0.139429
+      ],
+      "MaterialGroup": "Forester"
+    },
+    {
+      "Name": "LumberDoorFrame",
+      "Model": "LumberDoorFrame",
+      "SourcePath": "Assets/_Game/Art/Settlement/LumberField/LumberDoorFrame.obj",
+      "PalettePath": "Assets/_Game/Art/Settlement/LumberField/LumberDoorFramePalette.png",
+      "Triangles": 48,
+      "BoundsMin": [
+        -3.26,
+        0.0,
+        -1.915
+      ],
+      "BoundsMax": [
+        -1.89,
+        2.46,
+        -1.66
+      ],
+      "MaterialGroup": "Lumber"
+    },
+    {
+      "Name": "LumberCounter",
+      "Model": "LumberCounter",
+      "SourcePath": "Assets/_Game/Art/Settlement/LumberField/LumberCounter.obj",
+      "PalettePath": "Assets/_Game/Art/Settlement/LumberField/LumberCounterPalette.png",
+      "Triangles": 1496,
+      "BoundsMin": [
+        -3.495,
+        -0.06,
+        -4.215
+      ],
+      "BoundsMax": [
+        3.495,
+        3.3,
+        1.4
+      ],
+      "MaterialGroup": "Lumber"
+    },
+    {
+      "Name": "LumberLedger",
+      "Model": "LumberLedger",
+      "SourcePath": "Assets/_Game/Art/Settlement/LumberField/LumberLedger.obj",
+      "PalettePath": "Assets/_Game/Art/Settlement/LumberField/LumberLedgerPalette.png",
+      "Triangles": 144,
+      "BoundsMin": [
+        0.155,
+        1.023,
+        0.24
+      ],
+      "BoundsMax": [
+        0.945,
+        1.12,
+        0.72
+      ],
+      "MaterialGroup": "Lumber"
+    },
+    {
+      "Name": "LumberDoorLeaf",
+      "Model": "LumberDoorLeaf",
+      "SourcePath": "Assets/_Game/Art/Settlement/LumberField/LumberDoorLeaf.obj",
+      "PalettePath": "Assets/_Game/Art/Settlement/LumberField/LumberDoorLeafPalette.png",
+      "Triangles": 96,
+      "BoundsMin": [
+        0.004,
+        0.0,
+        -0.005
+      ],
+      "BoundsMax": [
+        1.096,
+        2.28,
+        0.115
+      ],
+      "MaterialGroup": "Lumber"
+    },
+    {
+      "Name": "LumberZoneT1",
+      "Model": "LumberZoneT1",
+      "SourcePath": "Assets/_Game/Art/Settlement/LumberField/LumberZoneT1.obj",
+      "PalettePath": "Assets/_Game/Art/Settlement/LumberField/LumberZoneT1Palette.png",
+      "Triangles": 900,
+      "BoundsMin": [
+        -19.318859,
+        -0.12,
+        -55.0
+      ],
+      "BoundsMax": [
+        19.318859,
+        3.75,
+        21.120001
+      ],
+      "MaterialGroup": "Lumber"
+    },
+    {
+      "Name": "LumberZoneT2",
+      "Model": "LumberZoneT2",
+      "SourcePath": "Assets/_Game/Art/Settlement/LumberField/LumberZoneT2.obj",
+      "PalettePath": "Assets/_Game/Art/Settlement/LumberField/LumberZoneT2Palette.png",
+      "Triangles": 924,
+      "BoundsMin": [
+        -20.967764,
+        -0.12,
+        -51.0
+      ],
+      "BoundsMax": [
+        20.967764,
+        3.75,
+        17.120001
+      ],
+      "MaterialGroup": "Lumber"
+    },
+    {
+      "Name": "LumberZoneT3",
+      "Model": "LumberZoneT3",
+      "SourcePath": "Assets/_Game/Art/Settlement/LumberField/LumberZoneT3.obj",
+      "PalettePath": "Assets/_Game/Art/Settlement/LumberField/LumberZoneT3Palette.png",
+      "Triangles": 1044,
+      "BoundsMin": [
+        -26.62225,
+        -0.12,
+        -52.0
+      ],
+      "BoundsMax": [
+        26.62225,
+        3.75,
+        14.12
+      ],
+      "MaterialGroup": "Lumber"
+    },
+    {
+      "Name": "LumberZoneT4",
+      "Model": "LumberZoneT4",
+      "SourcePath": "Assets/_Game/Art/Settlement/LumberField/LumberZoneT4.obj",
+      "PalettePath": "Assets/_Game/Art/Settlement/LumberField/LumberZoneT4Palette.png",
+      "Triangles": 1264,
+      "BoundsMin": [
+        -32.570297,
+        -0.12,
+        -42.0
+      ],
+      "BoundsMax": [
+        32.570297,
+        5.0,
+        16.120001
+      ],
+      "MaterialGroup": "Lumber"
+    }
+  ],
+  "Sign": "Original axe-cross-log relief; no text; SVG master in docs",
+  "Forester": "Existing keeper body/head construction and palette; plaid cloth appearance, no wool ingredient"
+}

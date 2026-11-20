@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TheTrailWalker.CameraControl;
 using TheTrailWalker.Domain.Harvest;
 using TheTrailWalker.Domain.Items;
+using TheTrailWalker.Domain.Settlement;
 using TheTrailWalker.Domain.Travel;
 using TheTrailWalker.Harvest;
 using UnityEngine;
@@ -27,6 +28,7 @@ namespace TheTrailWalker
             public RectTransform Hint; public bool Harvested, SpawnReady;
             public Vector3 Wander, DropCentre; public float NextWander, Boost, Phase;
             public AnimalWanderer Motion;   // animals: graze, look around and hop about the spawn point
+            public int MassiveTier, MassiveIndex;   // a lumber-field massive tree (Milestone 13); 0 on the trail
         }
         private sealed class CutLine { public float Y; public int Segments; public RectTransform View, Fill; }
 
@@ -105,7 +107,7 @@ namespace TheTrailWalker
                 target.Hint = CreateHint(target);
                 harvestTargets.Add(target);
             }
-            CreateHarvestOverlay();
+            if (harvestRoot == null) CreateHarvestOverlay();   // a massive cut may have built it already
         }
 
         private void ShowHarvested(HarvestTarget target)
@@ -211,6 +213,7 @@ namespace TheTrailWalker
 
         private void UpdateHarvest()
         {
+            if (active != null && active.MassiveTier > 0) { UpdateActiveHarvest(); return; }   // a massive cut in the settlement
             TryInitHarvest();
             if (!harvestReady) return;
             bool hintsAllowed = active == null && !inventoryOpen && !AtCamp && !TravelInputLocked && !saveBlocked && !(milestone4 && stamina.Fainted);
@@ -267,28 +270,40 @@ namespace TheTrailWalker
 
         private void TryStartHarvest(HarvestTarget target)
         {
-            if (active != null || target.Harvested || saveBlocked || (milestone4 && stamina.Fainted) || TravelInputLocked) return;
-            if (AtCamp) { Say("Stand up and walk on to harvest."); return; }
-            if (inventoryOpen) { Say("Close the bag to harvest."); return; }
-            if (Vector3.Distance(motor.transform.position, target.Root.position) > HarvestReach) { Say("Walk closer to harvest."); return; }
+            if (active != null || target.Harvested || saveBlocked || (milestone4 && stamina.Fainted)) return;
+            bool massive = target.MassiveTier > 0;   // the lumber field: none of the trail's walk, camp, reach or harvest-stop gates
+            if (!massive)
+            {
+                if (TravelInputLocked) return;
+                if (AtCamp) { Say("Stand up and walk on to harvest."); return; }
+                if (inventoryOpen) { Say("Close the bag to harvest."); return; }
+                if (Vector3.Distance(motor.transform.position, target.Root.position) > HarvestReach) { Say("Walk closer to harvest."); return; }
+            }
             ToolFamily family = HarvestRules.FamilyFor(target.Kind);
-            if (!FindTool(family, out ItemEntry tool, out ToolSpec spec))
+            if (!FindTool(target, family, out ItemEntry tool, out ToolSpec spec, out int carried))
             {
                 string name = family == ToolFamily.Axe ? "an axe" : family == ToolFamily.Hunting ? "a slingshot or bow" : "a fishing rod";
-                Say($"Needs {name} of tier {Mathf.Max(1, TargetTier - 2)} or higher, with uses left, in the bag or on a hook.");
+                HarvestNote(massive, $"Needs {name} of tier {Mathf.Max(1, ToolTier(target) - 2)} or higher, with uses left, in the bag or on a hook.");
                 return;
             }
+            string shortUses = massive ? UsesCheck(ActionsFor(target, spec).Value, carried) : null;
+            if (shortUses != null) { HarvestNote(true, shortUses); return; }
             active = target; activeTool = tool; activeSpec = spec;
-            actionsNeeded = HarvestRules.Actions(spec, TargetTier).Value; progress = 0;
+            actionsNeeded = ActionsFor(target, spec).Value; progress = 0;
             drawing = flying = cast = false; swipePointer = int.MinValue; nextTap = 0f;
-            router.CancelAll(); CancelAll(); movement.BeginHarvest(); savedYaw = orbit.Yaw;
-            Vector3 away = Vector3.ProjectOnPlane(target.Home - target.RoadPoint, Vector3.up).normalized;
-            if (away.sqrMagnitude < 0.01f) away = Vector3.forward;
-            Vector3 eye, look;
-            if (target.Kind == InteractableKind.Tree) { eye = target.Home - away * 3.4f + Vector3.up * 1.25f; look = target.Home + Vector3.up * 0.95f; }
-            else if (target.Kind == InteractableKind.AnimalSpawn) { eye = target.Home - away * 3.0f + Vector3.up * 1.3f; look = target.Home + Vector3.up * 0.15f; }
-            else { eye = target.Home - away * 4.2f + Vector3.up * 2.4f; look = target.Home; }
-            CameraRig?.Focus(eye, look);
+            router.CancelAll(); CancelAll();
+            if (massive) FrameMassiveTrunk(target.Root);
+            else
+            {
+                movement.BeginHarvest(); savedYaw = orbit.Yaw;
+                Vector3 away = Vector3.ProjectOnPlane(target.Home - target.RoadPoint, Vector3.up).normalized;
+                if (away.sqrMagnitude < 0.01f) away = Vector3.forward;
+                Vector3 eye, look;
+                if (target.Kind == InteractableKind.Tree) { eye = target.Home - away * 3.4f + Vector3.up * 1.25f; look = target.Home + Vector3.up * 0.95f; }
+                else if (target.Kind == InteractableKind.AnimalSpawn) { eye = target.Home - away * 3.0f + Vector3.up * 1.3f; look = target.Home + Vector3.up * 0.15f; }
+                else { eye = target.Home - away * 4.2f + Vector3.up * 2.4f; look = target.Home; }
+                CameraRig?.Focus(eye, look);
+            }
             hiddenHud.Clear();
             foreach (Transform child in safe)
                 if (child != harvestRoot && child.gameObject.activeSelf) { hiddenHud.Add(child.gameObject); child.gameObject.SetActive(false); }
@@ -308,6 +323,13 @@ namespace TheTrailWalker
         private void CancelHarvest()
         {
             if (active == null) return;
+            if (active.MassiveTier > 0)
+            {
+                bool felled = !lumber.Tree(active.MassiveTier, active.MassiveIndex).Standing;   // after the fall Return just goes back to the zone
+                EndInteraction();
+                HarvestNote(true, felled ? "" : "Chop cancelled. Uses already spent are not refunded.");
+                return;
+            }
             if (active.Kind == InteractableKind.AnimalSpawn) { active.Root.position = active.Home; active.Root.rotation = active.HomeTurn; active.Motion?.Stop(); }
             EndInteraction();
             Say("Harvest cancelled. Uses already spent are not refunded. Swipe UP on the centre line to walk on.");
@@ -315,26 +337,55 @@ namespace TheTrailWalker
 
         private void EndInteraction()
         {
+            bool massive = active != null && active.MassiveTier > 0;
             foreach (CutLine line in cutLines) Destroy(line.View.gameObject);
             cutLines.Clear();
             harvestRoot.gameObject.SetActive(false);
             foreach (GameObject hidden in hiddenHud) if (hidden != null) hidden.SetActive(true);
             hiddenHud.Clear();
-            CameraRig?.ClearFocus(); orbit.Restore(savedYaw);
-            movement.EndHarvest(); // the harvest stop stays until a fresh upward speed gesture
+            if (massive) HoldZoneCamera();   // back to the zone pose (with its pan)
+            else
+            {
+                CameraRig?.ClearFocus(); orbit.Restore(savedYaw);
+                movement.EndHarvest(); // the harvest stop stays until a fresh upward speed gesture
+            }
             active = null; activeTool = null; drawing = flying = false;
         }
 
-        // Eligible carried tool with the fewest remaining uses (ties: fewest actions, Elite, lower tier).
-        private bool FindTool(ToolFamily family, out ItemEntry best, out ToolSpec bestSpec)
+        // Massive (lumber field) targets use the zone tier and the massive table; trail targets the region tier and the trail table.
+        public static int? ActionsFor(ToolSpec spec, bool massive, int tier) => massive ? LumberFieldService.MassiveActions(spec, tier) : HarvestRules.Actions(spec, tier);
+        private int ToolTier(HarvestTarget target) => target.MassiveTier > 0 ? target.MassiveTier : TargetTier;
+        private int? ActionsFor(HarvestTarget target, ToolSpec spec) => ActionsFor(spec, target.MassiveTier > 0, ToolTier(target));
+
+        // Index of the eligible tool used first (fewest remaining uses), -1 for none; carried sums every eligible tool's uses.
+        // shortcut: equal-uses ties break on the trail table (HarvestRules.Compare) for massive targets too; only differs for worn tools of equal uses.
+        public static int PickTool(IReadOnlyList<(ToolSpec Spec, int Uses)> tools, bool massive, int tier, out int carried)
         {
-            best = null; bestSpec = default; int tier = TargetTier;
+            int best = -1; carried = 0;
+            for (int i = 0; i < tools.Count; i++)
+            {
+                if (tools[i].Uses <= 0 || !ActionsFor(tools[i].Spec, massive, tier).HasValue) continue;
+                carried += tools[i].Uses;
+                if (best < 0 || HarvestRules.Compare(tools[i].Spec, tools[i].Uses, tools[best].Spec, tools[best].Uses, tier) < 0) best = i;
+            }
+            return best;
+        }
+
+        // The massive up-front check (user: harsh, option B): the carried eligible uses must cover the cuts the chosen axe needs.
+        public static string UsesCheck(int needed, int carried) => carried >= needed ? null : $"Needs {needed} axe uses; you carry {carried}.";
+
+        // Eligible carried tool with the fewest remaining uses (ties: fewest actions, Elite, lower tier).
+        private bool FindTool(HarvestTarget target, ToolFamily family, out ItemEntry best, out ToolSpec bestSpec, out int carried)
+        {
+            var entries = new List<ItemEntry>(); var tools = new List<(ToolSpec, int)>();
             foreach (ItemEntry entry in ledger.Entries)
             {
-                if ((entry.Owner != ItemOwner.Backpack && entry.Owner != ItemOwner.Hook) || !entry.Ready || entry.Profile.MaxDurability <= 0 || entry.Profile.Durability <= 0) continue;
-                if (!HarvestTools.TryGet(entry.Definition, out ToolSpec spec) || spec.Family != family || !HarvestRules.Actions(spec, tier).HasValue) continue;
-                if (best == null || HarvestRules.Compare(spec, entry.Profile.Durability, bestSpec, best.Profile.Durability, tier) < 0) { best = entry; bestSpec = spec; }
+                if ((entry.Owner != ItemOwner.Backpack && entry.Owner != ItemOwner.Hook) || !entry.Ready || entry.Profile.MaxDurability <= 0) continue;
+                if (!HarvestTools.TryGet(entry.Definition, out ToolSpec spec) || spec.Family != family) continue;
+                entries.Add(entry); tools.Add((spec, entry.Profile.Durability));
             }
+            int pick = PickTool(tools, target.MassiveTier > 0, ToolTier(target), out carried);
+            best = pick >= 0 ? entries[pick] : null; bestSpec = pick >= 0 ? tools[pick].Item1 : default;
             return best != null;
         }
 
@@ -361,14 +412,15 @@ namespace TheTrailWalker
         private bool SwitchTool(bool warnBroken)
         {
             string old = activeTool != null ? activeTool.Definition.Name : "tool";
-            if (!FindTool(activeSpec.Family, out ItemEntry tool, out ToolSpec spec))
+            if (!FindTool(active, activeSpec.Family, out ItemEntry tool, out ToolSpec spec, out _))
             {
                 if (active.Kind == InteractableKind.AnimalSpawn) { active.Root.position = active.Home; active.Root.rotation = active.HomeTurn; active.Motion?.Stop(); }
+                bool massive = active.MassiveTier > 0;
                 EndInteraction();
-                Say($"Your {old} broke and no other eligible tool is carried. Progress was lost.");
+                HarvestNote(massive, $"Your {old} broke and no other eligible tool is carried. Progress was lost.");
                 return false;
             }
-            activeTool = tool; activeSpec = spec; actionsNeeded = HarvestRules.Actions(spec, TargetTier).Value;
+            activeTool = tool; activeSpec = spec; actionsNeeded = ActionsFor(active, spec).Value;
             if (warnBroken) Say($"Your {old} broke. Continuing with {tool.Definition.Name}.");
             RefreshStrip();
             return true;
@@ -376,7 +428,7 @@ namespace TheTrailWalker
 
         private void AfterAction(bool broke, bool complete)
         {
-            if (complete) { CompleteHarvest(); return; }
+            if (complete) { if (active.MassiveTier > 0) CompleteMassive(); else CompleteHarvest(); return; }
             if (broke) SwitchTool(true); else RefreshStrip();
         }
 
@@ -448,10 +500,16 @@ namespace TheTrailWalker
 
         private UnityEngine.Rect ScreenRect(Transform root)
         {
+            var boxes = new List<Bounds>();
+            foreach (Renderer renderer in root.GetComponentsInChildren<Renderer>()) boxes.Add(renderer.bounds);
+            return ScreenRect(boxes);
+        }
+
+        private UnityEngine.Rect ScreenRect(IEnumerable<Bounds> boxes)
+        {
             bool first = true; float xMin = 0, xMax = 0, yMin = 0, yMax = 0;
-            foreach (Renderer renderer in root.GetComponentsInChildren<Renderer>())
+            foreach (Bounds b in boxes)
             {
-                Bounds b = renderer.bounds;
                 for (int i = 0; i < 8; i++)
                 {
                     Vector3 corner = b.center + Vector3.Scale(b.extents, new Vector3((i & 1) == 0 ? -1 : 1, (i & 2) == 0 ? -1 : 1, (i & 4) == 0 ? -1 : 1));
@@ -464,7 +522,8 @@ namespace TheTrailWalker
             return first ? new UnityEngine.Rect(Screen.width * 0.4f, Screen.height * 0.3f, Screen.width * 0.2f, Screen.height * 0.4f) : UnityEngine.Rect.MinMaxRect(xMin, yMin, xMax, yMax);
         }
 
-        private UnityEngine.Rect TrunkRect => ScreenRect(active.Pine != null && active.Pine.LowerTrunk != null ? active.Pine.LowerTrunk : active.Root);
+        private UnityEngine.Rect TrunkRect => active.MassiveTier > 0 ? ScreenRect(new[] { MassiveCutBounds(active.Root) })
+            : ScreenRect(active.Pine != null && active.Pine.LowerTrunk != null ? active.Pine.LowerTrunk : active.Root);
         private float CutZoneBottom => Screen.safeArea.yMin + Screen.safeArea.height * 0.12f;
 
         private void EvaluateCut()

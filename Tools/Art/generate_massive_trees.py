@@ -60,7 +60,7 @@ def frame(axis):
     return u, base.cross(axis, u)
 
 
-def tube(m, path, radii, sides, color, cap_end=None, rng=None, wobble=0.0, squash=1.0):
+def tube(m, path, radii, sides, color, cap_end=None, rng=None, wobble=0.0, squash=1.0, twist=.35):
     """Tapered tube along a polyline (limbs, roots). color(i, j) -> slot; optional end cap slot."""
     rings = []
     for j, (p, r) in enumerate(zip(path, radii)):
@@ -68,7 +68,7 @@ def tube(m, path, radii, sides, color, cap_end=None, rng=None, wobble=0.0, squas
         u, v = frame(d)
         ring = []
         for i in range(sides):
-            a = i * math.tau / sides + j * .35
+            a = i * math.tau / sides + j * twist
             rr = r * (1 + (rng.uniform(-wobble, wobble) if rng else 0))
             off = base.add(base.mul(u, rr * math.cos(a)), base.mul(v, rr * math.sin(a)))
             if squash != 1.0: off = (off[0], off[1] * squash, off[2])
@@ -189,13 +189,17 @@ class Tree:
             length = r0 * reach * self.rng.uniform(.8, 1.15); rad = r0 * .4
             h = min(height * self.rng.uniform(.75, 1.1), self.cut - rad * .6 - .08)
             bend = self.rng.uniform(-.25, .25); path = []; radii = []
+            # Phone round 2 (Nov 20, 2026): 7-sided flat tubes starting at the bark read as shards glued onto the trunk in the
+            # close chop view. Rounder 10-sided roots start inside the bole (they grow out of it) in the trunk's bark pattern.
             for t in (0, .25, .5, .75, 1.0):
-                ang = a + bend * t; d = r0 * .55 + length * t
+                ang = a + bend * t; d = r0 * .3 + length * t
                 path.append((d * math.cos(ang), h * (1 - t) ** 2.2 - .1 * t, d * math.sin(ang)))
                 radii.append(rad * (1 - t * .7))
-            bark = self.spec['bark']; back = sa < -.3
-            tube(m, path, radii, 7, lambda i, j: MOSS if (back and j < 2 and i in (1, 2) and self.rng.random() < .5) else (BIRCH_BASE if self.species == 'Birch' else bark[i % 3]),
-                 rng=self.rng, wobble=.06, squash=.6)
+            back = sa < -.3
+            for _ in range(5 * 7 + (4 if back else 0)): self.rng.random()   # the old roots' draws, so the bole, limbs and crowns stay as they were
+            local = random.Random(f'{self.name}-root-{n}'); dark, mid, light = self.spec['bark']
+            tube(m, path, radii, 10, lambda i, j: MOSS if (back and j < 2 and i in (1, 2) and local.random() < .5) else (BIRCH_BASE if self.species == 'Birch' else (dark if i % 2 else (light if (i // 2) % 4 == 1 else mid))),
+                 rng=local, wobble=.03, squash=.85, twist=0.0)
             self.extent = max(self.extent, r0 * .7 + length)
 
     def knots(self, m, ys, offset_y):

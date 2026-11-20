@@ -126,20 +126,6 @@ namespace TheTrailWalker
             containerFrame.gameObject.AddComponent<RectMask2D>();
             containerFrame.gameObject.AddComponent<BagPointerSurface>().Owner = this;
             containerContent = Pinned("Container content", containerFrame);
-            fillButton = Button(containerFrame, "FILL", 0.82f, 0.86f, 0.98f, 0.98f, DebugFillChest).transform.parent.gameObject;   // debug (test phase), chests only
-        }
-
-        private GameObject fillButton;
-
-        // Debug FILL (Milestone 11 test phase): packs the open chest with Q5 stacks of 1,000 so every size can be tested full.
-        private void DebugFillChest()
-        {
-            if (!ContainerOpen || OpenChest == null || saveBlocked) return;
-            int stacks = homeStorage.DebugFill(openContainerId, () => "debug-fill-" + System.Guid.NewGuid().ToString("N"));
-            SaveNow(true);
-            chestDrawn = (-1, -1); DrawChestEntries(true);
-            Redraw();
-            Say(stacks > 0 ? "Debug: added " + stacks + " stacks." : "The chest is full.");
         }
 
         private void ClearContainerContent()
@@ -159,7 +145,6 @@ namespace TheTrailWalker
             if (cell <= 0 || safe.rect.height <= 0) return;
             EnsureContainerFrame();
             containerFrame.gameObject.SetActive(true);
-            if (fillButton != null) { fillButton.SetActive(OpenChest != null); fillButton.transform.SetAsLastSibling(); }
             float height = ChestRows * cell;
             float bottom = bagFrame.anchorMax.y + ApertureHeight;
             containerFrame.anchorMin = new Vector2(0, bottom); containerFrame.anchorMax = new Vector2(1, Mathf.Min(1f, bottom + height / safe.rect.height));

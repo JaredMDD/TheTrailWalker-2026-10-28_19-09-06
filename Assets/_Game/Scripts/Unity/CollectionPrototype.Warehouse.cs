@@ -50,11 +50,11 @@ namespace TheTrailWalker
         // through itself (the centre stays put on screen) to the smallest distance where every target's projected rect, with a label
         // margin (6% of the height), lies inside x [0,1] and y (bagTopViewport + margin, 1 - margin]. Capped at WarehouseMaxPullback.
         // The camera's transform is restored before returning.
-        public static Pose WarehouseCameraPose(Camera cam, Bounds[] targets, float bagTopViewport)
+        public static Pose WarehouseCameraPose(Camera cam, Bounds[] targets, float bagTopViewport, float topViewport = 1f)
         {
             Transform t = cam.transform; Vector3 startPosition = t.position; Quaternion startRotation = t.rotation;
             var all = targets[0]; for (int i = 1; i < targets.Length; i++) all.Encapsulate(targets[i]);
-            float wanted = (bagTopViewport + 1f) * 0.5f;
+            float wanted = (bagTopViewport + topViewport) * 0.5f;
             bool Fits()
             {
                 foreach (Bounds b in targets)
@@ -66,7 +66,7 @@ namespace TheTrailWalker
                         if (v.z <= 0f) return false;
                         x0 = Mathf.Min(x0, v.x); x1 = Mathf.Max(x1, v.x); y0 = Mathf.Min(y0, v.y); y1 = Mathf.Max(y1, v.y);
                     }
-                    if (x0 < 0f || x1 > 1f || y0 - WarehouseLabelMargin <= bagTopViewport || y1 + WarehouseLabelMargin > 1f) return false;
+                    if (x0 < 0f || x1 > 1f || y0 - WarehouseLabelMargin <= bagTopViewport || y1 + WarehouseLabelMargin > topViewport) return false;
                 }
                 return true;
             }

@@ -39,6 +39,7 @@ namespace TheTrailWalker.Editor
             }
             foreach (var keeper in manifest.Keepers)
             {
+                if (keeper.Name == "Forester") { LumberFieldArtAssets.BuildForester(); continue; }
                 var root = Assemble(keeper, manifest, mat);
                 try { PrefabUtility.SaveAsPrefabAsset(root, Target + "Shopkeeper" + keeper.Name + ".prefab"); }
                 finally { UnityEngine.Object.DestroyImmediate(root); }

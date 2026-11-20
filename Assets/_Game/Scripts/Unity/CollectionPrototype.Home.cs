@@ -21,7 +21,7 @@ namespace TheTrailWalker
         private bool homeEntering;
         private float homeEnterStarted;
         private const float HomeGlideMaxSeconds = 3f;   // the cut happens at the latest after this, even if the glide still moves
-        private bool HomeOpen => homeView != HomeView.None || homeEntering || WarehouseOpen;   // the warehouse counter view (Warehouse.cs) owns the screen like a home view
+        private bool HomeOpen => homeView != HomeView.None || homeEntering || WarehouseOpen || LumberOpen;   // the warehouse counter view (Warehouse.cs) owns the screen like a home view
         // Home revision section 7: while a neighbour's look-only room is open (or being glided to), its own HomeState from
         // NeighbourHome.Furnish; null for the player's home. The views read it instead of `home`, which they never touch then.
         private HomeState neighbourHome;
@@ -325,6 +325,7 @@ namespace TheTrailWalker
             CloseContainer();   // an open chest or rack closes on every exit path, also outside a home view
             if (!HomeOpen) return;
             TearDownWarehouse();
+            TearDownLumber();
             homeEntering = false;
             homeView = HomeView.None;
             TearDownInterior();

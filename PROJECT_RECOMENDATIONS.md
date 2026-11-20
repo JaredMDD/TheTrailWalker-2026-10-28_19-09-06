@@ -3863,11 +3863,11 @@ Dependencies: 10.
 - Step 1: chests open above the bag with their own horizontally scrolling contents (Pine 6×6 to Reinforced oak 48×6); only visible entries are drawn.
 - Step 2: replaced by the **tool rack** (section 13.3): 12 spots, no splitting (the bag has none yet).
 - Step 3: placement and collision were already built in Milestone 10. Moves between the bag and a chest or rack are single, saved steps.
-- Step 4: debug **HOUSE L8** on the street and **FILL** on an open chest. Normal upgrades still stop at level 2.
+- Step 4: debug **HOUSE L8** on the street and **FILL** on an open chest. Normal upgrades still stop at level 2. (FILL was removed on November 20, 2026, after the Milestone 13 phone round; bring it back from git history if chest testing needs it again.)
 - Added by the user: **map travel from the settlement** (section 12.3).
 - All Milestone 1-8, Home and settlement checks pass. A final whole-milestone review fixed two issues before the build: a stale selection that could take off worn gear, and the 1,024-items-per-chest limit, which is now enforced when items are moved in, not only on load.
 - **Installed November 15, 2026, 01:54 UTC build** (APK SHA-256 `f072b621…`). Saves were backed up first, and `session-v1` is unchanged (`2519b15e`). **Phone round passed (user, November 17, 2026):** all seven checks work; no fixes needed.
-- **Debug buttons to remove before release:** HOUSE L8 and FILL.
+- **Debug buttons to remove before release:** HOUSE L8 (FILL already removed, November 20, 2026).
 
 **Exit check:** all content stays in safe bounds at the smallest supported screen size; shelves reject stacks without losing units; huge hidden storage does not create huge active UI trees; transfers have exactly one owner across reloads.
 
@@ -3914,6 +3914,34 @@ Dependencies: 12.
 1. Build one tier with six independent trees in two rows and gold-tier unlock.
 2. Implement section 8.2's massive-tree Normal/Elite action curves, +2 ceiling, Elite faster at/below own tier, Elite drop buff even at eligible +1/+2, x50 manifests, type piles, and 72-hour respawns. Use the section 8.2.1 cutting mechanic; finishing keeps the focused screen open, rewards spawn there for pickup, and only Return closes it. Tapping a felled tree that still has pending drops reopens that pickup screen with exactly the remaining piles (no re-roll), until they are collected or expire.
 3. Add simulated time/expiry warnings, then expand only to four active wood tiers (24 tree records). Leave the other four tiers in the design backlog.
+
+**Decisions (November 18, 2026; spec `Docs/superpowers/specs/2026-11-18-milestone-13-lumber-field-design.md`, plan `Docs/superpowers/plans/2026-11-18-milestone-13-lumber-field.md`):**
+- Pickup (user): one bundle per swipe, best quality first.
+- Cutting stays harsh (user: "it's supposed to be harsh, at most implement option B"); the only help is an up-front check that the axe has enough uses.
+- No expiry warnings (user).
+- No gold debug button (user): gold comes from the warehouse.
+- The other tool's lumber storefront files go into the Milestone 13 commit (user).
+- Pending rewards are stored as units, so a partial bag store keeps the remainder (Claude).
+- Unlocking a tier takes two taps (Claude).
+- Leaving a zone and Return both go to the counter (Claude).
+- Backdrop trees show while their tier is still locked (Claude).
+- Zones where six bases do not fit pan sideways (Claude).
+- Each pile id carries a unique suffix, and a stored pile is re-labelled in the bag so it is never filtered out of the save (Claude).
+
+**Built (Claude, November 18, 2026):**
+- Domain: `Domain/Settlement/LumberField.cs` (tiers, unlock, six independent trees, 72-hour respawn, pending rewards in units, clock offset).
+- Saving: an optional `lumber` block in `SessionSaveStore.cs`; older saves load without it, and pile entries are never saved.
+- Counter and zones: `Unity/CollectionPrototype.Lumber.cs` (counter, ledger, door, zones, timer labels, pickup).
+- Chopping: massive mode in `Unity/CollectionPrototype.Harvest.cs` (uses check, fall, rewards spawn as piles).
+- Checks: `Editor/Milestone13Validation.cs`, chained in `Milestone5Setup.cs`.
+- Art: the other tool's lumber storefront, forester and zone files ship in the same commit.
+- Debug buttons to remove before release: WOOD T2-T4 and +24 H, together with HOUSE L8 (FILL was removed on November 20, 2026).
+- Phone round 1 (user, November 19, 2026): the ledger and the door could not be tapped, and WOOD T2-T4 sat under RESET SAVE. Fixed: the counter camera turns toward both anchors and keeps them in the band below the debug buttons; the debug buttons moved.
+- Ledger follow-up (user, November 19, 2026): the ledger became a paper page (2 x 2 entries with log pictures; mesquite and oak use camp log seat placeholders until their logs land), and every lumber refusal shows on a centred paper note.
+- Phone round 2 (user, November 20, 2026): everything passed except the massive trees. A cut only registered at stump height, and the stump and trunk looked disconnected. Cause: the chop camera and the swipe rule were sized from the stump including its buttress roots (3.8 m across on pine), so the camera sat 16 m back and a swipe had to be wider than the trunk. Fixed: both now use the trunk at the cut (`MassiveCutBounds`), and the roots in `Tools/Art/generate_massive_trees.py` grow out of the trunk in its bark pattern (trunks, limbs and crowns unchanged). Rechecked on the phone: swipes work and the trees look better.
+- User decisions (November 20, 2026): the counter distance stays, the ledger sheet stays open after PAY, and the FILL debug button was removed.
+- Also on November 20, 2026: the full validation chain dropped from about 13 minutes to under 2 (commit `b3dedb8`; the old FILL corner search was the cause).
+- Status: phone rounds passed. Full suite PASS and APK built 06:34 UTC November 20, 2026 (SHA-256 `c8452ebb…`), installed on the nubia NX769J after a save backup (`.superpowers/save-backups/2026-11-20-before-m13-final/`); the installed copy matches and `session-v1.json` is unchanged (`2519b15e`). Ready to commit.
 
 **Exit check:** all six timers are independent, x50 rewards remain full stacks, leaving/reentering preserves pending quantities, advancing time respawns only eligible trees and expires only their old rewards, and rendering stays capped.
 

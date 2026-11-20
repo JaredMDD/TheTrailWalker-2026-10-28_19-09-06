@@ -52,9 +52,13 @@ namespace TheTrailWalker.Persistence
         public List<TheTrailWalker.Domain.Economy.TradeRecord> tradeLog = new List<TheTrailWalker.Domain.Economy.TradeRecord>();
         // Milestone 12 (optional): the settlement warehouse's crates and cycle, and its transaction log. block 0 = absent (older saves).
         public SavedWarehouse warehouse;
+        public SavedLumber lumber;   // Milestone 13; block 0 = absent
         public List<TheTrailWalker.Domain.Economy.TradeRecord> warehouseLog = new List<TheTrailWalker.Domain.Economy.TradeRecord>();
     }
     [Serializable] public sealed class SavedWarehouse { public int block; public List<SavedCrate> crates = new List<SavedCrate>(); public int cycleCrates; public long cycleCash; }
+    [Serializable] public sealed class SavedLumber { public int block; public int unlockedTier, lastZone, debugWoodTier; public long clockOffsetMinutes; public List<SavedMassiveTree> trees = new List<SavedMassiveTree>(); }
+    [Serializable] public sealed class SavedMassiveTree { public long fellUtcTicks; public int fellCount; public List<SavedPendingReward> pending = new List<SavedPendingReward>(); }
+    [Serializable] public sealed class SavedPendingReward { public string itemId; public int quality; public long units; }
     [Serializable] public sealed class SavedCrate { public string itemId; public List<SavedWarehouseUnit> units = new List<SavedWarehouseUnit>(); }
     [Serializable] public sealed class SavedWarehouseUnit { public string escrowId; public int quantity; public long valueMinor; }
     [Serializable] public sealed class SavedSettlement
@@ -438,6 +442,72 @@ namespace TheTrailWalker.Persistence
                 catch (ArgumentException error) { throw new InvalidDataException("Invalid house deposits: " + error.Message); }
             }
             RestoreWarehouse(data, inventory.Entries);
+            RestoreLumber(data);
+        }
+
+        public const string LumberPilePrefix = "lumber-";
+        private static bool IsLumberPileId(string id) { return id != null && id.StartsWith(LumberPilePrefix, StringComparison.Ordinal); }
+
+        // Lumber piles are re-materialized from the tree state, so they are never written to or read from a save.
+        public static IEnumerable<ItemEntry> Persistable(IEnumerable<ItemEntry> entries)
+        {
+            foreach (ItemEntry e in entries) if (e.Owner != ItemOwner.Consumed && !(e.Owner == ItemOwner.World && IsLumberPileId(e.Id))) yield return e;
+        }
+
+        public static void DropLumberPiles(SessionSnapshot data)
+        {
+            data?.items?.RemoveAll(i => i != null && i.owner == nameof(ItemOwner.World) && IsLumberPileId(i.id));
+        }
+
+        public static SavedLumber SaveLumber(TheTrailWalker.Domain.Settlement.LumberFieldState s)
+        {
+            var saved = new SavedLumber { block = 1, unlockedTier = s.UnlockedTier, lastZone = s.LastZone, debugWoodTier = s.DebugWoodTier, clockOffsetMinutes = (long)s.ClockOffset.TotalMinutes };
+            for (int tier = 1; tier <= TheTrailWalker.Domain.Settlement.LumberFieldState.Tiers; tier++)
+                for (int i = 0; i < TheTrailWalker.Domain.Settlement.LumberFieldState.TreesPerTier; i++)
+                {
+                    var tree = s.Tree(tier, i);
+                    var box = new SavedMassiveTree { fellUtcTicks = tree.FellUtc?.Ticks ?? 0, fellCount = tree.FellCount };
+                    foreach (var row in tree.Pending) box.pending.Add(new SavedPendingReward { itemId = row.ItemId, quality = row.Quality, units = row.Units });
+                    saved.trees.Add(box);
+                }
+            return saved;
+        }
+
+        // Milestone 13: absent block = everything locked, all trees standing.
+        public static TheTrailWalker.Domain.Settlement.LumberFieldState RestoreLumber(SessionSnapshot data)
+        {
+            var state = new TheTrailWalker.Domain.Settlement.LumberFieldState();
+            SavedLumber saved = data?.lumber;
+            if (saved == null || saved.block == 0) return state;
+            const int Tiers = TheTrailWalker.Domain.Settlement.LumberFieldState.Tiers, Per = TheTrailWalker.Domain.Settlement.LumberFieldState.TreesPerTier;
+            if (saved.trees == null || saved.trees.Count != Tiers * Per) throw new InvalidDataException("Invalid lumber field: tree count");
+            if (saved.unlockedTier < 0 || saved.unlockedTier > Tiers || saved.debugWoodTier < 0 || saved.debugWoodTier > Tiers || saved.clockOffsetMinutes < 0 || saved.clockOffsetMinutes > 100000000L)
+                throw new InvalidDataException("Invalid lumber field: tier or clock");
+            if (saved.lastZone < 0 || saved.lastZone > saved.unlockedTier || (saved.unlockedTier >= 1 && saved.lastZone < 1)) throw new InvalidDataException("Invalid lumber field: last zone");
+            state.UnlockedTier = saved.unlockedTier; state.LastZone = saved.lastZone; state.DebugWoodTier = saved.debugWoodTier; state.ClockOffset = TimeSpan.FromMinutes(saved.clockOffsetMinutes);
+            for (int tier = 1; tier <= Tiers; tier++)
+            {
+                // The tier's item set is whatever its tree roll can drop (every output rolls at least two bundles).
+                var valid = new HashSet<string>();
+                foreach (var b in TheTrailWalker.Domain.Harvest.HarvestManifest.Roll(TheTrailWalker.Domain.Travel.InteractableKind.Tree, (tier - 1) * 6 + 1, "lumber.t" + tier, 1, "tree0", false)) valid.Add(b.ItemId);
+                for (int i = 0; i < Per; i++)
+                {
+                    SavedMassiveTree box = saved.trees[(tier - 1) * Per + i];
+                    if (box == null || box.pending == null || box.fellCount < 0 || box.fellUtcTicks < 0 || box.fellUtcTicks > DateTime.MaxValue.Ticks) throw new InvalidDataException("Invalid lumber field: tree " + tier + "-" + i);
+                    if (box.fellUtcTicks == 0 && box.pending.Count > 0) throw new InvalidDataException("Invalid lumber field: standing tree has leftovers");
+                    if (box.fellUtcTicks != 0 && box.fellCount < 1) throw new InvalidDataException("Invalid lumber field: felled tree has no fell count");
+                    var tree = state.Tree(tier, i);
+                    if (box.fellUtcTicks != 0) tree.FellUtc = new DateTime(box.fellUtcTicks, DateTimeKind.Utc);
+                    tree.FellCount = box.fellCount;
+                    var seen = new HashSet<string>();
+                    foreach (SavedPendingReward row in box.pending)
+                    {
+                        if (row == null || row.itemId == null || !valid.Contains(row.itemId) || row.quality < 1 || row.quality > 5 || row.units <= 0 || !seen.Add(row.itemId + "#" + row.quality)) throw new InvalidDataException("Invalid lumber field: leftovers of tree " + tier + "-" + i);
+                        tree.Pending.Add(new TheTrailWalker.Domain.Settlement.PendingReward { ItemId = row.itemId, Quality = row.quality, Units = row.units });
+                    }
+                }
+            }
+            return state;
         }
 
         public static SavedWarehouse SaveWarehouse(TheTrailWalker.Domain.Economy.WarehouseState state)

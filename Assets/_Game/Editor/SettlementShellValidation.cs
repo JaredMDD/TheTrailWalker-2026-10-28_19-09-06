@@ -720,7 +720,7 @@ namespace TheTrailWalker.Editor
             var shops = new[] { ("shop.bakery", "Bakery"), ("shop.ranch", "Ranch"), ("shop.farm", "Farm"), ("shop.fishery", "Fishery"), ("shop.mine", "Mine"), ("shop.tailor", "Tailor") };
             Check(shops.All(s => CollectionPrototype.SettlementNote(Shop(s.Item1), 1, false) == s.Item2 + " opens in Milestone 14"), "Every shop note names its shop and Milestone 14");
             Check(CollectionPrototype.SettlementNote(new StreetBuilding { Id = "warehouse", Kind = StreetBuildingKind.Warehouse }, 1, false) == "The warehouse", "The warehouse note no longer points at Milestone 12");
-            Check(CollectionPrototype.SettlementNote(new StreetBuilding { Id = "lumber", Kind = StreetBuildingKind.LumberField }, 1, false) == "The lumber field opens in Milestone 13", "The lumber field note is verbatim");
+            Check(CollectionPrototype.OpensLumberCounter(null, StreetBuildingKind.LumberField) && CollectionPrototype.OpensLumberCounter("lumber", StreetBuildingKind.House) && !CollectionPrototype.OpensLumberCounter("warehouse", StreetBuildingKind.Warehouse), "Tapping the lumber building or the Lumber list entry opens the counter (OpenLumberCounter)");
             var house = new StreetBuilding { Id = "plot.2", Kind = StreetBuildingKind.House, Plot = 2 };
             Check(CollectionPrototype.SettlementNote(house, 3, false) == "A neighbour's home (level 3)", "A neighbour's house at level 3 reads \"A neighbour's home (level 3)\"");
             // The player's plot no longer shows a note: a tap opens the home (first home, task 5; HomeValidation.HudChecks).

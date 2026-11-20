@@ -282,6 +282,18 @@
         "Cash offer",
         "Cash offer"
       ]
+    },
+    {
+      "Name": "Lumber",
+      "Id": "shop.lumber",
+      "Front": "LumberFront",
+      "Counter": "LumberCounter",
+      "Keeper": "ShopkeeperForester",
+      "Width": 7.8,
+      "OfferAnchors": [],
+      "OfferAnchorsFlat": [],
+      "OfferKinds": [],
+      "ArtBuilder": "LumberFieldArtAssets"
     }
   ],
   "Parts": [
@@ -364,6 +376,26 @@
       "name": "DepositCrateLid",
       "vertices": 24,
       "triangles": 36
+    },
+    {
+      "name": "LumberFront",
+      "triangles": 2801
+    },
+    {
+      "name": "LumberDoorFrame",
+      "triangles": 48
+    },
+    {
+      "name": "LumberCounter",
+      "triangles": 1496
+    },
+    {
+      "name": "LumberLedger",
+      "triangles": 144
+    },
+    {
+      "name": "LumberDoorLeaf",
+      "triangles": 96
     }
   ],
   "Scope": "Art only: street front and counter view per shop. No shop logic, stock, prices or selection."

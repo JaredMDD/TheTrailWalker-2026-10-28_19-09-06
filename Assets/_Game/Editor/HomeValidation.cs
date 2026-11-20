@@ -1216,13 +1216,6 @@ namespace TheTrailWalker.Editor
             ItemEntry same = Mk(bag, "x2", PrototypeItems.Branch, 1, 1, ItemOwner.Backpack, 2000, 0); bag.Reserve(same, 2);
             Check(bag.TryTransfer(same, 2, chest, ItemOwner.Backpack, 0, 0, true, out reason) && chest.Entries.Count(e => e.Owner == ItemOwner.Backpack) == HomeStorage.MaxItemsPerContainer
                 && chest.Entries.First(e => e.Id == "f0").Quantity == 2 && !bag.ContainsId("x2"), "A merge onto an existing stack still works in a full-count chest (no new entry)");
-            foreach (string id in new[] { "pc", "oc" })
-            {
-                var hs = new HomeStorage(); var h = HomeState.AtLevel(8); var w = new Wallet(100000000000L); int n = 0;
-                h.Buy(F(id == "pc" ? "furniture.l2.pine_chest" : "furniture.l8.reinforced_oak_chest"), w, id); hs.Sync(h);
-                hs.DebugFill(id, () => "cap-fill-" + (++n));
-                Check(hs.Chest(id).Entries.Count(e => e.Owner == ItemOwner.Backpack) <= HomeStorage.MaxItemsPerContainer, "FILL never exceeds the 1,024-item cap (" + id + ")");
-            }
         }
 
         // ---------------------------------------------------------------- Milestone 11 final review: stale selection and chest drops
@@ -1245,17 +1238,8 @@ namespace TheTrailWalker.Editor
                 "A drop point outside the chest grid is not attempted; one inside is");
         }
 
-        // ---------------------------------------------------------------- Milestone 11 task 6: debug HOUSE L8 and FILL
+        // ---------------------------------------------------------------- Milestone 11 task 6: debug HOUSE L8 (FILL removed Nov 20, 2026)
         private static string PlacesOf(HomeState h) { return string.Join("|", h.Pieces.Select(p => p.InstanceId + "@" + p.X + "," + p.Z + "r" + p.Rotation + (p.Placed ? "p" : "s"))); }
-        private static ItemEntry Probe(ItemDefinition d) { return Mk(new SpatialInventory(), "probe-" + d.Id, d, 1, 5, ItemOwner.World); }
-        private static bool AnyFits(SpatialInventory chest, ItemEntry probe, int quantity, bool scan)
-        {
-            if (scan) { for (int y = 0; y < chest.Height; y += 50) for (int x = 0; x < chest.Width; x += 50) if (chest.Fits(probe, quantity, x, y)) return true; return false; }
-            var xs = new SortedSet<int> { 0 }; var ys = new SortedSet<int> { 0 };
-            foreach (ItemEntry e in chest.Entries) { xs.Add(e.X + e.Width); ys.Add(e.Y + e.Height); }
-            foreach (int y in ys) foreach (int x in xs) if (chest.Fits(probe, quantity, x, y)) return true;
-            return false;
-        }
         private static void HouseJumpChecks()
         {
             const string beams = "item.pine_beam";
@@ -1299,33 +1283,6 @@ namespace TheTrailWalker.Editor
             HouseUpgradeService.DebugJumpToLevel(h2, l2, 8);
             Check(h2.Level == 8 && P(h2, "pc").X == x0 + 1 && StorageSig(st2) == sig, "A chest keeps its contents and key through the jump");
             Check(HouseUpgradeService.DebugJumpToLevel(h2, l2, 3) == 0 && h2.Level == 8, "Jumping to a lower level does nothing");
-
-            // FILL.
-            var hf = HomeState.AtLevel(8); var sf = new HomeStorage(); var wf = new Wallet(100000000000L); int ids = 0;
-            hf.Buy(F("furniture.l8.reinforced_oak_chest"), wf, "oc"); hf.Buy(F("furniture.l2.pine_chest"), wf, "pc"); hf.Buy(F(RackPieceId), wf, "rk"); sf.Sync(hf);
-            Func<string> next = () => "dbg-fill-" + (++ids);
-            ItemDefinition[] cycle = { PrototypeItems.Branch, PrototypeItems.Clay, PrototypeItems.Flint, PrototypeItems.Hemp, PrototypeItems.Apples, PrototypeItems.Pebbles };
-            Check(sf.DebugFill("rk", next) == 0 && sf.Rack("rk").IsEmpty, "FILL does nothing on a rack");
-            Check(sf.DebugFill("missing", next) == 0, "FILL does nothing for an unknown piece");
-            foreach (string id in new[] { "pc", "oc" })
-            {
-                SpatialInventory c = sf.Chest(id);
-                int stacks = sf.DebugFill(id, next);
-                var live = c.Entries.Where(e => e.Owner == ItemOwner.Backpack).ToList();
-                Check(stacks > 0 && live.Count == stacks && live.All(e => e.Quantity == 1000 && e.Quality == 5), "FILL adds Q5 stacks of 1,000 (" + id + ")");
-                Check(cycle.All(d => live.Any(e => e.Definition.Id == d.Id)), "FILL cycles the six tier-one materials (" + id + ")");
-                bool overlap = false, outside = false;
-                for (int i = 0; i < live.Count; i++)
-                {
-                    if (live[i].X < 0 || live[i].Y < 0 || live[i].X + live[i].Width > c.Width || live[i].Y + live[i].Height > c.Height) outside = true;
-                    for (int j = i + 1; j < live.Count; j++) if (SpatialInventory.Overlaps(live[i].X, live[i].Y, live[i].Width, live[i].Height, live[j].X, live[j].Y, live[j].Width, live[j].Height)) overlap = true;
-                }
-                Check(!overlap && !outside, "FILL stacks do not overlap and stay inside (" + id + ")");
-                Check(!cycle.Any(d => AnyFits(c, Probe(d), 1000, id == "pc")), "Another 1,000 stack of any material no longer fits (" + id + ")");
-                // FILL packs whole 1,000 stacks, so a small stack can still fit a leftover gap in the wide chest; the 6 x 6 pine chest has none.
-                if (id == "pc") Check(!cycle.Any(d => AnyFits(c, Probe(d), 1, true)), "A further one-unit item does not fit (pine chest)");
-                Check(sf.DebugFill(id, next) == 0, "A second FILL adds nothing (" + id + ")");
-            }
         }
 
         // ---------------------------------------------------------------- Milestone 11 task 3: container save, restore and validation
@@ -1426,7 +1383,7 @@ namespace TheTrailWalker.Editor
         {
             Check(CollectionPrototype.ChestVisibleColumns(0f, 6f, 1f, 48) == (0, 7) && CollectionPrototype.ChestVisibleColumns(20f, 6f, 1f, 48) == (19, 27),
                 "A 48-wide chest viewed 6 wide shows columns 0-7 at scroll 0 and 19-27 at scroll 20 (margin 1)");
-            // The densest real fill (Task 6's debug FILL has not run): single stacks of the smallest-footprint stackable item in
+            // The densest real fill: single stacks of the smallest-footprint stackable item in
             // the game (every definition Items.Find knows), packed edge to edge over a 48 x 6 chest.
             var full = new SpatialInventory(48000, 6000);
             ItemDefinition smallest = null; int sw = int.MaxValue, sh = int.MaxValue;

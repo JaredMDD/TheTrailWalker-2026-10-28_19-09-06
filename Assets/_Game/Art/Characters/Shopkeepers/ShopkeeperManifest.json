@@ -76,6 +76,15 @@
       "Female": false,
       "Triangles": 1931,
       "Notes": "Crimson lacquer coat, double-breasted with brass buttons and gold edging and epaulettes, cream silk scarf, brass balloon emblem pin, leather aviator cap with brass goggles pushed up, handlebar moustache."
+    },
+    {
+      "Name": "Forester",
+      "Shop": "Lumber",
+      "Body": "ForesterBody",
+      "Head": "ForesterHead",
+      "Female": false,
+      "Triangles": 1570,
+      "Notes": "Plaid-looking olive cloth, rolled sleeves, leather apron and felt cap. Dedicated passive lumber art builder."
     }
   ],
   "Scope": "Art only: static waist-up shopkeepers per storefront. No shop logic, dialogue, stock or animation."

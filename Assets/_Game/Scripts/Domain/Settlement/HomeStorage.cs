@@ -72,53 +72,6 @@ namespace TheTrailWalker.Domain.Settlement
             home.Store(pieceId); Sync(home); reason = null; return true;
         }
 
-        private static readonly string[] FillMaterials = { "material.pine_branch", "material.clay", "material.flint", "material.hemp", "food.apples", "material.pebbles" };
-
-        // Debug (test phase): fills a chest with Q5 stacks of 1,000 cycling through the tier-one materials, each at the bag's
-        // bottom-left free spot, until none of them fits. Returns the stacks added; 0 for a rack or an unknown piece.
-        public int DebugFill(string pieceId, Func<string> newId)
-        {
-            SpatialInventory chest = Chest(pieceId);
-            if (chest == null) return 0;
-            var scratch = new SpatialInventory();   // probes that size a stack without touching the chest's ledger
-            var probes = new List<ItemEntry>();
-            foreach (string id in FillMaterials)
-            {
-                ItemDefinition definition = TheTrailWalker.Domain.Crafting.Items.Find(id);
-                if (definition != null) probes.Add(scratch.AddWorld("probe-" + id, definition, 1000, 5, TheTrailWalker.Domain.Economy.ItemPrices.Profile(definition, 5)));
-            }
-            int added = 0, live = chest.Entries.Count(e => e.Owner != ItemOwner.Consumed);
-            // The bag's bottom-left search: candidate corners are the container's origin and every entry's far edges. The corners
-            // are kept across turns, and since a fill only adds stacks, a corner that refused a probe refuses it for the rest of the
-            // fill: skipping those keeps the same placement without re-testing them (a 1,024-stack fill took minutes, Nov 19, 2026).
-            var xs = new SortedSet<int> { 0 }; var ys = new SortedSet<int> { 0 };
-            foreach (ItemEntry other in chest.Entries)
-                if (other.Owner == ItemOwner.Backpack) { xs.Add(other.X + other.Width); ys.Add(other.Y + other.Height); }
-            var refused = new HashSet<(int, int, int)>();
-            for (int turn = 0, failed = 0; probes.Count > 0 && failed < probes.Count; turn++)
-            {
-                if (live >= MaxItemsPerContainer) break;
-                int p = turn % probes.Count; ItemEntry probe = probes[p];
-                if (!TryFindFreeSpot(chest, probe, p, xs, ys, refused, out int x, out int y)) { failed++; continue; }
-                ItemEntry item = chest.AddWorld(newId(), probe.Definition, 1000, 5, probe.Profile);
-                if (!chest.RestoreStored(item, ItemOwner.Backpack, x, y)) { item.Owner = ItemOwner.Consumed; failed++; continue; }
-                xs.Add(item.X + item.Width); ys.Add(item.Y + item.Height);
-                added++; live++; failed = 0;
-            }
-            return added;
-        }
-
-        private static bool TryFindFreeSpot(SpatialInventory chest, ItemEntry probe, int p, SortedSet<int> xs, SortedSet<int> ys, HashSet<(int, int, int)> refused, out int spotX, out int spotY)
-        {
-            foreach (int y in ys) foreach (int x in xs)
-            {
-                if (refused.Contains((p, x, y))) continue;
-                if (chest.Fits(probe, probe.Quantity, x, y)) { spotX = x; spotY = y; return true; }
-                refused.Add((p, x, y));
-            }
-            spotX = spotY = 0; return false;
-        }
-
         internal void AddChest(string pieceId, SpatialInventory chest) { chest.IsContainer = true; chests[pieceId] = chest; }
         internal void AddRack(string pieceId, ToolRack rack) { racks[pieceId] = rack; }
     }

@@ -44,6 +44,7 @@ namespace TheTrailWalker.Editor
             }
             foreach (var shop in manifest.Shops)
             {
+                if (shop.Name == "Lumber") { LumberFieldArtAssets.BuildStorefront(); continue; }
                 Save(Front(shop, mat), shop.Name + "Front");
                 Save(Counter(shop, mat), shop.Name + "Counter");
             }

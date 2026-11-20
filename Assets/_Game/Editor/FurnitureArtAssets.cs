@@ -300,7 +300,7 @@ namespace TheTrailWalker.Editor
             plate.GetComponent<Renderer>().sharedMaterial = mat;
         }
 
-        static void Render(GameObject source, string file, Vector3 eye, Vector3 target, float size, int width, int height, Color background)
+        internal static void Render(GameObject source, string file, Vector3 eye, Vector3 target, float size, int width, int height, Color background)
         {
             var preview = new PreviewRenderUtility();
             try

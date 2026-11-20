@@ -482,6 +482,13 @@ def main():
         shops.append(dict(Name=name, Front=name+'Front', Counter=name+'Counter', Keeper=keeper, Width=width,
                           OfferAnchors=[list(o) for o in offers], OfferAnchorsFlat=[c for o in offers for c in o], OfferKinds=kinds))
     stats += [part.save(OUT, HEADER) for part in deposit_crate_parts()]
+    # Dedicated lumber authoring owns its doorway/ledger hierarchy and palette.
+    # Preserve its registration when regenerating the seven older storefronts.
+    existing=OUT/'StorefrontManifest.json'
+    if existing.exists():
+        prior=json.loads(existing.read_text(encoding='utf-8-sig'))
+        shops += [row for row in prior.get('Shops',[]) if row.get('Name')=='Lumber']
+        stats += [row for row in prior.get('Parts',[]) if row.get('name','').startswith('Lumber')]
     manifest = dict(Revision=2, Style='faceted', CounterTop=COUNTER_TOP, Shops=shops, Parts=stats,
                     Scope='Art only: street front and counter view per shop. No shop logic, stock, prices or selection.')
     (OUT/'StorefrontManifest.json').write_text(json.dumps(manifest, indent=2)+'\n', encoding='utf-8')
