@@ -19,7 +19,7 @@ namespace TheTrailWalker.Editor
         public static void Prepare()
         {
             KeepFogVariants();
-            Milestone4Setup.Prepare(); Milestone4EquipmentValidation.Run(); Milestone5Validation.Run(); Milestone6Validation.Run(); Milestone7Validation.Run(); Milestone8Validation.Run(); Milestone9Validation.Run(); TierOneRegionsValidation.Run(); Phase1ConsistencyValidation.Run(); SettlementShellValidation.Run(); HomeValidation.Run(); Milestone12Validation.Run(); Milestone13Validation.Run(); Milestone14Validation.Run(); Milestone14BalloonValidation.Run(); Tier03IntegrationValidation.Run(); Milestone15Validation.Run();
+            Milestone4Setup.Prepare(); Milestone4EquipmentValidation.Run(); Milestone5Validation.Run(); Milestone6Validation.Run(); Milestone7Validation.Run(); Milestone8Validation.Run(); Milestone9Validation.Run(); TierOneRegionsValidation.Run(); Phase1ConsistencyValidation.Run(); SettlementShellValidation.Run(); HomeValidation.Run(); Milestone12Validation.Run(); Milestone13Validation.Run(); Milestone14Validation.Run(); Milestone14BalloonValidation.Run(); Tier03IntegrationValidation.Run(); Milestone15Validation.Run(); Milestone16Audit.Run();
             Create(BootstrapPath, () => new GameObject("Session", typeof(GameBootstrapper)).GetComponent<GameBootstrapper>().Configure("TravelTrail"));
             Create(TrailPath, () =>
             {
@@ -59,6 +59,9 @@ namespace TheTrailWalker.Editor
             BuildReport result = BuildPipeline.BuildPlayer(new BuildPlayerOptions { scenes = new[] { BootstrapPath, TrailPath }, target = BuildTarget.Android, targetGroup = BuildTargetGroup.Android, locationPathName = "Builds/Android/TheTrailWalker-Milestone5-Development.apk", options = BuildOptions.Development });
             if (result.summary.result != BuildResult.Succeeded) throw new Exception("Milestone 5 build failed: " + result.summary.result);
             ApkBudget.Enforce("Builds/Android/TheTrailWalker-Milestone5-Development.apk", result);
+            // Milestone 16: the phone's audit files carry Application.buildGUID; this maps it to the commit it was built from.
+            Directory.CreateDirectory("Builds/Validation");
+            File.WriteAllText("Builds/Validation/apk-build.json", "{ \"buildGuid\": \"" + result.summary.guid + "\", \"commit\": \"" + Milestone16Audit.BuildId() + " + working tree\", \"builtUtc\": \"" + DateTime.UtcNow.ToString("O") + "\" }\n");
         }
     }
     [InitializeOnLoad] internal static class Milestone5Request
@@ -87,6 +90,7 @@ namespace TheTrailWalker.Editor
                 else if (command == "storefronts-capture-tiers") StorefrontArtAssets.CaptureTiers();
                 else if (command == "storefronts-build-t3") StorefrontArtAssets.BuildTier3Fronts();
                 else if (command == "m15-validate") Milestone15Validation.Run();
+                else if (command == "m16-audit") Milestone16Audit.Run(false);
                 else if (command == "pets-art") PetArtAssets.Build();
                 else if (command == "pets-capture") PetArtAssets.Capture(); else throw new ArgumentException(command);
                 File.WriteAllText("Temp/Milestone5.result", "PASS " + DateTime.UtcNow.ToString("O"));

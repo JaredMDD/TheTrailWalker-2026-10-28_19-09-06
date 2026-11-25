@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using TheTrailWalker.Domain;
 using TheTrailWalker.Domain.Inventory;
 using TheTrailWalker.Domain.Items;
 using TheTrailWalker.Input;
@@ -82,6 +83,9 @@ namespace TheTrailWalker.Editor
             Check(GestureRouter.IsSystemGestureArea(2300, 2400, safe), "Top system gesture region excluded");
             Check(!GestureRouter.IsSystemGestureArea(2000, 2400, safe), "Touch area below top exclusion remains usable");
             Check(GestureRouter.IsSpeedArea(new Vector2(540, 836), safe) && !GestureRouter.IsSpeedArea(new Vector2(100, 836), safe) && !GestureRouter.IsSpeedArea(new Vector2(540, 2000), safe), "Centre-line speed band is distinct from world surface and debug buttons");
+            Check(GestureRouter.IsBlocked(false, 1, false, MovementPauseReasons.None) && !GestureRouter.IsBlocked(false, 1, true, MovementPauseReasons.None)
+                && GestureRouter.IsBlocked(false, 1, true, MovementPauseReasons.Suspended) && GestureRouter.IsBlocked(true, 0, true, MovementPauseReasons.None),
+                "An open bag blocks world touches unless the screen opened it beside world pickups (lumber piles)");
             Check(CollectionPrototype.InVisibleView(new Vector3(0.5f, 0.5f, 100), 0.3f, 200), "Visible unobstructed targets can be considered beyond old eight-metre radius");
             Check(!CollectionPrototype.InVisibleView(new Vector3(0.5f, 0.5f, -1), 0.3f, 200) && !CollectionPrototype.InVisibleView(new Vector3(1.1f, 0.5f, 30), 0.3f, 200), "Behind-camera and offscreen targets rejected");
             var bag = new SpatialInventory();

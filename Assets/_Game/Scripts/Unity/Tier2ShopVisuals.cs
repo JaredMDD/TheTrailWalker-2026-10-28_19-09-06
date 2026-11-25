@@ -36,6 +36,9 @@ namespace TheTrailWalker
             { "animal.chicken.meat", "Tier01/ShopInputs/ChickenMeat" },
             { "ingredient.lavender", "Tier02/ShopInputs/Lavender" },
             { "item.flax_cord", "Tier02/Materials/FlaxCord" },
+            // House level 3-4 deposits (HouseUpgrades).
+            { "item.birch_beam", "Tier02/Materials/BirchBeam" }, { "item.birch_panel", "Tier02/Materials/BirchPanel" }, { "item.glass_panels", "Tier02/Materials/GlassPanels" },
+            { "item.sandstone_tiles", "Tier02/Materials/SandstoneTiles" }, { "item.fine_beaver_leather", "Tier02/Materials/FineBeaverLeather" }, { "item.copper_fittings", "Tier02/Materials/CopperFittings" },
             { "item.flax_stuffing", "Tier02/Materials/FlaxStuffing" },
             { "item.flax_cloth", "Tier02/Materials/FlaxCloth" },
             { "item.cattail_cord", "Tier02/Materials/CattailCord" },

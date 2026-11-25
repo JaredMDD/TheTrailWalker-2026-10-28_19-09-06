@@ -51,7 +51,12 @@ namespace TheTrailWalker.Input
         private void OnApplicationPause(bool paused) { if (paused) CancelAll(); }
         private void OnApplicationFocus(bool focused) { if (!focused) CancelAll(); }
 
-        private bool Blocked => InteractionLocked || movement.InventoryDepth > 0 || (movement.Pauses & (MovementPauseReasons.Loading | MovementPauseReasons.Suspended | MovementPauseReasons.Unfocused)) != 0;
+        // True while a screen needs world touches with the bag open (the lumber pickup opens the bag next to its piles).
+        public System.Func<bool> WorldTouchWithInventory;
+        private bool Blocked => IsBlocked(InteractionLocked, movement.InventoryDepth, WorldTouchWithInventory != null && WorldTouchWithInventory(), movement.Pauses);
+        // An open bag normally blocks world touches (the trail stops while it is open); a screen that opens it on purpose opts out.
+        public static bool IsBlocked(bool locked, int inventoryDepth, bool worldTouchWithInventory, MovementPauseReasons pauses) =>
+            locked || (inventoryDepth > 0 && !worldTouchWithInventory) || (pauses & (MovementPauseReasons.Loading | MovementPauseReasons.Suspended | MovementPauseReasons.Unfocused)) != 0;
 
         private void Update()
         {

@@ -121,7 +121,7 @@ namespace TheTrailWalker
             movement = state; motor = trailMotor; path = trail; orbit = cameraOrbit; router = gestures; material = sharedMaterial;
             milestone4 = enableMilestone4 || travelScene != null; milestone5 = travelScene != null; scene = travelScene;
             if (milestone4) { equipment = new EquipmentState(); stamina = new StaminaState(); motor.LimitMovementSeconds = LimitMovementSeconds; }
-            cameraView = cameraOrbit.GetComponent<Camera>(); router.Resources = this; router.SpeedBlocked += ExplainSpeedBlocked;
+            cameraView = cameraOrbit.GetComponent<Camera>(); router.Resources = this; router.SpeedBlocked += ExplainSpeedBlocked; router.WorldTouchWithInventory = () => PickupOpen;   // lumber piles beside the open bag
             CreateHud();
             string directory = Path.Combine(Application.persistentDataPath, "PrototypeSession");
             saveStore = new SessionSaveStore(directory, new SystemClock(), milestone5 ? 3 : milestone4 ? 2 : 1);
@@ -307,6 +307,7 @@ namespace TheTrailWalker
                 CreateFaintOverlay(); // CollectionPrototype.Faint.cs
             }
             if (milestone5) CreateTravelHud();
+            if (milestone5) CreateAuditToggle();   // CollectionPrototype.Audit.cs (development builds only)
             LayoutBackpack();
             ApplySafeArea();
         }
@@ -937,7 +938,7 @@ namespace TheTrailWalker
         private void OnApplicationPause(bool paused) { if (paused) { CancelAll(); if (initialized) { if (inventoryOpen && !WarehouseKeepsBagOnPause(WarehouseOpen)) ToggleInventory(); SetMenu(false); } BeginPetAbsence(); SaveNow(true); } else SettlePetAbsence(); }
         private void OnApplicationFocus(bool focused) { if (!focused) { CancelAll(); BeginPetAbsence(); SaveNow(true); } else SettlePetAbsence(); }
         private void OnApplicationQuit() { BeginPetAbsence(); SaveNow(true); }
-        private void OnDestroy() { avatarView?.Destroy(); CancelAll(); if (router != null) { router.Resources = null; router.SpeedBlocked -= ExplainSpeedBlocked; } }
+        private void OnDestroy() { avatarView?.Destroy(); CancelAll(); if (router != null) { router.Resources = null; router.SpeedBlocked -= ExplainSpeedBlocked; router.WorldTouchWithInventory = null; } }
         private float LimitMovementSeconds(float delta)
         {
             if (saveBlocked || stamina == null || movement.ActualSpeed <= 0) return delta;

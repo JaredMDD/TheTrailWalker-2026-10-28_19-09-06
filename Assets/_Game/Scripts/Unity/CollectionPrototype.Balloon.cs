@@ -232,6 +232,7 @@ namespace TheTrailWalker
             TearDownBalloon();
             SetMenu(menuOpen);
             SaveNow();
+            ReleaseUnusedArt();
         }
 
         // Every exit (Return, UpdateBalloon's checks, ResetHomeView). Closing the interior ends the session.

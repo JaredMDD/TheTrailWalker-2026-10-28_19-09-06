@@ -49,6 +49,9 @@ namespace TheTrailWalker.Domain.Items
             Metal("item.copper_fittings", "Copper fittings"), Metal("item.iron_fittings", "Iron fittings"), Metal("item.steel_fittings", "Steel fittings"),
             Metal("item.cut_quartz", "Cut quartz"), Metal("item.cut_turquoise", "Cut turquoise"), Metal("item.cut_ruby", "Cut ruby"), Metal("item.cut_sapphire", "Cut sapphire"),
             Metal("item.cut_diamond", "Cut diamond"), Metal("item.polished_lapis", "Polished lapis"),
+            // House level 3-4 deposits with no definition yet (section 13.1); no recipe or mission grants them yet.
+            Plank("item.birch_beam", "Birch beam"), new ItemDefinition("item.birch_panel", "Birch panel", 900, 750), // Pine beam, Pine panel
+            new ItemDefinition("item.glass_panels", "Glass panels", 900, 300), new ItemDefinition("item.sandstone_tiles", "Sandstone tiles", 900, 300), // Limestone tiles
         };
     }
 }

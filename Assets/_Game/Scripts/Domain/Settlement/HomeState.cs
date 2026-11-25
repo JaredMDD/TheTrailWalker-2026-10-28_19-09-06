@@ -21,8 +21,8 @@ namespace TheTrailWalker.Domain.Settlement
     public sealed class HomeState
     {
         public const int MaxLevel = 8;
-        // The player's own house stops here this milestone (spec 2026-11-14 section 1); neighbours and the catalog go to MaxLevel.
-        public const int PlayerMaxLevel = 2;
+        // The player's own house stops at the last level HouseUpgrades prices (tier 2, user November 25, 2026); neighbours and the catalog go to MaxLevel.
+        public const int PlayerMaxLevel = 4;
 
         private readonly List<FurniturePiece> pieces = new List<FurniturePiece>();
         private readonly List<string> firstPurchases = new List<string>();

@@ -319,8 +319,9 @@ namespace TheTrailWalker.Editor
         // Slice 2b task 3: the upgrade sheet's pure parts.
         private static void UpgradeSheetChecks()
         {
-            Check(CollectionPrototype.HomeUpgradeOpensSheet(1) && !CollectionPrototype.HomeUpgradeOpensSheet(2), "The Upgrade button opens the sheet below the player's cap (level 1) and not at it (level 2)");
-            Check(!CollectionPrototype.HomeUpgradeTapShowsCapNote(true, false, 1) && CollectionPrototype.HomeUpgradeTapShowsCapNote(true, false, 2) && !CollectionPrototype.HomeUpgradeTapShowsCapNote(true, true, 2) && !CollectionPrototype.HomeUpgradeTapShowsCapNote(false, false, 2),
+            int cap = HomeState.PlayerMaxLevel;
+            Check(CollectionPrototype.HomeUpgradeOpensSheet(1) && CollectionPrototype.HomeUpgradeOpensSheet(cap - 1) && !CollectionPrototype.HomeUpgradeOpensSheet(cap), "The Upgrade button opens the sheet below the player's cap and not at it");
+            Check(!CollectionPrototype.HomeUpgradeTapShowsCapNote(true, false, 1) && CollectionPrototype.HomeUpgradeTapShowsCapNote(true, false, cap) && !CollectionPrototype.HomeUpgradeTapShowsCapNote(true, true, cap) && !CollectionPrototype.HomeUpgradeTapShowsCapNote(false, false, cap),
                 "A tap on Upgrade shows the cap note only inside the player's own room at the cap, never when the sheet opens");
             Check(CollectionPrototype.HomeUpgradeCapNote == "Your house is as big as it gets for now.", "The cap note reads \"Your house is as big as it gets for now.\"");
             Check(CollectionPrototype.UpgradeTitle(1) == "House level 1  →  2", "The sheet title reads \"House level 1  →  2\"");
@@ -916,9 +917,16 @@ namespace TheTrailWalker.Editor
             Check(rows.Count == 5 && rows.Select(r => r.ItemId).SequenceEqual(ids), "The level 2 upgrade asks for five materials in order");
             Check(rows.All(r => r.Quantity == 25), "Each upgrade material is 25");
             Check(rows.Select(r => r.Source).SequenceEqual(sources), "Each upgrade material names its source mission");
-            Check(HouseUpgrades.For(1).Count == 0 && HouseUpgrades.For(3).Count == 0 && HouseUpgrades.For(9).Count == 0, "Other levels have no upgrade requirements");
+            Check(HouseUpgrades.For(1).Count == 0 && HouseUpgrades.For(5).Count == 0 && HouseUpgrades.For(9).Count == 0, "Other levels have no upgrade requirements");
+            // Levels 3-4 (tier 2, section 13.1): five materials each, 50 on level 3 and 60 on level 4 (a pet slot), every item defined.
+            var three = HouseUpgrades.For(3); var four = HouseUpgrades.For(4);
+            Check(three.Select(r => r.ItemId).SequenceEqual(new[] { "item.birch_beam", "item.limestone_tiles", "item.fine_beaver_leather", "item.glass_panels", "item.mortar" }) && three.All(r => r.Quantity == 50),
+                "The level 3 upgrade asks for 50 each of birch beams, limestone tiles, fine beaver leather, glass panels and mortar");
+            Check(four.Select(r => r.ItemId).SequenceEqual(new[] { "item.birch_panel", "item.sandstone_tiles", "item.fine_hemp_cloth", "item.fine_rabbit_leather", "item.copper_fittings" }) && four.All(r => r.Quantity == 60),
+                "The level 4 upgrade asks for 60 each of birch panels, sandstone tiles, fine hemp cloth, fine rabbit leather and copper fittings");
+            Check(three.Concat(four).All(r => TheTrailWalker.Domain.Crafting.Items.Find(r.ItemId) != null && !string.IsNullOrEmpty(r.Source)), "Every level 3-4 material is a defined item with a source line");
 
-            Check(HomeState.PlayerMaxLevel == 2 && HomeState.New().CanUpgrade && !HomeState.AtLevel(2).CanUpgrade, "The player's house caps at level 2");
+            Check(HomeState.PlayerMaxLevel == 4 && HomeState.New().CanUpgrade && HomeState.AtLevel(3).CanUpgrade && !HomeState.AtLevel(4).CanUpgrade, "The player's house caps at level 4");
 
             var table = F("furniture.l1.worktable"); var peg = F("furniture.l1.hat_peg");
             var home = HomeState.New(); var w = new Wallet(1000000);
@@ -941,7 +949,8 @@ namespace TheTrailWalker.Editor
             Check(home.CanPlace(peg, 0, 5) && home.CanPlace(peg, 9, 0), "The new back row and right column are free");
             Check(home.UpgradeEscrow.Count == 0, "Completing the upgrade clears the escrow");
             Check(home.CanBuy(l2, new Wallet(1000000), out reason), "A level 2 type is buyable after the upgrade");
-            Check(Throws(() => home.CompleteUpgrade()) && home.Level == 2, "A second upgrade is refused");
+            while (home.Level < HomeState.PlayerMaxLevel) home.CompleteUpgrade();
+            Check(Throws(() => home.CompleteUpgrade()) && home.Level == HomeState.PlayerMaxLevel, "An upgrade past the cap is refused");
 
             var full = HomeState.New(); var fw = new Wallet(1000000);
             for (int i = 0; i < 19; i++) full.Buy(table, fw, "t" + i);
@@ -1601,7 +1610,7 @@ namespace TheTrailWalker.Editor
             Put(ledger, "log", "material.pine_log", 5, 1, ItemOwner.Backpack, 6000, 0);
             Check(HouseUpgradeService.Deposit(home, ledger, "material.pine_log", NewEscrowId, out reason) == 0 && reason == "The house doesn't need this." && Units(ledger, "material.pine_log", BagOwners) == 5, "An unrequired item is refused");
             Check(HouseUpgradeService.Remaining(home, ledger, "material.pine_log") == 0, "An unrequired item has no remainder");
-            var capped = HomeState.AtLevel(2); var capLedger = UpgradeLedger();
+            var capped = HomeState.AtLevel(HomeState.PlayerMaxLevel); var capLedger = UpgradeLedger();
             Put(capLedger, "cb", Beam, 10, 1, ItemOwner.Backpack);
             Check(HouseUpgradeService.Deposit(capped, capLedger, Beam, NewEscrowId, out reason) == 0 && reason == "The house is at its highest level for now." && capped.UpgradeEscrow.Count == 0 && Units(capLedger, Beam, BagOwners) == 10, "A house at the cap refuses deposits");
             var emptyHome = HomeState.New(); var emptyLedger = UpgradeLedger();
@@ -1729,7 +1738,7 @@ namespace TheTrailWalker.Editor
             Check(granted.Select(g => g.itemId + "x" + g.quantity).SequenceEqual(new[] { "item.pine_beamx13", "item.fired_bricksx25", "item.nettle_clothx25", "item.reed_braidx25", "item.pine_panelx25" }), "The debug grant names 13 Pine beams and 25 of each other material");
             Check(UpgradeMaterials.All(m => grantLedger.Entries.Where(e => e.Definition.Id == m && (BagOwners.Contains(e.Owner) || e.Owner == ItemOwner.Overflow)).SelectMany(e => e.Pile).Where(p => p.Quality == 5).Sum(p => p.Quantity) == (m == Beam ? 13 : 25)), "The debug grant adds those units at Q5 to the bag or overflow");
             Check(Piles(grantHome, grantLedger) == grantPiles && grantHome.Level == 1 && HouseUpgradeService.Deposited(grantHome, grantLedger, Beam) == 12, "The debug grant never touches deposits or the level");
-            var grantCap = HomeState.AtLevel(2); var grantCapLedger = UpgradeLedger();
+            var grantCap = HomeState.AtLevel(HomeState.PlayerMaxLevel); var grantCapLedger = UpgradeLedger();
             Check(HouseUpgradeService.DebugGrant(grantCap, grantCapLedger).Count == 0 && grantCapLedger.Entries.Count == 0, "The debug grant adds nothing at the cap");
         }
     }

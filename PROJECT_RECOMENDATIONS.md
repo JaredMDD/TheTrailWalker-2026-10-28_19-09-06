@@ -4236,6 +4236,33 @@ Dependencies: 15; keep full-stack pickups and debug tools enabled.
 
 **Exit check:** defined systems pass mechanics/limits checks without unintended item/currency duplication or loss; results include device/build identifiers and a reproducible defect/backlog list. Passing continues the testing phase; it does not start natural-progression balancing or debug removal.
 
+**Record (November 25, 2026).** Spec: `Docs/superpowers/specs/2026-11-25-milestone-16-audit-design.md`. Reports:
+- `Docs/Testing/milestone-16-audit.md` (automated matrix);
+- `Docs/Testing/milestone-16-device.md` (first device round, builds `4c0e2533` and `879bd399`);
+- `Docs/Testing/milestone-16-recheck.md` (after the fixes, build `728220ea`).
+
+- **Slice 1, limit matrix (`Editor/Milestone16Audit.cs`, chained in `Prepare`):**
+  - 11 rows verified, including row 13: item and currency conservation across every transaction path, with save/load between steps.
+  - 2 rows pending for Milestone 17: row 7 (3 of 9 Elite upgrades exist; tiers 3-4 are not defined) and row 8 (mission quantities 50/100/150 need the tier 2-4 mission catalog).
+  - 0 rows defective.
+  - Observation, not tuned: craft timers are test-scale (seconds).
+- **Slice 2, device measurement:**
+  - Phone: nubia NX769J, Android 16, Adreno 750.
+  - Tools: the AUDIT recorder (`AuditRecorder.cs`, development builds only) and `Tools/Testing/audit_device_report.py`.
+  - The user ran the scripted round, plus the backyard after the house cap was raised.
+  - Every context had a median frame of 16.6 ms (60 fps) and a p95 within 50 ms.
+  - Over budget: memory in the settlement street (649 MB), the house interior (321 MB) and the camp (310 MB). Settlement memory also grew across repeated entries, by up to 81%.
+- **Slice 3, fixes:**
+  - **Lumber field piles could not be picked up** (input conflict). `GestureRouter` dropped world touches while the bag was open, and the pickup screen opens the bag itself. It now opts out (`WorldTouchWithInventory`, with a `Milestone2Validation` check). Dragging a pile into the bag works on the phone. A plain tap does not pick a pile up; the user accepted this as is.
+  - **Settlement memory growth:** art from closed views stayed loaded because nothing called `Resources.UnloadUnusedAssets`. `ReleaseUnusedArt()` now runs one frame after leaving the house, the backyard, a counter, the lumber field or the balloon. Recheck: street, house, counters and sheets stay at 163-169 MB, flat within +2.0% to +3.5% over 5-15 entries.
+  - **Camp:** 22 visits in the first round ranged 164-254 MB with no upward trend. The single 310 MB reading is recorded as a one-off peak. Travel already reloads the scene, which frees unused art.
+  - **Audit tooling:** the frame after a resume is no longer sampled; scene loads are no longer reported as relaunches; the report takes `--build`.
+- **Outside the audit spec (user request):** the house cap was raised to 4, with level 3-4 upgrade materials priced from section 13.1.
+- **Status:** full suite PASS and APK built 23:49 UTC November 25, 2026 (build GUID `728220ea`, SHA-256 `f939fff0d8ae…`). Installed after a save backup (`Builds/PhoneBackups/m16-slice3-*`).
+- **Next, after the commit (user request):** shop offers by settlement tier: tiers 1-2 three offers, 3-4 five, 5-8 six. The balloon merchant keeps three.
+
+**Exit check status:** defined systems pass with no unintended duplication or loss. Device and build identifiers are recorded, and the defects found were fixed and rechecked. Pending rows are assigned to Milestone 17. Milestone 16 is complete pending the commit.
+
 ### Checkpoint: friends user-test APK (requested October 31, 2026)
 
 **When:** once the first **four regions** and the **settlement** (between regions 4 and 5) exist with most mechanics completed, and **before authoring regions beyond 4**. Remind the user at that point; the user will send the APK to friends for testing and feedback.

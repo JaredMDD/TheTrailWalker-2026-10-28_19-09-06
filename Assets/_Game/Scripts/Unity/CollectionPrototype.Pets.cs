@@ -109,6 +109,7 @@ namespace TheTrailWalker
             world?.ClearInterior();
             homeView = HomeView.None;
             OpenHomeInterior();
+            ReleaseUnusedArt();
         }
 
         // Every exit (CloseBackyard, and TearDownInterior on leaving, a faint or travel): no sheet, no confirmation, no HUD.

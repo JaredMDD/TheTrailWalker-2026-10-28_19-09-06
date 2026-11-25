@@ -138,6 +138,7 @@ namespace TheTrailWalker
             StreetView?.SnapToStreet();
             SetMenu(menuOpen);
             SaveNow();
+            ReleaseUnusedArt();
         }
 
         // Every exit (Return, and ResetHomeView).

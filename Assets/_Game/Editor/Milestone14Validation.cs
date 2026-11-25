@@ -1270,7 +1270,7 @@ namespace TheTrailWalker.Editor
                         ("title", band(CollectionPrototype.TitleBand)), ("status", band(CollectionPrototype.StatusBand)), ("feedback line", band(CollectionPrototype.FeedbackBand)),
                         ("RESET SAVE", band(CollectionPrototype.ResetSaveBand)), ("UNLOCK CAMPS", band(CollectionPrototype.UnlockCampsBand)), ("LEARN T1 RECIPES", band(CollectionPrototype.LearnRecipesBand)),
                         ("AUTO SORT", band(CollectionPrototype.AutoSortBand)), ("CLAIM OVERFLOW", band(anchors("CLAIM OVERFLOW"))), ("+1 GOLD", band(anchors("+1 GOLD"))),
-                        ("SETTLEMENT (DEBUG)", band(anchors("SETTLEMENT (DEBUG)"))), ("trade offer note", band(anchors("Trade offer note"))), ("route card", band(anchors("Route card"))),
+                        ("SETTLEMENT (DEBUG)", band(anchors("SETTLEMENT (DEBUG)"))), ("AUDIT", band(CollectionPrototype.AuditBand)), ("trade offer note", band(anchors("Trade offer note"))), ("route card", band(anchors("Route card"))),
                         ("BAG", px(new Rect(margin, barLine * sh, square, square))), ("MENU", px(CollectionPrototype.UserMenuSquareRect(sw, sh))),
                         ("mission tracker", px(new Rect(margin - 0.05f * square, barLine * sh + square + gap - 0.06f * square, 1.1f * square, 1.16f * square))),   // CounterLayoutChecks' overhang
                         ("Settlement square", px(new Rect(sw - margin - square, listTop * sh - square, square, square))),

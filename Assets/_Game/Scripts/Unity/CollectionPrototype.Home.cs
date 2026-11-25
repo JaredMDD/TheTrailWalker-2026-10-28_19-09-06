@@ -403,6 +403,7 @@ namespace TheTrailWalker
             settlementListLayout = -1;
             StreetView?.SnapToStreet();
             SetMenu(menuOpen);
+            ReleaseUnusedArt();
         }
 
         private static Transform FindChild(Transform parent, string name)
@@ -479,6 +480,22 @@ namespace TheTrailWalker
 
         // Every exit from the house or a neighbour's room (LeaveHome, ResetHomeView incl. a faint): no sheet or buy confirmation, no touch, no
         // scroll, no views, no prefab, HUD hidden.
+        // Milestone 16 slice 3 (device audit: memory grew across repeated street, house and sheet entries). The settlement
+        // views are built from Resources art in one scene, so their meshes and textures stayed loaded after the views were
+        // destroyed. Each view exit frees them a frame later (Destroy is deferred to the end of the frame).
+        private Coroutine releaseArt;
+        private void ReleaseUnusedArt()
+        {
+            if (!Application.isPlaying || !isActiveAndEnabled || releaseArt != null) return;
+            releaseArt = StartCoroutine(ReleaseUnusedArtNextFrame());
+        }
+        private System.Collections.IEnumerator ReleaseUnusedArtNextFrame()
+        {
+            yield return null;
+            yield return Resources.UnloadUnusedAssets();
+            releaseArt = null;
+        }
+
         private void TearDownInterior()
         {
             CloseContainer();
