@@ -115,7 +115,18 @@ namespace TheTrailWalker.Travel
 
         // Storefront look by the shops' reached tier (Milestone 14, Task 6): tier 2 and up show the birch <Front>T2 (the only
         // upgraded look so far); Build falls back to the tier 1 front when that prefab is missing.
-        public static string FrontFor(string front, int reachedTier) => reachedTier >= 2 ? front + "T2" : front;
+        // The tier look a front shows: tier 2 birch (Milestone 14), tier 3 mesquite (Tier 3 integration slice C); tier 4 has
+        // no look yet and keeps tier 3. Missing art falls back one tier at a time (LookWithFallback).
+        public static string FrontFor(string front, int reachedTier) => reachedTier >= 3 ? front + "T3" : reachedTier >= 2 ? front + "T2" : front;
+        public static string LookWithFallback(string front, int reachedTier, System.Func<string, GameObject> load)
+        {
+            for (int tier = System.Math.Min(reachedTier, 3); tier >= 2; tier--)
+            {
+                string look = FrontFor(front, tier);
+                if (load("Settlement/Storefronts/" + look) != null) return look;
+            }
+            return front;
+        }
 
         // lumberFrontWidthOverride replaces the LumberFront width (so the live branch is testable with another size);
         // forcePlaceholder builds the 8 m fence-and-pines placeholder even though LumberFront exists.
@@ -142,8 +153,7 @@ namespace TheTrailWalker.Travel
                 float centre = x + slot / 2f;
                 string id = lumber ? "lumber" : i == 0 ? "warehouse" : "shop." + name.ToLowerInvariant();
                 var root = new GameObject(id).transform; root.SetParent(street, false); root.localPosition = new Vector3(centre, 0f, 0f);
-                string look = FrontFor(front, reachedTier);
-                if (look != front && load("Settlement/Storefronts/" + look) == null) look = front;
+                string look = LookWithFallback(front, reachedTier, load);
                 if (lumber) { BuildLumber(root, lumberFront, width, load, look); lumberCentre = centre; lumberWidth = slot; }
                 else Place(root, look, "Settlement/Storefronts/" + look, load, width);
                 KeepBehindFrontLine(root);

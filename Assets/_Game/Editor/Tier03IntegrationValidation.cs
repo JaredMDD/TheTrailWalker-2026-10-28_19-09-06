@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Security.Cryptography;
 using TheTrailWalker.Domain.Crafting;
 using TheTrailWalker.Domain.Items;
+using TheTrailWalker.Travel;
 using UnityEditor;
 using UnityEngine;
 
@@ -30,7 +31,9 @@ namespace TheTrailWalker.Editor
             DebugToolArt();
             SpecialWornFits(rows);
             SpecialContainerSkins();
-            Debug.Log("Tier 3 integration: slice A-B checks passed (" + rows.Length + " models).");
+            StorefrontsTier3();
+            SliceCRepairs();
+            Debug.Log("Tier 3 integration: slice A-C checks passed (" + rows.Length + " models, " + SettlementScenery.Storefronts.Count + " tier 3 fronts).");
         }
 
         private static void Check(bool ok, string name) { if (!ok) throw new Exception("Tier 3 integration: " + name); }
@@ -170,6 +173,80 @@ namespace TheTrailWalker.Editor
                 InventoryContainerAssets.SampleMerchantPalette(skin.EquipmentDefinitionId, out Color cloth, out Color binding, out Color patch);
                 Check(skin.Cloth == cloth && skin.Binding == binding && skin.Patch == patch, "SpecialContainerSkins: " + name + " uses the refined display's colours (rebuild the inventory container designs)");
             }
+        }
+
+        // Slice C (user, November 24, 2026: fronts only): every storefront has a mesquite <Front>T3 that fits its street slot
+        // within 1.25x its tier 1 triangles. The street shows it from tier 3 (tier 4 keeps it until a tier 4 look exists) and
+        // falls back to T2, then tier 1, when art is missing. Counters are unchanged.
+        private static void StorefrontsTier3()
+        {
+            Check(SettlementScenery.FrontFor("FarmFront", 3) == "FarmFrontT3" && SettlementScenery.FrontFor("FarmFront", 4) == "FarmFrontT3" && SettlementScenery.FrontFor("FarmFront", 2) == "FarmFrontT2", "StorefrontsTier3: FrontFor");
+            int Tris(GameObject prefab)
+            {
+                int n = 0;
+                foreach (MeshFilter f in prefab.GetComponentsInChildren<MeshFilter>(true))
+                    if (f.sharedMesh != null) for (int sm = 0; sm < f.sharedMesh.subMeshCount; sm++) n += (int)f.sharedMesh.GetIndexCount(sm) / 3;
+                return n;
+            }
+            float Width(GameObject prefab)
+            {
+                var go = UnityEngine.Object.Instantiate(prefab);
+                try { var rs = go.GetComponentsInChildren<Renderer>(); Bounds b = rs[0].bounds; foreach (var r in rs) b.Encapsulate(r.bounds); return b.size.x; }
+                finally { UnityEngine.Object.DestroyImmediate(go); }
+            }
+            for (int i = 0; i < SettlementScenery.Storefronts.Count; i++)
+            {
+                string front = SettlementScenery.Storefronts[i].Front;
+                var t3 = Resources.Load<GameObject>("Settlement/Storefronts/" + front + "T3");
+                Check(t3 != null, "StorefrontsTier3: " + front + "T3 loads");
+                int t1Tris = Tris(Resources.Load<GameObject>("Settlement/Storefronts/" + front)), t3Tris = Tris(t3);
+                Check(t3Tris <= 1.25f * t1Tris, "StorefrontsTier3: " + front + "T3 " + t3Tris + " triangles <= 1.25 x " + t1Tris);
+                float width = Width(t3);
+                Check(width <= SettlementScenery.StorefrontSlots[i], "StorefrontsTier3: " + front + "T3 " + width.ToString("0.00") + " m fits its " + SettlementScenery.StorefrontSlots[i] + " m slot");
+                foreach (var r in t3.GetComponentsInChildren<Renderer>(true))
+                    Check(r.sharedMaterials.All(m => m != null && (m.name.EndsWith("T3", StringComparison.Ordinal))), "StorefrontsTier3: " + front + "T3 uses the tier 3 palette material (" + string.Join(",", r.sharedMaterials.Select(m => m == null ? "null" : m.name)) + ")");
+            }
+            foreach (string tierOne in new[] { "Assets/_Game/Resources/Settlement/Storefronts/LumberArt.mat", "Assets/_Game/Resources/Settlement/Storefronts/StorefrontPalette.mat" })
+            {
+                string palette = AssetDatabase.GetAssetPath(AssetDatabase.LoadAssetAtPath<Material>(tierOne).GetTexture("_BaseMap"));
+                Check(!palette.Contains("T2") && !palette.Contains("T3"), "StorefrontsTier3: " + tierOne + " keeps its tier 1 palette (now " + palette + ")");
+            }
+            var parent = new GameObject("tier 3 storefront check street");
+            try
+            {
+                int[] levels = { 1, 1, 1, 1, 1, 1 };
+                SettlementStreet t3 = SettlementScenery.Build(parent.transform, levels, -1, null, false, Resources.Load<GameObject>, 3);
+                SettlementStreet noT3 = SettlementScenery.Build(parent.transform, levels, -1, null, false, path => path.EndsWith("T3") ? null : Resources.Load<GameObject>(path), 3);
+                SettlementStreet neither = SettlementScenery.Build(parent.transform, levels, -1, null, false, path => path.EndsWith("T3") || path.EndsWith("T2") ? null : Resources.Load<GameObject>(path), 3);
+                foreach (var (name, front, _) in SettlementScenery.Storefronts)
+                {
+                    string id = name == "Lumber" ? "lumber" : name == "Warehouse" ? "warehouse" : "shop." + name.ToLowerInvariant();
+                    Transform a = t3.Find(id).Root, b = noT3.Find(id).Root, c = neither.Find(id).Root;
+                    Check(a.Find(front + "T3") != null && a.Find(front) == null && a.GetComponent<BoxCollider>() != null, "StorefrontsTier3: tier 3 street shows " + front + "T3 with its selection box");
+                    Check(b.Find(front + "T2") != null && c.Find(front) != null, "StorefrontsTier3: " + id + " falls back to T2, then tier 1");
+                }
+            }
+            finally { UnityEngine.Object.DestroyImmediate(parent); }
+        }
+
+        // Slice C repairs (user, November 24, 2026): the SET04/05/08 furniture candidates (trophy plaque seated, cloth-press caps
+        // sunk below the crossbeam, mesquite chest hollow) replace their sources in place, and the lumber-zone oak backdrop parts
+        // lose their zero-area triangles (SET16, applied to the current files). Counters stay unchanged.
+        private static void SliceCRepairs()
+        {
+            var models = new[] { "Assets/_Game/Art/Settlement/Furniture/FurnitureTrophyCabinet.obj", "Assets/_Game/Art/Settlement/Furniture/FurnitureClothPress.obj",
+                "Assets/_Game/Art/Settlement/Furniture/FurnitureMesquiteChest.obj" }
+                .Concat(new[] { "A", "B", "C" }.SelectMany(t => new[] { "Lower", "Upper" }.Select(part => "Assets/_Game/Art/Harvest/Massive/MassiveOak" + t + part + ".obj")));
+            foreach (string path in models)
+            {
+                int fileTriangles = File.ReadAllLines(path).Count(l => l.StartsWith("f ", StringComparison.Ordinal));
+                var mesh = AssetDatabase.LoadAllAssetsAtPath(path).OfType<Mesh>().Single();
+                Vector3[] v = mesh.vertices; int[] t = mesh.triangles; int zero = 0;
+                for (int i = 0; i < t.Length; i += 3) if (Vector3.Cross(v[t[i + 1]] - v[t[i]], v[t[i + 2]] - v[t[i]]).sqrMagnitude < 1e-20f) zero++;
+                Check(t.Length / 3 == fileTriangles, "SliceCRepairs: " + path + " imports its " + fileTriangles + " triangles (now " + t.Length / 3 + ")");
+                Check(zero == 0, "SliceCRepairs: " + path + " has no zero-area triangles (" + zero + ")");
+            }
+            Check(File.ReadAllLines("Assets/_Game/Art/Settlement/Furniture/FurnitureMesquiteChest.obj").Count(l => l.StartsWith("v ", StringComparison.Ordinal)) == 172, "SliceCRepairs: the mesquite chest uses the hollow body (172 vertices)");
         }
     }
 }

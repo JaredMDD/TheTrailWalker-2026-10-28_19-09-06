@@ -83,7 +83,9 @@ namespace TheTrailWalker.Editor
                 else if (command == "tier3-build") Tier03ArtAssets.Build();
                 else if (command == "wearables-build") WearableArtCatalogAssets.Build();
                 else if (command == "wearables-capture") WearableArtCatalogAssets.Capture();
-                else if (command == "containers-build") InventoryContainerAssets.Build(); else throw new ArgumentException(command);
+                else if (command == "containers-build") InventoryContainerAssets.Build();
+                else if (command == "storefronts-capture-tiers") StorefrontArtAssets.CaptureTiers();
+                else if (command == "storefronts-build-t3") StorefrontArtAssets.BuildTier3Fronts(); else throw new ArgumentException(command);
                 File.WriteAllText("Temp/Milestone5.result", "PASS " + DateTime.UtcNow.ToString("O"));
             }
             catch (Exception error) { Debug.LogException(error); File.WriteAllText("Temp/Milestone5.result", "FAILED " + error); }

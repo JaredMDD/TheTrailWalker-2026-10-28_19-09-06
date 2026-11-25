@@ -4099,6 +4099,47 @@ Dependencies: 13.
 - Status: full suite PASS (75 models) and APK built 01:41 UTC November 25, 2026 (SHA-256 `d909dfea9417…`, 81.9 MB, +1.6 MB). Installed after a save backup (`.superpowers/save-backups/2026-11-24-before-t3-slice-b/`); the installed copy matches and `session-v1.json` is unchanged (`2519b15e`).
 - Phone round (user, November 24, 2026): every check passed.
 - Slice C decision (user, November 24, 2026): tier 3 changes the storefront **fronts only**, like tier 2; counters stay as they are.
+- Committed as `304e245`.
+
+**Tier 3 settlement integration, slice C: storefront fronts and repairs (November 24, 2026).**
+
+**Already in the build, so not imported again:**
+- the lumber zone T3 with the massive mesquite trees (Milestone 13);
+- all 12 house level 5/6 furniture types.
+
+The Tier 3 SET/INT02 batches reviewed these and exported no new fronts.
+
+**Decisions:**
+- **Fronts only (user):** tier 3 changes the eight street fronts; counters are unchanged.
+- **Tier 3 look (Claude):** "mesquite southwest", built the tier 2 way. Each front keeps its tier 1 massing, sign and goods, on its own palette strip `StorefrontPaletteT3.png`:
+  - dark mesquite timber, terracotta roofs, warm adobe;
+  - wrought iron instead of copper;
+  - turquoise shutters and trim, and a soft turquoise fishery;
+  - serape-striped awnings, chili ristras and viga log ends.
+- **Street logic (Claude):** the street shows T3 from tier 3. Tier 4 keeps T3 until a tier 4 look exists. Missing art falls back to T2, then tier 1.
+- **Budget (Claude):** the tier 2 rule applies, so each front stays within 1.25× its tier 1 triangles. The warehouse and ranch detail was trimmed to fit.
+- **Repairs (user: furniture and oak yes, counters no):**
+  - SET04 trophy cabinet: the plaque sits on the crown.
+  - SET05 cloth press: the caps sink 5 mm into the crossbeam.
+  - SET08 mesquite chest: hollow body; the lid was already identical.
+  - SET16 oak backdrop: the 20 zero-area triangles per part are removed from the *current* files. Milestone 13 had reworked the oak lower parts after SET16 ran, so its candidate files are not copied; the uppers match the SET16 candidates exactly.
+
+**Built (Claude):**
+- **Generators:**
+  - `storefront_shops.py`: `tier3_palette`, per-shop `*_t3` extras, and a narrow `--tier3` run that leaves the tier 1-2 files byte-identical.
+  - `generate_lumber_field_art.py --front-t3`.
+  - `Tools/Art/clean_degenerate_obj.py`.
+- **Builders:** `StorefrontArtAssets.BuildTier3Fronts` and `CaptureTiers` (street rows per tier, `Docs/Art/Settlement/Storefronts/settlement-street-tier*.png`); `LumberFieldArtAssets.BuildFrontT3`.
+- **Runtime:** `SettlementScenery.FrontFor`/`LookWithFallback`.
+- **Palette registration:** `StorefrontPaletteT3.png` is registered for surface detail.
+- **Checks:** T3 fronts load, fit their slots, stay within budget, use the T3 material and fall back correctly. The tier 1 lumber and storefront materials keep their own palettes. Repaired meshes import with their triangle counts and no zero-area triangles.
+- **Fixed during the slice:** the first lumber T3 build mapped `LumberT3` to the tier 1 `LumberArt.mat` and repointed it at the T3 palette. The material was restored from git, the mapping fixed, and a check added.
+
+**Status:** full suite PASS and APK built 02:01 UTC November 25, 2026 (SHA-256 `2929ccf2143b…`, 82.3 MB, +0.4 MB). Installed after a save backup (`.superpowers/save-backups/2026-11-24-before-t3-slice-c/`); the installed copy matches and `session-v1.json` is unchanged (`2519b15e`).
+
+**Phone round (user, November 24, 2026):** every check passed (tier 3 street, selection and counters, lumber zone oaks, repaired furniture, tier 1-2 regression).
+
+**Tier 3 settlement integration status:** slices A-C are complete. The rest of Tier 3 (regions 13-18, trail interactables, camps and NPCs, maps, the 48 items without runtime IDs, motion/FX, audio) waits for Milestones 17-18.
 
 **Milestone 14 status (November 24, 2026):** slices 1-3 are built and pass on the phone. Slice 1 is committed (`c663277`); slices 2 and 3 are waiting for a commit request. Left out by the spec: tier 3-4 storefront looks, tier 3-4 goods art (placeholders, reachable only by debug), and bakery missions T2-G23/G24 and T4-G23/G24, which wait for a tier 2-4 mission catalog.
 

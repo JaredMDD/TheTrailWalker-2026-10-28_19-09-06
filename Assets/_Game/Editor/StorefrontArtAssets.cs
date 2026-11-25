@@ -79,24 +79,29 @@ namespace TheTrailWalker.Editor
 
         // Narrow path (Milestone 14): the tier 2 (birch) street fronts <Shop>FrontT2 only, on StorefrontPaletteT2; leaves every tier 1
         // prefab, mesh and material untouched (the lumber front comes from LumberFieldArtAssets.BuildFrontT2).
-        public static void BuildTier2Fronts()
+        public static void BuildTier2Fronts() => BuildTierFronts(2);
+        // Tier 3 settlement integration, slice C (user, November 24, 2026): the tier 3 (mesquite) fronts <Shop>FrontT3, fronts only.
+        public static void BuildTier3Fronts() => BuildTierFronts(3);
+
+        static void BuildTierFronts(int tier)
         {
             if (EditorApplication.isPlayingOrWillChangePlaymode) throw new InvalidOperationException("Build outside Play mode.");
             AssetDatabase.Refresh();
-            var palette = Source + "StorefrontPaletteT2.png";
+            string suffix = "T" + tier;
+            var palette = Source + "StorefrontPalette" + suffix + ".png";
             var tex = (TextureImporter)AssetImporter.GetAtPath(palette);
             tex.filterMode = FilterMode.Point; tex.mipmapEnabled = false; tex.wrapMode = TextureWrapMode.Clamp; tex.npotScale = TextureImporterNPOTScale.None;
             // Alpha holds the surface-detail type (the FacetedDetail shader): keep it exact.
             tex.alphaSource = TextureImporterAlphaSource.FromInput; tex.alphaIsTransparency = false; tex.textureCompression = TextureImporterCompression.Uncompressed; tex.SaveAndReimport();
-            // The tier 1 material's shader and detail settings, on the tier 2 strip.
-            var mat = AssetDatabase.LoadAssetAtPath<Material>(Target + "StorefrontPaletteT2.mat");
-            if (mat == null) { mat = new Material(AssetDatabase.LoadAssetAtPath<Material>(Target + "StorefrontPalette.mat")); AssetDatabase.CreateAsset(mat, Target + "StorefrontPaletteT2.mat"); }
+            // The tier 1 material's shader and detail settings, on the tier's own strip.
+            var mat = AssetDatabase.LoadAssetAtPath<Material>(Target + "StorefrontPalette" + suffix + ".mat");
+            if (mat == null) { mat = new Material(AssetDatabase.LoadAssetAtPath<Material>(Target + "StorefrontPalette.mat")); AssetDatabase.CreateAsset(mat, Target + "StorefrontPalette" + suffix + ".mat"); }
             mat.SetTexture("_BaseMap", AssetDatabase.LoadAssetAtPath<Texture2D>(palette)); EditorUtility.SetDirty(mat);
             foreach (var shop in Load().Shops)
             {
-                if (shop.Name == "Lumber") { LumberFieldArtAssets.BuildFrontT2(); continue; }
-                ImportMesh(Source + shop.Name + "FrontT2.obj");
-                Save(Front(shop.Name + "FrontT2", shop.Name + "FrontT2", mat), shop.Name + "FrontT2");
+                if (shop.Name == "Lumber") { if (tier == 2) LumberFieldArtAssets.BuildFrontT2(); else LumberFieldArtAssets.BuildFrontT3(); continue; }
+                ImportMesh(Source + shop.Name + "Front" + suffix + ".obj");
+                Save(Front(shop.Name + "Front" + suffix, shop.Name + "Front" + suffix, mat), shop.Name + "Front" + suffix);
             }
             AssetDatabase.SaveAssets();
         }
@@ -165,6 +170,35 @@ namespace TheTrailWalker.Editor
             }
             finally { UnityEngine.Object.DestroyImmediate(street); }
             Debug.Log("Storefront sheets saved to " + Docs);
+        }
+
+        // One street row per tier (tier 1, then every tier whose fronts exist), in manifest order: the tier look review.
+        [MenuItem("The Trail Walker/Art/Capture Storefront Tiers")]
+        public static void CaptureTiers()
+        {
+            var manifest = Load(); Directory.CreateDirectory(Docs);
+            for (int tier = 1; tier <= 4; tier++)
+            {
+                string suffix = tier == 1 ? "" : "T" + tier;
+                if (AssetDatabase.LoadAssetAtPath<GameObject>(Target + "WarehouseFront" + suffix + ".prefab") == null) continue;
+                var street = new GameObject("Street tier " + tier);
+                try
+                {
+                    float total = 0; foreach (var shop in manifest.Shops) total += shop.Width + 1.2f;
+                    float x = total / 2;
+                    foreach (var shop in manifest.Shops)
+                    {
+                        var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(Target + shop.Name + "Front" + suffix + ".prefab");
+                        x -= shop.Width / 2 + .6f;
+                        if (prefab != null) { var front = (GameObject)PrefabUtility.InstantiatePrefab(prefab, street.transform); front.transform.localPosition = new Vector3(x, 0, 0); }
+                        x -= shop.Width / 2 + .6f;
+                    }
+                    Render(street, "settlement-street-tier" + tier + ".png", true, new Vector3(0, 5.2f, 40), new Vector3(0, 5.2f, 0), 6.0f, 4000, 800, 8);
+                    Render(street, "settlement-street-tier" + tier + "-three-quarter.png", false, new Vector3(-14, 7f, 22), new Vector3(-6, 3.5f, -1.5f), 40, 2400, 1200, 8);
+                }
+                finally { UnityEngine.Object.DestroyImmediate(street); }
+            }
+            Debug.Log("Storefront tier rows saved to " + Docs);
         }
 
         static void Render(GameObject prefab, string file, bool ortho, Vector3 eye, Vector3 target, float sizeOrFov, int width, int height, float groundScale = 3)

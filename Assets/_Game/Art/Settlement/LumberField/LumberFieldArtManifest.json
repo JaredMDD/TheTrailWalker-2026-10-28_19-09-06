@@ -1547,6 +1547,55 @@
         "LumberFrontT2"
       ],
       "Triangles": 3341
+    },
+    {
+      "Name": "LumberFrontT3",
+      "Nodes": [
+        {
+          "Name": "FrontVisual",
+          "Parent": null,
+          "LocalPosition": [
+            0,
+            0,
+            0
+          ],
+          "Model": "LumberFrontT3",
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        },
+        {
+          "Name": "SelectAnchor",
+          "Parent": null,
+          "LocalPosition": [
+            0,
+            1.4,
+            0.2
+          ],
+          "Model": null,
+          "LocalRotation": [
+            0,
+            0,
+            0
+          ],
+          "Reference": null,
+          "LookAt": null
+        }
+      ],
+      "TriangleCeiling": 3500,
+      "PrefabPath": "Settlement/Storefronts/LumberFrontT3",
+      "Width": 7.8,
+      "ShopId": "shop.lumber",
+      "Tier": 3,
+      "Awning": "serape red/orange (tier 3 mesquite look)",
+      "Pieces": [
+        "LumberFrontT3"
+      ],
+      "Triangles": 3101
     }
   ],
   "Pieces": [
@@ -1765,6 +1814,24 @@
         0.9584
       ],
       "MaterialGroup": "LumberT2"
+    },
+    {
+      "Name": "LumberFrontT3",
+      "Model": "LumberFrontT3",
+      "SourcePath": "Assets/_Game/Art/Settlement/LumberField/LumberFrontT3.obj",
+      "PalettePath": "Assets/_Game/Art/Settlement/LumberField/LumberFrontT3Palette.png",
+      "Triangles": 3101,
+      "BoundsMin": [
+        -3.67,
+        -0.007737,
+        -4.11
+      ],
+      "BoundsMax": [
+        3.788836,
+        5.63,
+        0.9584
+      ],
+      "MaterialGroup": "LumberT3"
     }
   ],
   "Sign": "Original axe-cross-log relief; no text; SVG master in docs",

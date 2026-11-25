@@ -16,6 +16,8 @@ pal=copy.deepcopy(g.pal)
 for name,color,kind in [('LumberTeal','#447F82','cloth'),('LumberTealDark','#315C60','cloth'),('GroundT1','#8D9B60','grass'),('GroundT2','#768365','soil'),('GroundT3','#B7A36D','grass'),('GroundT4','#B8A164','grass')]:pal.add(name,color,kind)
 # Tier 2 (birch) front, Milestone 14: the storefronts' recolours and copper/bark/oilskin slots on this palette (own strip).
 pal2=s.tier2_palette(pal)
+# Tier 3 (mesquite) front, Tier 3 integration slice C: the storefronts' tier 3 recolours and slots on this palette (own strip).
+pal3=s.tier3_palette(pal)
 ASSEMBLIES=[];MODELS=[]
 def box(m,c,size,color,**kw):k.box(m,c,size,color,**kw)
 def limb(m,a,z,r,color='Timber',n=7):k.limb(m,[(a,r,r),(z,r*.9,r*.9)],color,sides=n,forward_hint=(0,1,0))
@@ -45,8 +47,9 @@ def axe_log_icon(m,c,scale=1):
 
 def front(tier=1):
     # Tier 2: birch timber, slate roof, birch logs, ochre oilskin awning, copper lean-to and fittings (same massing and sign).
-    t2=tier>1;P=pal2 if t2 else pal;bark='BirchBark' if t2 else 'Timber'
-    m=k.Mesh('LumberFront'+('T2' if t2 else ''),P);box(m,(0,.16,-1.8),(5.7,.32,4.0),'StoneDark')
+    # Tier 3: mesquite logs and posts, terracotta roofs, adobe, serape awning, wrought-iron lean-to and a chili ristra.
+    t2=tier==2;t3=tier==3;P=pal3 if t3 else pal2 if t2 else pal;bark='BirchBark' if t2 else 'MesquiteBark' if t3 else 'Timber'
+    m=k.Mesh('LumberFront'+('T'+str(tier) if tier>1 else ''),P);box(m,(0,.16,-1.8),(5.7,.32,4.0),'StoneDark')
     g.wall_with_openings(m,-2.6,2.6,.32,3.55,-.08,.15,[(-1.95,-.80,.32,2.50),(-.35,2.12,1.0,2.78)],'Plaster')
     for x in [-2.6,2.6]:box(m,(x,1.94,-1.85),(.16,3.24,3.65),'Plaster')
     box(m,(0,1.94,-3.68),(5.2,3.24,.16),'Plaster')
@@ -59,7 +62,7 @@ def front(tier=1):
         box(m,(.88,y,-.15),(2.36,.06,.35),'Plank')
         for i in range(3):log(m,(.10+i*.71,y+.15,-.12),.60,.10,bark)
     g.door(m,-1.95,-.80,.32,2.50,.04)
-    g.awning(m,-.52,2.32,3.05,.80,colors=('OilOchre','Flax') if t2 else ('LumberTeal','AwningCream'),z=.13,stripes=8)
+    g.awning(m,-.52,2.32,3.05,.80,colors=('OilOchre','Flax') if t2 else ('AwningRed','SerapeOrange') if t3 else ('LumberTeal','AwningCream'),z=.13,stripes=8)
     # Open lean-to with four supported posts and a sheltered wood pile.
     for x in [2.77,3.61]:
         for z in [-.05,-2.40]:box(m,(x,1.1,z),(.12,2.2,.12),'Timber')
@@ -71,6 +74,11 @@ def front(tier=1):
         for sign in [-1,1]:limb(m,(x+sign*.14,0,.55),(x,.68,.55),.042,'TimberLight',5)
     box(m,(-3.14,.72,.55),(.88,.11,.20),'Timber');log(m,(-3.14,.90,.55),1.05,.13,bark)
     sign=g.hanging_sign(m,-2.55,3.32,.05,.72);axe_log_icon(m,sign,.90)
+    if t3:
+        s.slab(m,(2.68,2.55),(3.76,2.24),.11,-2.58,.03,'IronWrought','RoofDark')
+        for x in [2.77,3.61]:s.mesquite_post(m,(x,1.1,-.05),(.12,2.2,.12),2)
+        box(m,(0,5.58,-1.86),(.2,.08,4.5),'IronWrought');box(m,(-1.37,2.62,.1),(1.35,.05,.2),'IronWrought');s.ristra(m,-2.25,2.95,.12,.8)
+        MODELS.append((m,P));add(m.name,[node('FrontVisual',mesh=m.name),node('SelectAnchor',pos=(0,1.4,.2))],3500,'Settlement/Storefronts/'+m.name,Width=7.8,ShopId='shop.lumber',Tier=3,Awning='serape red/orange (tier 3 mesquite look)');return
     if t2:
         s.slab(m,(2.68,2.55),(3.76,2.24),.11,-2.58,.03,'CopperFit','Verdigris')
         for x in [2.77,3.61]:s.bark_post(m,(x,1.1,-.05),(.12,2.2,.12),4)
@@ -212,21 +220,22 @@ def expanded(p):
         for shade in k.SHADES:colors.append(tuple(max(0,min(255,round(v*shade))) for v in c));types.append(d or 'none')
     return colors,types
 
-def front_t2_only():
-    """Narrow run (--front-t2): writes LumberFrontT2.obj/Palette.png and upserts its rows in the manifest; no other piece, render or docs."""
-    bpy.ops.wm.read_factory_settings(use_empty=True);front(2);kit.ART=ART;kit.PAL=ART;(m,palette),=MODELS;a,=ASSEMBLIES
+def front_t2_only(tier=2):
+    """Narrow run (--front-t2 / --front-t3): writes LumberFrontT<tier>.obj/Palette.png and upserts its rows in the manifest; no other piece, render or docs."""
+    bpy.ops.wm.read_factory_settings(use_empty=True);front(tier);kit.ART=ART;kit.PAL=ART;(m,palette),=MODELS;a,=ASSEMBLIES
     raw=b.Model(m.name);raw.vertices=list(m.vertices);raw.faces=[(x+1,y+1,z+1,slot) for x,y,z,slot in m.faces]
-    colors,types=expanded(palette);obj,row=kit.create_asset(m.name,colors,types,raw);row.pop('PrefabPath',None);row['MaterialGroup']='LumberT2'
+    colors,types=expanded(palette);obj,row=kit.create_asset(m.name,colors,types,raw);row.pop('PrefabPath',None);row['MaterialGroup']='LumberT'+str(tier)
     a['Pieces']=[m.name];a['Triangles']=row['Triangles'];assert a['Triangles']<=a['TriangleCeiling'],(a['Name'],a['Triangles'])
     path=ART/'LumberFieldArtManifest.json';manifest=json.loads(path.read_text())
     for key,item,name in [('Assemblies',a,'Name'),('Pieces',row,'Model')]:
         rows=manifest[key];old=[i for i,r in enumerate(rows) if r[name]==item[name]]
         if old:rows[old[0]]=item
         else:rows.append(item)
-    path.write_text(json.dumps(manifest,indent=2)+'\n');print('LUMBER_ART_T2',a['Name'],a['Triangles'])
+    path.write_text(json.dumps(manifest,indent=2)+'\n');print('LUMBER_ART_T'+str(tier),a['Name'],a['Triangles'])
 
 def main():
     if '--front-t2' in sys.argv:return front_t2_only()
+    if '--front-t3' in sys.argv:return front_t2_only(3)
     gray='--graybox' in sys.argv
     for p in [DOC,ART]:p.mkdir(parents=True,exist_ok=True)
     bpy.ops.wm.read_factory_settings(use_empty=True);bpy.context.preferences.filepaths.save_version=0;bpy.context.preferences.filepaths.file_preview_type='NONE'
@@ -278,9 +287,9 @@ def main():
         for obj in root.children_recursive:obj.hide_render=False
     camera.data.ortho_scale=15;camera.location=(3,-12,8);kit.aim(camera,(0,0,2))
     bpy.ops.wm.save_as_mainfile(filepath=str(output/'lumber-field-art.blend'))
-    # Keep the tier 2 front rows that --front-t2 upserts (this full run authors tier 1 only); appended last, as the upsert does.
+    # Keep the tier 2-3 front rows that --front-t2/--front-t3 upsert (this full run authors tier 1 only); appended last, as the upsert does.
     old=ART/'LumberFieldArtManifest.json';prior=json.loads(old.read_text()) if old.exists() else {}
-    ASSEMBLIES.extend(a for a in prior.get('Assemblies',[]) if a['Name']=='LumberFrontT2');pieces.extend(p for p in prior.get('Pieces',[]) if p['Model']=='LumberFrontT2')
+    ASSEMBLIES.extend(a for a in prior.get('Assemblies',[]) if a['Name'] in ('LumberFrontT2','LumberFrontT3'));pieces.extend(p for p in prior.get('Pieces',[]) if p['Model'] in ('LumberFrontT2','LumberFrontT3'))
     manifest=dict(Revision=1,Scope='Passive settlement art only; no runtime UI/unlocks/travel/respawn changes',Assemblies=ASSEMBLIES,Pieces=pieces,Sign='Original axe-cross-log relief; no text; SVG master in docs',Forester='Existing keeper body/head construction and palette; plaid cloth appearance, no wool ingredient')
     (ART/'LumberFieldArtManifest.json').write_text(json.dumps(manifest,indent=2)+'\n');print('LUMBER_ART',[(a['Name'],a['Triangles']) for a in ASSEMBLIES])
 

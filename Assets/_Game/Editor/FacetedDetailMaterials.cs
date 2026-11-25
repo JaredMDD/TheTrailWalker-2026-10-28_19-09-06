@@ -39,7 +39,7 @@ namespace TheTrailWalker.Editor
             "Assets/_Game/Art/Characters/CampCommon/Tier02FlaxBeaverPalette.png", "Assets/_Game/Art/Characters/CampCommon/Tier03CottonFeatherPalette.png",
             "Assets/_Game/Art/Characters/CampCommon/Tier04CottonBoarPalette.png", "Assets/_Game/Art/Characters/CampSpecial/CampSpecialPalette.png",
             "Assets/_Game/Art/Settlement/Storefronts/StorefrontPalette.png", "Assets/_Game/Art/Characters/Shopkeepers/ShopkeeperPalette.png",
-            "Assets/_Game/Art/Settlement/Storefronts/StorefrontPaletteT2.png",
+            "Assets/_Game/Art/Settlement/Storefronts/StorefrontPaletteT2.png", "Assets/_Game/Art/Settlement/Storefronts/StorefrontPaletteT3.png",
             "Assets/_Game/Art/Settlement/Route/SettlementRoutePalette.png" };   // settlement approach arch, palisade, fence (November 8, 2026)
 
         internal static bool IsDetailPalettePath(string path) => Array.IndexOf(Palettes, path) >= 0

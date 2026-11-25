@@ -544,6 +544,127 @@ def tier2_front(front_fn, extras):
 
 TIER2 = {'Warehouse': warehouse_t2, 'Bakery': bakery_t2, 'Ranch': ranch_t2, 'Farm': farm_t2, 'Fishery': fishery_t2, 'Mine': mine_t2, 'Tailor': tailor_t2}
 
+# ------------------------------------------------------------------ tier 3 looks (Tier 3 integration slice C): the mesquite tier
+
+# Tier 3 is mesquite and the Sunward Nomad southwest (golden grasslands, canyons, dunes, oases). Same rule as tier 2: each
+# <Shop>FrontT3 is the tier 1 build (massing, sign icon and goods unchanged; user, November 24, 2026: fronts only) on pal3,
+# which recolours the wood, roof, plaster, awning and shutter slots (dark mesquite timber, terracotta roofs, warm adobe,
+# serape awnings, turquoise shutters) and adds the shop's mesquite posts, wrought iron, viga log ends and chili ristras.
+# pal3 has extra slots, so the tier 3 fronts use their own strip (StorefrontPaletteT3.png); tier 1-2 OBJs stay byte-identical.
+T3_RECOLOURS = [('Timber', '#55301C'), ('TimberLight', '#7E4A2B'), ('Plank', '#9A6038'), ('PlankDark', '#784628'), ('PostDark', '#45251A'),
+                ('Plaster', '#D9B78C'), ('Stone', '#B39374'), ('StoneDark', '#8C6E55'), ('RoofRed', '#B65A33'), ('RoofDark', '#8D4024'),
+                ('Thatch', '#C8A55A'), ('ThatchDark', '#9C7D3C'), ('AwningRed', '#C0392A'), ('AwningCream', '#EAD8B2'),
+                ('FabricGreen', '#3A9C94'), ('Green', '#3A9C94'), ('BarnRed', '#A24A2A'), ('BarnRedDark', '#7A3520'), ('Navy', '#5A9590'), ('NavyDark', '#3F716D'),
+                ('Plum', '#8C3A2C'), ('PlumDark', '#63261E')]
+T3_COLOURS = [('MesquiteBark', '#4A2818', 'bark'), ('VigaEnd', '#BE8C5C', 'wood'), ('IronWrought', '#2D2A29', 'metal'),
+              ('Turquoise', '#3FA39A', 'metal'), ('ChiliRed', '#A9261B', 'leather'), ('SerapeOrange', '#D9892B', 'cloth'),
+              ('SerapeTeal', '#2E8985', 'cloth'), ('Cotton', '#EFE6D3', 'cloth')]
+
+def tier3_palette(base):
+    p = copy.deepcopy(base)
+    for name, color in T3_RECOLOURS: p.colors[p.names.index(name)] = tuple(int(color[i:i+2], 16) for i in (1, 3, 5))
+    for name, color, *detail in T3_COLOURS: p.add(name, color, *detail)
+    return p
+
+pal3 = tier3_palette(pal)
+
+def mesquite_post(m, c, size, knots=None):
+    """Dark mesquite sleeve over a post (centre c, post size) with a few lighter knots on the street face."""
+    w, h, d = size; n = knots or max(1, int(h/.9)); box(m, c, (w+.03, h, d+.03), 'MesquiteBark')
+    for a in range(n):
+        box(m, (c[0]+(.03 if a % 2 else -.025), c[1]-h/2+h*(a+.5)/n, c[2]+d/2+.018), (w*.42, w*.32, .012), 'TimberLight')
+
+def vigas(m, x0, x1, y, z, n, r=.13, out=.38):
+    """Round mesquite roof-beam ends poking out of the wall (z = wall face), with pale cut ends."""
+    for i in range(n):
+        x = x0+(x1-x0)*i/(n-1) if n > 1 else (x0+x1)/2
+        k.limb(m, [((x, y, z-.04), r, r), ((x, y, z+out), r*.92, r*.92)], 'MesquiteBark', sides=6, forward_hint=(0, 1, 0))
+        box(m, (x, y, z+out+.008), (r*1.5, r*1.5, .016), 'VigaEnd')
+
+def ristra(m, x, y, z, length=.9):
+    """A string of dried red chillies hanging from a cord loop (top at y): a tapered bundle with loose chillies at the sides."""
+    box(m, (x, y+.04, z), (.04, .08, .04), 'Sack')
+    box(m, (x, y-length/2, z+.02), (.13, length, .1), 'ChiliRed', taper=.55)
+    for i in range(4):
+        side = -1 if i % 2 else 1; yy = y-(i+.6)*length/4.6
+        box(m, (x+side*.085, yy, z+.04), (.07, .17, .06), 'ChiliRed', axes=((1, 0, 0), (side*.45, 1, 0), (0, 0, 1)), taper=.5)
+
+def iron_ridge(m, y, z, length): box(m, (0, y, z), (.24, .1, length), 'IronWrought')
+
+def serape(m, x, y, z, w, h, bands=('AwningRed', 'SerapeOrange', 'Cotton', 'SerapeTeal', 'Cotton', 'SerapeOrange', 'AwningRed')):
+    """A striped woven blanket hung flat on a wall face (centre x, top y)."""
+    for i, colour in enumerate(bands):
+        box(m, (x, y-(i+.5)*h/len(bands), z), (w, h/len(bands)+.002, .03), colour)
+    for fx in range(5): box(m, (x-w/2+w*(fx+.5)/5, y-h-.06, z), (.03, .12, .02), 'Cotton')
+
+def warehouse_t3(m):
+    W2 = 8.6
+    iron_ridge(m, 8.68, -3.0, 6.8)
+    vigas(m, -W2/2+.9, W2/2-.9, 6.18, .1, 4)
+    for x in (-1.8, 1.8): mesquite_post(m, (x, 1.75, .08), (.2, 3.1, .14), 1)
+    for x0, x1 in ((-1.7, 0), (0, 1.7)):
+        for y in (.8, 2.7): box(m, (x0+.18 if x0 < 0 else x1-.18, y, .11), (.3, .1, .03), 'IronWrought')
+    box(m, (0, 1.75, .12), (.34, .3, .04), 'Turquoise')   # one turquoise lock plate across the double doors
+    awning(m, 2.35, 3.65, 2.95, .8, colors=('AwningRed', 'SerapeOrange'), z=.05, stripes=4)
+    box(m, (0, 6.42, .19), (W2+.2, .05, .05), 'IronWrought')
+    return m
+
+def bakery_t3(m):
+    R = gs.RIDGE
+    iron_ridge(m, R+.15, -2.2, 5.6)
+    box(m, (2.0, R+.52, -2.9), (.7, .1, .7), 'RoofDark'); box(m, (2.0, R+.66, -2.9), (.42, .2, .42), 'RoofRed', taper=.35)
+    box(m, (1.1, 3.0, .38), (1.45, .05, .55), 'IronWrought', axes=((1, 0, 0), (0, 1, .35), (0, -.35, 1)))
+    for x in (.45, 1.75): box(m, (x, 2.86, .5), (.03, .3, .03), 'IronWrought', axes=((1, 0, 0), (0, 1, -.9), (0, .9, 1)))
+    for x in (-gs.W/2-.02, gs.W/2+.02): mesquite_post(m, (x, (gs.GROUND+gs.FLOOR1)/2, .05), (.16, gs.FLOOR1-gs.GROUND, .14))
+    ristra(m, gs.W/2-.3, gs.FLOOR1-.25, .2, .85)
+    return m
+
+def ranch_t3(m):
+    iron_ridge(m, 6.5, -2.5, 5.8)
+    for x in (-3.28, 3.28): mesquite_post(m, (x, 1.85, .02), (.18, 3.1, .16), 1)
+    for x0, x1 in ((-1.55, 0), (0, 1.55)):
+        for y in (.9, 2.45): box(m, (x0+.22 if x0 < 0 else x1-.22, y, .16), (.36, .08, .03), 'IronWrought')
+    awning(m, -.8, .8, 5.38, .5, colors=('AwningRed', 'SerapeOrange'), z=.1, stripes=3)
+    for x in (-2.6, 2.6): ristra(m, x, 3.05, .2, .95)
+    return m
+
+def farm_t3(m):
+    for x in (-3.0, -1.0, 1.0, 3.0): mesquite_post(m, (x, 1.55, .85), (.14, 2.9, .14), 3)
+    for x in (-2.0, 0.0, 2.0): ristra(m, x, 2.2, 1.0, .7)
+    for x in (-2.75, 2.75): box(m, (x, .9, .72), (.16, .06, .06), 'IronWrought')
+    box(m, (0, .9, .76), (5.8, .04, .03), 'IronWrought')
+    return m
+
+def fishery_t3(m):
+    awning(m, .15, 2.45, 3.4, .95, colors=('SerapeTeal', 'Cotton'), z=-.55, stripes=6)
+    for x in (-2.7, -.9, .9, 2.7): mesquite_post(m, (x, .2, .7), (.18, 1.2, .18), 1)
+    for x in (-2.8, 2.8): mesquite_post(m, (x, 1.35, .9), (.08, 1.0, .08), 1)
+    for t, rr in ((.12, .9), (.88, .9)): ring_band(m, (-2.3, .86, .3), .86+.8*t, .28*rr+.014, 'IronWrought')
+    box(m, (0, 3.8, -.47), (5.4, .05, .05), 'IronWrought')
+    return m
+
+def mine_t3(m):
+    for x in (-1.28, 1.28): mesquite_post(m, (x, 1.5, -.25), (.24, 3.0, .24), 3)
+    slab(m, (1.9, 2.73), (4.1, 2.33), 1.32, -.62, .03, 'RoofRed', 'RoofDark')
+    vigas(m, -1.0, 1.0, 2.82, -.12, 4, r=.1, out=.3)
+    for x in (-1.75, 1.75): box(m, (x, 2.6, .05), (.24, .05, .24), 'IronWrought', taper=.5)
+    box(m, (-2.45, .93, .88), (1.1, .04, .62), 'SerapeTeal'); box(m, (-2.45, .72, 1.18), (1.1, .4, .03), 'SerapeOrange')
+    return m
+
+def tailor_t3(m):
+    iron_ridge(m, 9.05, -1.89, 4.6)
+    box(m, (0, 9.3, .14), (.05, .5, .05), 'IronWrought'); box(m, (0, 9.6, .14), (.14, .14, .14), 'Turquoise', taper=.3)
+    serape(m, -.9, 3.13, .53, 2.6, .5)
+    for wx in (-1.6, 1.6): box(m, (wx, 3.96, .5), (1.02, .03, .03), 'Turquoise')
+    box(m, (1.45, 2.88, .12), (1.05, .05, .25), 'IronWrought')
+    return m
+
+def tier3_front(front_fn, extras):
+    m = front_fn(); m.name += 'T3'; m.palette = pal3   # same slot indices: pal3 extends pal
+    return extras(m)
+
+TIER3 = {'Warehouse': warehouse_t3, 'Bakery': bakery_t3, 'Ranch': ranch_t3, 'Farm': farm_t3, 'Fishery': fishery_t3, 'Mine': mine_t3, 'Tailor': tailor_t3}
+
 CRATE = (.46, .34, .36)   # deposit crate size (x, y, z); the lid is a separate part that hinges on its back top edge
 
 def deposit_crate_parts():
@@ -569,7 +690,22 @@ SHOPS = [
     ('Mine', mine_front, mine_counter, 'ShopkeeperMiner', 8.2, ['Cash offer', 'Cash offer', 'Cash offer']),
     ('Tailor', tailor_front, tailor_counter, 'ShopkeeperTailor', 5.4, ['Cash offer', 'Cash offer', 'Cash offer'])]
 
+def main_tier3():
+    """Narrow run (--tier3): writes StorefrontPaletteT3.png and the seven <Shop>FrontT3.obj, and upserts their part rows in
+    the manifest; no tier 1-2 file is rewritten (the lumber front comes from generate_lumber_field_art.py --front-t3)."""
+    pal3.write_png(OUT/'StorefrontPaletteT3.png')
+    stats = [tier3_front(front_fn, TIER3[name]).save(OUT, HEADER) for name, front_fn, *_ in SHOPS]
+    path = OUT/'StorefrontManifest.json'; manifest = json.loads(path.read_text(encoding='utf-8-sig'))
+    for row in stats:
+        old = [i for i, r in enumerate(manifest['Parts']) if r.get('name') == row['name']]
+        if old: manifest['Parts'][old[0]] = row
+        else: manifest['Parts'].append(row)
+    path.write_text(json.dumps(manifest, indent=2)+'\n', encoding='utf-8')
+    print('Storefronts T3:', ', '.join(f"{s['name']} {s['triangles']}" for s in stats))
+
 def main():
+    import sys
+    if '--tier3' in sys.argv: return main_tier3()
     OUT.mkdir(parents=True, exist_ok=True)
     pal.write_png(OUT/'StorefrontPalette.png')
     shops, stats = [], []

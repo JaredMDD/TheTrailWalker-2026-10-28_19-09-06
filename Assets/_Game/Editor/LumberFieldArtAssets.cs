@@ -19,10 +19,11 @@ public static class LumberFieldArtAssets {
  static Vector3 V(float[] a)=>new Vector3(a[0],a[1],a[2]);
  static string PathFor(string name)=>"Assets/_Game/Resources/"+Load().Assemblies.Single(x=>x.Name==name).PrefabPath+".prefab";
  // LumberT2: the tier 2 (birch) front has its own, longer palette strip, so its own material.
- static string MatPath(string group)=>group=="Forester"?"Assets/_Game/Resources/Characters/Shopkeepers/ForesterArt.mat":group=="LumberT2"?"Assets/_Game/Resources/Settlement/Storefronts/LumberArtT2.mat":"Assets/_Game/Resources/Settlement/Storefronts/LumberArt.mat";
+ // LumberT3 (Tier 3 integration slice C): the tier 3 (mesquite) front, likewise on its own strip and material.
+ static string MatPath(string group)=>group=="Forester"?"Assets/_Game/Resources/Characters/Shopkeepers/ForesterArt.mat":group=="LumberT2"?"Assets/_Game/Resources/Settlement/Storefronts/LumberArtT2.mat":group=="LumberT3"?"Assets/_Game/Resources/Settlement/Storefronts/LumberArtT3.mat":"Assets/_Game/Resources/Settlement/Storefronts/LumberArt.mat";
  static void Prepare() {
   if(EditorApplication.isPlayingOrWillChangePlaymode)throw new Exception("Build outside Play mode");AssetDatabase.Refresh();var manifest=Load();
-  foreach(var p in manifest.Pieces.Where(x=>x.MaterialGroup!="LumberT2"))PreparePiece(p);
+  foreach(var p in manifest.Pieces.Where(x=>x.MaterialGroup!="LumberT2"&&x.MaterialGroup!="LumberT3"))PreparePiece(p);
   foreach(var group in new[]{"Lumber","Forester"})PrepareMaterial(manifest,group);
  }
  static void PreparePiece(Piece p) {
@@ -36,9 +37,13 @@ public static class LumberFieldArtAssets {
  }
  // Narrow path (Milestone 14): only the tier 2 LumberFrontT2 (its piece, material and prefab, plus its StorefrontManifest part row);
  // never re-imports or rebuilds the tier 1 lumber pieces and prefabs.
- public static void BuildFrontT2() {
+ public static void BuildFrontT2()=>BuildFrontTier(2);
+ // Tier 3 settlement integration, slice C (user, November 24, 2026): the mesquite LumberFrontT3, front only.
+ public static void BuildFrontT3()=>BuildFrontTier(3);
+ static void BuildFrontTier(int tier) {
+  string model="LumberFrontT"+tier,group="LumberT"+tier;
   if(EditorApplication.isPlayingOrWillChangePlaymode)throw new Exception("Build outside Play mode");AssetDatabase.Refresh();var manifest=Load();
-  var piece=manifest.Pieces.Single(p=>p.Model=="LumberFrontT2");PreparePiece(piece);PrepareMaterial(manifest,"LumberT2");BuildOne("LumberFrontT2");
+  var piece=manifest.Pieces.Single(p=>p.Model==model);PreparePiece(piece);PrepareMaterial(manifest,group);BuildOne(model);
   const string store="Assets/_Game/Art/Settlement/Storefronts/StorefrontManifest.json";
   var s=JObject.Parse(File.ReadAllText(store));Upsert((JArray)s["Parts"],new JObject{{"name",piece.Model},{"triangles",piece.Triangles}},"name");File.WriteAllText(store,s.ToString(Formatting.Indented)+"\n");
  }
