@@ -193,7 +193,10 @@ namespace TheTrailWalker
             }
         }
 
-        private static void ClearContent(RectTransform content) { foreach (Transform child in content) Destroy(child.gameObject); }
+        private static void ClearContent(RectTransform content)
+        {
+            for (int i = content.childCount - 1; i >= 0; i--) { GameObject child = content.GetChild(i).gameObject; if (Application.isPlaying) Destroy(child); else DestroyImmediate(child); }
+        }
         private static Image IconImage(RectTransform parent, FurnitureDefinition d, float x0, float y0, float x1, float y1)
         {
             Image icon = Rect("Icon", parent, x0, y0, x1, y1).gameObject.AddComponent<Image>(); icon.preserveAspect = true; icon.raycastTarget = false;

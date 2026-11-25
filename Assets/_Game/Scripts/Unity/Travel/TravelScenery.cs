@@ -11,6 +11,8 @@ namespace TheTrailWalker.Travel
         public Vector3 RoadPoint, Seat, LookTarget;
         // The standing mission lady (Milestone 8): shown or hidden by the mission rules; a trigger collider takes taps.
         public GameObject MissionNpc;
+        // The balloon merchant at a host camp (BalloonHosts), null elsewhere; its trigger collider takes the tap that opens the interior.
+        public GameObject Balloon;
         public float SeatYaw => Quaternion.LookRotation(Vector3.ProjectOnPlane(LookTarget - Seat, Vector3.up)).eulerAngles.y;
     }
 
@@ -275,10 +277,9 @@ namespace TheTrailWalker.Travel
             Vector3 lady = centre + side * 3.3f + tangent * 2.5f;
             if (!CampAssembly.SpecialNpc(root, "Mission NPC", CampAssembly.Special?.MissionLadySideways, lady + Vector3.down * 0.02f, seat - lady))
                 Primitive(root, "Mission NPC", PrimitiveType.Capsule, lady + Vector3.up * 1f, new Vector3(0.6f, 1f, 0.6f), npc);
-            // Balloon merchant PLACEMENT TEST (October 31, 2026): shown at every camp for now, just outside the clearing on
-            // the far side from the road, door facing the campfire. Art and bobbing only; which camps host it, the shop
-            // and its interaction are Milestone 14.
-            CampAssembly.BalloonMerchant(root, centre + side * 7.2f - tangent * 3.2f + Vector3.down * 0.02f, centre);
+            // Balloon merchant: only at the authored host camps (BalloonHosts), just outside the clearing on the far side from
+            // the road, door facing the campfire.
+            GameObject balloon = BalloonHosts.IsHost(camp.Id) ? CampAssembly.BalloonMerchant(root, centre + side * 7.2f - tangent * 3.2f + Vector3.down * 0.02f, centre) : null;
             Transform ladyRoot = root.Find("Mission NPC");
             if (ladyRoot != null)
             {
@@ -287,7 +288,7 @@ namespace TheTrailWalker.Travel
                 Vector3 scale = ladyRoot.lossyScale; float sx = Mathf.Max(0.01f, scale.x), sy = Mathf.Max(0.01f, scale.y);
                 box.center = new Vector3(0, 1.05f / sy, 0); box.size = new Vector3(1.1f / sx, 2.2f / sy, 1.1f / sx);
             }
-            return new CampAnchor { Camp = camp, RoadPoint = road, Seat = seat, LookTarget = centre, MissionNpc = ladyRoot != null ? ladyRoot.gameObject : null };
+            return new CampAnchor { Camp = camp, RoadPoint = road, Seat = seat, LookTarget = centre, MissionNpc = ladyRoot != null ? ladyRoot.gameObject : null, Balloon = balloon };
         }
 
         // River at the end of a final camp's river leg (dock, ferry, toll NPC), or with landing set, the far bank

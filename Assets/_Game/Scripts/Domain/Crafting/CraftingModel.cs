@@ -25,11 +25,13 @@ namespace TheTrailWalker.Domain.Crafting
         // Retired (November 7, 2026, e.g. the plain tier-one fish roasts): kept registered so saves that know the recipe keep
         // its knowledge, mastery and pending batches, but never taught again (no mission reward, skipped by debug learn-all).
         public readonly bool Retired;
-        public RecipeDefinition(string id, string name, RecipeRole role, int tier, string outputId, int yield, float baseSeconds, string unlockSource, RecipeInput[] inputs, bool retired = false)
+        // In the balloon mystery box's optional recipe pool (section 14; 59 recipes). Never a mission reward.
+        public readonly bool MysteryBoxEligible;
+        public RecipeDefinition(string id, string name, RecipeRole role, int tier, string outputId, int yield, float baseSeconds, string unlockSource, RecipeInput[] inputs, bool retired = false, bool mysteryBoxEligible = false)
         {
             if (string.IsNullOrWhiteSpace(id) || string.IsNullOrWhiteSpace(outputId) || tier < 1 || tier > 4 || yield < 1 || baseSeconds < 0 || inputs == null || inputs.Length == 0 || inputs.Length > 9)
                 throw new ArgumentException("Invalid recipe " + id);
-            Id = id; Name = name; Role = role; Tier = tier; OutputId = outputId; Yield = yield; BaseSeconds = baseSeconds; UnlockSource = unlockSource ?? ""; Inputs = inputs; Retired = retired;
+            Id = id; Name = name; Role = role; Tier = tier; OutputId = outputId; Yield = yield; BaseSeconds = baseSeconds; UnlockSource = unlockSource ?? ""; Inputs = inputs; Retired = retired; MysteryBoxEligible = mysteryBoxEligible;
         }
         public bool Levelled => Role != RecipeRole.Material;
         public ItemDefinition Output => Items.Find(OutputId);
@@ -42,7 +44,7 @@ namespace TheTrailWalker.Domain.Crafting
         private static Dictionary<string, ItemDefinition> byId;
         public static ItemDefinition Find(string id)
         {
-            if (byId == null) { byId = new Dictionary<string, ItemDefinition>(); foreach (ItemDefinition d in PrototypeItems.All) byId[d.Id] = d; foreach (ItemDefinition d in HarvestTierItems.All) if (!byId.ContainsKey(d.Id)) byId[d.Id] = d; foreach (ItemDefinition d in ShopItems.All) if (!byId.ContainsKey(d.Id)) byId[d.Id] = d; }
+            if (byId == null) { byId = new Dictionary<string, ItemDefinition>(); foreach (ItemDefinition d in PrototypeItems.All) byId[d.Id] = d; foreach (ItemDefinition d in HarvestTierItems.All) if (!byId.ContainsKey(d.Id)) byId[d.Id] = d; foreach (ItemDefinition d in ShopItems.All) if (!byId.ContainsKey(d.Id)) byId[d.Id] = d; foreach (ItemDefinition d in BakeryItems.All) if (!byId.ContainsKey(d.Id)) byId[d.Id] = d; foreach (ItemDefinition d in SpecialGear.All) if (!byId.ContainsKey(d.Id)) byId[d.Id] = d; foreach (ItemDefinition d in BoxItems.All) if (!byId.ContainsKey(d.Id)) byId[d.Id] = d; }
             return id != null && byId.TryGetValue(id, out ItemDefinition definition) ? definition : null;
         }
     }
@@ -61,7 +63,7 @@ namespace TheTrailWalker.Domain.Crafting
                 new[] { new RecipeInput("debug.tool.rod.t2.normal", 1), new RecipeInput("item.fine_hemp_cloth", 2) }) };
         private static RecipeDefinition[] all;
         public static IReadOnlyList<RecipeDefinition> All => all ?? (all = Combine());
-        private static RecipeDefinition[] Combine() { var list = new List<RecipeDefinition>(Tier1Recipes.All); list.AddRange(EliteUpgrades); return list.ToArray(); }
+        private static RecipeDefinition[] Combine() { var list = new List<RecipeDefinition>(Tier1Recipes.All); list.AddRange(BakeryRecipes.All); list.AddRange(BoxRecipes.All); list.AddRange(EliteUpgrades); return list.ToArray(); }
         public static RecipeDefinition Find(string id) { foreach (RecipeDefinition r in All) if (r.Id == id) return r; return null; }
         public static readonly int[] BatchSizes = { 1, 10, 100, 1000 };
     }
@@ -82,8 +84,26 @@ namespace TheTrailWalker.Domain.Crafting
     // Material tiers and the cooking pantry (section 9.0.1). Every active test item is tier one unless listed.
     public static class ItemTiers
     {
-        private static readonly Dictionary<string, int> Tiers = new Dictionary<string, int> {
-            { "ingredient.birch_sap", 2 }, { "ingredient.mesquite_pods", 3 }, { "ingredient.mesquite_flour", 3 }, { "ingredient.acorns", 4 }, { "ingredient.roasted_acorn_meal", 4 } };
+        private static readonly Dictionary<string, int> Tiers = WithBoxProducts(new Dictionary<string, int> {
+            { "ingredient.birch_sap", 2 }, { "ingredient.mesquite_pods", 3 }, { "ingredient.mesquite_flour", 3 }, { "ingredient.acorns", 4 }, { "ingredient.roasted_acorn_meal", 4 },
+            // Bakery (milestone 14 slice 2): foods at their tier, the refined inputs, and raw inputs from regions past tier one.
+            { "item.barley_bread", 2 }, { "item.pike_barley_cakes", 2 }, { "item.blueberry_muffins", 2 }, { "item.flax_oil_biscuits", 2 }, { "item.honey_brioche", 2 }, { "item.blackberry_cream_pastry", 2 },
+            { "item.corn_flatbread", 3 }, { "item.mesquite_nut_cakes", 3 }, { "item.mesquite_pod_cakes", 3 }, { "item.sunflower_corn_bread", 3 }, { "item.corn_turkey_pie", 3 },
+            { "item.pumpkin_cow_cheese_galette", 3 }, { "item.mint_sugar_rolls", 3 },
+            { "item.acorn_biscuits", 4 }, { "item.potato_butter_rolls", 4 }, { "item.coconut_macaroons", 4 }, { "item.vanilla_cacao_celebration_cake", 4 }, { "item.coconut_cream_tart", 4 },
+            { "ingredient.sugar", 3 }, { "ingredient.flax_oil", 2 }, { "ingredient.cacao_powder", 4 },
+            { "food.blackberries", 2 }, { "food.blueberries", 2 }, { "ingredient.honey", 2 }, { "ingredient.pumpkins", 3 }, { "ingredient.wild_mint", 3 },
+            { "ingredient.potatoes", 4 }, { "food.coconuts", 4 }, { "ingredient.vanilla_pods", 4 },
+            // Box recipes (milestone 14 slice 3): new inputs and existing items that sat at the default tier one, at their source region's tier.
+            { "ingredient.truffle", 2 }, { "item.beeswax", 2 }, { "item.birch_plank", 2 }, { "item.cut_quartz", 2 }, { "item.copper_fittings", 2 }, { "item.glass", 2 }, { "item.glass_bottle", 2 },
+            { "item.tin_ingot", 2 }, { "item.fine_beaver_leather", 2 }, { "material.yellow_ochre", 2 }, { "item.flax_cord", 2 },
+            { "ingredient.sunflower_oil", 3 }, { "ingredient.corn_flour", 3 }, { "item.mesquite_plank", 3 }, { "item.mesquite_charcoal", 3 }, { "item.silver_ingot", 3 }, { "item.cut_turquoise", 3 },
+            { "item.iron_fittings", 3 }, { "item.bronze_ingot", 3 }, { "ingredient.green_chili", 3 }, { "ingredient.beans", 3 }, { "ingredient.chickpeas", 3 }, { "animal.turkey.meat", 3 },
+            { "animal.duck.meat", 2 }, { "animal.turkey.feathers", 3 }, { "animal.lamb.meat", 3 }, { "fishery.squid", 3 },
+            { "item.oak_plank", 4 }, { "item.gold_ingot", 4 }, { "item.steel_fittings", 4 }, { "item.cut_ruby", 4 }, { "item.cut_sapphire", 4 }, { "item.cut_diamond", 4 }, { "item.polished_lapis", 4 },
+            { "item.roasted_coffee", 4 }, { "ingredient.seaweed", 4 }, { "material.obsidian", 4 }, { "animal.boar.meat", 4 }, { "animal.beef.meat", 4 }, { "fishery.lobster", 4 } });
+        // A box recipe's product sits at its recipe's tier.
+        private static Dictionary<string, int> WithBoxProducts(Dictionary<string, int> tiers) { foreach (RecipeDefinition r in BoxRecipes.All) if (!tiers.ContainsKey(r.OutputId)) tiers[r.OutputId] = r.Tier; return tiers; }
         public static int Of(string itemId)
         {
             if (itemId != null && itemId.StartsWith("debug.tool.") && itemId.Length > 0)
@@ -99,11 +119,17 @@ namespace TheTrailWalker.Domain.Crafting
             "ingredient.rock_salt", "ingredient.water", "ingredient.sugar", "ingredient.honey", "ingredient.tea_herbs", "ingredient.flax_oil", "ingredient.sunflower_oil",
             "item.clay_cup", "item.glass_bottle" };
         public static bool IsPantry(string itemId) => Pantry.Contains(itemId);
+        // Barrel exception (section 9.0.1): filling recipes may use their aging produce (fruit, grain, cane, Honey) and the barrel pantry
+        // (Sugar, Honey) from any tier; their wood, fittings and charcoal keep the normal window.
+        private static readonly HashSet<string> BarrelProduce = new HashSet<string> {
+            "food.apples", "food.strawberries", "food.blackberries", "food.blueberries", "ingredient.barley", "ingredient.wheat", "ingredient.corn", "ingredient.sugar_cane",
+            "ingredient.honey", "ingredient.sugar" };
         // Direct ingredient tier window: tier one -> {1}; later tiers -> {R - 1, R}; Food may also use older pantry items.
         public static bool InWindow(RecipeDefinition recipe, string itemId)
         {
             int tier = Of(itemId), low = recipe.Tier == 1 ? 1 : recipe.Tier - 1;
-            return (tier >= low && tier <= recipe.Tier) || (recipe.Role == RecipeRole.Food && IsPantry(itemId) && tier <= recipe.Tier);
+            return (tier >= low && tier <= recipe.Tier) || (recipe.Role == RecipeRole.Food && IsPantry(itemId) && tier <= recipe.Tier)
+                || (recipe.Id.StartsWith("recipe.barrel.", StringComparison.Ordinal) && BarrelProduce.Contains(itemId) && tier <= recipe.Tier);
         }
     }
 

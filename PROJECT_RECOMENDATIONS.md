@@ -2710,7 +2710,7 @@ The balloon's two equipment offers are the **special gear**: one garment (hat, b
 | 3 | 7 | 3.35 | 5 | 5 | 11 x 4 | 9 / 3.75 / 7 / 7 / 12 x 4 |
 | 4 | 10 | 4.1 | 8 | 8 | 13 x 4 | 12 / 4.5 / 10 / 10 / 14 x 4 |
 
-**Price reasoning (gold, whole numbers):** gold now comes from the warehouse at 1 gold per 1,000 cash after every ten boxes (100 units). One cycle of a tier's best product at recipe level 10/Q5 (section 12.2 references) yields about **120 gold at tier 1** (Misc, 1,200 cash each), **360 at tier 2**, **720 at tier 3** and **1,200 at tier 4**; clothing or food cycles yield far less, and raw-material cycles almost nothing. Special prices sit at about 1.5-3 top-product cycles of their own tier, so they are a deliberate saving goal rather than an impulse buy; boots (speed) and backpacks (area) cost more because they change travel and carrying the most.
+**Price reasoning (gold, whole numbers):** gold now comes from the warehouse at 1 gold per 1,000 cash after every ten boxes (100 units). One cycle of a tier's best product at recipe level 10/Q5 (section 12.2 references) yields about **120 gold at tier 1** (Misc, 1,200 cash each), **360 at tier 2**, **720 at tier 3** and **1,200 at tier 4**; clothing or food cycles yield far less, and raw-material cycles almost nothing. Special prices were first set at about 1.5-3 top-product cycles of their own tier; on November 23, 2026 the user cut every special gear price to one tenth (Wayfarer's felt hat 150 -> 15 gold), so special gear is now a reachable purchase of well under one top-product cycle rather than a long saving goal. Boots (speed) and backpacks (area) still cost the most in each tier because they change travel and carrying the most (user, November 23, 2026).
 
 **Resale (proposal):** special gear sells at camps and the warehouse for a fixed cash value equal to its tier's level-10 Q5 reference with no durability premium (clothing 440 / 1,320 / 2,640 / 4,400 cash; backpacks 700 / 2,100 / 4,200 / 7,000 cash for tiers 1-4), so buying and reselling can never turn gold back into meaningful gold.
 
@@ -2720,41 +2720,41 @@ The balloon's two equipment offers are the **special gear**: one garment (hat, b
 
 | ID | Item | Slot | Stat | Gold | Design brief |
 | --- | --- | --- | --- | --- | --- |
-| `special.t1.hat` | Wayfarer's felt hat | Hat | 4 hearts | 150 | Wide-brim olive felt hat, crimson band with brass balloon pin, one pheasant feather |
-| `special.t1.boots` | Wayfarer's trail boots | Boots | 2.25 m/s | 200 | Ankle boots in oiled brown leather, crimson laces, brass eyelets and toe caps |
-| `special.t1.shirt` | Wayfarer's waxed shirt | Shirt | 2 pockets | 150 | Oatmeal waxed-canvas shirt, two flap pockets with brass buttons, crimson collar piping |
-| `special.t1.pants` | Wayfarer's field trousers | Pants | 2 hooks | 150 | Moss-green twill, reinforced knees, leather belt with two brass tool rings |
-| `special.t1.pack` | Wayfarer's ridge pack | Backpack | 8 x 4 | 250 | Canvas rucksack with rolled blanket on top, crimson flap, brass buckles, small balloon charm |
+| `special.t1.hat` | Wayfarer's felt hat | Hat | 4 hearts | 15 | Wide-brim olive felt hat, crimson band with brass balloon pin, one pheasant feather |
+| `special.t1.boots` | Wayfarer's trail boots | Boots | 2.25 m/s | 20 | Ankle boots in oiled brown leather, crimson laces, brass eyelets and toe caps |
+| `special.t1.shirt` | Wayfarer's waxed shirt | Shirt | 2 pockets | 15 | Oatmeal waxed-canvas shirt, two flap pockets with brass buttons, crimson collar piping |
+| `special.t1.pants` | Wayfarer's field trousers | Pants | 2 hooks | 15 | Moss-green twill, reinforced knees, leather belt with two brass tool rings |
+| `special.t1.pack` | Wayfarer's ridge pack | Backpack | 8 x 4 | 25 | Canvas rucksack with rolled blanket on top, crimson flap, brass buckles, small balloon charm |
 
 **Tier 2 — Lakeshore** (marshes, warm riverbanks, basins, sunny uplands, linked lakes, snowy taiga; oilskin, waterproof leather, fur trim):
 
 | ID | Item | Slot | Stat | Gold | Design brief |
 | --- | --- | --- | --- | --- | --- |
-| `special.t2.hat` | Heron-plume rain hat | Hat | 5 hearts | 500 | Sou'wester-style oilskin hat, crimson lining, brass rivets, grey heron plume |
-| `special.t2.boots` | Bog-strider boots | Boots | 2.6 m/s | 650 | Tall waterproof boots, fur cuff, crimson pull tabs, brass buckles |
-| `special.t2.shirt` | Lakeshore oilskin shirt | Shirt | 3 pockets | 500 | Short oilskin overshirt in deep teal, three pockets, crimson toggles with brass tips |
-| `special.t2.pants` | Boardwalk trousers | Pants | 3 hooks | 500 | Waxed slate trousers with waterproof shins, belt with three brass rings |
-| `special.t2.pack` | Trapper's fur-trimmed pack | Backpack | 9 x 4 | 800 | Frame pack with fur-trimmed top, crimson oilskin cover, brass fittings |
+| `special.t2.hat` | Heron-plume rain hat | Hat | 5 hearts | 50 | Sou'wester-style oilskin hat, crimson lining, brass rivets, grey heron plume |
+| `special.t2.boots` | Bog-strider boots | Boots | 2.6 m/s | 65 | Tall waterproof boots, fur cuff, crimson pull tabs, brass buckles |
+| `special.t2.shirt` | Lakeshore oilskin shirt | Shirt | 3 pockets | 50 | Short oilskin overshirt in deep teal, three pockets, crimson toggles with brass tips |
+| `special.t2.pants` | Boardwalk trousers | Pants | 3 hooks | 50 | Waxed slate trousers with waterproof shins, belt with three brass rings |
+| `special.t2.pack` | Trapper's fur-trimmed pack | Backpack | 9 x 4 | 80 | Frame pack with fur-trimmed top, crimson oilskin cover, brass fittings |
 
 **Tier 3 — Sunward Nomad** (golden grasslands, red canyons, dunes, hidden oases, plateau, snowmelt highlands; linen wraps, sun protection, caravan leather):
 
 | ID | Item | Slot | Stat | Gold | Design brief |
 | --- | --- | --- | --- | --- | --- |
-| `special.t3.hat` | Dune wrap | Hat | 7 hearts | 1,100 | Sand-linen head wrap with a light veil, crimson inner fold, brass clasp |
-| `special.t3.boots` | Mesa sand boots | Boots | 3.35 m/s | 1,400 | Soft wrapped desert boots, ochre suede, crimson binding, brass ankle studs |
-| `special.t3.shirt` | Nomad linen robe | Shirt | 5 pockets | 1,100 | Long-sleeved cream robe-shirt, crimson sash, five hidden pockets with brass toggles |
-| `special.t3.pants` | Caravan wrap trousers | Pants | 5 hooks | 1,100 | Loose terracotta trousers, wrapped calves, belt with five brass rings |
-| `special.t3.pack` | Caravan saddle pack | Backpack | 11 x 4 | 1,800 | Twin saddle-bag pack in tooled leather, crimson tassels, brass corner plates |
+| `special.t3.hat` | Dune wrap | Hat | 7 hearts | 110 | Sand-linen head wrap with a light veil, crimson inner fold, brass clasp |
+| `special.t3.boots` | Mesa sand boots | Boots | 3.35 m/s | 140 | Soft wrapped desert boots, ochre suede, crimson binding, brass ankle studs |
+| `special.t3.shirt` | Nomad linen robe | Shirt | 5 pockets | 110 | Long-sleeved cream robe-shirt, crimson sash, five hidden pockets with brass toggles |
+| `special.t3.pants` | Caravan wrap trousers | Pants | 5 hooks | 110 | Loose terracotta trousers, wrapped calves, belt with five brass rings |
+| `special.t3.pack` | Caravan saddle pack | Backpack | 11 x 4 | 180 | Twin saddle-bag pack in tooled leather, crimson tassels, brass corner plates |
 
 **Tier 4 — Tidewatch Mariner** (savanna, coastal cliffs, beaches, rainforest coast, estuary, coral shores; sailcloth, rope, shell and brass):
 
 | ID | Item | Slot | Stat | Gold | Design brief |
 | --- | --- | --- | --- | --- | --- |
-| `special.t4.hat` | Coral-shell sun hat | Hat | 10 hearts | 2,000 | Wide woven straw hat, crimson band set with small shells, brass balloon pin |
-| `special.t4.boots` | Tidewalker boots | Boots | 4.1 m/s | 2,600 | Reef boots in navy canvas and rubbered sole, crimson rope laces, brass eyelets |
-| `special.t4.shirt` | Mariner's sailcloth shirt | Shirt | 8 pockets | 2,000 | White sailcloth shirt with navy trim, crimson neckerchief, eight brass-buttoned pockets |
-| `special.t4.pants` | Reef-runner trousers | Pants | 8 hooks | 2,000 | Rolled navy sailcloth trousers, rope belt with eight brass rings |
-| `special.t4.pack` | Estuary sea-chest pack | Backpack | 13 x 4 | 3,200 | Small wooden sea chest on shoulder straps, crimson lacquer lid, brass corners and lock |
+| `special.t4.hat` | Coral-shell sun hat | Hat | 10 hearts | 200 | Wide woven straw hat, crimson band set with small shells, brass balloon pin |
+| `special.t4.boots` | Tidewalker boots | Boots | 4.1 m/s | 260 | Reef boots in navy canvas and rubbered sole, crimson rope laces, brass eyelets |
+| `special.t4.shirt` | Mariner's sailcloth shirt | Shirt | 8 pockets | 200 | White sailcloth shirt with navy trim, crimson neckerchief, eight brass-buttoned pockets |
+| `special.t4.pants` | Reef-runner trousers | Pants | 8 hooks | 200 | Rolled navy sailcloth trousers, rope belt with eight brass rings |
+| `special.t4.pack` | Estuary sea-chest pack | Backpack | 13 x 4 | 320 | Small wooden sea chest on shoulder straps, crimson lacquer lid, brass corners and lock |
 
 **Bakery prices after the rate change (resolved October 31, 2026):** the premium gold prices stay as authored (5-10 gold per serving, 50-100 gold per recipe, 4,500-9,000 gold per discounted full stack). Players buy partial quantities at the serving price (section 9.4.4); the full-stack discount is for late-game players. **Ferry and lumber (resolved October 31, 2026):** the ferry toll table and its gold alternative (cash / 1,000) are in section 12.3; lumber-tier gold unlocks (50 / 300 / 750 / 1,500 gold, priced for about 450 items per massive tree after the rebalance) are in section 13.4.
 
@@ -3988,7 +3988,78 @@ Dependencies: 13.
 - Debug button to remove before release: TIER +1 (with WOOD T2-T4, +24 H and HOUSE L8).
 - Commit note: `StorefrontPaletteT2.png` still needs its line in `Editor/FacetedDetailMaterials.cs` (the other tool's uncommitted file) when the files are split for the commit.
 - Phone rounds (user, November 20, 2026): round 1 asked for price tags and counter lamps; round 3 (tags + lamps) passed every check.
-- Status: full suite PASS and APK built 19:45 UTC November 20, 2026 (SHA-256 `ab7a0e29…`), installed on the nubia NX769J after a save backup (`.superpowers/save-backups/2026-11-20-before-m14-shops/`); the installed copy matches and `session-v1.json` is unchanged (`2519b15e`). Ready for the final review, then commit on request.
+- Status: full suite PASS and APK built 19:45 UTC November 20, 2026 (SHA-256 `ab7a0e29…`), installed on the nubia NX769J after a save backup (`.superpowers/save-backups/2026-11-20-before-m14-shops/`); the installed copy matches and `session-v1.json` is unchanged (`2519b15e`). Committed as `c663277` after the final review (which also made saved offers keep their price across a retune).
+
+**Slice 2: bakery (November 20-21, 2026; plan `Docs/superpowers/plans/2026-11-20-milestone-14-slice-2-bakery.md`).**
+
+**Decisions (slice 2):**
+- Two different common foods for cash (384 / 1,152 / 2,304 / 3,840 per serving by tier) and one premium food for gold (authored gold per serving); the full-stack price (x0.9) applies only to one purchase of exactly 1,000; a recipe costs 10 x the serving gold (spec).
+- The premium slot becomes its recipe 5% of the time when eligible: tier reached, every source region discovered, every refined input made by a known recipe or sold by a reachable shop, not known, and not already offered. Checked at roll time and again at PAY; a recipe ignores a full bag (spec, section 9.4.4).
+- The tier 2 and tier 4 bakery missions (T2-G23, T2-G24, T4-G23, T4-G24) are deferred: there is no tier 2-4 mission catalog yet. Their recipes exist as data, and G16 and G17 (tier 1, catalog 4) are in (Claude).
+- Hearts for foods missing from the tables: Barley bread 3, Pike barley cakes 3, Sunflower corn bread 4, Corn-turkey pie 4 (Claude).
+- Debug TIER +1 counts as discovery for the recipe check (conversions still required). Mint sugar rolls, the vanilla cacao cake and the coconut cream tart can't be offered yet: nothing makes sugar or cacao powder (Claude).
+- No debug option for the recipe roll: the user tests the real 5% (user).
+- Phone-round additions (user):
+  - the map's region list shows the newest region on top, with a colour emblem and the region's three resources per row; the Settlement card was removed;
+  - paper cash (bottom centre, green banknotes) and gold (top centre, gold bar) labels on all eight counters; inside counters, the title, the visit line and four debug buttons are hidden;
+  - black and grayscale icons on the settlement fast-travel list, which is also available at camps: a tap travels to the settlement and opens that place;
+  - holding an item in a chest or on the tool rack opens its info view, without EAT or EQUIP.
+
+**Built (Claude, November 20-21, 2026):**
+- Data: `Domain/Items/BakeryItems.cs`, `Domain/Crafting/BakeryRecipes.cs`, bakery pools and gold prices in `ShopCatalog.cs`, G16 and G17 in `MissionModel.cs`.
+- Stock and buying: `Domain/Settlement/BakeryGate.cs`; `Shops.cs` gained the bakery roll, `GoldTotal`, gold purchases and `TryBuyRecipe`. The `shops` save block gained optional `currency` and `recipe` fields, and `TradeRecord` gained `gold`.
+- Screens: the bakery counter and its sheets in `CollectionPrototype.Shops.cs`, the region list in `CollectionPrototype.Map.cs`, the shared labels in `CollectionPrototype.WalletLabels.cs`, the camp list in `CollectionPrototype.Settlement.cs`/`Travel.cs`, and the chest details in `CollectionPrototype.HomeStorage.cs`.
+- Art: five foods (`Tools/Art/generate_bakery_foods.py`, `Editor/BakeryFoodAssets.cs`), region emblems (`Tools/Art/generate_region_emblems.py`), and cash, gold and shop icons (`Tools/Art/generate_hud_icons.py`).
+- Phone rounds (user, November 21, 2026): every bakery check passed; the map, label, icon, camp-list and chest requests above came from those rounds and passed in turn. The chest info view is installed but not yet confirmed on the phone.
+- Status: full suite PASS and APK built 06:58 UTC November 21, 2026 (SHA-256 `cc437fa4…`), installed after a save backup (`.superpowers/save-backups/2026-11-20-before-m14-bakery/`); the installed copy matches and `session-v1.json` is unchanged (`2519b15e`).
+- Final review (November 21, 2026): "With fixes". Three tier 1 bakery model paths moved from the generated `Tier1CraftedItems.cs` to `Tier2ShopVisuals.Paths`, and two small fixes in `CollectionPrototype.HomeStorage.cs` and `ShowDetails` were made. The fix wave re-reviewed clean (chain PASS 10:20 UTC). The slice 3 APK carries all of slice 2, and the user's November 24 phone round found no errors. Not committed yet; commit on request.
+- Note: in normal play (regions 1-4) no bakery recipe can roll yet, because the first eligible premium recipe needs region 6. Only debug TIER +1 reaches it.
+
+**Slice 3: balloon merchant (November 21-22, 2026; spec section 6.3, plan `Docs/superpowers/plans/2026-11-21-milestone-14-slice-3-balloon.md`).**
+
+**Decisions (slice 3):**
+- Hosts: an authored, deterministic list for regions 1-4, with one host camp in every 4-6 camps and never two in a row. The every-camp placement test is removed. The balloon opens only while seated at its host camp; an unseated tap does nothing (spec, user).
+- Three gold offers per session:
+  - one special garment, with the slot chosen uniformly from hat, boots, shirt and pants;
+  - one mystery box, at the host camp region's tier, for 20 / 20 / 25 / 30 gold at tiers 1-4;
+  - one special backpack.
+  - Gear tier is 70% the highest discovered tier and 30% an earlier one (spec, section 14).
+- Offers reroll every time the player leaves the interior and enters again. Reloads and repaints never reroll, and a reload restores the open session. Purchases are checked against the session and the offer revision shown (user, November 22).
+- Special gear is always Q5, never wears out, can't be crafted and never appears in boxes. Stats, prices and resale follow section 14.1 (spec).
+- A box rolls its six rewards at payment and saves them. Rewards are Q5 physical stacks or recipe knowledge, drawn from a 59-recipe optional pool. Recipes the player knows, or that are reserved in an unopened box, are excluded, and the bakery's recipe roll respects those reservations too. Claims happen once, even with a full bag (spec).
+- The recipe source check (`RecipeSources`) covers discovered regions, refined inputs and the barrel filling window in section 9.0.1. The bakery keeps its own 8-row gate (Claude, Rulings 1-2).
+- Fourteen existing items moved to their real tiers. Barrel ageing timers wait until barrels are reachable (oak plank is tier 4), and the nine tier 3-4 box products have no models yet (Claude, Rulings 3-5).
+- If a saved box holds an item that no longer exists, the reward becomes a region 1 loose material of similar value, between 1 and 1,000 units. If an open offer's item no longer exists, that slot loads sold out (Claude, Rulings 6-7).
+- The interior lights itself with its own paper lanterns and at most two warm, shadowless point lights. Counter lamps aren't hung here (Claude, Ruling 8).
+- Copy (user, November 22):
+  - gear shows no quality label;
+  - there's no "Sit at the camp" hint;
+  - the box sheet says only "Mystery box";
+  - the trade-offer timer keeps running behind the balloon.
+
+**Built (Claude, November 21-22, 2026):**
+- Domain:
+  - `Domain/Travel/BalloonHosts.cs`, `Domain/Items/SpecialGear.cs` (20 definitions), `Domain/Items/BoxItems.cs` and `Domain/Crafting/BoxRecipes.cs` (54 new recipes plus the 5 existing balloon recipes, now flagged);
+  - `Domain/Crafting/RecipeSources.cs`, `Domain/Settlement/BalloonShop.cs` and `Domain/Settlement/MysteryBoxes.cs`;
+  - edits to `CraftingModel.cs`, `EquipmentState.cs`, `ItemPrices.cs`, `BakeryGate.cs` and `Shops.cs`.
+- Saving: an optional `balloon` block in `SessionSaveStore.cs`, which saves once right after each gold debit.
+- Screens: `Unity/CollectionPrototype.Balloon.cs`, containing the interior view, purchases, box opening, the reward sheet and a MENU `Boxes` entry. It reuses the shop pieces: tags, wallet labels and the purchase sheet.
+- Art:
+  - the balloon interior (`Tools/Art/generate_balloon_interior.py`, `Editor/BalloonInteriorAssets.cs`, with the prefab in `Resources/Settlement/Balloon/`);
+  - two tier 1 ranch dishes, Chicken mushroom pie and Apple-glazed chicken (`Tools/Art/generate_ranch_dishes.py`).
+- Checks: `Editor/Milestone14BalloonValidation.cs`, chained in `Milestone5Setup.cs`.
+- Debug: LEARN T1 RECIPES no longer teaches mystery-box recipes, so the box recipe rewards can be tested.
+- Reviews: all eight tasks reviewed clean. The final review was "With fixes" (debug recipe button, camp note timeout, balloon tap priority, plus the user's copy cuts), and its fix wave re-reviewed clean (chain PASS 06:40 UTC November 22).
+- Deferred minors:
+  - a tap at the host camp is lost while the game is busy;
+  - a reward sheet opened from MENU isn't cleaned up;
+  - the open-box coroutine doesn't lock to its session;
+  - some checks are source greps;
+  - the harvest-target branch of the balloon tap gate has no check.
+- Status: full suite PASS and APK built 06:46 UTC November 22, 2026 (SHA-256 `d586994e95ff…`, 77.8 MB), installed after a save backup (`.superpowers/save-backups/2026-11-22-before-m14-balloon/`); `session-v1.json` unchanged (`2519b15e`).
+- Phone round (user, November 24, 2026): every check passed, with no errors found.
+
+**Milestone 14 status (November 24, 2026):** slices 1-3 are built and pass on the phone. Slice 1 is committed (`c663277`); slices 2 and 3 are waiting for a commit request. Left out by the spec: tier 3-4 storefront looks, tier 3-4 goods art (placeholders, reachable only by debug), and bakery missions T2-G23/G24 and T4-G23/G24, which wait for a tier 2-4 mission catalog.
 
 ### Milestone 15: Pets, offline reconciliation, and remaining furniture
 

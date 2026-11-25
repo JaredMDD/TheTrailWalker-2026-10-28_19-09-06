@@ -29,6 +29,7 @@ namespace TheTrailWalker
             campOnlyButtons.Add(mapMenuButton = AddMenuButton("MAP", "map", OpenMapFromMenu));
             AddMenuButton("GEAR", "equipment", () => { if (milestone4) ToggleGearPanel(); });
             AddMenuButton("SETTINGS", "settings", () => Say("Settings arrive in a later milestone."));
+            CreateBoxesMenuButton();   // unclaimed box rewards, from anywhere (CollectionPrototype.Balloon)
             SetMenu(false);
         }
         private RectTransform AddMenuButton(string text, string icon, UnityEngine.Events.UnityAction action)
@@ -45,7 +46,8 @@ namespace TheTrailWalker
             int row = 1;
             foreach (RectTransform button in menuButtons)
             {
-                bool show = open && (!campOnlyButtons.Contains(button) || (button == craftMenuButton ? CraftHere : AtCamp) || (button == mapMenuButton && phase == TravelPhase.Settlement));
+                bool show = button == boxesMenuButton ? BoxesMenuShown(open)
+                    : open && (!campOnlyButtons.Contains(button) || (button == craftMenuButton ? CraftHere : AtCamp) || (button == mapMenuButton && phase == TravelPhase.Settlement));
                 button.gameObject.SetActive(show);
                 if (show) PlaceSquare(button, true, menuBarLine, 0, row++);
             }

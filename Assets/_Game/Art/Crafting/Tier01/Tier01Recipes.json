@@ -1672,6 +1672,7 @@
     },
     {
       "Id": "recipe.food.strawberry_glazed_shrimp_skewers",
+      "MysteryBoxEligible": true,
       "Name": "Strawberry-glazed shrimp skewers",
       "Category": "Food",
       "OutputId": "item.strawberry_glazed_shrimp_skewers",
@@ -1708,6 +1709,7 @@
     },
     {
       "Id": "recipe.food.shrimp_pie",
+      "MysteryBoxEligible": true,
       "Name": "Shrimp pie",
       "Category": "Food",
       "OutputId": "item.shrimp_pie",
@@ -1748,6 +1750,7 @@
     },
     {
       "Id": "recipe.food.apple_oat_compote",
+      "MysteryBoxEligible": true,
       "Name": "Apple-oat compote",
       "Category": "Food",
       "OutputId": "item.apple_oat_compote",
@@ -1784,6 +1787,7 @@
     },
     {
       "Id": "recipe.food.red_berry_oat_porridge",
+      "MysteryBoxEligible": true,
       "Name": "Red-berry oat porridge",
       "Category": "Food",
       "OutputId": "item.red_berry_oat_porridge",
@@ -1983,6 +1987,7 @@
     },
     {
       "Id": "recipe.misc.pinecone_rabbit",
+      "MysteryBoxEligible": true,
       "Name": "Pine-cone rabbit ornament",
       "Category": "Misc",
       "OutputId": "item.pinecone_rabbit",

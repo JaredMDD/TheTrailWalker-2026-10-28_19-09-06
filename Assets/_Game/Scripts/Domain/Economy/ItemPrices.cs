@@ -117,6 +117,7 @@ namespace TheTrailWalker.Domain.Economy
         // creation profile with the quality durability bonus and no furniture (section 12.1, NPC gear rule).
         public static ItemProfile Profile(ItemDefinition definition, int quality, int level = 1)
         {
+            if (SpecialGear.Is(definition.Id)) return new ItemProfile(Money.Minor(SpecialGear.ResaleCash(definition.Id))); // fixed resale, no durability premium
             if (definition.Stackable && !Levelled(definition)) return new ItemProfile(IntrinsicMinor(definition, quality));
             RecipeDefinition maker = Maker(definition.Id);
             int q = Clamp(quality), tier = maker != null ? maker.Tier : Math.Max(1, definition.GearRank > 0 ? definition.GearRank : ItemTiers.Of(definition.Id));

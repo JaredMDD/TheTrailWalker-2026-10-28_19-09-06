@@ -56,9 +56,10 @@ namespace TheTrailWalker.Domain.Missions
         // coverage missions, so every tier-one gatherable item has a collection mission and every material a use. E5 asks for
         // Bone, and E8 (farm Tea herbs) moves to the end of Explorer. Missions that need a settlement listing (ranch dairy, farm
         // Tea herbs) come last in their branch so they never block the rest before settlements exist (Milestone 10).
+        // Catalog 4 (milestone 14 slice 2, bakery): Gatherer G17 Wheat bread follows G6 and G16 Pine-nut oat cookies follows G14.
         // Rule for inserts and moves: missions of older catalogs keep their relative order, so Branch(branch, oldCatalog)
         // still lists each old catalog's exact order and older saves validate unchanged.
-        public const int CatalogVersion = 3;
+        public const int CatalogVersion = 4;
         private static MissionDefinition M(string code, MissionBranch branch, int index, string item, string reward, int region, string note = "", int catalog = 1,
             string oldItem = null, int changedIn = 0) =>
             new MissionDefinition("mission.t1." + code.ToLowerInvariant(), code, branch, 1, index, item, TierOneQuantity, reward, region, note, catalog, oldItem, changedIn);
@@ -76,12 +77,14 @@ namespace TheTrailWalker.Domain.Missions
             M("G12", MissionBranch.Gatherer, 7, "food.berries", "recipe.food.berry_oat_cakes", 5, "The cakes also need region-5 Oats", 3),
             M("G5", MissionBranch.Gatherer, 8, "material.reeds", "recipe.material.reed_braid", 6),
             M("G6", MissionBranch.Gatherer, 9, "ingredient.wheat", "recipe.material.wheat_flour", 6, "Pantry flour for later Food", 3),
-            M("G9", MissionBranch.Gatherer, 10, "ingredient.rock_salt", "recipe.food.cow_cheese", 5, "Cheese needs ranch Cow milk (settlement)", 3),
-            M("G10", MissionBranch.Gatherer, 11, "ingredient.oats", "recipe.food.cow_yogurt", 5, "Yogurt needs ranch Cow milk (settlement)", 3),
-            M("G11", MissionBranch.Gatherer, 12, "food.strawberries", "recipe.food.strawberry_cow_yogurt_drink", 5, "The drink needs Cow yogurt (G10)", 3),
-            M("G13", MissionBranch.Gatherer, 13, "ingredient.cow_yogurt", "recipe.food.cow_cream", 5, "Cream needs ranch Cow milk (settlement)", 3),
-            M("G14", MissionBranch.Gatherer, 14, "ingredient.cow_cream", "recipe.food.cow_butter", 5, "Butter churns from Cow cream (G13)", 3),
-            M("G15", MissionBranch.Gatherer, 15, "ingredient.cow_cheese", "recipe.food.cow_cheese_tart", 6, "The tart needs Wheat flour (G6) and ranch Eggs", 3),
+            M("G17", MissionBranch.Gatherer, 10, "ingredient.wheat_flour", "recipe.food.wheat_bread", 6, "The bread also needs region-3 Rock salt", 4),
+            M("G9", MissionBranch.Gatherer, 11, "ingredient.rock_salt", "recipe.food.cow_cheese", 5, "Cheese needs ranch Cow milk (settlement)", 3),
+            M("G10", MissionBranch.Gatherer, 12, "ingredient.oats", "recipe.food.cow_yogurt", 5, "Yogurt needs ranch Cow milk (settlement)", 3),
+            M("G11", MissionBranch.Gatherer, 13, "food.strawberries", "recipe.food.strawberry_cow_yogurt_drink", 5, "The drink needs Cow yogurt (G10)", 3),
+            M("G13", MissionBranch.Gatherer, 14, "ingredient.cow_yogurt", "recipe.food.cow_cream", 5, "Cream needs ranch Cow milk (settlement)", 3),
+            M("G14", MissionBranch.Gatherer, 15, "ingredient.cow_cream", "recipe.food.cow_butter", 5, "Butter churns from Cow cream (G13)", 3),
+            M("G16", MissionBranch.Gatherer, 16, "ingredient.cow_butter", "recipe.food.pine_nut_oat_cookies", 5, "The cookies need region-5 Oats and Pine nuts", 4),
+            M("G15", MissionBranch.Gatherer, 17, "ingredient.cow_cheese", "recipe.food.cow_cheese_tart", 6, "The tart needs Wheat flour (G6) and ranch Eggs", 3),
             M("L1", MissionBranch.Lumberjack, 1, "material.flint", "recipe.tool.pine_axe_normal", 2),
             M("L2", MissionBranch.Lumberjack, 2, "material.pine_log", "recipe.misc.pine_bird", 1, "Logs from the G1 recipe or from chopping"),
             M("L3", MissionBranch.Lumberjack, 3, "tool.pine_axe.normal", "recipe.wearable.rabbit_boots", 2, "Ten crafted Normal pine axes"),
@@ -158,9 +161,9 @@ namespace TheTrailWalker.Domain.Missions
             { "material.bone", (ToolFamily.Hunting, TierOne) }, { "ingredient.animal_fat", (ToolFamily.Hunting, TierOne) },
             { "fish.rainbow_trout", (ToolFamily.Rod, new[] { 1, 3, 5 }) }, { "fish.largemouth_bass", (ToolFamily.Rod, new[] { 2, 3, 6 }) },
             { "fish.bluegill", (ToolFamily.Rod, new[] { 1, 4, 6 }) }, { "fish.yellow_perch", (ToolFamily.Rod, new[] { 2, 4, 5 }) } };
-        // Settlement shop listings (ranch milk/eggs, farm tea herbs after region 4, fishery shrimp): not reachable until settlements exist.
+        // Settlement shop listings (ranch milk/eggs/chicken, farm tea herbs after region 4, fishery shrimp): not reachable until settlements exist.
         private static readonly Dictionary<string, int> Settlement = new Dictionary<string, int> {
-            { "food.milk.cow", 0 }, { "food.milk.goat", 0 }, { "ingredient.egg", 0 }, { "ingredient.tea_herbs", 4 }, { "ingredient.shrimp", 0 } };
+            { "food.milk.cow", 0 }, { "food.milk.goat", 0 }, { "ingredient.egg", 0 }, { "ingredient.tea_herbs", 4 }, { "ingredient.shrimp", 0 }, { "animal.chicken.meat", 0 } };
 
         public static IReadOnlyCollection<string> LooseIds => Loose.Keys;
         // Interaction drops (tree, hunt and fishing outputs) for the coverage check: every gatherable item has a mission.

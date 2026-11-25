@@ -1419,6 +1419,27 @@ namespace TheTrailWalker.Editor
             Check(reserved && !chest.ReservedBy(held, 5) && held.Owner == ItemOwner.Backpack && held.X == 1000 && held.Y == 2000 && held.Quantity == 40 && chest.ContainsId("held") && chest.Reserve(held, 6),
                 "A chest entry held by pointer 5 is released by the container cancel path and stays at its source (same x, y and quantity)");
 
+            {
+                var bag = new SpatialInventory(6000, 6000); var chest2 = new SpatialInventory(6000, 6000);
+                ItemEntry inChest = chest2.AddWorld("held2", PrototypeItems.Branch, 3, 2);
+                chest2.RestoreStored(inChest, ItemOwner.Backpack, 1000, 2000);
+                var rackItem = new SpatialInventory(6000, 6000).AddWorld("rackItem", PrototypeItems.Branch, 1, 2);
+                Check(CollectionPrototype.ContainerDetailsItem(inChest, false, false, 0.3f) == inChest && CollectionPrototype.ContainerDetailsItem(rackItem, false, false, 0.3f) == rackItem
+                    && CollectionPrototype.ContainerDetailsItem(inChest, false, false, 0.1f) == null && CollectionPrototype.ContainerDetailsItem(inChest, true, false, 0.3f) == null,
+                    "ChestHoldShowsDetails: a held-then-released chest or rack item opens details for that exact item; a quick tap or a cancel does not");
+                ItemEntry f2 = bag.AddWorld("food2", PrototypeItems.Berries, 1, 2), g2 = bag.AddWorld("gear2", PrototypeItems.TestHat, 1, 2);
+                bag.RestoreStored(f2, ItemOwner.Backpack, 5000, 5000); bag.RestoreStored(g2, ItemOwner.Backpack, 3000, 5000);
+                Check(!CollectionPrototype.DetailsShowsEat(f2, false) && !CollectionPrototype.DetailsShowsEquip(g2, false) && CollectionPrototype.DetailsShowsEquip(g2, true) && f2.Ready && CollectionPrototype.DetailsShowsEat(f2, true) && !CollectionPrototype.DetailsShowsEat(inChest, true),
+                    "Container item details show neither EAT nor EQUIP; a bag wearable still shows EQUIP and a ready bag food EAT");
+                bool reserved2 = chest2.Reserve(inChest, 7);
+                Check(reserved2 && CollectionPrototype.ContainerDetailsItem(inChest, false, true, 0.5f) == null, "ChestDragStillMoves: a drag never resolves to details");
+                bool moved = chest2.TryTransfer(inChest, 7, bag, ItemOwner.Backpack, 0, 0, true, out string why);
+                Check(moved && inChest.Owner == ItemOwner.Backpack && bag.ContainsId("held2") && !chest2.ContainsId("held2"), "ChestDragStillMoves: the drag moves the item from the chest to the bag (" + why + ")");
+                ItemEntry kept = chest2.AddWorld("kept", PrototypeItems.Branch, 2, 2);
+                chest2.RestoreStored(kept, ItemOwner.Backpack, 3000, 2000);
+                chest2.Reserve(kept, 8); CollectionPrototype.CancelContainerHold(chest2, kept, 8);
+                Check(!chest2.ReservedBy(kept, 8) && chest2.ContainsId("kept") && kept.X == 3000 && kept.Y == 2000 && kept.Quantity == 2, "ChestHoldReleasesReservation: after the release the item is unreserved and the chest contents are unchanged");
+            }
             Check(CollectionPrototype.ChestNoSpaceNote == "No space in the chest" && CollectionPrototype.RackSpotTakenNote == "Spot taken"
                 && CollectionPrototype.RackOnlyGearNote == "Only tools, clothes and backpacks go on the rack" && CollectionPrototype.EmptyItFirstNote == "Empty it first",
                 "The container notes read \"No space in the chest\", \"Spot taken\", \"Only tools, clothes and backpacks go on the rack\" and \"Empty it first\"");

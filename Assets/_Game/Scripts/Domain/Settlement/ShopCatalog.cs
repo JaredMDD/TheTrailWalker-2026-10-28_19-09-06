@@ -5,7 +5,7 @@ using TheTrailWalker.Domain.Economy;
 
 namespace TheTrailWalker.Domain.Settlement
 {
-    public enum ShopSlotRole { Any, RawFibre, Processed, ProcessedFine, Fish, Exclusive }
+    public enum ShopSlotRole { Any, RawFibre, Processed, ProcessedFine, Fish, Exclusive, Common, Premium }
 
     // One good a shop can stock. Region 0 means tier-gated (a shop exclusive); otherwise it unlocks when that region is discovered.
     public sealed class ShopEntry
@@ -14,12 +14,14 @@ namespace TheTrailWalker.Domain.Settlement
         public int Tier, Region;
         public ShopSlotRole Role;
         public long? CashOverride;
+        // Gold per serving; set only on premium bakery entries.
+        public long? GoldPerServing;
     }
 
     // Shop pools (shop listings spec 5.1-5.5). Price per unit is 4 x the level-one Q5 value unless the entry authors its own.
     public static class ShopCatalog
     {
-        public const string Farm = "shop.farm", Mine = "shop.mine", Tailor = "shop.tailor", Ranch = "shop.ranch", Fishery = "shop.fishery";
+        public const string Farm = "shop.farm", Mine = "shop.mine", Tailor = "shop.tailor", Ranch = "shop.ranch", Fishery = "shop.fishery", Bakery = "shop.bakery";
         private static readonly List<ShopEntry> all = Build();
         public static IReadOnlyList<ShopEntry> All => all;
 
@@ -27,6 +29,13 @@ namespace TheTrailWalker.Domain.Settlement
             all.Where(e => e.ShopId == shopId && (e.Region == 0 ? e.Tier <= reachedTier : discoveredRegions.Contains(e.Region)));
 
         public static long UnitPriceMinor(ShopEntry e) => e.CashOverride.HasValue ? Money.Minor(e.CashOverride.Value) : 4 * ItemPrices.Profile(Crafting.Items.Find(e.ItemId), 5).UnitValue;
+
+        // The recipe a premium bakery food teaches (recipe.food.<name>), or null for any other good.
+        public static string RecipeFor(string foodItemId)
+        {
+            ShopEntry e = all.FirstOrDefault(x => x.ShopId == Bakery && x.ItemId == foodItemId && x.GoldPerServing.HasValue);
+            return e == null ? null : "recipe.food." + foodItemId.Substring("item.".Length);
+        }
 
         private static List<ShopEntry> Build()
         {
@@ -73,6 +82,18 @@ namespace TheTrailWalker.Domain.Settlement
                 ("fish.longnose_gar", 4, 19), ("fish.red_drum", 4, 19), ("fish.red_snapper", 4, 20), ("fish.tuna", 4, 22) }) Add(Fishery, id, tier, region, ShopSlotRole.Fish);
             Add(Fishery, "ingredient.shrimp", 1, 0, ShopSlotRole.Exclusive); Add(Fishery, "fishery.crab", 2, 0, ShopSlotRole.Exclusive);
             Add(Fishery, "fishery.squid", 3, 0, ShopSlotRole.Exclusive); Add(Fishery, "fishery.lobster", 4, 0, ShopSlotRole.Exclusive);
+
+            // Bakery: tier-gated (region 0). Common foods sell for cash at 4 x their Q5 value; premium foods sell for gold per serving.
+            void Common(int tier, params string[] ids) { foreach (string id in ids) Add(Bakery, id, tier, 0, ShopSlotRole.Common); }
+            void Premium(int tier, string id, long gold) { Add(Bakery, id, tier, 0, ShopSlotRole.Premium); list[list.Count - 1].GoldPerServing = gold; }
+            Common(1, "item.berry_oat_cakes", "item.cow_cheese_tart", "item.pine_nut_oat_cookies", "item.wheat_bread");
+            Common(2, "item.barley_bread", "item.pike_barley_cakes", "item.blueberry_muffins", "item.flax_oil_biscuits");
+            Common(3, "item.corn_flatbread", "item.mesquite_nut_cakes", "item.mesquite_pod_cakes", "item.sunflower_corn_bread", "item.corn_turkey_pie");
+            Common(4, "item.acorn_biscuits", "item.potato_butter_rolls", "item.coconut_macaroons");
+            Premium(1, "item.premium_apple_pie", 8); Premium(1, "item.strawberry_cream_roll", 7);
+            Premium(2, "item.honey_brioche", 5); Premium(2, "item.blackberry_cream_pastry", 7);
+            Premium(3, "item.pumpkin_cow_cheese_galette", 8); Premium(3, "item.mint_sugar_rolls", 9);
+            Premium(4, "item.vanilla_cacao_celebration_cake", 10); Premium(4, "item.coconut_cream_tart", 10);
             return list;
         }
     }

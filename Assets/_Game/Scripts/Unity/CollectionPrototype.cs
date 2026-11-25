@@ -58,7 +58,13 @@ namespace TheTrailWalker
         private Camera cameraView;
         private Material material;
         private RectTransform safe, bag, aperture, itemsLayer;
-        private Text status, feedback, inventoryLabel;
+        private Text status, feedback, inventoryLabel, titleLabel;
+        private readonly List<GameObject> counterHiddenButtons = new List<GameObject>();   // debug buttons a counter view hides (SetCounterChrome)
+        // The always-on debug HUD on the safe area (x0, y0, x1, y1), shared with the counter layout checks (Milestone14Validation).
+        public static readonly UnityEngine.Rect TitleBand = UnityEngine.Rect.MinMaxRect(0.02f, 0.94f, 0.98f, 0.99f), StatusBand = UnityEngine.Rect.MinMaxRect(0.02f, 0.865f, 0.98f, 0.94f),
+            FeedbackBand = UnityEngine.Rect.MinMaxRect(0.02f, 0.735f, 0.98f, 0.81f), ResetSaveBand = UnityEngine.Rect.MinMaxRect(0.76f, 0.81f, 0.98f, 0.86f),
+            UnlockCampsBand = UnityEngine.Rect.MinMaxRect(0.20f, 0.61f, 0.45f, 0.66f), LearnRecipesBand = UnityEngine.Rect.MinMaxRect(0.20f, 0.49f, 0.45f, 0.54f),
+            AutoSortBand = UnityEngine.Rect.MinMaxRect(0.20f, 0.55f, 0.45f, 0.60f), ClaimOverflowBand = UnityEngine.Rect.MinMaxRect(0.74f, 0.55f, 0.98f, 0.60f);
         private readonly List<Bundle> bundles = new List<Bundle>();
         private readonly Dictionary<int, Contact> contacts = new Dictionary<int, Contact>();
         private readonly RaycastHit[] occlusionHits = new RaycastHit[32];
@@ -231,8 +237,8 @@ namespace TheTrailWalker
             Image marker = speedMarker.gameObject.AddComponent<Image>(); marker.color = new Color(0.35f, 0.08f, 0.04f, 1f); marker.raycastTarget = false;
             speedValue = Label(safe, "", 0.01f, 0, 0.30f, 0, 20); speedValue.alignment = TextAnchor.LowerLeft;
             speedGauge.gameObject.SetActive(false); speedValue.gameObject.SetActive(false);
-            Label(safe, "THE TRAIL WALKER / COLLECTION", 0.02f, 0.94f, 0.98f, 0.99f, 27);
-            status = Label(safe, "", 0.02f, 0.865f, 0.98f, 0.94f, 23);
+            titleLabel = Label(safe, "THE TRAIL WALKER / COLLECTION", TitleBand.xMin, TitleBand.yMin, TitleBand.xMax, TitleBand.yMax, 27);
+            status = Label(safe, "", StatusBand.xMin, StatusBand.yMin, StatusBand.xMax, StatusBand.yMax, 23);
             // Four status lines with travel info: shrink to fit instead of clipping.
             status.resizeTextForBestFit = true; status.resizeTextMinSize = 12; status.resizeTextMaxSize = 23;
             // Debug cleanup, second pass (user, November 7, 2026): the camp world drops EMPTY, EAT SELECTED (item details
@@ -245,21 +251,21 @@ namespace TheTrailWalker
             // The older collection and survival scenes keep their fixtures because they have no crafting.
             if (!milestone5) Button(safe, "MIXED", 0.26f, 0.81f, 0.48f, 0.86f, () => ResetFixture(1));
             if (!milestone5) Button(safe, "FULL BAG", 0.5f, 0.81f, 0.74f, 0.86f, () => ResetFixture(2));
-            Button(safe, "RESET SAVE", 0.76f, 0.81f, 0.98f, 0.86f, ConfirmReset);
-            feedback = Label(safe, "Swipe a pickup DOWN quickly, or hold then drag into the bag.", 0.02f, 0.735f, 0.98f, 0.81f, 23);
+            Button(safe, "RESET SAVE", ResetSaveBand.xMin, ResetSaveBand.yMin, ResetSaveBand.xMax, ResetSaveBand.yMax, ConfirmReset);
+            feedback = Label(safe, "Swipe a pickup DOWN quickly, or hold then drag into the bag.", FeedbackBand.xMin, FeedbackBand.yMin, FeedbackBand.xMax, FeedbackBand.yMax, 23);
             // Milestone 6 debug: interactable target tier and tool kits for Normal/Elite and tier comparisons.
             if (!milestone5) Button(safe, "TRAIL START", 0.47f, 0.67f, 0.72f, 0.72f, ReturnToTrailStart);
             if (milestone4)
             {
                 if (!milestone5) Button(safe, "EAT SELECTED", 0.47f, 0.61f, 0.72f, 0.66f, EatSelected);
-                if (milestone5) Button(safe, "UNLOCK CAMPS", 0.20f, 0.61f, 0.45f, 0.66f, UnlockRegionCamps);
-                if (milestone5) Button(safe, "LEARN T1 RECIPES", 0.20f, 0.49f, 0.45f, 0.54f, LearnAllRecipes);
+                if (milestone5) counterHiddenButtons.Add(Button(safe, "UNLOCK CAMPS", UnlockCampsBand.xMin, UnlockCampsBand.yMin, UnlockCampsBand.xMax, UnlockCampsBand.yMax, UnlockRegionCamps).transform.parent.gameObject);
+                if (milestone5) counterHiddenButtons.Add(Button(safe, "LEARN T1 RECIPES", LearnRecipesBand.xMin, LearnRecipesBand.yMin, LearnRecipesBand.xMax, LearnRecipesBand.yMax, LearnAllRecipes).transform.parent.gameObject);
                 if (!milestone5) Button(safe, "TEST EMPTY", 0.74f, 0.61f, 0.98f, 0.66f, DebugEmptyStamina);
                 if (!milestone5) Button(safe, "TREE FOOD", 0.20f, 0.55f, 0.45f, 0.60f, () => ResetFixture(3));
                 // Debug auto sort (November 2, 2026) until the gravity/collision bag replaces manual packing.
-                if (milestone5) Button(safe, "AUTO SORT", 0.20f, 0.55f, 0.45f, 0.60f, AutoSortBag);
+                if (milestone5) counterHiddenButtons.Add(Button(safe, "AUTO SORT", AutoSortBand.xMin, AutoSortBand.yMin, AutoSortBand.xMax, AutoSortBand.yMax, AutoSortBag).transform.parent.gameObject);
                 if (!milestone5) Button(safe, "ADD SPARE GEAR", 0.47f, 0.55f, 0.72f, 0.60f, GrantSpareGear);
-                Button(safe, "CLAIM OVERFLOW", 0.74f, 0.55f, 0.98f, 0.60f, ClaimOverflow);
+                counterHiddenButtons.Add(Button(safe, "CLAIM OVERFLOW", ClaimOverflowBand.xMin, ClaimOverflowBand.yMin, ClaimOverflowBand.xMax, ClaimOverflowBand.yMax, ClaimOverflow).transform.parent.gameObject);
                 CreateGearPanel();
             }
             inventoryLabel = Button(safe, "BAG", 0.02f, 0.04f, 0.22f, 0.085f, BagButton);
@@ -447,6 +453,7 @@ namespace TheTrailWalker
         }
         private TheTrailWalker.Domain.Settlement.LumberFieldState lumber = new TheTrailWalker.Domain.Settlement.LumberFieldState();
         private TheTrailWalker.Domain.Settlement.ShopState shops = new TheTrailWalker.Domain.Settlement.ShopState();
+        private TheTrailWalker.Domain.Settlement.BalloonState balloon = new TheTrailWalker.Domain.Settlement.BalloonState();
         private void AdvanceShopVisit() => TheTrailWalker.Domain.Settlement.ShopService.AdvanceVisit(shops);
 
         private void ConfirmReset()
@@ -455,7 +462,7 @@ namespace TheTrailWalker
             resetPending = false;
             try
             {
-                saveStore.ArchiveForReset(); saveBlocked = false; lastSavedState = null; crafting = new CraftingState(); missions = new TheTrailWalker.Domain.Missions.MissionState(); settlement = TheTrailWalker.Domain.Travel.SettlementState.New(0); home = TheTrailWalker.Domain.Settlement.HomeState.New(); homeStorage = new TheTrailWalker.Domain.Settlement.HomeStorage(); warehouse = new TheTrailWalker.Domain.Economy.WarehouseState(); warehouseLog = new List<TheTrailWalker.Domain.Economy.TradeRecord>(); lumber = new TheTrailWalker.Domain.Settlement.LumberFieldState(); shops = new TheTrailWalker.Domain.Settlement.ShopState();
+                saveStore.ArchiveForReset(); saveBlocked = false; lastSavedState = null; crafting = new CraftingState(); missions = new TheTrailWalker.Domain.Missions.MissionState(); settlement = TheTrailWalker.Domain.Travel.SettlementState.New(0); home = TheTrailWalker.Domain.Settlement.HomeState.New(); homeStorage = new TheTrailWalker.Domain.Settlement.HomeStorage(); warehouse = new TheTrailWalker.Domain.Economy.WarehouseState(); warehouseLog = new List<TheTrailWalker.Domain.Economy.TradeRecord>(); lumber = new TheTrailWalker.Domain.Settlement.LumberFieldState(); shops = new TheTrailWalker.Domain.Settlement.ShopState(); balloon = new TheTrailWalker.Domain.Settlement.BalloonState();
                 CloseContainer();
                 if (inventoryOpen) { movement.CloseInventory(); inventoryOpen = false; LayoutBackpack(); }
                 router.CancelAll(); movement.Reset();
@@ -652,7 +659,9 @@ namespace TheTrailWalker
             if (saveBlocked || (milestone4 && stamina.Fainted)) return false;
             // Interactables first: their selection colliders are triggers, which the pickup ray below ignores (and that
             // ray finds nothing at all when only an interactable is under the finger).
+            if (BalloonOpen) return LumberPointerBegin(pointer, position);   // the balloon counter shares the counter tap tracking
             if (milestone5 && TryTapMissionLady(position)) return true; // the mission lady opens the mission papers
+            if (milestone5 && TryTapBalloon(position)) return true;   // seated at a host camp, the balloon opens its interior
             if (milestone5 && TryStartHarvestAt(position)) return true;
             if (!Physics.Raycast(cameraView.ScreenPointToRay(position), out RaycastHit hit, cameraView.farClipPlane, ~0, QueryTriggerInteraction.Ignore)) return false;
             Bundle bundle = bundles.Find(b => b.Collider == hit.collider && b.Item.Owner == ItemOwner.World);
@@ -746,7 +755,7 @@ namespace TheTrailWalker
             if (!canceled && contact.Dragging) Commit(pointer, contact, OverOpening(position), position);
             else
             {
-                if (!canceled && milestone4 && !contact.World && Time.unscaledTime - contact.Started >= 0.25f) ShowDetails(contact.Item);
+                if (milestone4 && ShowsDetailsOnRelease(canceled, contact.Dragging, contact.World, Time.unscaledTime - contact.Started)) ShowDetails(contact.Item);
                 Release(pointer, contact);
             }
         }
@@ -1054,15 +1063,17 @@ namespace TheTrailWalker
             Redraw(); if (detailsPanel != null) detailsPanel.SetActive(false);
             SaveNow(); if (!saveBlocked) Say("A test serving queued one heart of gradual recovery.");
         }
-        private void ShowDetails(ItemEntry item)
+        public static bool DetailsShowsEat(ItemEntry item, bool inBag) => inBag && item.Definition.FoodHearts > 0 && item.Ready;
+        public static bool DetailsShowsEquip(ItemEntry item, bool inBag) => inBag && item.Definition.GearSlot.HasValue && item.Owner == ItemOwner.Backpack;
+        private void ShowDetails(ItemEntry item, bool inBag = true)
         {
             if (detailsPanel == null || item == null || item.Owner == ItemOwner.Consumed) return;
-            selected = item;
-            string durability = item.Definition.Stackable ? "" : "\nDurability " + DurabilityText(item.Definition, item.HasWearRemaining ? item.WearRemaining : item.Profile.Durability, item.Profile.MaxDurability);
+            if (inBag) selected = item;
+            string durability = !ShowsDurability(item.Definition) ? "" : "\nDurability " + DurabilityText(item.Definition, item.HasWearRemaining ? item.WearRemaining : item.Profile.Durability, item.Profile.MaxDurability);
             detailsText.text = $"{item.Definition.Name}  ({CategoryLabel(item.Definition)})\nQuantity {item.Quantity} | {(item.Ready ? "Ready" : "Pending")} | Value {TheTrailWalker.Domain.Economy.Money.Format(item.Profile.UnitValue)} cash each{durability}";
             detailsQuality.Bind(item, true);
-            detailEat.SetActive(item.Definition.FoodHearts > 0 && item.Ready);
-            detailEquip.SetActive(item.Definition.GearSlot.HasValue && item.Owner == ItemOwner.Backpack);
+            detailEat.SetActive(DetailsShowsEat(item, inBag));
+            detailEquip.SetActive(DetailsShowsEquip(item, inBag));
             detailsPanel.transform.SetAsLastSibling(); // in front of the crafting and equipment menus
             detailsPanel.SetActive(true);
             // Auto-close when no action is taken; EAT and EQUIP close it immediately.
@@ -1196,7 +1207,8 @@ namespace TheTrailWalker
             int oldX = item.X, oldY = item.Y;
             try
             {
-                WornGear gear = item.HasWearRemaining
+                WornGear gear = SpecialGear.Is(item.Definition.Id) ? new WornGear(item.Id, slot, item.Definition.GearRank, 5, 0, true, SpecialGear.Stat(item.Definition.Id))
+                    : item.HasWearRemaining
                     ? new WornGear(item.Id, slot, item.Definition.GearRank, item.Quality, item.WearRemaining)
                     : WornGear.CreateTestGear(item.Id, slot, item.Definition.GearRank, item.Quality, 100);
                 if (!ledger.TryWear(item, token, out string reason)) { Say(reason); return false; }
@@ -1216,14 +1228,18 @@ namespace TheTrailWalker
             if (!selectedGearSlot.HasValue) { Say("Select a worn slot first, or drag it down into the bag."); return; }
             if (TakeOffSlot(selectedGearSlot.Value, null)) selectedGearSlot = null;
         }
+        // Special gear has no durability to show. Infinite gear without a special stat or a bag item is legacy test gear.
+        public static bool ShowsDurability(ItemDefinition definition) => !definition.Stackable && !SpecialGear.Is(definition.Id);
+        public static bool TakeOffAllowed(WornGear gear, bool hasBagItem) =>
+            !gear.InstanceId.StartsWith("debug-", StringComparison.Ordinal) && (!gear.Infinite || (gear.StatOverride.HasValue && hasBagItem));
         // Returns the worn item to the bag, at the drop point when given; overflow only when the bag has no room.
         private bool TakeOffSlot(GearSlot slot, Vector2? drop, bool swapping = false)
         {
             if (saveBlocked || stamina.Fainted || !inventoryOpen) return false;
             WornGear gear = equipment.Get(slot);
             if (gear == null) { Say("That slot already has its default gear."); return false; }
-            if (gear.Infinite || gear.InstanceId.StartsWith("debug-", StringComparison.Ordinal)) { Say("Older virtual test gear has no bag item; use EXPIRE SLOT."); return false; }
             ItemEntry item = null; foreach (ItemEntry candidate in ledger.Entries) if (candidate.Id == gear.InstanceId && candidate.Owner == ItemOwner.Worn) { item = candidate; break; }
+            if (!TakeOffAllowed(gear, item != null)) { Say("Older virtual test gear has no bag item; use EXPIRE SLOT."); return false; }
             if (item == null) { saveBlocked = true; movement.SetPause(MovementPauseReasons.Exhausted, true); Say("Worn item is missing; progress is paused."); return false; }
             router.CancelAll();
             if (!ledger.TakeOff(item.Id, gear.RemainingDistance)) { Say("Could not take off that wearable."); return false; }
@@ -1442,10 +1458,10 @@ namespace TheTrailWalker
                     {
                         WornGear gear = equipment.Get(slot); if (gear == null) continue;
                         snapshot.survival.gear.Add(new SavedGear { id = gear.InstanceId, slot = gear.Slot.ToString(), rank = gear.Rank,
-                            quality = gear.Quality, remainingDistance = gear.RemainingDistance, infinite = gear.Infinite });
+                            quality = gear.Quality, remainingDistance = gear.RemainingDistance, infinite = gear.Infinite, statOverride = gear.StatOverride ?? 0 });
                     }
                 }
-                if (milestone5) { snapshot.economy = 1; snapshot.trade = tradeSession?.Data; snapshot.tradeLog = new List<TheTrailWalker.Domain.Economy.TradeRecord>(tradeLog); snapshot.warehouse = SessionSaveStore.SaveWarehouse(warehouse); snapshot.lumber = SessionSaveStore.SaveLumber(lumber); snapshot.shops = SessionSaveStore.SaveShops(shops); snapshot.warehouseLog = new List<TheTrailWalker.Domain.Economy.TradeRecord>(warehouseLog); snapshot.segmentId = travel.CurrentSegment.Id; snapshot.travel = SessionSaveStore.SaveTravel(travel); snapshot.settlement = SaveSettlementForSnapshot(); snapshot.home = SaveHomeForSnapshot(); snapshot.harvested = HarvestedForSave(); snapshot.crafting = SaveCrafting(); snapshot.missions = SaveMissions(); snapshot.statistics = SaveStatistics(); }
+                if (milestone5) { snapshot.economy = 1; snapshot.trade = tradeSession?.Data; snapshot.tradeLog = new List<TheTrailWalker.Domain.Economy.TradeRecord>(tradeLog); snapshot.warehouse = SessionSaveStore.SaveWarehouse(warehouse); snapshot.lumber = SessionSaveStore.SaveLumber(lumber); snapshot.shops = SessionSaveStore.SaveShops(shops); snapshot.balloon = SessionSaveStore.SaveBalloon(balloon); snapshot.warehouseLog = new List<TheTrailWalker.Domain.Economy.TradeRecord>(warehouseLog); snapshot.segmentId = travel.CurrentSegment.Id; snapshot.travel = SessionSaveStore.SaveTravel(travel); snapshot.settlement = SaveSettlementForSnapshot(); snapshot.home = SaveHomeForSnapshot(); snapshot.harvested = HarvestedForSave(); snapshot.crafting = SaveCrafting(); snapshot.missions = SaveMissions(); snapshot.statistics = SaveStatistics(); }
                 AppendSavedItems(snapshot, ledger, milestone5, travel.CurrentSegment.Id,
                     item => { Bundle bundle = bundles.Find(b => b.Item == item); return bundle == null ? Vector3.zero : bundle.View.transform.position; },
                     item => item.Owner == ItemOwner.Worn && item.Definition.GearSlot.HasValue ? equipment?.Get(item.Definition.GearSlot.Value) : null);
@@ -1500,11 +1516,11 @@ namespace TheTrailWalker
         {
             PrepareRestore(snapshot, milestone5);
             SessionSaveStore.Validate(snapshot, path.Length, out ledger);
-            if (milestone5) { RestoreTrade(snapshot); travel = SessionSaveStore.RestoreTravel(snapshot, scene.Catalog); RestoreHarvested(snapshot.harvested); RestoreCrafting(snapshot.crafting); RestoreMissions(snapshot.missions); RestoreStatistics(snapshot.statistics); RestoreSettlementFromSnapshot(snapshot); warehouse = SessionSaveStore.RestoreWarehouse(snapshot, ledger.Entries); warehouseLog = snapshot.warehouseLog ?? new List<TheTrailWalker.Domain.Economy.TradeRecord>(); lumber = SessionSaveStore.RestoreLumber(snapshot); shops = SessionSaveStore.RestoreShops(snapshot); }
+            if (milestone5) { RestoreTrade(snapshot); travel = SessionSaveStore.RestoreTravel(snapshot, scene.Catalog); RestoreHarvested(snapshot.harvested); RestoreCrafting(snapshot.crafting); RestoreMissions(snapshot.missions); RestoreStatistics(snapshot.statistics); RestoreSettlementFromSnapshot(snapshot); warehouse = SessionSaveStore.RestoreWarehouse(snapshot, ledger.Entries); warehouseLog = snapshot.warehouseLog ?? new List<TheTrailWalker.Domain.Economy.TradeRecord>(); lumber = SessionSaveStore.RestoreLumber(snapshot); shops = SessionSaveStore.RestoreShops(snapshot); balloon = SessionSaveStore.RestoreBalloon(snapshot); }
             if (milestone4)
             {
                 equipment = new EquipmentState();
-                foreach (SavedGear gear in snapshot.survival.gear) equipment.Equip(new WornGear(gear.id, (GearSlot)Enum.Parse(typeof(GearSlot), gear.slot), gear.rank, gear.quality, gear.remainingDistance, gear.infinite));
+                foreach (SavedGear gear in snapshot.survival.gear) equipment.Equip(new WornGear(gear.id, (GearSlot)Enum.Parse(typeof(GearSlot), gear.slot), gear.rank, gear.quality, gear.remainingDistance, gear.infinite, gear.statOverride != 0 ? gear.statOverride : (double?)null));
                 stamina.Restore(snapshot.survival.hearts, snapshot.survival.maximum, snapshot.survival.pendingFood, snapshot.survival.fainted, snapshot.survival.faintElapsed);
                 router.InteractionLocked = stamina.Fainted;
                 faintEventId = snapshot.survival.faintEventId; faintLoss.Clear(); faintLoss.AddRange(snapshot.survival.loss);

@@ -66,6 +66,19 @@ namespace TheTrailWalker
         private static readonly HashSet<string> Upright = new HashSet<string> { PrototypeItems.Branch.Id, PrototypeItems.Hemp.Id, PrototypeItems.NettleFiber.Id };
         public static Quaternion TrailRotation(ItemDefinition definition) => Upright.Contains(definition.Id) ? Quaternion.Euler(0, 0, 90f) : Quaternion.identity;
 
+        private static BalloonGoodsArtCatalog specialCatalog;
+        // Special balloon gear shows the catalog's item display model.
+        private static GameObject AttachSpecial(GameObject pickup, ItemDefinition definition)
+        {
+            if (!SpecialGear.Is(definition.Id)) return null;
+            if (specialCatalog == null) specialCatalog = Resources.Load<BalloonGoodsArtCatalog>("BalloonGoods/BalloonGoodsArtCatalog");
+            BalloonSpecialItemArt art = specialCatalog == null ? null : System.Array.Find(specialCatalog.SpecialItems, x => x.Id == definition.Id);
+            if (art == null || art.Display == null) return null;
+            GameObject visual = Object.Instantiate(art.Display, pickup.transform, false);
+            pickup.GetComponent<Renderer>().enabled = false;
+            return visual;
+        }
+
         // Same model lookup the trail uses; returns the attached visual or null for items without a mesh yet.
         public static GameObject Attach(GameObject pickup, ItemDefinition definition)
         {
@@ -74,7 +87,8 @@ namespace TheTrailWalker
                 ?? Region05ResourceVisuals.Attach(pickup, definition) ?? Region06ResourceVisuals.Attach(pickup, definition)
                 ?? Harvest.Tier1DropVisuals.Attach(pickup, definition)
                 ?? Region01ResourceVisuals.AttachPath(pickup, Tier1CraftedItems.VisualPath(definition.Id))
-                ?? Region01ResourceVisuals.AttachPath(pickup, Tier2ShopVisuals.PathFor(definition.Id));
+                ?? Region01ResourceVisuals.AttachPath(pickup, Tier2ShopVisuals.PathFor(definition.Id))
+                ?? AttachSpecial(pickup, definition);
             if (visual != null) visual.transform.localScale = Shape(definition);
             return visual;
         }

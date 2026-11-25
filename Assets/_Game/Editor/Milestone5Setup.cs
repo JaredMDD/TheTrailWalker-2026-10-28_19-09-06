@@ -19,7 +19,7 @@ namespace TheTrailWalker.Editor
         public static void Prepare()
         {
             KeepFogVariants();
-            Milestone4Setup.Prepare(); Milestone4EquipmentValidation.Run(); Milestone5Validation.Run(); Milestone6Validation.Run(); Milestone7Validation.Run(); Milestone8Validation.Run(); Milestone9Validation.Run(); TierOneRegionsValidation.Run(); Phase1ConsistencyValidation.Run(); SettlementShellValidation.Run(); HomeValidation.Run(); Milestone12Validation.Run(); Milestone13Validation.Run(); Milestone14Validation.Run();
+            Milestone4Setup.Prepare(); Milestone4EquipmentValidation.Run(); Milestone5Validation.Run(); Milestone6Validation.Run(); Milestone7Validation.Run(); Milestone8Validation.Run(); Milestone9Validation.Run(); TierOneRegionsValidation.Run(); Phase1ConsistencyValidation.Run(); SettlementShellValidation.Run(); HomeValidation.Run(); Milestone12Validation.Run(); Milestone13Validation.Run(); Milestone14Validation.Run(); Milestone14BalloonValidation.Run();
             Create(BootstrapPath, () => new GameObject("Session", typeof(GameBootstrapper)).GetComponent<GameBootstrapper>().Configure("TravelTrail"));
             Create(TrailPath, () =>
             {

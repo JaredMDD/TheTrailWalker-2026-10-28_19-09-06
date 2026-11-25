@@ -27,6 +27,7 @@ namespace TheTrailWalker.Editor
             BlockoutChecks();
             HudChecks();
             SettlementMapTravelChecks();
+            RegionListChecks();
             Directory.CreateDirectory("Builds/Validation"); File.WriteAllLines("Builds/Validation/Settlement-shell-checks.txt", passed);
         }
 
@@ -40,6 +41,80 @@ namespace TheTrailWalker.Editor
         }
 
         // Task 7: map travel from the settlement goes to the region's first camp and becomes the last visited camp.
+        // Map region list (phone round R1, Nov 21): newest region on top, emblems, and the region's three resources as icons.
+        private static void RegionListChecks()
+        {
+            TravelCatalog catalog = TravelCatalog.Prototype();
+            int[] order = CollectionPrototype.RegionListOrder(catalog);
+            Check(order.Length == catalog.Regions.Count && order.Zip(order.Skip(1), (a, b) => a > b).All(x => x) && order.Last() == 1,
+                "RegionListOrder: the highest region is the top row and region 1 the bottom row (" + string.Join(",", order) + ")");
+            Check(catalog.Regions.All(r => r.LooseItemIds.Count == 3 && CollectionPrototype.RegionRowResources(r, true).SequenceEqual(r.LooseItemIds)
+                && CollectionPrototype.RegionRowResources(r, false).Count == 0), "RegionRowResources: a discovered row lists its three loose items, an undiscovered row none");
+            int[] missing = catalog.Regions.Where(r => CollectionPrototype.RegionEmblem(r.Number) == null).Select(r => r.Number).ToArray();
+            Check(missing.Length == 0, "RegionEmblemsExist: an emblem sprite loads for every catalog region (missing: " + string.Join(",", missing) + ")");
+            // One row per region (the Settlement card is gone, R3); safe area = whole screen; 401 dpi phone, 320 dpi assumed for 720x1680.
+            foreach (var (w, h, dpi) in new[] { (1116f, 2480f, 401f), (720f, 1680f, 320f) })
+            {
+                float scale = Mathf.Sqrt(w / 720f * h / 1280f);   // CanvasScaler: 720x1280 reference, match 0.5
+                Vector2 row = CollectionPrototype.RegionRowSize(new Vector2(w / scale, h / scale), catalog.Regions.Count);
+                CollectionPrototype.RegionRowRects(row.x, row.y, out Rect[] icons, out Rect arrow);
+                float min = 36f * dpi / 160f, side = icons.Length == 0 ? 0f : icons.Min(r => Mathf.Min(r.width, r.height)) * scale;
+                bool apart = icons.Length == 3 && icons.All(a => !a.Overlaps(arrow) && icons.All(b => a == b || !a.Overlaps(b)));
+                Check(apart && side >= min - 0.01f, "RegionRowFits at " + w + "x" + h + ": icons " + side.ToString("0") + " px (36 dp = " + min.ToString("0") + " px), last icon ends at "
+                    + (icons.Length == 0 ? 0f : icons.Max(r => r.xMax)).ToString("0") + ", arrow starts at " + arrow.xMin.ToString("0") + " (canvas units)");
+            }
+
+            // Phone round R3: the camp HUD's settlement list replaced the map's Settlement card. The region list, built on an edit-mode
+            // CollectionPrototype seated at a camp with the settlement discovered (the card's old conditions), has no card and starts with the newest region.
+            const System.Reflection.BindingFlags any = System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Instance;
+            string left = string.Join(", ", new[] { "ShowSettlementCard", "BuildSettlementCard", "SelectSettlement" }.Where(n => typeof(CollectionPrototype).GetMember(n, any).Length > 0));
+            var root = new GameObject("map card check", typeof(RectTransform));
+            try
+            {
+                var proto = root.AddComponent<CollectionPrototype>();
+                var safe = new GameObject("Safe area", typeof(RectTransform)).GetComponent<RectTransform>(); safe.SetParent(root.transform, false); safe.sizeDelta = new Vector2(598f, 1431f);
+                Action<string, object> set = (n, v) => typeof(CollectionPrototype).GetField(n, any).SetValue(proto, v);
+                TravelState travel = TravelState.Start(catalog);
+                SettlementState discovered = SettlementState.New(7); discovered.Discover();
+                set("safe", safe); set("travel", travel); set("settlement", discovered); set("scene", new TravelSceneInfo { Catalog = catalog, Segment = travel.CurrentSegment });
+                System.Reflection.FieldInfo phase = typeof(CollectionPrototype).GetField("phase", any); phase.SetValue(proto, Enum.Parse(phase.FieldType, "Seated"));
+                typeof(CollectionPrototype).GetMethod("CreateMapPanel", any).Invoke(proto, null);
+                set("mapRegionList", true); set("mapRegionId", travel.CurrentRegion.Id);
+                typeof(CollectionPrototype).GetMethod("BuildMapPage", any).Invoke(proto, null);
+                var page = (RectTransform)typeof(CollectionPrototype).GetField("mapPage", any).GetValue(proto);
+                RectTransform[] rows = page.Cast<Transform>().Select(t => (RectTransform)t).Where(r => r.name != "Region title").OrderByDescending(r => r.anchorMax.y).ToArray();
+                string newest = catalog.Regions.OrderByDescending(r => r.Number).First().Name;
+                Check(left.Length == 0 && page.Find("Settlement card") == null && rows.Length == catalog.Regions.Count && rows[0].name == newest && Mathf.Abs(rows[0].anchorMax.y - CollectionPrototype.RegionListTop) < 1e-4f,
+                    "MapHasNoSettlementCard: the region list builds one row per region, the newest (" + newest + ") on top (rows: " + string.Join(",", rows.Select(r => r.name)) + (left.Length > 0 ? "; still there: " + left : "") + ")");
+            }
+            finally { UnityEngine.Object.DestroyImmediate(root); }
+            NoOtherRegionCampsPageCheck(catalog);
+        }
+
+        // Phone round R5: asking for another region's camps page still builds the current region's.
+        private static void NoOtherRegionCampsPageCheck(TravelCatalog catalog)
+        {
+            const System.Reflection.BindingFlags any = System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Instance;
+            var root = new GameObject("camps page check", typeof(RectTransform));
+            try
+            {
+                var proto = root.AddComponent<CollectionPrototype>();
+                var safe = new GameObject("Safe area", typeof(RectTransform)).GetComponent<RectTransform>(); safe.SetParent(root.transform, false); safe.sizeDelta = new Vector2(598f, 1431f);
+                Action<string, object> set = (n, v) => typeof(CollectionPrototype).GetField(n, any).SetValue(proto, v);
+                TravelState travel = TravelState.Start(catalog);
+                set("safe", safe); set("travel", travel); set("scene", new TravelSceneInfo { Catalog = catalog, Segment = travel.CurrentSegment });
+                System.Reflection.FieldInfo phase = typeof(CollectionPrototype).GetField("phase", any); phase.SetValue(proto, Enum.Parse(phase.FieldType, "Seated"));
+                typeof(CollectionPrototype).GetMethod("CreateMapPanel", any).Invoke(proto, null);
+                set("mapRegionList", false); set("mapRegionId", "region.03");
+                typeof(CollectionPrototype).GetMethod("BuildMapPage", any).Invoke(proto, null);
+                var page = (RectTransform)typeof(CollectionPrototype).GetField("mapPage", any).GetValue(proto);
+                bool current = catalog.Region(travel.CurrentRegion.Id).Camps.All(c => page.Find(c.Name) != null);
+                bool foreign = catalog.Region("region.03").Camps.Any(c => page.Find(c.Name) != null);
+                Check(current && !foreign, "NoOtherRegionCampsPage: the camps page shows only the current region's camps");
+            }
+            finally { UnityEngine.Object.DestroyImmediate(root); }
+        }
+
         private static void SettlementMapTravelChecks()
         {
             TravelCatalog catalog = TravelCatalog.Prototype();
@@ -53,6 +128,16 @@ namespace TheTrailWalker.Editor
                 "Settlement map travel lands seated at the region's first camp as the last visited camp");
             state.TravelToSettlement(true, false); state.ReturnFromSettlement();
             Check(state.Seated && state.CurrentCampId == "camp.01.01", "Return after map travel goes back to that region's first camp");
+            // Phone round R5: from the settlement a reached camp of the current region is a travel target; unreached or busy is refused.
+            TravelState inTown = Camp(catalog, "camp.04.13", true);
+            inTown.TravelToSettlement(true, false);
+            int townVisit = inTown.VisitNumber;
+            Check(inTown.CanTravelToCamp("camp.04.01", false, out _) && !inTown.CanTravelToCamp("camp.04.02", false, out _) && !inTown.CanTravelToCamp("camp.04.01", true, out _)
+                && !inTown.CanTravelToCamp("camp.01.01", false, out _), "CampTravelFromSettlement: a reached camp of the current region is allowed; unreached, busy or another region is refused");
+            inTown.TravelToCamp("camp.04.01", false);
+            Check(inTown.Seated && !inTown.InSettlement && inTown.CurrentCampId == "camp.04.01" && inTown.LastTrailCampId == "camp.04.01" && inTown.VisitNumber == townVisit + 1,
+                "CampTravelFromSettlement: lands seated at that camp as the last visited camp");
+            Check(CollectionPrototype.RegionRowOpens("region.04", "region.04") && !CollectionPrototype.RegionRowOpens("region.01", "region.04"), "OnlyCurrentRegionOpens");
             TravelState outside = Camp(catalog, "camp.03.01", true);
             Check(!outside.CanTravelToRegion("region.03", false, out string why) && why == "Choose a camp in this region instead", "Outside the settlement the current region is still refused with the old reason");
             Check(state.VisitNumber == visit + 2 && CollectionPrototype.SettlementSeed(visit + 1, "camp.01.01") != CollectionPrototype.SettlementSeed(visit, "camp.03.01"), "Settlement arrival after map travel gets a new visit id (restock)");
@@ -731,16 +816,16 @@ namespace TheTrailWalker.Editor
             Check(Resources.Load<Sprite>("UI/Icons/settlement") != null && CollectionPrototype.SettlementListRowY(0) < 0f && CollectionPrototype.SettlementListRowY(1) < CollectionPrototype.SettlementListRowY(0),
                 "The settlement menu button has its icon, and the open list stacks downward below it");
             Check(!CollectionPrototype.TrailControlsVisible(true) && CollectionPrototype.TrailControlsVisible(false), "Trail-only controls are hidden in the settlement and shown on the trail");
-            Check(CollectionPrototype.SettlementListKeys(false).SequenceEqual(new[] { "return" }) && CollectionPrototype.SettlementListKeys(true).SequenceEqual(new[] { "home", "warehouse", "lumber", "farm", "mine", "tailor", "ranch", "fishery", "return" }),
-                "The settlement list shows only Return before the plot choice, then Home, Warehouse, Lumber, the five shops and Return");
-            var allKeys = new[] { "home", "warehouse", "lumber", "farm", "mine", "tailor", "ranch", "fishery", "return" };
+            Check(CollectionPrototype.SettlementListKeys(false).SequenceEqual(new[] { "return" }) && CollectionPrototype.SettlementListKeys(true).SequenceEqual(new[] { "home", "warehouse", "lumber", "bakery", "farm", "mine", "tailor", "ranch", "fishery", "return" }),
+                "The settlement list shows only Return before the plot choice, then Home, Warehouse, Lumber, the six shops and Return");
+            var allKeys = new[] { "home", "warehouse", "lumber", "bakery", "farm", "mine", "tailor", "ranch", "fishery", "return" };
             bool SlotsContiguous(bool chosen)
             {
                 int[] slots = allKeys.Select(k => CollectionPrototype.SettlementListSlot(k, chosen)).Where(s => s >= 0).OrderBy(s => s).ToArray();
                 return slots.Length == CollectionPrototype.SettlementListKeys(chosen).Length && slots.Select((s, i) => s == i).All(x => x);
             }
             Check(CollectionPrototype.SettlementListSlot("return", false) == 0 && CollectionPrototype.SettlementListSlot("home", false) == -1 && SlotsContiguous(false) && SlotsContiguous(true)
-                && CollectionPrototype.SettlementListSlot("home", true) == 0 && CollectionPrototype.SettlementListSlot("return", true) == 8,
+                && CollectionPrototype.SettlementListSlot("home", true) == 0 && CollectionPrototype.SettlementListSlot("return", true) == 9,
                 "Visible list buttons take contiguous slots from the top (a lone Return takes slot 1)");
 
             // Arrival: a fresh profile's placeholder state is reseeded from the live visit and camp, then discovered; never reseeded once discovered.
@@ -761,16 +846,14 @@ namespace TheTrailWalker.Editor
                 && (b.Countdown > 1 ? n.Level == b.Level && n.Countdown == b.Countdown - 1 : n.Level == b.Level + 1))),
                 "Arrival applies regions discovered since the last visit");
 
-            // Map shortcut (Task 6). Review Focus 2 (the shortcut is refused while busy) is pinned in TravelChecks:
-            // "The shortcut is refused while busy" (CanTravelToSettlement(true, busy: true, ...) is false).
-            Check(CollectionPrototype.ShowSettlementCard(true, true, false), "The Settlement card shows when discovered and seated at a camp");
-            Check(!CollectionPrototype.ShowSettlementCard(false, true, false) && !CollectionPrototype.ShowSettlementCard(true, false, false) && !CollectionPrototype.ShowSettlementCard(true, true, true),
-                "The Settlement card is hidden when undiscovered, not seated, or in the settlement");
+            // Camp shortcut (Task 6; since phone round R3 the camp HUD's settlement list, not a map card). Review Focus 2 (the shortcut is
+            // refused while busy) is pinned in TravelChecks: "The shortcut is refused while busy" (CanTravelToSettlement(true, busy: true, ...) is false).
+            Check(CollectionPrototype.CampListVisible(true, true, false, false), "The camp settlement list shows when discovered and seated at a camp");
+            Check(!CollectionPrototype.CampListVisible(false, true, false, false) && !CollectionPrototype.CampListVisible(true, false, false, false) && !CollectionPrototype.CampListVisible(true, true, true, false),
+                "The camp settlement list is hidden when undiscovered, not seated, or in the settlement");
             Check(CollectionPrototype.MapRegionTravelAllowed(true) && CollectionPrototype.MapRegionTravelAllowed(false), "Region travel is allowed on the map in the settlement and at camps");
-            Check(CollectionPrototype.MapCampTravelAllowed(false) && !CollectionPrototype.MapCampTravelAllowed(true), "Camp travel on the map is refused in the settlement and allowed at camps");
-            Check(CollectionPrototype.SettlementCampPageNote == "From the settlement, travel goes to the region's first camp.", "The settlement camp page note reads the first-camp text");
             var undiscoveredState = SettlementState.New(0);
-            Check(!CollectionPrototype.ShowSettlementCard(undiscoveredState.Discovered, true, false), "A fresh profile's map shows no Settlement card (non-settlement map unchanged)");
+            Check(!CollectionPrototype.CampListVisible(undiscoveredState.Discovered, true, false, false), "A fresh profile's camp shows no settlement list");
 
             // Drag: the street follows the finger (a drag to the right moves the camera to the left), proportional to the drag.
             float right = CollectionPrototype.StreetDragMetres(100f, 1000f, 52f, 0.5f, 22f), left = CollectionPrototype.StreetDragMetres(-200f, 1000f, 52f, 0.5f, 22f);

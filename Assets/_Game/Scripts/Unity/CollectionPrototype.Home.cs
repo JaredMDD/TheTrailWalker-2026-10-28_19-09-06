@@ -323,6 +323,7 @@ namespace TheTrailWalker
         private void ResetHomeView()
         {
             CloseContainer();   // an open chest or rack closes on every exit path, also outside a home view
+            TearDownBalloon();   // travel and context changes also leave the balloon interior (not a HomeOpen view)
             if (!HomeOpen) return;
             TearDownWarehouse();
             TearDownLumber();

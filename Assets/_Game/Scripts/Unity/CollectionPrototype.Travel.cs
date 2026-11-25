@@ -132,6 +132,8 @@ namespace TheTrailWalker
         private void UpdateTravel()
         {
             if (phase == TravelPhase.Settlement) { UpdateSettlement(); return; }
+            UpdateCampList();   // the settlement list while seated (CollectionPrototype.Settlement)
+            UpdateBalloon();   // the balloon interior's exits and tags (CollectionPrototype.Balloon)
             if (HomeOpen) ResetHomeView();   // the phase left the settlement while a home view was open
             if (phase == TravelPhase.Approaching || phase == TravelPhase.Leaving)
             {
@@ -244,12 +246,15 @@ namespace TheTrailWalker
         }
 
         private GameObject settlementDebugButton;
+        // Camp debug buttons (safe area x0, y0, x1, y1), shared with the camp layout check. +1 GOLD sits left of the right-hand column,
+        // which the camp's settlement list holds (phone round R3).
+        public static readonly UnityEngine.Rect GoldButtonBand = UnityEngine.Rect.MinMaxRect(0.47f, 0.61f, 0.72f, 0.66f), SettlementDebugBand = UnityEngine.Rect.MinMaxRect(0.20f, 0.67f, 0.60f, 0.72f);
         private void CreateTravelHud()
         {
             // +1,000 CASH removed (user, November 14, 2026): furniture is bought with trading cash only. +1 GOLD stays until gold has a mechanic.
-            goldButton = Button(safe, "+1 GOLD", 0.74f, 0.725f, 0.98f, 0.775f, () => { travel.GrantTestGold(1); statistics.AddGold(1); SaveNow(); RefreshTravelHud(); Say("Added 1 test gold (debug)."); }).transform.parent.gameObject;
+            goldButton = Button(safe, "+1 GOLD", GoldButtonBand.xMin, GoldButtonBand.yMin, GoldButtonBand.xMax, GoldButtonBand.yMax, () => { travel.GrantTestGold(1); statistics.AddGold(1); SaveNow(); RefreshTravelHud(); Say("Added 1 test gold (debug)."); }).transform.parent.gameObject;
             // Debug entry (camp only; the normal unlock stays the arch after region four).
-            settlementDebugButton = Button(safe, "SETTLEMENT (DEBUG)", 0.20f, 0.67f, 0.60f, 0.72f, DebugSettlement).transform.parent.gameObject;
+            settlementDebugButton = Button(safe, "SETTLEMENT (DEBUG)", SettlementDebugBand.xMin, SettlementDebugBand.yMin, SettlementDebugBand.xMax, SettlementDebugBand.yMax, DebugSettlement).transform.parent.gameObject;
             settlementDebugButton.SetActive(false);
             // Ferry toll dialog: shown by the ferry NPC when the player reaches the river.
             tollPanel = Rect("Ferry toll", safe, 0.08f, 0.36f, 0.92f, 0.64f).gameObject;
@@ -263,7 +268,7 @@ namespace TheTrailWalker
             CreateMapPanel(); // worn region map (CollectionPrototype.Map.cs)
             CreateTradeHud(); // camp conveyor trade and wallet (CollectionPrototype.Trade.cs)
             CreateRouteCard(); // departure preview and remaining leg (CollectionPrototype.Route.cs)
-            CreateSettlementHud(); // settlement list, notes, plot choice and Return (settlement scene only; CollectionPrototype.Settlement.cs)
+            CreateSettlementHud(); // settlement list (also at camps), notes, plot choice and Return (CollectionPrototype.Settlement.cs)
         }
 
         private void RefreshTravelHud()
@@ -271,7 +276,7 @@ namespace TheTrailWalker
             if (goldButton == null || travel == null) return;
             bool seated = phase == TravelPhase.Seated;
             if (!seated && phase != TravelPhase.Settlement && mapPanel.activeSelf) CloseMap();   // the settlement map travels by region, so it stays open there
-            bool wallet = seated && TrailControlsVisible(InSettlementScene);   // debug grants are camp-only, never in the settlement
+            bool wallet = seated && TrailControlsVisible(InSettlementScene) && !BalloonOpen;   // debug grants are camp-only, never in the settlement or the balloon
             goldButton.SetActive(wallet);
             if (settlementDebugButton != null) settlementDebugButton.SetActive(wallet);
             SetMenu(menuOpen);
@@ -290,7 +295,7 @@ namespace TheTrailWalker
             RegionDefinition region = scene.Catalog.Region(regionId);
             CommitTravel(() => travel.TravelToRegion(regionId, TravelBusy), $"Travelled to {region.Name}: {region.FirstCamp.Name}.");
         }
-        // Shortcut from any camp (map card) or the debug button (allowUndiscovered). Arrival is applied inside the move step
+        // Shortcut from any camp (the camp settlement list) or the debug button (allowUndiscovered). Arrival is applied inside the move step
         // exactly like the arch, so the save and the reload carry the seeded, discovered settlement and the welcome note.
         // Busy rules are the camp-travel ones (TravelBusy); the paper note shows the refusal reason.
         private void TravelToSettlementFromCamp(bool allowUndiscovered)
@@ -302,8 +307,19 @@ namespace TheTrailWalker
             CommitTravel(() => { string rolled = travel.TravelToSettlement(discovered, TravelBusy); ApplySettlementArrival(); AdvanceShopVisit(); return rolled; }, SettlementWelcome);
             if (saveBlocked) settlementWelcomePending = false;
         }
-        private void SelectSettlement() => TravelToSettlementFromCamp(false);
         private void DebugSettlement() => TravelToSettlementFromCamp(true);
+
+        // The camp list's tapped place (null: the street), carried across the scene reload that enters the settlement. Static and
+        // never saved: the next settlement entry takes it once (EnterSettlementContext), so a later reload or restart never re-opens it.
+        private static string settlementOpenPending;
+        private static string TakeSettlementOpen() { string place = settlementOpenPending; settlementOpenPending = null; return place; }
+        private void CampListTapped(string key)
+        {
+            settlementOpenPending = key == "settlement" ? null : key;
+            TravelToSettlementFromCamp(false);
+            if (phase != TravelPhase.Transition || saveBlocked) settlementOpenPending = null;   // refused (busy, undiscovered) or not saved: nothing carries over
+            else if (settlementOpenPending != null) settlementWelcomePending = false;   // the tapped place is the arrival, in place of the welcome note
+        }
         private void TakeFerry()
         {
             if (!travel.CanCrossRiver(TravelBusy, out string reason)) { Say(reason); return; }

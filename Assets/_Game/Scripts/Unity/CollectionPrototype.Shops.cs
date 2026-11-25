@@ -24,13 +24,13 @@ namespace TheTrailWalker
         private readonly GameObject[] shopModels = new GameObject[3];
         private RectTransform shopHud, shopSheetPage;
         private GameObject shopSheet;
-        private Text shopWalletText;
         private readonly Text[] shopSoldOutLabels = new Text[3];   // the price tags (a live offer or Sold out)
         private readonly Rect[] shopTagRects = new Rect[3];       // screen px, width 0 = hidden
         private readonly Vector3[] shopSafeCorners = new Vector3[4];
         private readonly RectTransform[] shopTagPlates = new RectTransform[3];
         private readonly Vector2[] shopTops = new Vector2[3]; private readonly bool[] shopShown = new bool[3];   // per-frame scratch
         private readonly int[] shopTagChars = new int[3]; private readonly float[] shopModelTopY = new float[3];   // set once in RefreshShopSlot
+        private readonly Bounds[] shopModelBounds = new Bounds[3]; private readonly Rect[] shopModelRects = new Rect[3];   // bounds set in RefreshShopSlot; screen rects per frame
         private int shopSheetSlot = -1, shopSheetRevision, shopAmount;   // the open sheet's slot (-1 closed), the revision captured when it opened, the chosen units
 
         private bool ShopOpen => shopHolder != null;
@@ -47,6 +47,7 @@ namespace TheTrailWalker
                 case "tailor": return ShopCatalog.Tailor;
                 case "ranch": return ShopCatalog.Ranch;
                 case "fishery": return ShopCatalog.Fishery;
+                case "bakery": return ShopCatalog.Bakery;
                 default: return null;
             }
         }
@@ -59,16 +60,30 @@ namespace TheTrailWalker
             return choices.ToArray();
         }
 
-        public static string OfferLine(ShopOffer o) => "Q" + ShopService.Q + " · " + Money.Cash(Money.Charge(o.UnitPriceMinor)) + " cash each";
-        public static string LeftLine(ShopOffer o) => "Left: " + Money.Cash(o.UnitsLeft);
+        // A gold food's amounts: the full stack counts as affordable at its discounted total.
+        public static int[] GoldAmountChoices(ShopOffer o, long gold) => System.Array.FindAll(ShopAmounts, n => n <= o.UnitsLeft && ShopService.GoldTotal(o, n) <= gold);
 
-        // The price tag over a counter slot: name line, then the price; Sold out when bought out or empty.
+        // Whole cash or gold an offer's price shows (gold offers hold whole gold already).
+        private static string PriceText(ShopOffer o) => o.Currency == Currency.Gold ? Money.Cash(o.UnitPriceMinor) + " gold" : Money.Cash(Money.Charge(o.UnitPriceMinor)) + " cash";
+        public static string PayText(ShopOffer o, int units) => o.Currency == Currency.Gold
+            ? "PAY " + Money.Cash(ShopService.GoldTotal(o, units)) + " GOLD" : "PAY " + Money.Cash(Money.Charge(units * o.UnitPriceMinor)) + " CASH";
+
+        // The sheet's price line; a gold food buying exactly the full stack shows the discounted total, a recipe offer its heading.
+        public static string OfferLine(ShopOffer o, int units = 0) =>
+            o.RecipeId != null ? "Learn the recipe"
+            : o.Currency == Currency.Gold && units == ShopService.StartUnits ? Money.Cash(ShopService.GoldTotal(o, units)) + " gold for the full stack (10% off)"
+            : PriceText(o) + " each";
+        // Units left, or a recipe offer's gold price.
+        public static string LeftLine(ShopOffer o) => o.RecipeId != null ? PriceText(o) : "Left: " + Money.Cash(o.UnitsLeft);
+
+        // The price tag over a counter slot: name line (Recipe: <food> for a recipe offer), then the price; Sold out when bought out or empty.
         public static string OfferTagText(ShopOffer o, string name) =>
-            o.Empty || o.UnitsLeft <= 0 ? ShopSoldOutText : name + "\n" + Money.Cash(Money.Charge(o.UnitPriceMinor)) + " cash";
+            o.Empty || o.UnitsLeft <= 0 ? ShopSoldOutText : (o.RecipeId != null ? "Recipe: " + name : name) + "\n" + PriceText(o);
 
         // Tag rects (screen px, y up) just above each model top, as wide as their text needs but never wider than the gap to the nearest other tag, inside the area.
+        // With models (each slot's model on screen, width 0 = none), a tag also rises above a neighbouring model it would cover (R2 fix 1).
         // Allocation-free: longestLine[i] is the char count of tag i's longest line; the result goes into the caller's rects.
-        public static void ShopTagLayout(Vector2[] tops, int[] longestLine, Rect area, float height, float gap, Rect[] rects)
+        public static void ShopTagLayout(Vector2[] tops, int[] longestLine, Rect area, float height, float gap, Rect[] rects, Rect[] models = null)
         {
             float spacing = float.MaxValue;
             for (int i = 0; i < tops.Length; i++) for (int j = i + 1; j < tops.Length; j++) spacing = Mathf.Min(spacing, Mathf.Abs(tops[i].x - tops[j].x));
@@ -76,6 +91,9 @@ namespace TheTrailWalker
             {
                 float width = Mathf.Min(Mathf.Clamp(0.1f + 0.016f * longestLine[i], 0.34f, 0.8f) * area.width, Mathf.Max(0f, spacing - gap));   // = WarehouseLabelWidth for that many chars
                 rects[i] = new Rect(WarehouseLabelLeft(tops[i].x, width, area.xMin, area.xMax), Mathf.Clamp(tops[i].y + gap, area.yMin, area.yMax - height), width, height);
+                if (models == null) continue;
+                for (int j = 0; j < models.Length; j++)
+                    if (j != i && models[j].width > 0f && models[j].Overlaps(rects[i])) rects[i].y = Mathf.Min(models[j].yMax + gap, area.yMax - height);
             }
         }
 
@@ -95,14 +113,20 @@ namespace TheTrailWalker
 
         public const string ShopBoughtResult = "shop.bought";
         // The PAY button's purchase: TryBuy, then one record in the settlement's trade log (spec 6.1: "record the trade").
-        // cash is the whole cash charged (negative: paid by the player), as the camp trade records it.
-        public static bool BuyAndRecord(ShopState s, string shopId, int slot, int revision, int units, Wallet wallet, SpatialInventory bag, System.Func<string> newId, List<TradeRecord> log, System.DateTime utcNow, out string reason)
+        // cash is the whole cash charged (negative: paid by the player), as the camp trade records it. A gold offer records gold
+        // instead (cash 0; unitMinor/totalMinor in whole gold); a recipe offer learns the recipe (regions: the effective set) and records its id once.
+        // boxReserved: recipes held by unclaimed mystery boxes (MysteryBoxes.Reserved), never sold here.
+        public static bool BuyAndRecord(ShopState s, string shopId, int slot, int revision, int units, Wallet wallet, SpatialInventory bag, TheTrailWalker.Domain.Crafting.CraftingState crafting, ICollection<int> regions, System.Func<string> newId, List<TradeRecord> log, System.DateTime utcNow, out string reason, ISet<string> boxReserved = null)
         {
-            if (!ShopService.TryBuy(s, shopId, slot, revision, units, wallet, bag, newId, out reason)) return false;
+            bool recipe = s.Stock.TryGetValue(shopId, out var held) && slot >= 0 && slot < held.Offers.Length && held.Offers[slot].RecipeId != null;
+            if (recipe) units = 1;
+            if (recipe ? !ShopService.TryBuyRecipe(s, slot, revision, wallet, crafting, regions, out reason, boxReserved) : !ShopService.TryBuy(s, shopId, slot, revision, units, wallet, bag, newId, out reason)) return false;
             ShopOffer o = s.Stock[shopId].Offers[slot];
-            long total = units * o.UnitPriceMinor;
-            TradeLog.Add(log, new TradeRecord { utc = utcNow.ToString("O", System.Globalization.CultureInfo.InvariantCulture), settlementId = shopId, itemId = o.ItemId, result = ShopBoughtResult,
-                quantity = units, quality = ShopService.Q, unitMinor = o.UnitPriceMinor, totalMinor = total, cash = -Money.Charge(total) });
+            var r = new TradeRecord { utc = utcNow.ToString("O", System.Globalization.CultureInfo.InvariantCulture), settlementId = shopId, itemId = recipe ? o.RecipeId : o.ItemId, result = ShopBoughtResult,
+                quantity = units, quality = recipe ? 0 : ShopService.Q, unitMinor = o.UnitPriceMinor };
+            if (o.Currency == Currency.Gold) { r.totalMinor = ShopService.GoldTotal(o, units); r.gold = -r.totalMinor; }
+            else { r.totalMinor = units * o.UnitPriceMinor; r.cash = -Money.Charge(r.totalMinor); }
+            TradeLog.Add(log, r);
             return true;
         }
 
@@ -132,7 +156,7 @@ namespace TheTrailWalker
         private static readonly Dictionary<string, string> ShopArt = new Dictionary<string, string>
         {
             { ShopCatalog.Farm, "Farm|ShopkeeperFarmer" }, { ShopCatalog.Mine, "Mine|ShopkeeperMiner" }, { ShopCatalog.Tailor, "Tailor|ShopkeeperTailor" },
-            { ShopCatalog.Ranch, "Ranch|ShopkeeperRancher" }, { ShopCatalog.Fishery, "Fishery|ShopkeeperFisher" },
+            { ShopCatalog.Ranch, "Ranch|ShopkeeperRancher" }, { ShopCatalog.Fishery, "Fishery|ShopkeeperFisher" }, { ShopCatalog.Bakery, "Bakery|ShopkeeperBaker" },
         };
 
         private List<int> ShopRegions()
@@ -141,7 +165,7 @@ namespace TheTrailWalker
             foreach (string id in travel.DiscoveredRegions) { RegionDefinition r = scene.Catalog.Region(id); if (r != null) regions.Add(r.Number); }
             return regions;
         }
-        private ShopOffer[] ShopOffers() => ShopService.Offers(shops, shopId, ShopRegions());
+        private ShopOffer[] ShopOffers() => ShopService.Offers(shops, shopId, ShopRegions(), crafting, MysteryBoxes.Reserved(balloon));
 
         private void OpenShop(string id)
         {
@@ -176,10 +200,10 @@ namespace TheTrailWalker
             StreetView.HoldAt(pose.position, pose.rotation);
 
             if (shopHud == null) CreateShopHud();
-            shopHud.gameObject.SetActive(true); CloseShopSheet();
+            shopHud.gameObject.SetActive(true); CloseShopSheet(); SetCounterChrome(true);
             ShowScreenReturn(shopHud.gameObject, CloseShop);
             for (int i = 0; i < 3; i++) RefreshShopSlot(i);
-            shopWalletText.text = "Cash " + Money.Cash(travel.Cash);
+            RefreshWalletLabels();
         }
 
         // The Return square: back to the street and one save.
@@ -197,6 +221,7 @@ namespace TheTrailWalker
         private void TearDownShop()
         {
             if (!ShopOpen) return;
+            SetCounterChrome(false);
             CloseShopSheet();
             if (Application.isPlaying) Destroy(shopHolder.gameObject); else DestroyImmediate(shopHolder.gameObject);
             shopHolder = null; shopId = null; lumberPointer = null;
@@ -208,23 +233,27 @@ namespace TheTrailWalker
         // The slot's item model on its anchor, or the Sold out label when the slot is empty or bought out.
         private void RefreshShopSlot(int slot)
         {
-            if (shopModels[slot] != null) { Destroy(shopModels[slot]); shopModels[slot] = null; }
             ShopOffer o = ShopOffers()[slot];
-            bool soldOut = o.Empty || o.UnitsLeft <= 0;
             ItemDefinition def = o.Empty ? null : TheTrailWalker.Domain.Crafting.Items.Find(o.ItemId);
+            SetOfferSlot(slot, OfferTagText(o, def != null ? def.Name : o.ItemId), o.Empty || o.UnitsLeft <= 0, def == null ? null : (System.Func<Transform, GameObject>)(a => PlaceOfferModel(a, def)));
+        }
+
+        // Shared by the shop and balloon counters: the slot's tag (bold name line) and its model (placed on the anchor unless sold out).
+        private void SetOfferSlot(int slot, string text, bool soldOut, System.Func<Transform, GameObject> place)
+        {
+            if (shopModels[slot] != null) { if (Application.isPlaying) Destroy(shopModels[slot]); else DestroyImmediate(shopModels[slot]); shopModels[slot] = null; }
             Text tag = shopSoldOutLabels[slot];
-            string text = OfferTagText(o, def != null ? def.Name : o.ItemId);
             int nl = text.IndexOf('\n');
             tag.text = nl < 0 ? text : "<b>" + text.Substring(0, nl) + "</b>" + text.Substring(nl);
-            shopTagChars[slot] = LongestLine(text); shopModelTopY[slot] = float.NaN;
+            shopTagChars[slot] = LongestLine(text); shopModelTopY[slot] = float.NaN; shopModelBounds[slot] = default;
             tag.color = soldOut ? new Color(1f, 1f, 1f, 0.55f) : Color.white;
             tag.transform.parent.gameObject.SetActive(shopAnchors[slot] != null);
-            if (soldOut || shopAnchors[slot] == null) return;
-            if (def == null) return;
-            shopModels[slot] = PlaceOfferModel(shopAnchors[slot], def);
+            if (soldOut || shopAnchors[slot] == null || place == null) return;
+            shopModels[slot] = place(shopAnchors[slot]);
+            if (shopModels[slot] == null) return;
             var bounds = new Bounds(shopAnchors[slot].position, Vector3.zero);
             foreach (Renderer r in shopModels[slot].GetComponentsInChildren<Renderer>()) bounds.Encapsulate(r.bounds);
-            shopModelTopY[slot] = bounds.max.y;   // the model never moves while the counter is open
+            shopModelTopY[slot] = bounds.max.y; shopModelBounds[slot] = bounds;   // the model never moves while the counter is open
         }
 
         // The trail's model at the trail's size (largest front side = the footprint), standing on the anchor.
@@ -249,7 +278,7 @@ namespace TheTrailWalker
         {
             shopHud = Rect("Shop HUD", safe, 0, 0, 1, 1);
             shopHud.SetAsFirstSibling();
-            shopWalletText = HudLine(shopHud, 0.925f, 0.97f);
+            CreateWalletLabels(shopHud);
             for (int i = 0; i < 3; i++)
             {
                 RectTransform plate = Rect("Offer tag " + i, shopHud, 0, 0, 0, 0); plate.pivot = Vector2.zero; plate.sizeDelta = new Vector2(150f, 76f);
@@ -261,7 +290,7 @@ namespace TheTrailWalker
                 plate.gameObject.SetActive(false);
             }
             shopHud.gameObject.SetActive(false);
-            CreateShopSheet();
+            if (shopSheet == null) CreateShopSheet();   // the reward sheet may have built it first (MENU, Boxes)
         }
 
         // The lumber ledger's paper sheet over a dim backdrop, with a Close square; the page is rebuilt on every refresh.
@@ -302,7 +331,9 @@ namespace TheTrailWalker
         {
             if (shopSheetSlot < 0 || !ShopOpen) return;
             ShopOffer o = ShopOffers()[shopSheetSlot];
-            int[] choices = AmountChoices(o.UnitsLeft, CashMinor, o.UnitPriceMinor);
+            bool recipe = o.RecipeId != null, gold = o.Currency == Currency.Gold;
+            // A recipe offer has no amounts: one PAY while it lasts, and PAY's refusals (gold, already known) go on the note.
+            int[] choices = recipe ? (o.UnitsLeft > 0 ? new[] { 1 } : new int[0]) : gold ? GoldAmountChoices(o, travel.Gold) : AmountChoices(o.UnitsLeft, CashMinor, o.UnitPriceMinor);
             if (System.Array.IndexOf(choices, shopAmount) < 0) shopAmount = choices.Length > 0 ? choices[0] : 0;   // default: the smallest
             ClearContent(shopSheetPage);
             ItemDefinition def = TheTrailWalker.Domain.Crafting.Items.Find(o.ItemId);
@@ -311,44 +342,50 @@ namespace TheTrailWalker
             if (sprite != null) icon.sprite = sprite; else icon.color = Color.clear;
             Text name = Label(shopSheetPage, def != null ? def.Name : o.ItemId, 0.04f, 0.46f, 0.96f, 0.55f, 34); name.color = Ink; name.fontStyle = FontStyle.Bold;
             name.resizeTextForBestFit = true; name.resizeTextMinSize = 14; name.resizeTextMaxSize = 34;
-            Label(shopSheetPage, OfferLine(o), 0.04f, 0.39f, 0.96f, 0.46f, 26).color = FadedInk;
+            Label(shopSheetPage, OfferLine(o, shopAmount), 0.04f, 0.39f, 0.96f, 0.46f, 26).color = FadedInk;
             Label(shopSheetPage, LeftLine(o), 0.04f, 0.32f, 0.96f, 0.39f, 26).color = FadedInk;
             if (choices.Length == 0)
             {
-                Text none = Label(shopSheetPage, o.UnitsLeft <= 0 ? ShopSoldOutText : "Not enough cash", 0.04f, 0.10f, 0.96f, 0.26f, 28);
+                Text none = Label(shopSheetPage, o.UnitsLeft <= 0 ? ShopSoldOutText : gold ? "Not enough gold" : "Not enough cash", 0.04f, 0.10f, 0.96f, 0.26f, 28);
                 none.color = FadedInk; none.fontStyle = FontStyle.Italic;
                 return;
             }
             const float x0 = 0.04f, x1 = 0.96f, gap = 0.03f;
             float w = (x1 - x0 - gap * (choices.Length - 1)) / choices.Length;
-            for (int i = 0; i < choices.Length; i++)
+            for (int i = 0; i < choices.Length && !recipe; i++)
             {
                 int units = choices[i];
                 Text b = Button(shopSheetPage, units.ToString("N0", System.Globalization.CultureInfo.InvariantCulture), x0 + i * (w + gap), 0.17f, x0 + i * (w + gap) + w, 0.27f, () => { shopAmount = units; RefreshShopSheet(); });
                 if (units == shopAmount) { b.transform.parent.GetComponent<Image>().color = new Color(0.72f, 0.46f, 0.12f); b.fontStyle = FontStyle.Bold; }   // the chosen amount
             }
             Text pay = Button(shopSheetPage, "PAY", 0.06f, 0f, 0.94f, 0.12f, ShopPayTapped);
-            pay.text = "PAY " + Money.Cash(Money.Charge(shopAmount * o.UnitPriceMinor)) + " CASH";
+            pay.text = PayText(o, shopAmount);
         }
 
         private void ShopPayTapped()
         {
             if (shopSheetSlot < 0 || !ShopOpen || saveBlocked) return;
             int slot = shopSheetSlot;
-            long cashBefore = travel.Cash;
-            if (!BuyAndRecord(shops, shopId, slot, shopSheetRevision, shopAmount, travel.Wallet, ledger, () => "shop-" + System.Guid.NewGuid().ToString("N"), warehouseLog, System.DateTime.UtcNow, out string reason)) { ShowSettlementNote(reason); return; }
-            statistics.SpendCash(cashBefore - travel.Cash);
-            shopSheetRevision = ShopOffers()[slot].Revision;   // the sheet now shows the new stock
-            Redraw(); SaveNow();
+            long cashBefore = travel.Cash, goldBefore = travel.Gold;
+            ShopOffer o = ShopOffers()[slot];
+            if (!BuyAndRecord(shops, shopId, slot, shopSheetRevision, shopAmount, travel.Wallet, ledger, crafting, ShopService.EffectiveRegions(shops, ShopRegions()), () => "shop-" + System.Guid.NewGuid().ToString("N"), warehouseLog, System.DateTime.UtcNow, out string reason, MysteryBoxes.Reserved(balloon))) { ShowSettlementNote(reason); return; }
+            statistics.SpendCash(cashBefore - travel.Cash); statistics.SpendGold(goldBefore - travel.Gold);
+            shopSheetRevision = o.Revision;   // the sheet now shows the new stock
+            Redraw(); SaveNow();   // one save: the payment, the stock and (for a recipe) the unlock land together
+            if (o.RecipeId != null) { ItemDefinition food = TheTrailWalker.Domain.Crafting.Items.Find(o.ItemId); ShowSettlementNote("Recipe learned: " + (food != null ? food.Name : o.ItemId)); }
             RefreshShopSlot(slot); RefreshShopSheet();
-            shopWalletText.text = "Cash " + Money.Cash(travel.Cash);
+            RefreshWalletLabels();
         }
 
-        // Per frame from UpdateSettlement: the wallet line and the Sold out labels follow their anchors on screen.
+        // Per frame from UpdateSettlement: the wallet labels catch any change, and the price tags follow their anchors on screen.
         private void UpdateShops()
         {
-            if (!ShopOpen || cameraView == null) return;
-            shopWalletText.text = "Cash " + Money.Cash(travel.Cash);
+            if (ShopOpen && cameraView != null) UpdateOfferTags();
+        }
+        // Shared by the shop and balloon counters (their offers fill shopAnchors, shopModelTopY and shopModelBounds).
+        private void UpdateOfferTags()
+        {
+            UpdateWalletLabels();
             safe.GetWorldCorners(shopSafeCorners);   // overlay canvas: screen pixels
             float scale = CanvasScale;
             for (int i = 0; i < 3; i++)
@@ -359,7 +396,8 @@ namespace TheTrailWalker
                 Vector3 p = cameraView.WorldToScreenPoint(float.IsNaN(shopModelTopY[i]) ? new Vector3(a.x, a.y + 0.05f, a.z) : new Vector3(a.x, shopModelTopY[i], a.z));
                 shopShown[i] = p.z > 0f; shopTops[i] = p;
             }
-            ShopTagLayout(shopTops, shopTagChars, UnityEngine.Rect.MinMaxRect(shopSafeCorners[0].x, shopSafeCorners[0].y, shopSafeCorners[2].x, shopSafeCorners[2].y), 76f * scale, Screen.height * 0.01f, shopTagRects);
+            for (int i = 0; i < 3; i++) shopModelRects[i] = ScreenBoundsRect(cameraView, shopModelBounds[i]);
+            ShopTagLayout(shopTops, shopTagChars, UnityEngine.Rect.MinMaxRect(shopSafeCorners[0].x, shopSafeCorners[0].y, shopSafeCorners[2].x, shopSafeCorners[2].y), 76f * scale, Screen.height * 0.01f, shopTagRects, shopModelRects);
             for (int i = 0; i < 3; i++)
             {
                 RectTransform plate = shopTagPlates[i];
@@ -368,6 +406,20 @@ namespace TheTrailWalker
                 plate.sizeDelta = new Vector2(shopTagRects[i].width / scale, 76f);
                 plate.position = new Vector3(shopTagRects[i].x, shopTagRects[i].y, 0f);
             }
+        }
+
+        // A bounds' screen rect (px, y up) from its 8 corners; width 0 for empty bounds or any corner behind the camera. Allocation-free.
+        public static Rect ScreenBoundsRect(Camera cam, Bounds b)
+        {
+            if (b.size == Vector3.zero) return default;
+            float x0 = float.MaxValue, y0 = float.MaxValue, x1 = float.MinValue, y1 = float.MinValue;
+            for (int k = 0; k < 8; k++)
+            {
+                Vector3 v = cam.WorldToScreenPoint(b.center + Vector3.Scale(b.extents, new Vector3((k & 1) == 0 ? -1 : 1, (k & 2) == 0 ? -1 : 1, (k & 4) == 0 ? -1 : 1)));
+                if (v.z <= 0f) return default;
+                x0 = Mathf.Min(x0, v.x); x1 = Mathf.Max(x1, v.x); y0 = Mathf.Min(y0, v.y); y1 = Mathf.Max(y1, v.y);
+            }
+            return UnityEngine.Rect.MinMaxRect(x0, y0, x1, y1);
         }
 
         // ---------------------------------------------------------------- touch: a short tap near an offer (the lumber counter's pointer)
@@ -383,10 +435,15 @@ namespace TheTrailWalker
 
         private void ShopTap(Vector2 screen)
         {
+            int pick = OfferTapPick(screen);
+            if (pick >= 0) OpenShopSheet(pick);
+        }
+        // Shared by the shop and balloon counters: the offer slot under a tap (its anchor or tag), or -1.
+        private int OfferTapPick(Vector2 screen)
+        {
             var anchors = new Vector2?[3];
             for (int i = 0; i < 3; i++) if (LumberAnchorDistance(shopAnchors[i], screen) < float.MaxValue) anchors[i] = cameraView.WorldToScreenPoint(shopAnchors[i].position);
-            int pick = ShopTapPick(screen, anchors, shopTagRects, LumberReach);
-            if (pick >= 0) OpenShopSheet(pick);
+            return ShopTapPick(screen, anchors, shopTagRects, LumberReach);
         }
 
         // Debug TIER +1 (street HUD): raises the shops' tier by one, up to 4.

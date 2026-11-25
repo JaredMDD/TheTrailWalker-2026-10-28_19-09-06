@@ -1,0 +1,31 @@
+{
+  "Revision": 1,
+  "Style": "faceted",
+  "CounterTop": 1.02,
+  "Mesh": "BalloonInterior",
+  "Keeper": "ShopkeeperBalloonMerchant",
+  "OfferAnchorsFlat": [
+    -1.25,
+    1.028,
+    0.48,
+    0.8,
+    1.028,
+    0.48,
+    1.55,
+    1.028,
+    0.48
+  ],
+  "OfferKinds": [
+    "Special garment",
+    "Mystery box",
+    "Special backpack"
+  ],
+  "Parts": [
+    {
+      "name": "BalloonInterior",
+      "vertices": 3742,
+      "triangles": 5784
+    }
+  ],
+  "Scope": "Art only: the balloon shop counter view. Offer anchors are in Unity space (the OBJ import mirrors X)."
+}

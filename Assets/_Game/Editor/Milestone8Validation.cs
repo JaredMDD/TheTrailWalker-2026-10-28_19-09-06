@@ -35,7 +35,7 @@ namespace TheTrailWalker.Editor
         private static MissionDefinition M(string code) => MissionBook.All.First(m => m.Code == code);
         // Missions whose request or reward needs a settlement listing (ranch dairy and eggs, farm Tea herbs): locked in the
         // prototype world until settlements exist (Milestone 10), and placed last in their branches (catalog 3).
-        private static readonly HashSet<string> NeedsSettlement = new HashSet<string> { "G9", "G10", "G11", "G13", "G14", "G15", "E8" };
+        private static readonly HashSet<string> NeedsSettlement = new HashSet<string> { "G9", "G10", "G11", "G13", "G14", "G15", "G16", "E8" };
 
         // Items 2 and 5 (November 2, 2026): the 24-region data plan, route budgets on the real stamina model, and faint restarts.
         private static void RoutePlanChecks(TravelCatalog catalog)
@@ -412,7 +412,7 @@ namespace TheTrailWalker.Editor
             Check(Codes(MissionBranch.Gatherer, 3).SequenceEqual(new[] { "G1", "G2", "G3", "G4", "G7", "G8", "G12", "G5", "G6", "G9", "G10", "G11", "G13", "G14", "G15" })
                 && Codes(MissionBranch.Hunter, 3).SequenceEqual(new[] { "H1", "H2", "H3", "H4", "H5", "H8", "H6", "H7" })
                 && Codes(MissionBranch.Explorer, 3).SequenceEqual(new[] { "E1", "E2", "E3", "E4", "E5", "E15", "E6", "E7", "E11", "E12", "E13", "E14", "E9", "E10", "E16", "E8" })
-                && MissionBook.All.Count == 50, "Catalog 3 has 50 tier-one missions in the section 11.6.1.1 branch order");
+                && MissionBook.All.Count(m => m.AddedInCatalog <= 3) == 50, "Catalog 3 has 50 tier-one missions in the section 11.6.1.1 branch order");
             Check(new[] { 1, 2 }.All(c => Codes(MissionBranch.Gatherer, c).SequenceEqual(new[] { "G1", "G2", "G3", "G4", "G5" })
                     && Codes(MissionBranch.Hunter, c).SequenceEqual(new[] { "H1", "H2", "H3", "H4" })
                     && Codes(MissionBranch.Explorer, c).SequenceEqual(new[] { "E1", "E2", "E3", "E4", "E5", "E6", "E7", "E8" })),
@@ -470,7 +470,7 @@ namespace TheTrailWalker.Editor
             Check(fresh.NextFor(MissionBranch.Explorer).Code == "E5" && fresh.RequestedFor(M("E5")) == "material.bone",
                 "Without E5 active, a migrated save offers E5 with the new request (Bone)");
             fresh.Accept(M("E5").Id, Context(2, id => true, f => true));
-            Check(fresh.RequestedFor(M("E5")) == "material.bone" && fresh.ActiveCatalog == 3, "E5 accepted after the update asks for Bone");
+            Check(fresh.RequestedFor(M("E5")) == "material.bone" && fresh.ActiveCatalog == MissionBook.CatalogVersion, "E5 accepted after the update asks for Bone");
             var h3 = new[] { "G1", "H1", "G2", "L1", "E1", "L2", "G3", "G4", "H2", "E2", "E3", "E4", "H3" }.Select(c => M(c).Id).ToArray();
             var h4 = MissionState.Restore(h3, M("H4").Id, 3, 3, 2);
             Check(h4.Active.Code == "H4" && !h4.ActiveLegacy && h4.RequestedFor(M("H4")) == "animal.rabbit.pelt", "A catalog-2 save with H4 active migrates as an ordinary active mission");

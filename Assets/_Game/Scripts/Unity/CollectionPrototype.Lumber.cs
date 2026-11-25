@@ -27,12 +27,12 @@ namespace TheTrailWalker
         private float lumberDoorTime = -1f;   // seconds into the opening animation, -1 idle
         private RectTransform lumberHud, lumberLedgerPage;
         private GameObject lumberLedgerSheet;
-        private Text lumberWalletText;
         private int? lumberPointer; private Vector2 lumberStart, lumberLast; private bool lumberMoved;
 
         private bool lumberPayArmed;   // the price row was tapped: PAY shows (two taps to buy)
 
         private bool LumberOpen => lumberHolder != null;
+        public static readonly UnityEngine.Rect LumberWoodButtonBand = UnityEngine.Rect.MinMaxRect(0.02f, 0.81f, 0.37f, 0.86f);   // debug WOOD T2-T4 (safe area): level with RESET SAVE, on the feedback line's top
 
         // ---------------------------------------------------------------- pure rules (checked by Milestone13Validation.CounterChecks)
 
@@ -109,7 +109,7 @@ namespace TheTrailWalker
             StreetView.HoldAt(pose.position, pose.rotation);
 
             if (lumberHud == null) CreateLumberHud();
-            lumberPayArmed = false; lumberHud.gameObject.SetActive(true); CloseLedgerSheet();
+            lumberPayArmed = false; lumberHud.gameObject.SetActive(true); CloseLedgerSheet(); SetCounterChrome(true);
             ShowScreenReturn(lumberHud.gameObject, CloseLumber);
             RefreshLumberHud();
         }
@@ -144,6 +144,7 @@ namespace TheTrailWalker
         private void TearDownLumber()
         {
             if (!LumberOpen) return;
+            SetCounterChrome(false);
             if (active != null && active.MassiveTier > 0) EndInteraction();   // a cut in progress is discarded with the zone
             ClosePickup();
             lumberHolder = ClearLumberScene(ledger, lumberHolder); lumberDoorPivot = lumberLedgerAnchor = lumberDoorAnchor = null;
@@ -160,8 +161,8 @@ namespace TheTrailWalker
         {
             lumberHud = Rect("Lumber HUD", safe, 0, 0, 1, 1);
             lumberHud.SetAsFirstSibling();
-            lumberWalletText = HudLine(lumberHud, 0.925f, 0.97f);
-            Button(lumberHud, "WOOD T2-T4", 0.02f, 0.80f, 0.37f, 0.86f, () =>
+            CreateWalletLabels(lumberHud);
+            Button(lumberHud, "WOOD T2-T4", LumberWoodButtonBand.xMin, LumberWoodButtonBand.yMin, LumberWoodButtonBand.xMax, LumberWoodButtonBand.yMax, () =>
             {
                 lumber.DebugWoodTier = NextDebugWoodTier(lumber.DebugWoodTier);   // debug (test phase), removed with HOUSE L8
                 SaveNow(); RefreshLumberHud();
@@ -203,7 +204,7 @@ namespace TheTrailWalker
         private void RefreshLumberHud()
         {
             if (lumberHud == null) return;
-            lumberWalletText.text = "Gold " + Money.Cash(travel.Gold);
+            RefreshWalletLabels();
             List<int> tiers = LumberDiscoveredTiers();
             List<LedgerEntry> entries = LedgerEntries(lumber, tiers);
             int next = LumberFieldService.NextTier(lumber);
@@ -266,7 +267,7 @@ namespace TheTrailWalker
                 lumberDoorPivot.localRotation = Quaternion.Slerp(Quaternion.identity, LumberDoorRotation(1), t);
                 if (t >= 1f) lumberDoorTime = -1f;
             }
-            if (lumberHud != null) lumberWalletText.text = "Gold " + Money.Cash(travel.Gold);
+            if (lumberHud != null) UpdateWalletLabels();
             UpdateZone();
         }
 

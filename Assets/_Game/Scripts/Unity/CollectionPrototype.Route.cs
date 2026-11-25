@@ -56,7 +56,7 @@ namespace TheTrailWalker
             if (routeCard == null || travel == null) return;
             bool covered = inventoryOpen || stamina.Fainted || saveBlocked || TravelInputLocked || active != null
                 || (craftPanel != null && craftPanel.activeSelf) || (gearPanel != null && gearPanel.activeSelf) || (missionPanel != null && missionPanel.activeSelf)
-                || (mapPanel != null && mapPanel.activeSelf) || (tollPanel != null && tollPanel.activeSelf) || !TrailControlsVisible(InSettlementScene);
+                || (mapPanel != null && mapPanel.activeSelf) || (tollPanel != null && tollPanel.activeSelf) || !TrailControlsVisible(InSettlementScene) || BalloonOpen;
             SegmentDefinition leg = travel.CurrentSegment;
             bool show = !covered && leg != null && !leg.RiverApproach;
             routeCard.gameObject.SetActive(show);

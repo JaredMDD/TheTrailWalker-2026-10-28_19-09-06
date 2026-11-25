@@ -54,13 +54,19 @@ namespace TheTrailWalker.Persistence
         public SavedWarehouse warehouse;
         public SavedLumber lumber;   // Milestone 13; block 0 = absent
         public SavedShops shops;     // Milestone 14; block 0 = absent
+        public SavedBalloon balloon; // Milestone 14 slice 3; block 0 = absent
         public List<TheTrailWalker.Domain.Economy.TradeRecord> warehouseLog = new List<TheTrailWalker.Domain.Economy.TradeRecord>();
     }
     [Serializable] public sealed class SavedWarehouse { public int block; public List<SavedCrate> crates = new List<SavedCrate>(); public int cycleCrates; public long cycleCash; }
     [Serializable] public sealed class SavedLumber { public int block; public int unlockedTier, lastZone, debugWoodTier; public long clockOffsetMinutes; public List<SavedMassiveTree> trees = new List<SavedMassiveTree>(); }
     [Serializable] public sealed class SavedShops { public int block; public int visitId, debugTier; public List<SavedShopStock> stock = new List<SavedShopStock>(); }
+    [Serializable] public sealed class SavedBalloon { public int block; public long sessionId; public string openCampId; public List<SavedBalloonOffer> offers = new List<SavedBalloonOffer>(); public List<SavedBox> boxes = new List<SavedBox>(); }
+    [Serializable] public sealed class SavedBalloonOffer { public string kind, itemId; public int boxTier, revision; public long goldPrice; public bool sold; }
+    [Serializable] public sealed class SavedBox { public string boxId; public int tier; public List<SavedBoxEntry> entries = new List<SavedBoxEntry>(); }
+    [Serializable] public sealed class SavedBoxEntry { public string kind, itemId, recipeId, fallbackItemId, claimTxn; public int units, fallbackUnits; public SavedProfile profile, fallbackProfile; public bool claimed; }
+    [Serializable] public sealed class SavedProfile { public long unitValue; public int maxDurability, durability; public string variant; }
     [Serializable] public sealed class SavedShopStock { public string shopId; public int visit; public List<SavedShopOffer> offers = new List<SavedShopOffer>(); }
-    [Serializable] public sealed class SavedShopOffer { public string itemId; public long unitPriceMinor; public int unitsLeft, revision; }
+    [Serializable] public sealed class SavedShopOffer { public string itemId; public long unitPriceMinor; public int unitsLeft, revision; public string currency, recipe; /* both optional: absent = cash food */ }
     [Serializable] public sealed class SavedMassiveTree { public long fellUtcTicks; public int fellCount; public List<SavedPendingReward> pending = new List<SavedPendingReward>(); }
     [Serializable] public sealed class SavedPendingReward { public string itemId; public int quality; public long units; }
     [Serializable] public sealed class SavedCrate { public string itemId; public List<SavedWarehouseUnit> units = new List<SavedWarehouseUnit>(); }
@@ -153,6 +159,7 @@ namespace TheTrailWalker.Persistence
         public int rank, quality;
         public double remainingDistance;
         public bool infinite;
+        public double statOverride; // special gear stat; 0 (absent in older saves) = rank table
     }
     [Serializable] public sealed class SavedLoss { public string itemId; public int quantity; }
     [Serializable] public sealed class SavedItem
@@ -394,7 +401,8 @@ namespace TheTrailWalker.Persistence
                 foreach (SavedGear saved in survival.gear)
                 {
                     if (saved == null || !Enum.TryParse(saved.slot, false, out GearSlot slot) || !Enum.IsDefined(typeof(GearSlot), slot) || !wornIds.Add(saved.id)) throw new InvalidDataException("Invalid worn gear");
-                    gear.Equip(new WornGear(saved.id, slot, saved.rank, saved.quality, saved.remainingDistance, saved.infinite));
+                    if (saved.statOverride != 0 && !SpecialGear.Matches(slot, saved.rank, saved.statOverride)) throw new InvalidDataException("Invalid special gear stat");
+                    gear.Equip(new WornGear(saved.id, slot, saved.rank, saved.quality, saved.remainingDistance, saved.infinite, saved.statOverride != 0 ? saved.statOverride : (double?)null));
                     wornRecords.Add(saved.id, saved);
                 }
                 var stamina = new StaminaState(); stamina.Restore(survival.hearts, survival.maximum, survival.pendingFood, survival.fainted, survival.faintElapsed);
@@ -448,6 +456,7 @@ namespace TheTrailWalker.Persistence
             RestoreWarehouse(data, inventory.Entries);
             RestoreLumber(data);
             RestoreShops(data);
+            RestoreBalloon(data);
         }
 
         public const string LumberPilePrefix = "lumber-";
@@ -521,7 +530,8 @@ namespace TheTrailWalker.Persistence
             foreach (var kv in s.Stock)
             {
                 var box = new SavedShopStock { shopId = kv.Key, visit = kv.Value.Visit };
-                foreach (var o in kv.Value.Offers) box.offers.Add(new SavedShopOffer { itemId = o.ItemId, unitPriceMinor = o.UnitPriceMinor, unitsLeft = o.UnitsLeft, revision = o.Revision });
+                foreach (var o in kv.Value.Offers) box.offers.Add(new SavedShopOffer { itemId = o.ItemId, unitPriceMinor = o.UnitPriceMinor, unitsLeft = o.UnitsLeft, revision = o.Revision,
+                    currency = o.Currency == TheTrailWalker.Domain.Economy.Currency.Gold ? "gold" : null, recipe = o.RecipeId });
                 saved.stock.Add(box);
             }
             return saved;
@@ -555,13 +565,116 @@ namespace TheTrailWalker.Persistence
                     }
                     var entry = rows.Find(e => e.ItemId == row.itemId);
                     if (row.unitPriceMinor <= 0) throw new InvalidDataException("Invalid shops: price of " + row.itemId);
-                    if (entry == null) { offers = null; break; } // item left the pool in a retune: drop the shop so it rerolls; a saved price survives a retune
-                    offers[i] = new TheTrailWalker.Domain.Settlement.ShopOffer { ItemId = row.itemId, UnitPriceMinor = row.unitPriceMinor, UnitsLeft = row.unitsLeft, Revision = row.revision };
+                    bool gold = row.currency == "gold";
+                    if (!gold && !string.IsNullOrEmpty(row.currency) && row.currency != "cash") throw new InvalidDataException("Invalid shops: currency of " + row.itemId);
+                    bool recipe = !string.IsNullOrEmpty(row.recipe);
+                    if (recipe && (!gold || row.unitsLeft > 1)) throw new InvalidDataException("Invalid shops: recipe offer " + row.recipe);
+                    // Item or recipe left the game in a retune: drop the shop so it rerolls; a saved price survives a retune.
+                    if (entry == null || (recipe && TheTrailWalker.Domain.Crafting.RecipeBook.Find(row.recipe) == null)) { offers = null; break; }
+                    offers[i] = new TheTrailWalker.Domain.Settlement.ShopOffer { ItemId = row.itemId, UnitPriceMinor = row.unitPriceMinor, UnitsLeft = row.unitsLeft, Revision = row.revision,
+                        Currency = gold ? TheTrailWalker.Domain.Economy.Currency.Gold : TheTrailWalker.Domain.Economy.Currency.Cash, RecipeId = recipe ? row.recipe : null };
                 }
                 if (offers != null) state.Stock[box.shopId] = (box.visit, offers);
             }
             return state;
         }
+
+        private static SavedProfile SaveProfile(TheTrailWalker.Domain.Items.ItemProfile p) => new SavedProfile { unitValue = p.UnitValue, maxDurability = p.MaxDurability, durability = p.Durability, variant = p.Variant };
+
+        public static SavedBalloon SaveBalloon(TheTrailWalker.Domain.Settlement.BalloonState s)
+        {
+            var saved = new SavedBalloon { block = 1, sessionId = s.SessionId, openCampId = s.OpenCampId };
+            if (s.Offers != null) foreach (var o in s.Offers) saved.offers.Add(new SavedBalloonOffer { kind = o.Kind, itemId = o.ItemId, boxTier = o.BoxTier, goldPrice = o.GoldPrice, sold = o.Sold, revision = o.Revision });
+            foreach (var b in s.Boxes)
+            {
+                var box = new SavedBox { boxId = b.BoxId, tier = b.Tier };
+                foreach (var e in b.Entries) box.entries.Add(new SavedBoxEntry { kind = e.Kind, itemId = e.ItemId, recipeId = e.RecipeId, fallbackItemId = e.FallbackItemId, claimTxn = e.ClaimTxn, units = e.Units, fallbackUnits = e.FallbackUnits,
+                    profile = SaveProfile(e.Profile), fallbackProfile = SaveProfile(e.FallbackProfile), claimed = e.Claimed });
+                saved.boxes.Add(box);
+            }
+            return saved;
+        }
+
+        // A safe stand-in for a reward item that left the game: the most valuable region-1 loose material at Q5, one stack (units = clamp(ceil(saved value / unit value), 1, 1000);
+        // a zero saved value gives 1 unit). A shortfall from the cap is accepted so the reward always fits an empty bag and is never stuck.
+        private static void MapMissingReward(long savedTotalMinor, out string itemId, out TheTrailWalker.Domain.Items.ItemProfile profile, out int units)
+        {
+            TheTrailWalker.Domain.Items.ItemDefinition best = null; long bestValue = 0;
+            foreach (string id in TheTrailWalker.Domain.Missions.ItemSources.LooseIds)
+            {
+                var def = TheTrailWalker.Domain.Crafting.Items.Find(id);
+                if (def == null || !def.Stackable || Array.IndexOf(TheTrailWalker.Domain.Missions.ItemSources.LooseRegions(id), 1) < 0) continue;
+                long v = TheTrailWalker.Domain.Economy.ItemPrices.Profile(def, TheTrailWalker.Domain.Settlement.ShopService.Q).UnitValue;
+                if (v > bestValue || (v == bestValue && best != null && string.CompareOrdinal(id, best.Id) < 0)) { best = def; bestValue = v; }
+            }
+            if (best == null) throw new InvalidDataException("Invalid balloon: no stand-in material");
+            itemId = best.Id; profile = TheTrailWalker.Domain.Economy.ItemPrices.Profile(best, TheTrailWalker.Domain.Settlement.ShopService.Q);
+            units = (int)Math.Min(TheTrailWalker.Domain.Settlement.MysteryBoxes.StackUnits, Math.Max(1L, (savedTotalMinor + bestValue - 1) / bestValue));
+        }
+
+        private static TheTrailWalker.Domain.Items.ItemProfile RestoreProfile(SavedProfile p)
+        {
+            if (p == null) return default;
+            if (p.unitValue < 0 || p.maxDurability < 0 || p.durability < 0) throw new InvalidDataException("Invalid balloon: negative profile");
+            return new TheTrailWalker.Domain.Items.ItemProfile(p.unitValue, p.maxDurability, p.durability, p.variant);
+        }
+
+        // Slice 3: absent block = a fresh state. Gold, units or profile values below zero, a claimed entry with no txn, a repeated box id or a
+        // box that is not six entries are malformed and throw; everything else loads. Unknown reward items are mapped to a stand-in
+        // material (saved on the next save), an unknown recipe keeps its id (Claim then takes the saved fallback), an open-session offer whose
+        // item is gone loads sold out, and a session at a camp that is no longer a host loads closed. SessionId is raised to the highest box number.
+        public static TheTrailWalker.Domain.Settlement.BalloonState RestoreBalloon(SessionSnapshot data)
+        {
+            var state = new TheTrailWalker.Domain.Settlement.BalloonState();
+            SavedBalloon saved = data?.balloon;
+            if (saved == null || saved.block == 0) return state;
+            if (saved.sessionId < 0 || saved.offers == null || saved.boxes == null || (saved.offers.Count != 0 && saved.offers.Count != 3)) throw new InvalidDataException("Invalid balloon: session or offers");
+            state.SessionId = saved.sessionId;
+            if (saved.offers.Count == 3)
+            {
+                var offers = new TheTrailWalker.Domain.Settlement.BalloonOffer[3];
+                for (int i = 0; i < 3; i++)
+                {
+                    SavedBalloonOffer row = saved.offers[i];
+                    if (row == null || row.goldPrice < 0 || row.revision < 0) throw new InvalidDataException("Invalid balloon: offer " + i);
+                    bool box = row.kind == "box";
+                    if (!box && row.kind != "garment" && row.kind != "pack") throw new InvalidDataException("Invalid balloon: offer kind " + row.kind);
+                    if (box && (row.boxTier < 1 || row.boxTier > 4)) throw new InvalidDataException("Invalid balloon: box tier");
+                    bool gone = !box && TheTrailWalker.Domain.Crafting.Items.Find(row.itemId ?? "") == null;
+                    offers[i] = new TheTrailWalker.Domain.Settlement.BalloonOffer { Kind = row.kind, ItemId = box || string.IsNullOrEmpty(row.itemId) ? null : row.itemId, BoxTier = row.boxTier,
+                        GoldPrice = row.goldPrice, Sold = row.sold || gone, Revision = row.revision };   // an unknown item: that slot is sold out for the session
+                }
+                if (TheTrailWalker.Domain.Travel.BalloonHosts.IsHost(saved.openCampId)) { state.Offers = offers; state.OpenCampId = saved.openCampId; }
+            }
+            var ids = new HashSet<string>();
+            foreach (SavedBox sb in saved.boxes)
+            {
+                if (sb == null || string.IsNullOrEmpty(sb.boxId) || sb.tier < 1 || sb.tier > 4 || sb.entries == null || sb.entries.Count != 6 || !ids.Add(sb.boxId)) throw new InvalidDataException("Invalid balloon: box");
+                var entries = new TheTrailWalker.Domain.Settlement.BoxEntry[6];
+                for (int i = 0; i < 6; i++)
+                {
+                    SavedBoxEntry row = sb.entries[i];
+                    if (row == null || (row.kind != "item" && row.kind != "recipe") || row.units < 0 || row.fallbackUnits < 0) throw new InvalidDataException("Invalid balloon: entry " + sb.boxId + "-" + i);
+                    bool recipe = row.kind == "recipe", done = row.claimed || !string.IsNullOrEmpty(row.claimTxn);
+                    if (row.claimed && string.IsNullOrEmpty(row.claimTxn)) throw new InvalidDataException("Invalid balloon: claimed entry without a txn " + sb.boxId + "-" + i);
+                    var e = new TheTrailWalker.Domain.Settlement.BoxEntry { Kind = row.kind, ItemId = Nul(row.itemId), RecipeId = Nul(row.recipeId), FallbackItemId = Nul(row.fallbackItemId), ClaimTxn = Nul(row.claimTxn),
+                        Units = row.units, FallbackUnits = row.fallbackUnits, Profile = RestoreProfile(row.profile), FallbackProfile = RestoreProfile(row.fallbackProfile), Claimed = row.claimed };
+                    if (!done)
+                    {
+                        if (!recipe && (e.ItemId == null || TheTrailWalker.Domain.Crafting.Items.Find(e.ItemId) == null))
+                        { MapMissingReward(e.Profile.UnitValue * (long)e.Units, out string id, out var p, out int u); e.ItemId = id; e.Profile = p; e.Units = u; }
+                        else if (recipe && (e.FallbackItemId == null || TheTrailWalker.Domain.Crafting.Items.Find(e.FallbackItemId) == null))
+                        { MapMissingReward(e.FallbackProfile.UnitValue * (long)e.FallbackUnits, out string id, out var p, out int u); e.FallbackItemId = id; e.FallbackProfile = p; e.FallbackUnits = u; }
+                    }
+                    entries[i] = e;
+                }
+                state.Boxes.Add(new TheTrailWalker.Domain.Settlement.BoxManifest { BoxId = sb.boxId, Tier = sb.tier, Entries = entries });
+                // Box ids are "box.<session>": a new box can never reuse a saved one.
+                if (sb.boxId.StartsWith("box.", StringComparison.Ordinal) && long.TryParse(sb.boxId.Substring(4), out long n) && n > state.SessionId) state.SessionId = n;
+            }
+            return state;
+        }
+        private static string Nul(string s) => string.IsNullOrEmpty(s) ? null : s;
 
         public static SavedWarehouse SaveWarehouse(TheTrailWalker.Domain.Economy.WarehouseState state)
         {

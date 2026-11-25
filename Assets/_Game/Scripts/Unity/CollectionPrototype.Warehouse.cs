@@ -18,7 +18,7 @@ namespace TheTrailWalker
         private readonly Transform[] warehouseLids = new Transform[2];       // their Lid children (Task 5: the close animation)
         private readonly Text[] warehouseCrateLabels = new Text[2];
         private RectTransform warehouseHud;
-        private Text warehouseCycleText, warehouseWalletText, warehouseFeedbackText;
+        private Text warehouseCycleText, warehouseFeedbackText;
         private bool warehouseBagWasOpen;
         // Task 5: one CrateHold per dragging bag pointer, and each crate's close-and-carry animation (seconds in, -1 idle).
         private readonly System.Collections.Generic.Dictionary<int, CrateHold> warehouseHolds = new System.Collections.Generic.Dictionary<int, CrateHold>();
@@ -28,6 +28,9 @@ namespace TheTrailWalker
         private const float LidCloseSeconds = 0.2f, SlideOffSeconds = 0.25f, SlideBackMetres = 0.6f, SlideDownMetres = 0.5f;   // then 0.2 s slide in (CrateHold.AnimationSeconds in all)
 
         private bool WarehouseOpen => warehouseHolder != null;
+        // The crates (and their labels, inside the solver's margin) frame below the debug feedback line, the lowest of the lines on top.
+        public static float WarehouseFramingTop(float safeBottomPx, float safeHeightPx) => safeBottomPx + FeedbackBand.yMin * safeHeightPx;
+        public static readonly Vector2 WarehouseCycleBand = new Vector2(0.905f, 0.945f), WarehouseFeedbackBand = new Vector2(0.865f, 0.905f);   // y0, y1 of the safe area: under the gold label, above RESET SAVE
 
         // ---------------------------------------------------------------- texts and framing (checked by Milestone12Validation.ViewChecks)
 
@@ -38,6 +41,15 @@ namespace TheTrailWalker
 
         // A crate label's width as a fraction of the screen width: grows with the text so a long item name still fits.
         public static float WarehouseLabelWidth(string text) => Mathf.Clamp(0.1f + 0.016f * text.Length, 0.34f, 0.8f);
+        // A crate label's span: the safe width splits midway between the two crates (less a gap), and each label stays in its own
+        // half, as wide as it wants up to that half, as centred on its crate as the half allows, so the two never overlap (R2 fix 1).
+        public static void WarehouseLabelSpan(float centre, float other, float wanted, float gap, float min, float max, out float left, out float width)
+        {
+            float mid = (centre + other) * 0.5f;
+            if (centre >= other) min = Mathf.Max(min, mid + gap * 0.5f); else max = Mathf.Min(max, mid - gap * 0.5f);
+            width = Mathf.Clamp(wanted, 0f, Mathf.Max(0f, max - min));
+            left = WarehouseLabelLeft(centre, width, min, max);
+        }
         // Left edge of a label centred on `centre` (any unit), shifted inward to stay inside [min, max], keeping its width.
         public static float WarehouseLabelLeft(float centre, float width, float min, float max) => Mathf.Clamp(centre - width * 0.5f, min, Mathf.Max(min, max - width));
         // While the counter is open it owns the bag: an app pause leaves it open (the bag button is hidden there).
@@ -143,11 +155,13 @@ namespace TheTrailWalker
             if (!inventoryOpen) ToggleInventory();
             bagFrame.GetWorldCorners(warehouseCorners);   // overlay canvas: world corners are screen pixels
             float bagTop = Screen.height > 0 ? warehouseCorners[1].y / Screen.height : 0.3f;
-            Pose pose = WarehouseCameraPose(cameraView, bounds, bagTop);
+            safe.GetWorldCorners(warehouseSafeCorners);
+            float framingTop = Screen.height > 0 ? WarehouseFramingTop(warehouseSafeCorners[0].y, warehouseSafeCorners[1].y - warehouseSafeCorners[0].y) / Screen.height : 1f;
+            Pose pose = WarehouseCameraPose(cameraView, bounds, bagTop, framingTop);
             StreetView.HoldAt(pose.position, pose.rotation);
 
             if (warehouseHud == null) CreateWarehouseHud();
-            warehouseHud.gameObject.SetActive(true);
+            warehouseHud.gameObject.SetActive(true); SetCounterChrome(true);
             ShowScreenReturn(warehouseHud.gameObject, CloseWarehouse);   // hides the bag button and user menu (Craft, Equipment, map)
             RefreshWarehouseLabels();
             UpdateWarehouse();
@@ -176,7 +190,9 @@ namespace TheTrailWalker
         private void TearDownWarehouse()
         {
             if (!WarehouseOpen) return;
-            Destroy(warehouseHolder.gameObject); warehouseHolder = null;
+            SetCounterChrome(false);
+            if (Application.isPlaying) Destroy(warehouseHolder.gameObject); else DestroyImmediate(warehouseHolder.gameObject);
+            warehouseHolder = null;
             System.Array.Clear(warehouseCrates, 0, warehouseCrates.Length); System.Array.Clear(warehouseLids, 0, warehouseLids.Length);
             warehouseHolds.Clear(); warehouseAnimation[0] = warehouseAnimation[1] = -1f;
             if (warehouseFeedbackText != null) warehouseFeedbackText.text = "";
@@ -191,9 +207,9 @@ namespace TheTrailWalker
         {
             warehouseHud = Rect("Warehouse HUD", safe, 0, 0, 1, 1);
             warehouseHud.SetAsFirstSibling();   // behind the bag, squares, notes and drag ghosts
-            warehouseCycleText = HudLine(warehouseHud, 0.925f, 0.97f);
-            warehouseWalletText = HudLine(warehouseHud, 0.88f, 0.925f);
-            warehouseFeedbackText = HudLine(warehouseHud, 0.835f, 0.88f);
+            warehouseCycleText = HudLine(warehouseHud, WarehouseCycleBand.x, WarehouseCycleBand.y);
+            warehouseFeedbackText = HudLine(warehouseHud, WarehouseFeedbackBand.x, WarehouseFeedbackBand.y);
+            CreateWalletLabels(warehouseHud);
             for (int i = 0; i < warehouseCrateLabels.Length; i++)
             {
                 RectTransform box = Rect("Crate label " + (i + 1), warehouseHud, 0, 0, 0, 0);
@@ -214,37 +230,43 @@ namespace TheTrailWalker
             return line;
         }
 
-        // The texts: crate labels, cycle line, wallet. Task 5 calls this after every deposit.
+        // The texts: crate labels, cycle line, wallet labels. Task 5 calls this after every deposit.
         private void RefreshWarehouseLabels()
         {
             if (warehouseHud == null) return;
             for (int i = 0; i < warehouseCrateLabels.Length; i++) warehouseCrateLabels[i].text = WarehouseCrateLabel(warehouse.Crates[i]);
             warehouseCycleText.text = WarehouseCycleLine(warehouse);
-            warehouseWalletText.text = "Cash " + Money.Cash(travel.Cash) + "   Gold " + Money.Cash(travel.Gold);
+            RefreshWalletLabels();
         }
 
         // Per frame from UpdateSettlement: each label floats over the top of its crate, shifted inward to stay inside the safe area.
-        private readonly Vector3[] warehouseSafeCorners = new Vector3[4];
+        private readonly Vector3[] warehouseSafeCorners = new Vector3[4], warehouseLabelAnchors = new Vector3[2];
         private void UpdateWarehouse()
         {
             if (!WarehouseOpen || cameraView == null) return;
             AnimateWarehouseCrates(Time.unscaledDeltaTime);
             TickWarehouseHolds();
             if (!WarehouseOpen) return;
+            UpdateWalletLabels();
             safe.GetWorldCorners(warehouseSafeCorners);   // overlay canvas: screen pixels
             float left = warehouseSafeCorners[0].x, right = warehouseSafeCorners[2].x;
             for (int i = 0; i < warehouseCrates.Length; i++)
             {
-                if (warehouseCrates[i] == null) continue;
+                if (warehouseCrates[i] == null) { warehouseLabelAnchors[i] = Vector3.zero; continue; }
                 Bounds b = RendererBounds(warehouseCrates[i]);
-                Vector3 screen = cameraView.WorldToScreenPoint(new Vector3(b.center.x, b.max.y, b.center.z));
+                warehouseLabelAnchors[i] = cameraView.WorldToScreenPoint(new Vector3(b.center.x, b.max.y, b.center.z));
+            }
+            for (int i = 0; i < warehouseCrates.Length; i++)
+            {
+                if (warehouseCrates[i] == null) continue;
+                Vector3 screen = warehouseLabelAnchors[i];
                 bool show = screen.z > 0f;
                 var box = (RectTransform)warehouseCrateLabels[i].transform.parent;
                 if (box.gameObject.activeSelf != show) box.gameObject.SetActive(show);
                 if (!show) continue;
-                float width = WarehouseLabelWidth(warehouseCrateLabels[i].text) * (right - left);
+                WarehouseLabelSpan(screen.x, warehouseLabelAnchors[1 - i].x, WarehouseLabelWidth(warehouseCrateLabels[i].text) * (right - left), Screen.height * 0.01f, left, right, out float x, out float width);
                 box.sizeDelta = new Vector2(width / box.lossyScale.x, 56f);
-                box.position = new Vector3(WarehouseLabelLeft(screen.x, width, left, right), screen.y + Screen.height * 0.01f, 0f);
+                box.position = new Vector3(x, screen.y + Screen.height * 0.01f, 0f);
             }
         }
 

@@ -22,7 +22,7 @@ namespace TheTrailWalker
 
         private void CreateMapPanel()
         {
-            mapPanel = Rect("Camp map", safe, 0.03f, 0.135f, 0.97f, 0.95f).gameObject;
+            mapPanel = Rect("Camp map", safe, MapPanelAnchors.xMin, MapPanelAnchors.yMin, MapPanelAnchors.xMax, MapPanelAnchors.yMax).gameObject;
             mapSheet = mapPanel.AddComponent<Image>();
             mapPage = Rect("Map page", mapPanel.transform, 0, 0, 1, 1);
             mapPanel.SetActive(false);
@@ -48,14 +48,10 @@ namespace TheTrailWalker
             return sprite != null ? sprite : Resources.Load<Sprite>("UI/Missions/paper_0");
         }
 
-        // Settlement card (house icon) in the region list: only when discovered, seated at a camp and not in the settlement.
-        // Public so the Editor checks assembly can call it.
-        public static bool ShowSettlementCard(bool discovered, bool seated, bool inSettlement) => discovered && seated && !inSettlement;
-        // In the settlement the map travels by region only: a region goes to its first camp; the camp page's camps are read-only.
+        // Region rows travel to the region's first camp (arrow); only the current (last visited) region's row opens its camps page,
+        // whose reached camps are travel targets at camps and in the settlement (phone round R5).
         public static bool MapRegionTravelAllowed(bool inSettlement) => true;
-        public static bool MapCampTravelAllowed(bool inSettlement) => !inSettlement;
-        public const string SettlementCampPageNote = "From the settlement, travel goes to the region's first camp.";
-        private bool MapCampsReadOnly => !MapCampTravelAllowed(phase == TravelPhase.Settlement);
+        public static bool RegionRowOpens(string regionId, string currentRegionId) => regionId == currentRegionId;
 
         private void OpenMap()
         {
@@ -83,13 +79,13 @@ namespace TheTrailWalker
         {
             foreach (Transform child in mapPage) Destroy(child.gameObject);
             TravelCatalog catalog = scene.Catalog;
-            RegionDefinition region = catalog.Region(mapRegionId) ?? travel.CurrentRegion;
-            bool here = region.Id == travel.CurrentRegion.Id;
+            RegionDefinition region = travel.CurrentRegion;   // no other region's camps page
+            bool here = true;
             mapSheet.sprite = MapSprite(region.Number); mapSheet.color = Color.white;
 
             // Title inside the sheet's parchment cartouche. Tapping it switches to the region list (user, November 2, 2026:
             // replaces the sideways page arrows); tapping it again in the list returns to this region's camps.
-            MapTitle(mapRegionList ? "REGIONS" : region.Name.ToUpperInvariant(), mapRegionList ? "Tap a region to see its camps" : $"Region {region.Number} - tap for regions");
+            MapTitle(mapRegionList ? "REGIONS" : region.Name.ToUpperInvariant(), mapRegionList ? "Tap your region to see its camps" : $"Region {region.Number} - tap for regions");
             if (mapRegionList) { BuildRegionList(catalog); return; }
 
             // The region's three featured loose resources, then small tree / animal / fishing indicators (section 6.2.2).
@@ -125,9 +121,7 @@ namespace TheTrailWalker
                 dot.sprite = DurabilityStyle.RoundedSprite; dot.color = MapInk; dot.raycastTarget = false;
                 bool current = here && camp.Id == travel.CurrentCampId;
                 bool reached = travel.VisitedCamps.Contains(camp.Id);
-                // Same region: any reached camp; other regions: travel arrives at their first camp only.
-                bool selectable = !current && reached && (here || i == 0);
-                CampButton(camp, node, current, reached, selectable, here);
+                CampButton(camp, node, current, reached, !current && reached);
             }
 
         }
@@ -163,9 +157,9 @@ namespace TheTrailWalker
             return HarvestManifest.FishPair(region).a;
         }
 
-        private void MapIcon(ItemDefinition item, float x0, float y0, float x1, float y1, float alpha = 1f)
+        private void MapIcon(ItemDefinition item, float x0, float y0, float x1, float y1, float alpha = 1f, Transform parent = null)
         {
-            Image icon = Rect("Icon", mapPage, x0, y0, x1, y1).gameObject.AddComponent<Image>(); icon.preserveAspect = true; icon.raycastTarget = false;
+            Image icon = Rect("Icon", parent != null ? parent : mapPage, x0, y0, x1, y1).gameObject.AddComponent<Image>(); icon.preserveAspect = true; icon.raycastTarget = false;
             Sprite sprite = item != null ? ItemIconRenderer.For(ItemArt.ModelFor(item)) : null;
             if (sprite != null) { icon.sprite = sprite; icon.color = new Color(1, 1, 1, alpha); } else icon.color = Color.clear;
         }
@@ -195,43 +189,72 @@ namespace TheTrailWalker
             }
         }
 
-        // Region list (user, November 2, 2026): one row per region in its own colour, with its map sheet as a thumbnail.
-        // Tapping a discovered row opens its camps; the arrow on the right travels to its first camp once reached.
+        // Region list layout, public for the Editor checks. Rows fill 0.05-0.95 of the page, 86% of their slot.
+        public static readonly UnityEngine.Rect MapPanelAnchors = UnityEngine.Rect.MinMaxRect(0.03f, 0.135f, 0.97f, 0.95f);
+        public const float RegionListTop = 0.86f, RegionListBottom = 0.06f, RegionRowFill = 0.86f;
+        // Newest region on top (user, Nov 21): region numbers from the top row down.
+        public static int[] RegionListOrder(TravelCatalog catalog) => catalog.Regions.Select(r => r.Number).OrderByDescending(n => n).ToArray();
+        // An undiscovered row reveals nothing.
+        public static IReadOnlyList<string> RegionRowResources(RegionDefinition region, bool discovered) => discovered ? region.LooseItemIds : new string[0];
+        public static Sprite RegionEmblem(int number) => Resources.Load<Sprite>($"UI/Map/Emblems/region_{number:00}");
+        // Rows up to 0.16 of the page tall so the resource icons stay at least 36 dp on a 720x1680 phone.
+        public static float RegionListRowStep(int slots) => Mathf.Min(0.16f, (RegionListTop - RegionListBottom) / Mathf.Max(1, slots));
+        // A row's size in canvas units, from the safe area's size.
+        public static Vector2 RegionRowSize(Vector2 safeSize, int slots) =>
+            new Vector2(safeSize.x * MapPanelAnchors.width * 0.9f, safeSize.y * MapPanelAnchors.height * RegionListRowStep(slots) * RegionRowFill);
+        // Row-local rects (canvas units, origin bottom-left): three square resource icons after "Region N", and the travel arrow.
+        public static void RegionRowRects(float w, float h, out UnityEngine.Rect[] icons, out UnityEngine.Rect arrow)
+        {
+            arrow = UnityEngine.Rect.MinMaxRect(0.83f * w, 0.1f * h, 0.985f * w, 0.9f * h);
+            float x0 = 0.36f * w, side = Mathf.Min(0.42f * h, (arrow.xMin - 0.02f * w - x0) / 3.24f);   // shrinks before it would reach the arrow
+            icons = new UnityEngine.Rect[3];
+            for (int i = 0; i < 3; i++) icons[i] = new UnityEngine.Rect(x0 + i * side * 1.12f, 0.05f * h, side, side);
+        }
+
+        // Region list (user, November 2, 2026; phone round Nov 21): one row per region in its own colour, newest region on top,
+        // with its emblem and its three resources. Tapping a discovered row opens its camps; the arrow travels to its first camp once reached.
         private void BuildRegionList(TravelCatalog catalog)
         {
             bool inSettlementMap = phase == TravelPhase.Settlement;
-            bool card = ShowSettlementCard(settlement.Discovered, phase == TravelPhase.Seated, phase == TravelPhase.Settlement);
-            int count = catalog.Regions.Count, slots = count + (card ? 1 : 0); float top = 0.86f, bottom = 0.06f;
-            float row = Mathf.Min(0.11f, (top - bottom) / Mathf.Max(1, slots));
-            if (card) BuildSettlementCard(top, row);
+            int[] order = RegionListOrder(catalog);
+            int count = order.Length; float top = RegionListTop;
+            float row = RegionListRowStep(count);
+            Vector2 rowSize = Vector2.Max(RegionRowSize(safe.rect.size, count), Vector2.one);
+            RegionRowRects(rowSize.x, rowSize.y, out UnityEngine.Rect[] iconRects, out _);
             for (int i = 0; i < count; i++)
             {
-                RegionDefinition region = catalog.Regions[i];
-                int slot = i + (card ? 1 : 0);
+                RegionDefinition region = catalog.Regions.First(r => r.Number == order[i]);
                 bool discovered = travel.DiscoveredRegions.Contains(region.Id), here = region.Id == travel.CurrentRegion.Id;
-                float y1 = top - slot * row, y0 = y1 - row * 0.86f;
+                float y1 = top - i * row, y0 = y1 - row * RegionRowFill;
                 RectTransform rect = Rect(region.Name, mapPage, 0.05f, y0, 0.95f, y1);
                 Image plate = rect.gameObject.AddComponent<Image>();
                 Sprite tab = Resources.Load<Sprite>("UI/Missions/tab"); if (tab != null) plate.sprite = tab;
                 Color tint = RegionColor(region.Number);
                 plate.color = discovered ? Color.Lerp(tint, Color.white, 0.35f) : new Color(0.72f, 0.68f, 0.6f, 0.5f);
-                if (discovered)
+                if (discovered && RegionRowOpens(region.Id, travel.CurrentRegion.Id))
                 {
                     var open = rect.gameObject.AddComponent<Button>(); open.targetGraphic = plate;
                     string id = region.Id; open.onClick.AddListener(() => { mapRegionId = id; mapRegionList = false; BuildMapPage(); });
                 }
-                // Thumbnail: the region's own map sheet, edged in the region colour.
+                // The region's colour emblem on a swatch in the region colour (the map sheet if the emblem is missing).
                 RectTransform swatch = Rect("Swatch", rect, 0.015f, 0.1f, 0.175f, 0.9f);
                 Image edge = swatch.gameObject.AddComponent<Image>(); edge.color = discovered ? tint : new Color(0.5f, 0.47f, 0.42f, 0.5f); edge.raycastTarget = false;
-                Image thumb = Rect("Sheet", swatch, 0.06f, 0.08f, 0.94f, 0.92f).gameObject.AddComponent<Image>();
-                thumb.sprite = MapSprite(region.Number); thumb.raycastTarget = false;
+                Image thumb = Rect("Emblem", swatch, 0.06f, 0.08f, 0.94f, 0.92f).gameObject.AddComponent<Image>();
+                Sprite emblem = RegionEmblem(region.Number);
+                thumb.sprite = emblem != null ? emblem : MapSprite(region.Number); thumb.preserveAspect = emblem != null; thumb.raycastTarget = false;
                 thumb.color = discovered ? Color.white : new Color(0.45f, 0.42f, 0.38f, 0.6f);
-                int reached = 0; foreach (CampDefinition c in region.Camps) if (travel.VisitedCamps.Contains(c.Id)) reached++;
                 string name = discovered ? region.Name + (here ? "  (here)" : "") : "Unknown lands";
-                Text title = MapText(rect, name, 0.2f, 0.42f, 0.8f, 0.95f, 24, discovered ? MapInk : MapFaded, TextAnchor.MiddleLeft);
+                Text title = MapText(rect, name, 0.2f, 0.48f, 0.8f, 0.95f, 24, discovered ? MapInk : MapFaded, TextAnchor.MiddleLeft);
                 title.fontStyle = here ? FontStyle.Bold : FontStyle.Normal;
-                MapText(rect, discovered ? $"Region {region.Number} - {reached}/{region.Camps.Count} camps reached" : $"Region {region.Number}",
-                    0.2f, 0.06f, 0.8f, 0.44f, 15, discovered ? MapInk : MapFaded, TextAnchor.MiddleLeft);
+                // "Region N" then the region's three resources, so the player sees where to go (user, Nov 21).
+                float textEnd = iconRects[0].xMin / rowSize.x - 0.01f;
+                MapText(rect, $"Region {region.Number}", 0.2f, 0.06f, discovered ? textEnd : 0.8f, 0.44f, 15, discovered ? MapInk : MapFaded, TextAnchor.MiddleLeft);
+                IReadOnlyList<string> resources = RegionRowResources(region, discovered);
+                for (int k = 0; k < resources.Count && k < iconRects.Length; k++)
+                {
+                    UnityEngine.Rect r = iconRects[k];
+                    MapIcon(MapItem(resources[k]), r.xMin / rowSize.x, r.yMin / rowSize.y, r.xMax / rowSize.x, r.yMax / rowSize.y, 1f, rect);
+                }
                 // Travel arrow: to the region's first camp (in the current region, back to its first camp).
                 bool firstReached = travel.VisitedCamps.Contains(region.FirstCamp.Id);
                 bool atFirst = here && travel.CurrentCampId == region.FirstCamp.Id;
@@ -248,23 +271,6 @@ namespace TheTrailWalker
                 string regionId = region.Id, firstCamp = region.FirstCamp.Id;
                 goButton.onClick.AddListener(() => { if (here && !inSettlementMap) SelectCamp(firstCamp); else SelectRegion(regionId); });
             }
-        }
-
-        // The settlement shortcut: a house-icon card at the top of the region list (no toll).
-        private void BuildSettlementCard(float top, float row)
-        {
-            float y1 = top, y0 = y1 - row * 0.86f;
-            RectTransform rect = Rect("Settlement card", mapPage, 0.05f, y0, 0.95f, y1);
-            Image plate = rect.gameObject.AddComponent<Image>();
-            Sprite tab = Resources.Load<Sprite>("UI/Missions/tab"); if (tab != null) plate.sprite = tab;
-            plate.color = new Color(0.95f, 0.88f, 0.7f, 0.95f);
-            var button = rect.gameObject.AddComponent<Button>(); button.targetGraphic = plate;
-            button.onClick.AddListener(SelectSettlement);
-            RectTransform icon = Rect("Home", rect, 0.015f, 0.1f, 0.175f, 0.9f);
-            icon.gameObject.AddComponent<Image>().color = Color.clear;
-            HudIconStyle.ApplyTo(icon, "home", false);
-            MapText(rect, "Settlement", 0.2f, 0.42f, 0.8f, 0.95f, 24, MapInk, TextAnchor.MiddleLeft).fontStyle = FontStyle.Bold;
-            MapText(rect, "Tap to travel - no toll", 0.2f, 0.06f, 0.8f, 0.44f, 15, MapInk, TextAnchor.MiddleLeft);
         }
 
         // Notes in the settlement go on the paper note; on the trail (no settlement HUD) the feedback line.
@@ -295,7 +301,7 @@ namespace TheTrailWalker
             return result;
         }
 
-        private void CampButton(CampDefinition camp, Vector2 node, bool current, bool reached, bool selectable, bool sameRegion)
+        private void CampButton(CampDefinition camp, Vector2 node, bool current, bool reached, bool selectable)
         {
             bool right = camp.Side == CampSide.Right;
             UnityEngine.Rect tabRect = CampTabRect(node, right);
@@ -305,9 +311,9 @@ namespace TheTrailWalker
             if (tab != null) { plate.sprite = tab; plate.type = Image.Type.Simple; }
             plate.color = current ? new Color(1f, 0.9f, 0.6f, 1f) : reached ? new Color(0.95f, 0.9f, 0.8f, 1f) : new Color(0.75f, 0.7f, 0.6f, 0.55f);
             var button = rect.gameObject.AddComponent<Button>(); button.targetGraphic = plate;
-            button.interactable = selectable || MapCampsReadOnly;   // in the settlement a tap shows the note
-            string id = camp.Id, regionId = camp.RegionId;
-            button.onClick.AddListener(() => { if (MapCampsReadOnly) { MapNote(SettlementCampPageNote); return; } if (sameRegion) SelectCamp(id); else SelectRegion(regionId); });
+            button.interactable = selectable;
+            string id = camp.Id;
+            button.onClick.AddListener(() => SelectCamp(id));
             // Campfire icon on the road side, the name on the outer side.
             RectTransform icon = Rect("Campfire", rect, right ? 0.02f : 0.80f, 0.06f, right ? 0.2f : 0.98f, 0.94f);
             Image iconImage = icon.gameObject.AddComponent<Image>(); iconImage.color = Color.clear;

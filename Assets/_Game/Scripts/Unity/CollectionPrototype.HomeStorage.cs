@@ -61,6 +61,11 @@ namespace TheTrailWalker
                 if (e.Owner == ItemOwner.Backpack && e.X < to && e.X + e.Width > from) yield return e;
         }
 
+        // The bag's details gesture, shared with the containers: a release without a drag after the hold time.
+        public const float DetailsHoldSeconds = 0.25f;
+        public static bool ShowsDetailsOnRelease(bool canceled, bool dragging, bool world, float heldSeconds) => !canceled && !dragging && !world && heldSeconds >= DetailsHoldSeconds;
+        // The item a container release opens the details view for (null: none).
+        public static ItemEntry ContainerDetailsItem(ItemEntry item, bool canceled, bool dragging, float heldSeconds) => item != null && ShowsDetailsOnRelease(canceled, dragging, false, heldSeconds) ? item : null;
         // The container cancel path: a held chest entry is released and stays where it was (a rack spot holds no reservation).
         public static void CancelContainerHold(SpatialInventory source, ItemEntry item, int pointer) { if (source != null && item != null) source.Release(item, pointer); }
 
@@ -316,7 +321,13 @@ namespace TheTrailWalker
             bool fromContainer = contact.Source != null || contact.RackSpot >= 0;
             bool overPanel = !canceled && contact.Dragging && !contact.World && OverContainer(position) && !OverOtherPanel(position);
             if (!fromContainer && !overPanel) return false;
-            if (canceled || !contact.Dragging) { Release(pointer, contact); return true; }
+            if (canceled || !contact.Dragging)
+            {
+                ItemEntry details = milestone4 ? ContainerDetailsItem(contact.Item, canceled, contact.Dragging, Time.unscaledTime - contact.Started) : null;
+                Release(pointer, contact);   // the hold's reservation goes first; details moves and saves nothing
+                if (details != null) ShowDetails(details, false);
+                return true;
+            }
             ItemEntry item = contact.Item;
             SpatialInventory chest = OpenChest; ToolRack rack = OpenRack;
             Vector2 half = new Vector2(item.Width, item.Height) * 0.5f;

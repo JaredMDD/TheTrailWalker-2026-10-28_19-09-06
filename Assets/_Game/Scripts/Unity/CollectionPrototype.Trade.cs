@@ -179,7 +179,7 @@ namespace TheTrailWalker
             // The offer counts down while seated in the foreground (pauses freeze it, like the session clock).
             if (tradeSession.Offering && seated && !TradePanelOpen && tradeSession.AdvanceOffer(Mathf.Min(Time.unscaledDeltaTime, 0.25f)))
             { SaveNow(); Say("The traders packed up. Trade again on your next camp visit."); }
-            bool note = seated && tradeSession.Offering && !TradePanelOpen;
+            bool note = seated && tradeSession.Offering && !TradePanelOpen && !BalloonOpen;   // hidden behind the balloon interior
             if (tradeNote != null)
             {
                 if (tradeNote.activeSelf != note) { tradeNote.SetActive(note); if (note) tradeNote.transform.SetAsLastSibling(); }

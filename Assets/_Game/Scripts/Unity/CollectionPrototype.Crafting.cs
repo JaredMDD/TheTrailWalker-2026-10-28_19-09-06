@@ -132,7 +132,7 @@ namespace TheTrailWalker
 
         private void LearnAllRecipes()
         {
-            int learned = 0; foreach (RecipeDefinition r in RecipeBook.All) if (!r.Retired && crafting.Learn(r.Id)) learned++;
+            int learned = 0; foreach (RecipeDefinition r in RecipeBook.All) if (!r.Retired && !r.MysteryBoxEligible && crafting.Learn(r.Id)) learned++;
             SaveNow();
             Say(learned > 0 ? $"Learned {learned} tier-one recipes (debug; missions unlock recipes in Milestone 8)." : "All tier-one recipes are already known.");
         }

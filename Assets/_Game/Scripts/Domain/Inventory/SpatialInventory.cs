@@ -406,9 +406,10 @@ namespace TheTrailWalker.Domain.Inventory
         }
         public bool TakeOff(string id, double remainingDistance)
         {
-            if (string.IsNullOrWhiteSpace(id) || double.IsNaN(remainingDistance) || double.IsInfinity(remainingDistance) || remainingDistance <= 0 ||
+            if (string.IsNullOrWhiteSpace(id) || double.IsNaN(remainingDistance) || double.IsInfinity(remainingDistance) ||
                 !identities.TryGetValue(id, out ItemEntry item) || item.Owner != ItemOwner.Worn || reservations.ContainsKey(id)) return false;
-            item.HasWearRemaining = true; item.WearRemaining = remainingDistance;
+            // Special gear never wears out: it carries no wear state in the bag.
+            if (!SpecialGear.Is(item.Definition.Id)) { if (remainingDistance <= 0) return false; item.HasWearRemaining = true; item.WearRemaining = remainingDistance; }
             item.Owner = ItemOwner.Overflow; item.X = item.Y = 0; Revision++; return true;
         }
         public bool RestoreWear(ItemEntry item, bool hasWear, double remainingDistance)

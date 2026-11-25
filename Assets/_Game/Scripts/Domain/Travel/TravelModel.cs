@@ -363,13 +363,13 @@ namespace TheTrailWalker.Domain.Travel
             return ArriveAtCamp(SettlementReturnCampId);
         }
 
-        // Camp map: unlocked camps of the current region by exact selection; other discovered regions arrive at their first camp.
+        // Camp map: unlocked camps of the current region by exact selection (also from the settlement, whose region is the return camp's); other discovered regions arrive at their first camp.
         public bool CanTravelToCamp(string campId, bool busy, out string reason)
         {
             reason = "";
             CampDefinition camp = catalog.Camp(campId);
             if (camp == null) { reason = "Unknown camp"; return false; }
-            if (!Seated || busy) { reason = "Travel is only available while seated at a camp and not trading or recovering"; return false; }
+            if (!(Seated || InSettlement) || busy) { reason = "Travel is only available while seated at a camp or in the settlement and not trading or recovering"; return false; }
             if (camp.Id == CurrentCampId) { reason = "You are already here"; return false; }
             if (camp.RegionId != CurrentCamp.RegionId) { reason = "Choose another region from the region list"; return false; }
             if (!visited.Contains(camp.Id)) { reason = camp.Name + " has not been reached yet"; return false; }

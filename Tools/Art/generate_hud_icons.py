@@ -12,6 +12,22 @@ def rect(x,y,w,h,c='#111111',radius=0): return ('rect',(x,y,w,h,radius),c)
 def circle(x,y,r,c='#111111'): return ('circle',(x,y,r),c)
 def poly(points,c='#111111'): return ('polygon',points,c)
 BLACK='#111111';GRAY='#777777';LIGHT='#dedede';CLEAR='#00000000'
+def bar(x0,y0,x1,y1,w,c=BLACK):
+ # A straight stroke of width w from (x0,y0) to (x1,y1), as a quad.
+ dx,dy=x1-x0,y1-y0;k=w/2/math.hypot(dx,dy);nx,ny=-dy*k,dx*k
+ return poly([(x0+nx,y0+ny),(x1+nx,y1+ny),(x1-nx,y1-ny),(x0-nx,y0-ny)],c)
+def oval(cx,cy,rx,ry,c=BLACK,n=40): return poly([(cx+rx*math.cos(2*math.pi*i/n),cy+ry*math.sin(2*math.pi*i/n)) for i in range(n)],c)
+def grain(cx,cy,angle,c=BLACK):
+ # One wheat kernel: a pointed oval 9 long, tilted by angle (radians from straight up).
+ s,co=math.sin(angle),math.cos(angle)
+ return poly([(cx+x*co-y*s,cy+x*s+y*co) for x,y in ((0,-6),(3.6,-1.5),(3.2,2.5),(0,5),(-3.2,2.5),(-3.6,-1.5))],c)
+def ear(x0,y0,x1,y1):
+ # A wheat ear along its stalk's top: kernel pairs from (x0,y0) up to the tip (x1,y1).
+ a=math.atan2(x1-x0,y0-y1);out=[]
+ for i in range(5):
+  t=i/4.6;x=x0+(x1-x0)*t;y=y0+(y1-y0)*t
+  out+= [grain(x-3.4*math.cos(a),y-3.4*math.sin(a),a-.45),grain(x+3.4*math.cos(a),y+3.4*math.sin(a),a+.45)]
+ return out+[grain(x1,y1-1,a)]
 icons={
  'inventory':[
   rect(43,12,42,33,BLACK,12),rect(51,19,26,23,CLEAR,7),
@@ -93,6 +109,62 @@ icons={
   poly([(57,12),(71,12),(71,44),(84,44),(64,63),(44,44),(57,44)],GRAY),
   poly([(8,64),(30,64),(40,78),(88,78),(98,64),(120,64),(108,116),(20,116)]),
   rect(30,90,68,6,LIGHT,3),rect(36,102,56,4,GRAY,2)],
+ # Counter wallet labels (phone round R2, November 21, 2026): in colour, unlike every other HUD icon, so the two read apart at a
+ # glance (user: "the icons should use different color to properly represent what they refer to"). cash: a banded stack of
+ # green notes; gold: a faceted ingot, lit top face, shaded side, a highlight streak.
+ 'cash':[
+  poly([(24,24),(110,16),(116,64),(30,72)],'#24502E'),
+  poly([(16,38),(106,32),(110,80),(20,86)],'#336F40'),
+  rect(8,52,112,62,'#4C9A58',7),
+  rect(15,59,98,48,'#69B76C',4),
+  poly([(15,59),(113,59),(113,67),(15,81)],'#84CB80'),
+  circle(72,83,15,'#3A7F47'),circle(72,83,10,'#A8DC9F'),circle(72,83,4,'#3A7F47'),
+  rect(96,64,12,5,'#3A7F47',2),rect(96,97,12,5,'#3A7F47',2),
+  rect(34,50,18,66,'#E8D7A0',2),rect(34,50,4,66,'#C2A964'),rect(38,76,14,14,'#C2A964',2)],
+ 'gold':[
+  poly([(36,38),(92,38),(104,58),(24,58)],'#FFE07A'),
+  poly([(92,38),(108,48),(124,92),(116,100),(104,58)],'#A86F10'),
+  poly([(24,58),(104,58),(116,100),(10,100)],'#E3A626'),
+  poly([(30,63),(50,63),(38,95),(17,95)],'#F7CD52'),
+  poly([(42,42),(60,42),(54,53),(35,53)],'#FFF5C8'),
+  rect(56,72,30,14,'#C88C18',3),rect(60,76,22,6,'#EDBB45',2),
+  poly([(10,100),(116,100),(118,106),(8,106)],'#8A5A0C')],
+ # Settlement list shops (phone round R2, November 21, 2026): black and grey like the home, warehouse and lumber icons.
+ 'bakery':[
+  rect(10,44,108,62,BLACK,31),rect(10,80,108,28,BLACK,6),
+  poly([(36,52),(46,50),(36,80),(26,82)],LIGHT),poly([(60,48),(70,48),(60,80),(50,80)],LIGHT),poly([(84,50),(94,52),(84,82),(74,80)],LIGHT),
+  rect(16,96,96,7,GRAY,3)],
+ 'farm':[
+  bar(62,118,50,40,7),bar(66,118,64,34,7),bar(70,118,80,40,7),
+  bar(58,118,30,50,6),bar(72,118,100,50,6)]
+  +ear(50,44,44,8)+ear(64,38,64,4)+ear(80,44,86,8)+ear(31,52,16,20)+ear(99,52,114,20)
+  +[rect(46,82,38,11,GRAY,4),rect(46,86,38,3,LIGHT,1)],
+ 'mine':[
+  bar(30,116,86,38,13),bar(30,116,46,94,15,GRAY),
+  poly([(12,48),(32,28),(64,16),(96,22),(122,46),(100,40),(66,32),(36,40)]),
+  poly([(36,36),(64,24),(92,28),(66,28)],GRAY),
+  rect(74,28,22,22,BLACK,4)],
+ 'tailor':[
+  rect(18,20,56,12,BLACK,4),rect(18,98,56,12,BLACK,4),
+  rect(26,32,40,66,GRAY,2),
+  rect(26,42,40,4,BLACK),rect(26,56,40,4,BLACK),rect(26,70,40,4,BLACK),rect(26,84,40,4,BLACK),
+  bar(104,12,92,116,7),oval(103,24,2.5,6,LIGHT),
+  bar(66,48,101,25,3,GRAY)],
+ 'ranch':[
+  poly([(36,34),(14,12),(22,30),(34,42)],GRAY),poly([(92,34),(114,12),(106,30),(94,42)],GRAY),
+  poly([(10,46),(36,38),(36,58),(16,58)]),poly([(118,46),(92,38),(92,58),(112,58)]),
+  rect(32,28,64,78,BLACK,24),
+  poly([(46,30),(70,30),(62,50),(50,46)],GRAY),
+  rect(36,76,56,40,GRAY,18),circle(52,96,5),circle(76,96,5),
+  circle(50,60,5,LIGHT),circle(78,60,5,LIGHT)],
+ 'fishery':[
+  poly([(46,42),(62,20),(80,26),(78,44)]),
+  poly([(88,64),(122,34),(114,64),(122,94)]),
+  oval(56,64,46,28),
+  poly([(50,86),(62,104),(70,88)],BLACK),
+  poly([(36,42),(44,52),(46,64),(44,76),(36,86),(40,64)],GRAY),
+  circle(26,58,6,LIGHT),circle(26,58,2.5,BLACK),
+  poly([(56,58),(64,52),(72,58),(64,64)],GRAY),poly([(72,66),(80,60),(88,66),(80,72)],GRAY),poly([(56,72),(64,66),(72,72),(64,78)],GRAY)],
  'user':[
   poly([(64+49*(1 if i%2==0 else .49)*math.cos(-math.pi/2+i*math.pi/8),64+49*(1 if i%2==0 else .49)*math.sin(-math.pi/2+i*math.pi/8)) for i in range(16)])]
 }

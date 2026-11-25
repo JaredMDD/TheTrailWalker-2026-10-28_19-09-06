@@ -20,6 +20,7 @@ def main():
     for recipe in catalog["Recipes"]:
         inputs = ", ".join(f'new RecipeInput("{i["ItemId"]}", {i["Quantity"]})' for i in recipe["Inputs"])
         retired = ", retired: true" if recipe.get("Retired") else ""
+        retired += ", mysteryBoxEligible: true" if recipe.get("MysteryBoxEligible") else ""
         lines.append(
             f'            new RecipeDefinition("{recipe["Id"]}", "{cs(recipe["Name"])}", RecipeRole.{recipe["Category"]}, {recipe["Tier"]}, '
             f'"{recipe["OutputId"]}", {recipe["Yield"]}, {float(recipe["BaseSeconds"])}f, "{cs(recipe["UnlockSource"])}", new[] {{ {inputs} }}{retired}),')

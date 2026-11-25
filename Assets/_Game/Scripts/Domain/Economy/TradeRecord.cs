@@ -12,6 +12,7 @@ namespace TheTrailWalker.Domain.Economy
         public string utc, campId, settlementId, itemId, result;
         public int visit, quantity, quality, percent;
         public long unitMinor, totalMinor, cash;   // cash > 0 paid to the player; cash < 0 charged to the player
+        public long gold;                          // whole gold; gold < 0 charged to the player (gold shop purchases carry cash 0)
 
         public static TradeRecord From(TradeSessionData session, TradeListing listing, int percent, DateTime utcNow)
         {

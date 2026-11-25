@@ -84,9 +84,15 @@ namespace TheTrailWalker
         public static bool TrailControlsVisible(bool settlement) => !settlement;
 
         // Until a plot is chosen only Return shows.
-        public static string[] SettlementListKeys(bool plotChosen) => plotChosen ? new[] { "home", "warehouse", "lumber", "farm", "mine", "tailor", "ranch", "fishery", "return" } : new[] { "return" };
+        public static string[] SettlementListKeys(bool plotChosen) => plotChosen ? new[] { "home", "warehouse", "lumber", "bakery", "farm", "mine", "tailor", "ranch", "fishery", "return" } : new[] { "return" };
         // Slot (row from the top) of a list button, or -1 when hidden: visible buttons stack contiguously from the corner.
         public static int SettlementListSlot(string key, bool plotChosen) => System.Array.IndexOf(SettlementListKeys(plotChosen), key);
+        // At a camp (phone round R3) the list travels there: the same places minus Return, or a lone Settlement entry before the plot choice.
+        public static string[] CampListKeys(bool plotChosen) => plotChosen ? System.Array.FindAll(SettlementListKeys(true), k => k != "return") : new[] { "settlement" };
+        // The map card's old conditions: seated at a camp with the settlement discovered, never in it, and hidden under the camp's panels.
+        public static bool CampListVisible(bool discovered, bool seated, bool inSettlement, bool covered) => discovered && seated && !inSettlement && !covered;
+        // The place tapped at a camp opens on arrival only onto a clear street; otherwise the player stays on the street.
+        public static bool SettlementOpensOnEntry(bool noteShowing, bool plotChoice, bool covered) => !noteShowing && !plotChoice && !covered;
 
         // Arrival (arch, map shortcut, restart inside): a never-discovered state (a new profile's placeholder seed 0) is replaced
         // by one seeded from the live visit and camp, then discovered; regions found since the last visit are applied (idempotent).
@@ -112,6 +118,7 @@ namespace TheTrailWalker
         // A real app start (a restart inside the settlement) begins false: no welcome note, but arrival still runs.
         private static bool settlementWelcomePending;
         private bool settlementEntered;
+        private string settlementOpenNext;   // the camp list's place for this scene's first settlement frame (null: the street)
         private bool InSettlementScene => milestone5 && scene != null && scene.Settlement;
         private SettlementStreet Street { get { if (world == null) world = GetComponent<MovementPrototype>(); return world != null ? world.Street : null; } }
         private StreetCamera StreetView { get { if (world == null) world = GetComponent<MovementPrototype>(); return world != null ? world.StreetView : null; } }
@@ -126,6 +133,7 @@ namespace TheTrailWalker
             ResetHomeView();   // a context (re)entry always starts on the street
             if (settlementEntered) return;
             settlementEntered = true;
+            settlementOpenNext = TakeSettlementOpen();   // the camp list's place, opened on the first settlement frame (UpdateSettlement)
             ApplySettlementArrival(); lastSavedState = null; SaveNow();
             if (settlementWelcomePending) { settlementWelcomePending = false; ShowSettlementNote(SettlementWelcome); }
         }
@@ -219,17 +227,23 @@ namespace TheTrailWalker
         public static float SettlementListRowY(int slot, float size = HudSquare, float step = HudSquare + HudGap) => -(HudSquare + step - size + slot * step);   // a row's top below the settlement button's top
         // Row size and pitch (canvas units) for `rows` entries in a safe area `safeHeight` tall: the full 84 + 10 rows when they
         // fit above the closed-bag MENU square, otherwise the pitch shrinks evenly (the gap first, down to 6) so the lowest row
-        // still ends a gap above it (nine entries on the 1116x2480 phone, Milestone 14).
-        public static void SettlementListRows(float safeHeight, int rows, out float size, out float step)
+        // still ends a gap above it (nine entries on the 1116x2480 phone, Milestone 14). A row never shrinks below minSize (the
+        // 48 dp tap target, canvas units) while the gaps can give way: then the gaps share what is left, down to touching (ten
+        // entries on a 720x1680 320 dpi screen, slice 2).
+        public static void SettlementListRows(float safeHeight, int rows, out float size, out float step, float minSize = 0f)
         {
             float room = (SettlementListTop - ClosedBarLine) * safeHeight - 2f * HudSquare;   // settlement button's bottom to the MENU square's top
-            step = Mathf.Min(HudSquare + HudGap, (room - HudGap) / Mathf.Max(1, rows));
+            rows = Mathf.Max(1, rows);
+            step = Mathf.Min(HudSquare + HudGap, (room - HudGap) / rows);
             size = Mathf.Min(HudSquare, step - 6f);
+            if (size >= minSize) return;
+            size = Mathf.Min(HudSquare, minSize, room / rows);
+            step = size + (room - rows * size) / (rows + 1);   // equal gaps above the first row, between rows and above the MENU square
         }
         // A list row's and the MENU square's rects in safe-area canvas units (origin bottom left), for the overlap check.
-        public static Rect SettlementListRowRect(float safeWidth, float safeHeight, int slot, int rows)
+        public static Rect SettlementListRowRect(float safeWidth, float safeHeight, int slot, int rows, float minSize = 0f)
         {
-            SettlementListRows(safeHeight, rows, out float size, out float step);
+            SettlementListRows(safeHeight, rows, out float size, out float step, minSize);
             float top = SettlementListTop * safeHeight + SettlementListRowY(slot, size, step);
             return new Rect(safeWidth - HudMargin - size, top - size, size, size);
         }
@@ -238,8 +252,36 @@ namespace TheTrailWalker
         private static float SettlementListClearance => HudMargin + HudSquare + HudGap;
         private static void ClearOfSettlementList(RectTransform rect) { rect.anchorMax = new Vector2(1f, rect.anchorMax.y); rect.offsetMax = new Vector2(-SettlementListClearance, rect.offsetMax.y); }
 
+        // Icon-only list from the upper-right corner downward; captions stay on the hidden labels (accessibility names). Built in the
+        // settlement and at camps (phone round R3), where a lone Settlement entry with the house icon stands in before the plot choice.
+        private void CreateSettlementList()
+        {
+            claimOverflow = safe.Find("CLAIM OVERFLOW") as RectTransform;
+            settlementList = Rect("Settlement list", safe, 0, 0, 1, 1);
+            // The settlement square opens the list and closes the user menu: the two share the right-hand column (LayoutSettlementList).
+            Text menuLabel = Button(settlementList, "Settlement", 0, 0, 0, 0, () => { settlementListOpen = !settlementListOpen; if (settlementListOpen) SetMenu(false); settlementListLayout = -1; });
+            HudIconStyle.Apply(menuLabel, "settlement");
+            settlementMenuButton = (RectTransform)menuLabel.transform.parent; settlementMenuButton.name = "Settlement menu";
+            settlementMenuButton.anchorMin = settlementMenuButton.anchorMax = new Vector2(1f, SettlementListTop); settlementMenuButton.pivot = new Vector2(1f, 1f);
+            settlementMenuButton.sizeDelta = new Vector2(HudSquare, HudSquare); settlementMenuButton.anchoredPosition = new Vector2(-HudMargin, 0f);
+            var captions = new Dictionary<string, string> { { "home", "Home" }, { "warehouse", "Warehouse" }, { "lumber", "Lumber" }, { "bakery", "Bakery" },
+                { "farm", "Farm" }, { "mine", "Mine" }, { "tailor", "Tailor" }, { "ranch", "Ranch" }, { "fishery", "Fishery" }, { "return", "Return" }, { "settlement", "Settlement" } };
+            foreach (string key in captions.Keys)
+            {
+                string captured = key;
+                Text label = Button(settlementList, captions[key], 0, 0, 0, 0, () => SettlementListTapped(captured));
+                HudIconStyle.Apply(label, key == "settlement" ? "home" : key);
+                var rect = (RectTransform)label.transform.parent; rect.name = "Settlement list: " + captions[key];
+                rect.anchorMin = rect.anchorMax = new Vector2(1f, SettlementListTop); rect.pivot = new Vector2(1f, 1f);
+                rect.sizeDelta = new Vector2(HudSquare, HudSquare);
+                settlementButtons[key] = rect;
+            }
+            settlementList.gameObject.SetActive(false);
+        }
+
         private void CreateSettlementHud()
         {
+            CreateSettlementList();
             if (!InSettlementScene) return;
             router.SpeedAreaEnabled = false;   // no walking: the street scrolls instead (see SettlementPointerBegin)
             // The debug CLAIM OVERFLOW button would sit under the list column; in the settlement it moves one column left.
@@ -250,27 +292,6 @@ namespace TheTrailWalker
             houseDepositButton = Button(safe, DebugDepositCaption, 0.47f, 0.67f, 0.72f, 0.72f, DebugDeposit);
             houseJumpButton = Button(safe, DebugJumpCaption, 0.47f, 0.49f, 0.72f, 0.54f, DebugJumpHouse);   // the next free row (0.55 holds CLAIM OVERFLOW)
             shopTierButton = Button(safe, "TIER +1", 0.47f, 0.43f, 0.72f, 0.48f, DebugShopTier);   // debug (test phase), removed with HOUSE L8
-
-            // Icon-only list from the upper-right corner downward; captions stay on the hidden labels (accessibility names).
-            settlementList = Rect("Settlement list", safe, 0, 0, 1, 1);
-            Text menuLabel = Button(settlementList, "Settlement", 0, 0, 0, 0, () => { settlementListOpen = !settlementListOpen; settlementListLayout = -1; });
-            HudIconStyle.Apply(menuLabel, "settlement");
-            settlementMenuButton = (RectTransform)menuLabel.transform.parent; settlementMenuButton.name = "Settlement menu";
-            settlementMenuButton.anchorMin = settlementMenuButton.anchorMax = new Vector2(1f, SettlementListTop); settlementMenuButton.pivot = new Vector2(1f, 1f);
-            settlementMenuButton.sizeDelta = new Vector2(HudSquare, HudSquare); settlementMenuButton.anchoredPosition = new Vector2(-HudMargin, 0f);
-            var captions = new Dictionary<string, string> { { "home", "Home" }, { "warehouse", "Warehouse" }, { "lumber", "Lumber" },
-                { "farm", "Farm" }, { "mine", "Mine" }, { "tailor", "Tailor" }, { "ranch", "Ranch" }, { "fishery", "Fishery" }, { "return", "Return" } };
-            foreach (string key in SettlementListKeys(true))
-            {
-                string captured = key;
-                Text label = Button(settlementList, captions[key], 0, 0, 0, 0, () => SettlementListTapped(captured));
-                HudIconStyle.Apply(label, key);
-                var rect = (RectTransform)label.transform.parent; rect.name = "Settlement list: " + captions[key];
-                rect.anchorMin = rect.anchorMax = new Vector2(1f, SettlementListTop); rect.pivot = new Vector2(1f, 1f);
-                rect.sizeDelta = new Vector2(HudSquare, HudSquare);
-                settlementButtons[key] = rect;
-            }
-            settlementList.gameObject.SetActive(false);
 
             // Plot choice overlay: a marker over each plot and a paper strip with the instruction.
             plotOverlay = Rect("Plot choice", safe, 0, 0, 1, 1);
@@ -339,24 +360,7 @@ namespace TheTrailWalker
                 if (houseJumpButton != null) { GameObject jump = houseJumpButton.transform.parent.gameObject; if (jump.activeSelf != visible) jump.SetActive(visible); }
                 if (shopTierButton != null) { GameObject tier = shopTierButton.transform.parent.gameObject; if (tier.activeSelf != visible) tier.SetActive(visible); }
             }
-            if (!covered)
-            {
-                bool chosen = settlement.PlotIndex >= 0;
-                int layout = (chosen ? 1 : 0) + (settlementListOpen ? 2 : 0);
-                if (settlementListLayout != layout || settlementListHeight != safe.rect.height)
-                {
-                    // Re-lay out whenever the visible set changes: the open list stacks under the settlement button from slot 0
-                    // (before the plot choice a lone Return takes the first row).
-                    settlementListLayout = layout; settlementListHeight = safe.rect.height;
-                    SettlementListRows(settlementListHeight, SettlementListKeys(chosen).Length, out float size, out float step);
-                    foreach (KeyValuePair<string, RectTransform> pair in settlementButtons)
-                    {
-                        int slot = settlementListOpen ? SettlementListSlot(pair.Key, chosen) : -1;
-                        pair.Value.gameObject.SetActive(slot >= 0);
-                        if (slot >= 0) { pair.Value.sizeDelta = new Vector2(size, size); pair.Value.anchoredPosition = new Vector2(-HudMargin, SettlementListRowY(slot, size, step)); }
-                    }
-                }
-            }
+            if (!covered) LayoutSettlementList(false, settlement.PlotIndex >= 0);
             bool overlay = PlotChoiceOpen && !covered;
             if (plotOverlay.gameObject.activeSelf != overlay) plotOverlay.gameObject.SetActive(overlay);
             if (overlay)
@@ -372,11 +376,53 @@ namespace TheTrailWalker
                     if (show) { marker.position = new Vector3(screen.x, screen.y, 0f); marker.localScale = Vector3.one * pulse; }
                 }
             }
+            if (settlementOpenNext != null)
+            {
+                string place = settlementOpenNext; settlementOpenNext = null;   // once: a welcome or migration note, the plot choice or a panel keeps the street
+                if (SettlementOpensOnEntry(settlementNote.activeSelf, PlotChoiceOpen, covered)) SettlementListTapped(place);
+            }
             UpdateHome(SettlementPanelsCovered);
             UpdateWarehouse();
             UpdateLumber();
             UpdateShops();
             if (settlementNote.activeSelf && Time.unscaledTime >= settlementNoteHideAt) settlementNote.SetActive(false);
+        }
+
+        // Re-lays out the list whenever the visible set changes: the open list stacks under the settlement button from slot 0 (the
+        // settlement's keys, or the camp's; before the plot choice a lone Return or Settlement entry takes the first row).
+        private void LayoutSettlementList(bool camp, bool chosen)
+        {
+            if (menuOpen && settlementListOpen) settlementListOpen = false;   // the user menu took the right-hand column
+            int layout = (chosen ? 1 : 0) + (settlementListOpen ? 2 : 0);
+            if (settlementListLayout == layout && settlementListHeight == safe.rect.height) return;
+            settlementListLayout = layout; settlementListHeight = safe.rect.height;
+            string[] keys = camp ? CampListKeys(chosen) : SettlementListKeys(chosen);
+            SettlementListRows(settlementListHeight, keys.Length, out float size, out float step, 48f * (Screen.dpi > 0f ? Screen.dpi : 160f) / 160f / CanvasScale);
+            foreach (KeyValuePair<string, RectTransform> pair in settlementButtons)
+            {
+                int slot = settlementListOpen ? System.Array.IndexOf(keys, pair.Key) : -1;
+                pair.Value.gameObject.SetActive(slot >= 0);
+                if (slot >= 0) { pair.Value.sizeDelta = new Vector2(size, size); pair.Value.anchoredPosition = new Vector2(-HudMargin, SettlementListRowY(slot, size, step)); }
+            }
+        }
+
+        // ---------------------------------------------------------------- the list at camps (phone round R3)
+
+        // Hidden under the same panels as the rest of the camp HUD: the bag, map, crafting, gear, mission papers, the trade, the toll, a faint.
+        private bool CampListCovered => SettlementPanelsCovered || TradePanelOpen || (tollPanel != null && tollPanel.activeSelf) || (missionShow != null && missionShow.activeSelf) || BalloonOpen;
+        // The debug CLAIM OVERFLOW button steps one column left while the list holds the right column, as in the settlement.
+        public static readonly UnityEngine.Rect ClaimOverflowAsideBand = UnityEngine.Rect.MinMaxRect(0.47f, 0.55f, 0.72f, 0.60f);
+        private RectTransform claimOverflow;
+
+        // Per frame outside the settlement (from UpdateTravel).
+        private void UpdateCampList()
+        {
+            if (settlementList == null) return;
+            bool here = CampListVisible(settlement.Discovered, phase == TravelPhase.Seated, phase == TravelPhase.Settlement, false), shown = here && !CampListCovered;
+            if (settlementList.gameObject.activeSelf != shown) settlementList.gameObject.SetActive(shown);
+            UnityEngine.Rect claim = here ? ClaimOverflowAsideBand : ClaimOverflowBand;
+            if (claimOverflow != null && claimOverflow.anchorMin != claim.min) { claimOverflow.anchorMin = claim.min; claimOverflow.anchorMax = claim.max; }
+            if (shown) LayoutSettlementList(true, settlement.PlotIndex >= 0);
         }
 
         // Inside the house (room and bird's-eye) the note sits in the top band like the trade note, clear of the corner squares
@@ -387,7 +433,7 @@ namespace TheTrailWalker
         private void PlaceSettlementNote(bool insideHouse)
         {
             var rect = (RectTransform)settlementNote.transform;
-            bool lumber = LumberOpen || ShopOpen;   // the shop counters share the centred band (spec 6.1: refusals on the centred note)
+            bool lumber = LumberOpen || ShopOpen || BalloonOpen;   // the shop and balloon counters share the centred band (spec 6.1: refusals on the centred note)
             Vector4 band = lumber ? LumberNoteBand : insideHouse ? HomeNoteBand : StreetNoteBand;
             rect.anchorMin = new Vector2(band.x, band.y); rect.anchorMax = new Vector2(band.z, band.w);
             rect.offsetMin = rect.offsetMax = Vector2.zero;
@@ -422,6 +468,7 @@ namespace TheTrailWalker
 
         private void SettlementListTapped(string key)
         {
+            if (phase == TravelPhase.Seated) { CampListTapped(key); return; }   // at a camp the list travels (Travel.cs)
             if (phase != TravelPhase.Settlement || saveBlocked) return;
             if (HomeOpen) return;
             if (key == "return") { AskReturn(); return; }
@@ -441,7 +488,7 @@ namespace TheTrailWalker
             if (HomeOpen) return;
             if (b.Kind == StreetBuildingKind.Warehouse) { OpenWarehouse(); return; }
             if (OpensLumberCounter(null, b.Kind)) { OpenLumberCounter(); return; }
-            if (b.Kind == StreetBuildingKind.Shop && b.Id.StartsWith("shop.", System.StringComparison.Ordinal) && ShopIdForKey(b.Id.Substring(5)) != null) { OpenShop(b.Id); return; }   // the bakery keeps its note
+            if (b.Kind == StreetBuildingKind.Shop && b.Id.StartsWith("shop.", System.StringComparison.Ordinal) && ShopIdForKey(b.Id.Substring(5)) != null) { OpenShop(b.Id); return; }   // all six shops, the bakery included (slice 2)
             switch (SettlementTapAction(b, PlotChoiceOpen, settlement.PlotIndex, b.Kind == StreetBuildingKind.House ? NeighbourHouseLevel(b.Plot) : 0))
             {
                 case StreetTapAction.ChoosePlot: AskPlot(b); return;
@@ -515,6 +562,7 @@ namespace TheTrailWalker
         {
             if (interiorPointer == pointer) { InteriorPointerEnd(position, canceled); return true; }
             if (ShopPointerEnd(pointer, position, canceled)) return true;
+            if (BalloonPointerEnd(pointer, position, canceled)) return true;
             if (LumberPointerEnd(pointer, position, canceled)) return true;
             if (streetPointer != pointer) return false;
             if (!canceled) SettlementPointerMove(pointer, position);

@@ -34,7 +34,7 @@ namespace TheTrailWalker.Editor
             passed.Clear();
             // Catalog integrity.
             bool resolve = RecipeBook.All.All(r => r.Output != null && r.Inputs.All(i => Items.Find(i.ItemId) != null && i.Quantity > 0));
-            Check(Tier1Recipes.All.Length == 64 && RecipeBook.All.Count == 67 && resolve && RecipeBook.All.Select(r => r.Id).Distinct().Count() == 67, "The 64 tier-one recipes (five retired roasts included: four fish, November 7, and Roasted shrimp, November 14) and 3 tier-two Elite upgrades resolve every exact input and output item and have unique IDs");
+            Check(Tier1Recipes.All.Length == 64 && RecipeBook.All.Count == 67 + BakeryRecipes.All.Length + BoxRecipes.All.Length && resolve && RecipeBook.All.Select(r => r.Id).Distinct().Count() == 67 + BakeryRecipes.All.Length + BoxRecipes.All.Length, "The 64 tier-one recipes (five retired roasts included: four fish, November 7, and Roasted shrimp, November 14) , 13 bakery recipes, 54 box recipes and 3 tier-two Elite upgrades resolve every exact input and output item and have unique IDs");
             Check(RecipeBook.All.All(r => r.Inputs.All(i => ItemTiers.InWindow(r, i.ItemId))), "Every recipe's direct inputs respect its tier window (or the Food pantry exception)");
             var birchTest = new RecipeDefinition("t.birch", "t", RecipeRole.Food, 1, "item.apple_juice", 1, 3, "", new[] { new RecipeInput("ingredient.birch_sap", 1) });
             var futureMaterial = new RecipeDefinition("t.m", "t", RecipeRole.Material, 2, "item.pine_plank", 1, 1, "", new[] { new RecipeInput("ingredient.acorns", 1) });

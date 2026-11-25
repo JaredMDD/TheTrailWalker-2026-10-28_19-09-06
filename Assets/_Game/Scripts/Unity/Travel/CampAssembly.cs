@@ -15,16 +15,28 @@ namespace TheTrailWalker.Travel
         private static SpecialNpcArtCatalog special;
         public static SpecialNpcArtCatalog Special => special != null ? special : special = Resources.Load<SpecialNpcArtCatalog>("Characters/CampSpecial/SpecialNpcArtCatalog");
 
-        // Balloon merchant art (its Animator plays the gentle bob); the door (-Z) faces the given point.
-        public static bool BalloonMerchant(Transform root, Vector3 position, Vector3 faceTowards)
+        // Balloon merchant art (its Animator plays the gentle bob); the door (-Z) faces the given point. Its only collider is a tap
+        // trigger over the whole balloon (seated at the host camp, a tap opens the interior), so walking and pickups ignore it.
+        // Null when the art is missing.
+        public static GameObject BalloonMerchant(Transform root, Vector3 position, Vector3 faceTowards)
         {
             GameObject prefab = Resources.Load<GameObject>("Environment/BalloonMerchant/BalloonMerchant");
-            if (prefab == null) return false;
+            if (prefab == null) return null;
             Vector3 away = Vector3.ProjectOnPlane(position - faceTowards, Vector3.up);
             GameObject merchant = Object.Instantiate(prefab, position, away.sqrMagnitude > 1e-6f ? Quaternion.LookRotation(away) : Quaternion.identity, root);
-            merchant.name = "Balloon merchant (placement test)";
+            merchant.name = "Balloon merchant";
             foreach (Collider collider in merchant.GetComponentsInChildren<Collider>()) Object.Destroy(collider);
-            return true;
+            Transform t = merchant.transform; bool any = false; var local = new Bounds();
+            foreach (Renderer r in merchant.GetComponentsInChildren<Renderer>())
+                for (int k = 0; k < 8; k++)
+                {
+                    Bounds b = r.bounds;
+                    Vector3 p = t.InverseTransformPoint(b.center + Vector3.Scale(b.extents, new Vector3((k & 1) == 0 ? -1 : 1, (k & 2) == 0 ? -1 : 1, (k & 4) == 0 ? -1 : 1)));
+                    if (!any) { local = new Bounds(p, Vector3.zero); any = true; } else local.Encapsulate(p);
+                }
+            var tap = merchant.AddComponent<BoxCollider>(); tap.isTrigger = true;
+            if (any) { tap.center = local.center; tap.size = local.size; }
+            return merchant;
         }
 
         // Static special NPC (mission lady, ferryman) standing at ground level, facing the given direction. Scenery only:
