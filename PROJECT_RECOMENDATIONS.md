@@ -4059,6 +4059,31 @@ Dependencies: 13.
 - Status: full suite PASS and APK built 06:46 UTC November 22, 2026 (SHA-256 `d586994e95ff…`, 77.8 MB), installed after a save backup (`.superpowers/save-backups/2026-11-22-before-m14-balloon/`); `session-v1.json` unchanged (`2519b15e`).
 - Phone round (user, November 24, 2026): every check passed, with no errors found.
 
+**Tier 3 settlement integration, slice A: item models (November 24, 2026; spec `Docs/superpowers/specs/2026-11-24-tier3-settlement-integration-design.md`, plan `Docs/superpowers/plans/2026-11-24-tier3-slice-a-items.md`, audit `Docs/Art/Tier03/Integration/slice-a-audit.md`).** This is not a Milestone 14 step. It replaces placeholders the player can already reach through the debug tier buttons with the Tier 3 art (the other tool's batches under `Docs/Art/Tier03`).
+
+**Decisions:**
+- **Loading:** tier 3 art ships in `Resources` like tier 2, which lifts the Tier 3 plan's AUDIT-03 gate for this scope. The first scope is settlement-visible art (user).
+- **Audit:**
+  - 53 runtime tier 3 items had ledger art but showed placeholders.
+  - 48 ledger rows have no runtime ID yet (tier 3 mission outputs, Set 3A/3B, the mesquite tools), and wait for Milestone 17 without invented IDs.
+  - `animal.lamb.meat` uses the ledger's `ranch.lamb_meat` model (Claude).
+- **Debug tools:** the six debug T3 tools borrow the Normal/Elite mesquite axe, bow and rod models, as a visual binding only. The tier 3 special gear will swap to the MERCHANT01-03 refined models in slice B (user).
+- **Bow scale:** T3 debug bows use the 0.45 tool trail scale, not the slingshot's 0.28, which would shrink a 1.5 m bow (Claude).
+
+**Built (Claude, November 24, 2026):**
+- **Staging:** `Tools/Art/stage_tier03_slice_a.py` copies 60 models unchanged and hash-checked from the FINAL02 ledger paths into `Assets/_Game/Art/Tier03/` (5.1 MB, 117,304 triangles). It also writes `Tier03SliceAManifest.json` and generates `Unity/Tier3Visuals.cs`.
+- **Builder:** `Editor/Tier03ArtAssets.cs` creates palette FacetedDetail materials and passive prefabs in `Resources/Tier03/`.
+- **Binding:**
+  - `ResourceVisualTuning.Attach` checks `Tier3Visuals` after `Tier2ShopVisuals`;
+  - `ItemArt.ModelFor` lets T3 debug tools show their own model.
+- **Checks and tools:**
+  - `Editor/Tier03IntegrationValidation.cs`, chained in `Milestone5Setup.Prepare`, checks copies, prefabs, materials, triangle counts, import settings, the lookup against the manifest, that each item shows its model, that no ledger item is left blank, and debug tool art.
+  - `Editor/Tier03IntegrationAudit.cs` re-runs the read-only audit.
+  - The Editor request poller gained the `tier3-audit` and `tier3-build` commands.
+- Status: full suite PASS and APK built 01:26 UTC November 25, 2026 (SHA-256 `2c72f5a92d3c…`, 80.3 MB, +2.5 MB over the 77.8 MB balloon build; tiers 3-4 projected near 95-100 MB). Installed after a save backup (`.superpowers/save-backups/2026-11-24-before-t3-slice-a/`); the installed copy matches and `session-v1.json` is unchanged (`2519b15e`).
+- Phone round (user, November 24, 2026): every check passed (shops, bakery, bag/chests/tool rack, box rewards, debug T3 tools, tier 1-2 regression).
+- Next: slice B (tier 3 special gear displays and worn fits, the tier 3 mystery box), then slice C (tier 3 storefronts, lumber zone, house level 5/6 furniture).
+
 **Milestone 14 status (November 24, 2026):** slices 1-3 are built and pass on the phone. Slice 1 is committed (`c663277`); slices 2 and 3 are waiting for a commit request. Left out by the spec: tier 3-4 storefront looks, tier 3-4 goods art (placeholders, reachable only by debug), and bakery missions T2-G23/G24 and T4-G23/G24, which wait for a tier 2-4 mission catalog.
 
 ### Milestone 15: Pets, offline reconciliation, and remaining furniture

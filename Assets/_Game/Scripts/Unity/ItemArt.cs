@@ -12,8 +12,9 @@ namespace TheTrailWalker
         {
             if (definition != null && definition.GearSlot.HasValue && definition.Id.StartsWith("debug.gear."))
                 return SlotSilhouette(definition.GearSlot.Value) ?? definition;
-            // Debug harvest tools borrow the pine tool of their family.
-            if (definition != null && definition.Id.StartsWith("debug.tool.") && TheTrailWalker.Domain.Harvest.HarvestTools.TryGet(definition, out var spec))
+            // Debug harvest tools borrow the pine tool of their family; tier 3 ones show the mesquite tool through
+            // Tier3Visuals instead (Tier 3 integration slice A, user November 24, 2026).
+            if (definition != null && definition.Id.StartsWith("debug.tool.") && !Tier3Visuals.Has(definition.Id) && TheTrailWalker.Domain.Harvest.HarvestTools.TryGet(definition, out var spec))
                 return System.Array.Find(PrototypeItems.All, d => d.Id == TheTrailWalker.Domain.Harvest.HarvestTools.ModelId(spec.Family)) ?? definition;
             return definition;
         }

@@ -57,7 +57,8 @@ namespace TheTrailWalker
         private static float WorldUncapped(ItemDefinition definition)
         {
             if (TrailScale.TryGetValue(definition.Id, out float scale)) return scale;
-            if (definition.Id.StartsWith("debug.tool.hunting.")) return 0.28f; // debug slingshots/bows match the pine slingshot
+            // Debug slingshots/bows match the pine slingshot; tier 3 ones show the 1.5 m mesquite bow and use the tool scale below.
+            if (definition.Id.StartsWith("debug.tool.hunting.") && !Tier3Visuals.Has(definition.Id)) return 0.28f;
             if (!definition.Stackable && !definition.GearSlot.HasValue) return 0.45f; // tools
             return SoftBundles.Contains(definition.Id) ? 0.6f : AppleSized.Contains(definition.Id) ? 0.8f : 1f;
         }
@@ -88,6 +89,7 @@ namespace TheTrailWalker
                 ?? Harvest.Tier1DropVisuals.Attach(pickup, definition)
                 ?? Region01ResourceVisuals.AttachPath(pickup, Tier1CraftedItems.VisualPath(definition.Id))
                 ?? Region01ResourceVisuals.AttachPath(pickup, Tier2ShopVisuals.PathFor(definition.Id))
+                ?? Region01ResourceVisuals.AttachPath(pickup, Tier3Visuals.PathFor(definition.Id))
                 ?? AttachSpecial(pickup, definition);
             if (visual != null) visual.transform.localScale = Shape(definition);
             return visual;

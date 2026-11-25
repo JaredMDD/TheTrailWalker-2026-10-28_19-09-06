@@ -19,7 +19,7 @@ namespace TheTrailWalker.Editor
         public static void Prepare()
         {
             KeepFogVariants();
-            Milestone4Setup.Prepare(); Milestone4EquipmentValidation.Run(); Milestone5Validation.Run(); Milestone6Validation.Run(); Milestone7Validation.Run(); Milestone8Validation.Run(); Milestone9Validation.Run(); TierOneRegionsValidation.Run(); Phase1ConsistencyValidation.Run(); SettlementShellValidation.Run(); HomeValidation.Run(); Milestone12Validation.Run(); Milestone13Validation.Run(); Milestone14Validation.Run(); Milestone14BalloonValidation.Run();
+            Milestone4Setup.Prepare(); Milestone4EquipmentValidation.Run(); Milestone5Validation.Run(); Milestone6Validation.Run(); Milestone7Validation.Run(); Milestone8Validation.Run(); Milestone9Validation.Run(); TierOneRegionsValidation.Run(); Phase1ConsistencyValidation.Run(); SettlementShellValidation.Run(); HomeValidation.Run(); Milestone12Validation.Run(); Milestone13Validation.Run(); Milestone14Validation.Run(); Milestone14BalloonValidation.Run(); Tier03IntegrationValidation.Run();
             Create(BootstrapPath, () => new GameObject("Session", typeof(GameBootstrapper)).GetComponent<GameBootstrapper>().Configure("TravelTrail"));
             Create(TrailPath, () =>
             {
@@ -78,7 +78,9 @@ namespace TheTrailWalker.Editor
             try
             {
                 File.WriteAllText("Temp/Milestone5.result", "RUNNING " + command);
-                if (command == "build") Milestone5Setup.Build(); else if (command == "prepare") Milestone5Setup.Prepare(); else throw new ArgumentException(command);
+                if (command == "build") Milestone5Setup.Build(); else if (command == "prepare") Milestone5Setup.Prepare();
+                else if (command == "tier3-audit") Tier03IntegrationAudit.Run();
+                else if (command == "tier3-build") Tier03ArtAssets.Build(); else throw new ArgumentException(command);
                 File.WriteAllText("Temp/Milestone5.result", "PASS " + DateTime.UtcNow.ToString("O"));
             }
             catch (Exception error) { Debug.LogException(error); File.WriteAllText("Temp/Milestone5.result", "FAILED " + error); }

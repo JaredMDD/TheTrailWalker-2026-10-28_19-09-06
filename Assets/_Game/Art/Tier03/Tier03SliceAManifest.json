@@ -1,0 +1,1625 @@
+{
+  "Slice": "Tier 3 integration slice A",
+  "Items": [
+    {
+      "Name": "CornFlatbread",
+      "Model": "CornFlatbread",
+      "SourcePath": "Assets/_Game/Art/Tier03/Food/CornFlatbread.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Food/CornFlatbreadPalette.png",
+      "PrefabPath": "Tier03/Food/CornFlatbread",
+      "ItemIds": [
+        "item.corn_flatbread"
+      ],
+      "Triangles": 2304,
+      "BoundsMin": [
+        -0.09056,
+        0.0,
+        -0.083893
+      ],
+      "BoundsMax": [
+        0.092098,
+        0.011045,
+        0.086298
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchFOOD01/Exports/CornFlatbread.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchFOOD01/Exports/CornFlatbreadPalette.png",
+      "Packet": "BatchFOOD01",
+      "SourceSHA256": "7b7191b7c089b1b3eefd124d0d55e6ad1f3b7a8a0f4378c783cc15463151c5e0",
+      "PaletteSHA256": "699b177c30740ee9aec109d5143764407d2d142387ce77f2fbddd9e3851214e2"
+    },
+    {
+      "Name": "CornTurkeyPie",
+      "Model": "CornTurkeyPie",
+      "SourcePath": "Assets/_Game/Art/Tier03/Food/CornTurkeyPie.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Food/CornTurkeyPiePalette.png",
+      "PrefabPath": "Tier03/Food/CornTurkeyPie",
+      "ItemIds": [
+        "item.corn_turkey_pie"
+      ],
+      "Triangles": 1968,
+      "BoundsMin": [
+        -0.075,
+        0.0,
+        -0.075
+      ],
+      "BoundsMax": [
+        0.075,
+        0.038585,
+        0.0002
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchFOOD05/Exports/CornTurkeyPie.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchFOOD05/Exports/CornTurkeyPiePalette.png",
+      "Packet": "BatchFOOD05",
+      "SourceSHA256": "63002afd58af9b6e4c561d0b156dbbf697dffcb5cb11081aa209bf8716faf315",
+      "PaletteSHA256": "8297bd1da3458ab358063aba039d77c584e9a3cd23b616e786db0025071e1f21"
+    },
+    {
+      "Name": "MesquiteNutCakes",
+      "Model": "MesquiteNutCakes",
+      "SourcePath": "Assets/_Game/Art/Tier03/Food/MesquiteNutCakes.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Food/MesquiteNutCakesPalette.png",
+      "PrefabPath": "Tier03/Food/MesquiteNutCakes",
+      "ItemIds": [
+        "item.mesquite_nut_cakes"
+      ],
+      "Triangles": 2688,
+      "BoundsMin": [
+        -0.055766,
+        0.0,
+        -0.051751
+      ],
+      "BoundsMax": [
+        0.057054,
+        0.028982,
+        0.054441
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchFOOD01/Exports/MesquiteNutCakes.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchFOOD01/Exports/MesquiteNutCakesPalette.png",
+      "Packet": "BatchFOOD01",
+      "SourceSHA256": "0f5711a78bb3560f12b6e3614348d27cd625dfc0cc18ad025346d221ef101e9d",
+      "PaletteSHA256": "699b177c30740ee9aec109d5143764407d2d142387ce77f2fbddd9e3851214e2"
+    },
+    {
+      "Name": "MesquitePodCakes",
+      "Model": "MesquitePodCakes",
+      "SourcePath": "Assets/_Game/Art/Tier03/Food/MesquitePodCakes.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Food/MesquitePodCakesPalette.png",
+      "PrefabPath": "Tier03/Food/MesquitePodCakes",
+      "ItemIds": [
+        "item.mesquite_pod_cakes"
+      ],
+      "Triangles": 2688,
+      "BoundsMin": [
+        -0.052944,
+        0.0,
+        -0.034828
+      ],
+      "BoundsMax": [
+        0.053386,
+        0.018005,
+        0.035388
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchFOOD01/Exports/MesquitePodCakes.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchFOOD01/Exports/MesquitePodCakesPalette.png",
+      "Packet": "BatchFOOD01",
+      "SourceSHA256": "17c371b02ca1785deba20cfc7fbce74e74454aa5362fe3ad677c0b9b9e490b46",
+      "PaletteSHA256": "699b177c30740ee9aec109d5143764407d2d142387ce77f2fbddd9e3851214e2"
+    },
+    {
+      "Name": "SunflowerCornBread",
+      "Model": "SunflowerCornBread",
+      "SourcePath": "Assets/_Game/Art/Tier03/Food/SunflowerCornBread.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Food/SunflowerCornBreadPalette.png",
+      "PrefabPath": "Tier03/Food/SunflowerCornBread",
+      "ItemIds": [
+        "item.sunflower_corn_bread"
+      ],
+      "Triangles": 4112,
+      "BoundsMin": [
+        -0.047,
+        0.0,
+        -0.042
+      ],
+      "BoundsMax": [
+        0.047,
+        0.044199,
+        0.042
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchFOOD06/Exports/SunflowerCornBread.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchFOOD06/Exports/SunflowerCornBreadPalette.png",
+      "Packet": "BatchFOOD06",
+      "SourceSHA256": "1f1e3aaaaacce7477b38273b2aae18a512094a4f715df8bcca0384e1564e7344",
+      "PaletteSHA256": "2d90b032dbe140f00c9695d940d624a857ecbca3a47b06106f0e3198750702c2"
+    },
+    {
+      "Name": "AgaveCord",
+      "Model": "AgaveCord",
+      "SourcePath": "Assets/_Game/Art/Tier03/Materials/AgaveCord.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Materials/AgaveCordPalette.png",
+      "PrefabPath": "Tier03/Materials/AgaveCord",
+      "ItemIds": [
+        "item.agave_cord"
+      ],
+      "Triangles": 4356,
+      "BoundsMin": [
+        -0.122233,
+        0.0,
+        -0.099725
+      ],
+      "BoundsMax": [
+        0.10745,
+        0.012803,
+        0.114423
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchMAT06/Exports/AgaveCord.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchMAT06/Exports/AgaveCordPalette.png",
+      "Packet": "BatchMAT06",
+      "SourceSHA256": "751edc3215bcdf49cc5b7198915165828f61be5ab1877059a99acfadc6ae0fe1",
+      "PaletteSHA256": "6cf42a6ae46ebd8fa06ea1ad91c90747537c91d657af3d611840488c91f5bb4c"
+    },
+    {
+      "Name": "BronzeIngot",
+      "Model": "BronzeIngot",
+      "SourcePath": "Assets/_Game/Art/Tier03/Materials/BronzeIngot.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Materials/BronzeIngotPalette.png",
+      "PrefabPath": "Tier03/Materials/BronzeIngot",
+      "ItemIds": [
+        "item.bronze_ingot"
+      ],
+      "Triangles": 192,
+      "BoundsMin": [
+        -0.132428,
+        0.0,
+        -0.174344
+      ],
+      "BoundsMax": [
+        0.134103,
+        0.0494,
+        0.171221
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchMAT03/Exports/BronzeIngot.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchMAT03/Exports/BronzeIngotPalette.png",
+      "Packet": "BatchMAT03",
+      "SourceSHA256": "b9aec0c0c249ae67749ab3cf141701e089e607a9bb9334f5f5e15eae85c6d890",
+      "PaletteSHA256": "a5a3b17ef7e15f84579fafede67f45c2c849d7795b0d61b48dd64bac3ebc7224"
+    },
+    {
+      "Name": "CornFlour",
+      "Model": "CornFlour",
+      "SourcePath": "Assets/_Game/Art/Tier03/Materials/CornFlour.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Materials/CornFlourPalette.png",
+      "PrefabPath": "Tier03/Materials/CornFlour",
+      "ItemIds": [
+        "ingredient.corn_flour"
+      ],
+      "Triangles": 2032,
+      "BoundsMin": [
+        -0.124365,
+        0.0,
+        -0.100695
+      ],
+      "BoundsMax": [
+        0.120431,
+        0.074,
+        0.099288
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchMAT07/Exports/CornFlour.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchMAT07/Exports/CornFlourPalette.png",
+      "Packet": "BatchMAT07",
+      "SourceSHA256": "8c304e61410a51236c932ffc8629dd55d5770e845482f0c9c7738eb0c3715d10",
+      "PaletteSHA256": "0eaf07556cde8d7b9d238daa1a0d71a77d9ffbee0f4a8941cfab9538d048ebff"
+    },
+    {
+      "Name": "CottonCloth",
+      "Model": "CottonCloth",
+      "SourcePath": "Assets/_Game/Art/Tier03/Materials/CottonCloth.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Materials/CottonClothPalette.png",
+      "PrefabPath": "Tier03/Materials/CottonCloth",
+      "ItemIds": [
+        "item.cotton_cloth"
+      ],
+      "Triangles": 1496,
+      "BoundsMin": [
+        -0.18205,
+        0.0,
+        -0.135
+      ],
+      "BoundsMax": [
+        0.177,
+        0.028149,
+        0.135
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchMAT05/Exports/CottonCloth.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchMAT05/Exports/CottonClothPalette.png",
+      "Packet": "BatchMAT05",
+      "SourceSHA256": "7610e332c19b3230b6ae7078006a0a872ad70a120484179caeeba913e394d4d9",
+      "PaletteSHA256": "04fffe6a9366df69521466ae213b4c7a45fa1cc4aed69c21bc8c9796b329e369"
+    },
+    {
+      "Name": "CottonCord",
+      "Model": "CottonCord",
+      "SourcePath": "Assets/_Game/Art/Tier03/Materials/CottonCord.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Materials/CottonCordPalette.png",
+      "PrefabPath": "Tier03/Materials/CottonCord",
+      "ItemIds": [
+        "item.cotton_cord"
+      ],
+      "Triangles": 4356,
+      "BoundsMin": [
+        -0.103587,
+        0.0,
+        -0.084513
+      ],
+      "BoundsMax": [
+        0.091059,
+        0.01085,
+        0.096969
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchMAT05/Exports/CottonCord.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchMAT05/Exports/CottonCordPalette.png",
+      "Packet": "BatchMAT05",
+      "SourceSHA256": "19899481388e9784e639df6dcef4c2a370a2728a78b880c503e47734fc202255",
+      "PaletteSHA256": "04fffe6a9366df69521466ae213b4c7a45fa1cc4aed69c21bc8c9796b329e369"
+    },
+    {
+      "Name": "CottonStuffing",
+      "Model": "CottonStuffing",
+      "SourcePath": "Assets/_Game/Art/Tier03/Materials/CottonStuffing.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Materials/CottonStuffingPalette.png",
+      "PrefabPath": "Tier03/Materials/CottonStuffing",
+      "ItemIds": [
+        "item.cotton_stuffing"
+      ],
+      "Triangles": 1912,
+      "BoundsMin": [
+        -0.160622,
+        0.0,
+        -0.103579
+      ],
+      "BoundsMax": [
+        0.158871,
+        0.154664,
+        0.105566
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchMAT06/Exports/CottonStuffing.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchMAT06/Exports/CottonStuffingPalette.png",
+      "Packet": "BatchMAT06",
+      "SourceSHA256": "e06e69ea18d380949d30f8d76d6b465b2805f1de0dcdccb37789016c1e45d6a9",
+      "PaletteSHA256": "6cf42a6ae46ebd8fa06ea1ad91c90747537c91d657af3d611840488c91f5bb4c"
+    },
+    {
+      "Name": "CottonThread",
+      "Model": "CottonThread",
+      "SourcePath": "Assets/_Game/Art/Tier03/Materials/CottonThread.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Materials/CottonThreadPalette.png",
+      "PrefabPath": "Tier03/Materials/CottonThread",
+      "ItemIds": [
+        "item.cotton_thread"
+      ],
+      "Triangles": 4512,
+      "BoundsMin": [
+        -0.118177,
+        0.0,
+        -0.046875
+      ],
+      "BoundsMax": [
+        0.118177,
+        0.092571,
+        0.046875
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchMAT05/Exports/CottonThread.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchMAT05/Exports/CottonThreadPalette.png",
+      "Packet": "BatchMAT05",
+      "SourceSHA256": "2a138fa2abb306dc5db6f37aff095eaeff9741de0d304ff6924fd506c8cecb99",
+      "PaletteSHA256": "04fffe6a9366df69521466ae213b4c7a45fa1cc4aed69c21bc8c9796b329e369"
+    },
+    {
+      "Name": "CutTurquoise",
+      "Model": "CutTurquoise",
+      "SourcePath": "Assets/_Game/Art/Tier03/Materials/CutTurquoise.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Materials/CutTurquoisePalette.png",
+      "PrefabPath": "Tier03/Materials/CutTurquoise",
+      "ItemIds": [
+        "item.cut_turquoise"
+      ],
+      "Triangles": 270,
+      "BoundsMin": [
+        -0.054,
+        0.0,
+        -0.074
+      ],
+      "BoundsMax": [
+        0.054,
+        0.036,
+        0.074
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchMAT03/Exports/CutTurquoise.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchMAT03/Exports/CutTurquoisePalette.png",
+      "Packet": "BatchMAT03",
+      "SourceSHA256": "ad6c74e2baf644f894a458abc476d57cb4bfd8a6aee6704e44de934420e7409a",
+      "PaletteSHA256": "a5a3b17ef7e15f84579fafede67f45c2c849d7795b0d61b48dd64bac3ebc7224"
+    },
+    {
+      "Name": "FineCottonCloth",
+      "Model": "FineCottonCloth",
+      "SourcePath": "Assets/_Game/Art/Tier03/Materials/FineCottonCloth.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Materials/FineCottonClothPalette.png",
+      "PrefabPath": "Tier03/Materials/FineCottonCloth",
+      "ItemIds": [
+        "item.fine_cotton_cloth"
+      ],
+      "Triangles": 1624,
+      "BoundsMin": [
+        -0.18205,
+        0.0,
+        -0.135
+      ],
+      "BoundsMax": [
+        0.177,
+        0.024145,
+        0.135
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchMAT06/Exports/FineCottonCloth.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchMAT06/Exports/FineCottonClothPalette.png",
+      "Packet": "BatchMAT06",
+      "SourceSHA256": "80cd8c1feb6ee41bbbb9059660871e6cb8aff1f2e7c8b624994d408ceae758d4",
+      "PaletteSHA256": "6cf42a6ae46ebd8fa06ea1ad91c90747537c91d657af3d611840488c91f5bb4c"
+    },
+    {
+      "Name": "IronFittings",
+      "Model": "IronFittings",
+      "SourcePath": "Assets/_Game/Art/Tier03/Materials/IronFittings.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Materials/IronFittingsPalette.png",
+      "PrefabPath": "Tier03/Materials/IronFittings",
+      "ItemIds": [
+        "item.iron_fittings"
+      ],
+      "Triangles": 472,
+      "BoundsMin": [
+        -0.111,
+        0.0,
+        -0.087
+      ],
+      "BoundsMax": [
+        0.131,
+        0.08,
+        0.115
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchMAT02/Exports/IronFittings.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchMAT02/Exports/IronFittingsPalette.png",
+      "Packet": "BatchMAT02",
+      "SourceSHA256": "fcf269916275b165681bfa602f32f55b0ba2f5505180bce430ed948ffb792158",
+      "PaletteSHA256": "092c312e467693fcfe25327f4a360b673de0e01394752658fa4cd1046977e2fa"
+    },
+    {
+      "Name": "MesquiteCharcoal",
+      "Model": "MesquiteCharcoal",
+      "SourcePath": "Assets/_Game/Art/Tier03/Materials/MesquiteCharcoal.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Materials/MesquiteCharcoalPalette.png",
+      "PrefabPath": "Tier03/Materials/MesquiteCharcoal",
+      "ItemIds": [
+        "item.mesquite_charcoal"
+      ],
+      "Triangles": 792,
+      "BoundsMin": [
+        -0.288562,
+        0.0,
+        -0.138388
+      ],
+      "BoundsMax": [
+        0.298314,
+        0.124003,
+        0.200991
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchMAT01/Exports/MesquiteCharcoal.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchMAT01/Exports/MesquiteCharcoalPalette.png",
+      "Packet": "BatchMAT01",
+      "SourceSHA256": "1a104a7bb3891fcfa64d624957e7cc0b1f72c7bdae0dd74fddfd394384bac240",
+      "PaletteSHA256": "96f0e7d61955a1e863e23710bb00a3ad7f35c86e0a6143c2d8a54ab4857840d0"
+    },
+    {
+      "Name": "MesquiteFlour",
+      "Model": "MesquiteFlour",
+      "SourcePath": "Assets/_Game/Art/Tier03/Materials/MesquiteFlour.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Materials/MesquiteFlourPalette.png",
+      "PrefabPath": "Tier03/Materials/MesquiteFlour",
+      "ItemIds": [
+        "ingredient.mesquite_flour"
+      ],
+      "Triangles": 2032,
+      "BoundsMin": [
+        -0.133105,
+        0.0,
+        -0.109767
+      ],
+      "BoundsMax": [
+        0.131893,
+        0.06774,
+        0.105955
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchMAT07/Exports/MesquiteFlour.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchMAT07/Exports/MesquiteFlourPalette.png",
+      "Packet": "BatchMAT07",
+      "SourceSHA256": "6ce663d5659b19031e771956ce4205d7834fb829aa3a3d9721b9b7c1804ff303",
+      "PaletteSHA256": "0eaf07556cde8d7b9d238daa1a0d71a77d9ffbee0f4a8941cfab9538d048ebff"
+    },
+    {
+      "Name": "MesquiteLog",
+      "Model": "MesquiteLog",
+      "SourcePath": "Assets/_Game/Art/Tier03/Materials/MesquiteLog.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Materials/MesquiteLogPalette.png",
+      "PrefabPath": "Tier03/Materials/MesquiteLog",
+      "ItemIds": [
+        "material.mesquite_log"
+      ],
+      "Triangles": 644,
+      "BoundsMin": [
+        -0.42,
+        0.0,
+        -0.150763
+      ],
+      "BoundsMax": [
+        0.42,
+        0.337265,
+        0.148941
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchMAT01/Exports/MesquiteLog.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchMAT01/Exports/MesquiteLogPalette.png",
+      "Packet": "BatchMAT01",
+      "SourceSHA256": "04c5ea14537949d617e1f289c685b61d56187d6c91a2f633846f1525c2bcd4a4",
+      "PaletteSHA256": "96f0e7d61955a1e863e23710bb00a3ad7f35c86e0a6143c2d8a54ab4857840d0"
+    },
+    {
+      "Name": "MesquitePlank",
+      "Model": "MesquitePlank",
+      "SourcePath": "Assets/_Game/Art/Tier03/Materials/MesquitePlank.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Materials/MesquitePlankPalette.png",
+      "PrefabPath": "Tier03/Materials/MesquitePlank",
+      "ItemIds": [
+        "item.mesquite_plank"
+      ],
+      "Triangles": 716,
+      "BoundsMin": [
+        -0.41,
+        0.0,
+        -0.095
+      ],
+      "BoundsMax": [
+        0.41,
+        0.059,
+        0.095
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchMAT01/Exports/MesquitePlank.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchMAT01/Exports/MesquitePlankPalette.png",
+      "Packet": "BatchMAT01",
+      "SourceSHA256": "39321acf73e6672520393585f19e45f68a601822cf272cf978050f857512f801",
+      "PaletteSHA256": "96f0e7d61955a1e863e23710bb00a3ad7f35c86e0a6143c2d8a54ab4857840d0"
+    },
+    {
+      "Name": "SilverIngot",
+      "Model": "SilverIngot",
+      "SourcePath": "Assets/_Game/Art/Tier03/Materials/SilverIngot.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Materials/SilverIngotPalette.png",
+      "PrefabPath": "Tier03/Materials/SilverIngot",
+      "ItemIds": [
+        "item.silver_ingot"
+      ],
+      "Triangles": 64,
+      "BoundsMin": [
+        -0.1638,
+        0.0,
+        -0.0693
+      ],
+      "BoundsMax": [
+        0.1638,
+        0.0684,
+        0.0693
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchMAT03/Exports/SilverIngot.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchMAT03/Exports/SilverIngotPalette.png",
+      "Packet": "BatchMAT03",
+      "SourceSHA256": "8049a83c40369af8883201f12728937955373c7d31eced0317df828c17542eab",
+      "PaletteSHA256": "a5a3b17ef7e15f84579fafede67f45c2c849d7795b0d61b48dd64bac3ebc7224"
+    },
+    {
+      "Name": "Sugar",
+      "Model": "Sugar",
+      "SourcePath": "Assets/_Game/Art/Tier03/Materials/Sugar.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Materials/SugarPalette.png",
+      "PrefabPath": "Tier03/Materials/Sugar",
+      "ItemIds": [
+        "ingredient.sugar"
+      ],
+      "Triangles": 3520,
+      "BoundsMin": [
+        -0.113226,
+        0.0,
+        -0.100553
+      ],
+      "BoundsMax": [
+        0.121294,
+        0.059135,
+        0.098014
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchMAT08/Exports/Sugar.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchMAT08/Exports/SugarPalette.png",
+      "Packet": "BatchMAT08",
+      "SourceSHA256": "3c851178911d940087b4cda5c46bb316e9a3a85897f88628350f1670c75056ea",
+      "PaletteSHA256": "2fd9e1b934a7e05a68515473b02a8bc09a221e6e2e0c856684adccb53d15cc46"
+    },
+    {
+      "Name": "SunflowerOil",
+      "Model": "SunflowerOil",
+      "SourcePath": "Assets/_Game/Art/Tier03/Materials/SunflowerOil.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Materials/SunflowerOilPalette.png",
+      "PrefabPath": "Tier03/Materials/SunflowerOil",
+      "ItemIds": [
+        "ingredient.sunflower_oil"
+      ],
+      "Triangles": 1352,
+      "BoundsMin": [
+        -0.0703,
+        0.0,
+        -0.0589
+      ],
+      "BoundsMax": [
+        0.0703,
+        0.3667,
+        0.068352
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchMAT08/Exports/SunflowerOil.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchMAT08/Exports/SunflowerOilPalette.png",
+      "Packet": "BatchMAT08",
+      "SourceSHA256": "c9fe6b886de03addf53f6301e4ba0bf1bc26bd1f6cdb280f23f6fab1b83abeb4",
+      "PaletteSHA256": "2fd9e1b934a7e05a68515473b02a8bc09a221e6e2e0c856684adccb53d15cc46"
+    },
+    {
+      "Name": "BronzeTurquoiseCompass",
+      "Model": "BronzeTurquoiseCompass",
+      "SourcePath": "Assets/_Game/Art/Tier03/Premium/BronzeTurquoiseCompass.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Premium/BronzeTurquoiseCompassPalette.png",
+      "PrefabPath": "Tier03/Premium/BronzeTurquoiseCompass",
+      "ItemIds": [
+        "item.bronze_turquoise_compass"
+      ],
+      "Triangles": 3338,
+      "BoundsMin": [
+        -0.038,
+        0.0,
+        -0.038
+      ],
+      "BoundsMax": [
+        0.038,
+        0.015,
+        0.061
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchPREMIUM03/Exports/BronzeTurquoiseCompass.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchPREMIUM03/Exports/BronzeTurquoiseCompassPalette.png",
+      "Packet": "BatchPREMIUM03",
+      "SourceSHA256": "1902cd3df0d1fb6626a20378d25f8a4ec9125797ccb03ac57ff110f1ac41c119",
+      "PaletteSHA256": "65ff99520999b20fc489a83dfc1bdd1d420ff8c0a0f4640cf1f67d66ad8a4d65"
+    },
+    {
+      "Name": "LambChiliFlatbread",
+      "Model": "LambChiliFlatbread",
+      "SourcePath": "Assets/_Game/Art/Tier03/Premium/LambChiliFlatbread.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Premium/LambChiliFlatbreadPalette.png",
+      "PrefabPath": "Tier03/Premium/LambChiliFlatbread",
+      "ItemIds": [
+        "item.lamb_chili_flatbread"
+      ],
+      "Triangles": 6340,
+      "BoundsMin": [
+        -0.09056,
+        0.0,
+        -0.083893
+      ],
+      "BoundsMax": [
+        0.092098,
+        0.01679,
+        0.086298
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchPREMIUM01/Exports/LambChiliFlatbread.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchPREMIUM01/Exports/LambChiliFlatbreadPalette.png",
+      "Packet": "BatchPREMIUM01",
+      "SourceSHA256": "dd9944520fe1d5c8658bd3172fc7517e03a075eddb6696bf042ee1e706e3a056",
+      "PaletteSHA256": "0a01f9c1b6264aa3ac45372783a1fd22520691000c0a050a03242479cc23c600"
+    },
+    {
+      "Name": "MintLambStew",
+      "Model": "MintLambStew",
+      "SourcePath": "Assets/_Game/Art/Tier03/Premium/MintLambStew.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Premium/MintLambStewPalette.png",
+      "PrefabPath": "Tier03/Premium/MintLambStew",
+      "ItemIds": [
+        "item.mint_lamb_stew"
+      ],
+      "Triangles": 6384,
+      "BoundsMin": [
+        -0.1,
+        0.0,
+        -0.1
+      ],
+      "BoundsMax": [
+        0.1,
+        0.063,
+        0.1
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchPREMIUM01/Exports/MintLambStew.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchPREMIUM01/Exports/MintLambStewPalette.png",
+      "Packet": "BatchPREMIUM01",
+      "SourceSHA256": "47ec52bfbdc078b7f2bf04c80b3c0aea0eaf554db7f99981d3a6f84f1a821708",
+      "PaletteSHA256": "0a01f9c1b6264aa3ac45372783a1fd22520691000c0a050a03242479cc23c600"
+    },
+    {
+      "Name": "MintSugarRolls",
+      "Model": "MintSugarRolls",
+      "SourcePath": "Assets/_Game/Art/Tier03/Premium/MintSugarRolls.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Premium/MintSugarRollsPalette.png",
+      "PrefabPath": "Tier03/Premium/MintSugarRolls",
+      "ItemIds": [
+        "item.mint_sugar_rolls"
+      ],
+      "Triangles": 6424,
+      "BoundsMin": [
+        -0.066989,
+        0.0,
+        -0.039396
+      ],
+      "BoundsMax": [
+        0.072631,
+        0.028084,
+        0.031311
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchPREMIUM02/Exports/MintSugarRolls.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchPREMIUM02/Exports/MintSugarRollsPalette.png",
+      "Packet": "BatchPREMIUM02",
+      "SourceSHA256": "970dd06d2b9277d14b3a0a5b4f24ca9dd317e6da3ae88c99bab6ff4bca45649f",
+      "PaletteSHA256": "d968a088740f10bcef9f8c031743a024cd3808808e2ef550cd843024e54990fa"
+    },
+    {
+      "Name": "PumpkinCowCheeseGalette",
+      "Model": "PumpkinCowCheeseGalette",
+      "SourcePath": "Assets/_Game/Art/Tier03/Premium/PumpkinCowCheeseGalette.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Premium/PumpkinCowCheeseGalettePalette.png",
+      "PrefabPath": "Tier03/Premium/PumpkinCowCheeseGalette",
+      "ItemIds": [
+        "item.pumpkin_cow_cheese_galette"
+      ],
+      "Triangles": 2284,
+      "BoundsMin": [
+        -0.087234,
+        0.0,
+        -0.085608
+      ],
+      "BoundsMax": [
+        0.087234,
+        0.02736,
+        0.088392
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchPREMIUM02/Exports/PumpkinCowCheeseGalette.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchPREMIUM02/Exports/PumpkinCowCheeseGalettePalette.png",
+      "Packet": "BatchPREMIUM02",
+      "SourceSHA256": "247e9f95c962d98ef58670784b96a9b2190a7457d9b6db0061382548633efa62",
+      "PaletteSHA256": "d968a088740f10bcef9f8c031743a024cd3808808e2ef550cd843024e54990fa"
+    },
+    {
+      "Name": "SilverTurquoiseBeltBuckle",
+      "Model": "SilverTurquoiseBeltBuckle",
+      "SourcePath": "Assets/_Game/Art/Tier03/Premium/SilverTurquoiseBeltBuckle.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Premium/SilverTurquoiseBeltBucklePalette.png",
+      "PrefabPath": "Tier03/Premium/SilverTurquoiseBeltBuckle",
+      "ItemIds": [
+        "item.silver_turquoise_buckle"
+      ],
+      "Triangles": 2906,
+      "BoundsMin": [
+        -0.0615,
+        0.0,
+        -0.0158
+      ],
+      "BoundsMax": [
+        0.047,
+        0.068,
+        0.01164
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchPREMIUM03/Exports/SilverTurquoiseBeltBuckle.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchPREMIUM03/Exports/SilverTurquoiseBeltBucklePalette.png",
+      "Packet": "BatchPREMIUM03",
+      "SourceSHA256": "45060a126167ff739632f72da9099425ef98dfb06fc1f9d82a3e14484c417a14",
+      "PaletteSHA256": "65ff99520999b20fc489a83dfc1bdd1d420ff8c0a0f4640cf1f67d66ad8a4d65"
+    },
+    {
+      "Name": "AgaveFiber",
+      "Model": "AgaveFiber",
+      "SourcePath": "Assets/_Game/Art/Tier03/Raw/AgaveFiber.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Raw/AgaveFiberPalette.png",
+      "PrefabPath": "Tier03/Raw/AgaveFiber",
+      "ItemIds": [
+        "material.agave_fiber"
+      ],
+      "Triangles": 1736,
+      "BoundsMin": [
+        -0.053098,
+        0.0,
+        -0.31
+      ],
+      "BoundsMax": [
+        0.053657,
+        0.023461,
+        0.314949
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchRAW06/Exports/AgaveFiber.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchRAW06/Exports/AgaveFiberPalette.png",
+      "Packet": "BatchRAW06",
+      "SourceSHA256": "bbf16797750d32be07f88f8f4404a76ecc74dd3008d80b0d3361e20015af0b72",
+      "PaletteSHA256": "16d56b727300afe8630780d297b9388156476d1059b0201aa8d86b1ea1bfe07f"
+    },
+    {
+      "Name": "Beans",
+      "Model": "Beans",
+      "SourcePath": "Assets/_Game/Art/Tier03/Raw/Beans.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Raw/BeansPalette.png",
+      "PrefabPath": "Tier03/Raw/Beans",
+      "ItemIds": [
+        "ingredient.beans"
+      ],
+      "Triangles": 744,
+      "BoundsMin": [
+        -0.090516,
+        0.0,
+        -0.047325
+      ],
+      "BoundsMax": [
+        0.101959,
+        0.026,
+        0.08057
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchRAW02/Exports/Beans.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchRAW02/Exports/BeansPalette.png",
+      "Packet": "BatchRAW02",
+      "SourceSHA256": "c4d22c2d7f12cdb6b02f8a01bbe8988a0dce0ef0a58198618eb9e3700b745450",
+      "PaletteSHA256": "65cb3c459341e5577492299ca27fa0e4dbd5fa7b2e3bf4f906d55715f8c38d11"
+    },
+    {
+      "Name": "BrownTrout",
+      "Model": "BrownTrout",
+      "SourcePath": "Assets/_Game/Art/Tier03/Raw/BrownTrout.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Raw/BrownTroutPalette.png",
+      "PrefabPath": "Tier03/Raw/BrownTrout",
+      "ItemIds": [
+        "fish.brown_trout"
+      ],
+      "Triangles": 2108,
+      "BoundsMin": [
+        -0.5566,
+        0.0,
+        -0.185793
+      ],
+      "BoundsMax": [
+        0.42596,
+        0.241821,
+        0.16807
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchRAW09/Exports/BrownTrout.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchRAW09/Exports/BrownTroutPalette.png",
+      "Packet": "BatchRAW09",
+      "SourceSHA256": "f10d9f68600bd306cfd9161b2590feae4682ab05bd3915556c1918038754f952",
+      "PaletteSHA256": "9b5a2d1f8adfc3dacddf013dd8aae4aab1a011a7a33b193b2ef6fec76a84b217"
+    },
+    {
+      "Name": "Chickpeas",
+      "Model": "Chickpeas",
+      "SourcePath": "Assets/_Game/Art/Tier03/Raw/Chickpeas.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Raw/ChickpeasPalette.png",
+      "PrefabPath": "Tier03/Raw/Chickpeas",
+      "ItemIds": [
+        "ingredient.chickpeas"
+      ],
+      "Triangles": 600,
+      "BoundsMin": [
+        -0.062917,
+        0.0,
+        -0.048271
+      ],
+      "BoundsMax": [
+        0.065836,
+        0.03,
+        0.050189
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchRAW03/Exports/Chickpeas.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchRAW03/Exports/ChickpeasPalette.png",
+      "Packet": "BatchRAW03",
+      "SourceSHA256": "7c6b42773063d58eed159b55bcf6961f591117f432a6c76493981e8acf875583",
+      "PaletteSHA256": "2ba0f87813453cfc048e11a640dcbcd264564cf6954ba604c9e1c8689ba7f8a9"
+    },
+    {
+      "Name": "Corn",
+      "Model": "Corn",
+      "SourcePath": "Assets/_Game/Art/Tier03/Raw/Corn.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Raw/CornPalette.png",
+      "PrefabPath": "Tier03/Raw/Corn",
+      "ItemIds": [
+        "ingredient.corn"
+      ],
+      "Triangles": 2048,
+      "BoundsMin": [
+        -0.12,
+        0.0,
+        -0.047417
+      ],
+      "BoundsMax": [
+        0.12,
+        0.305,
+        0.047417
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchRAW01/Exports/Corn.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchRAW01/Exports/CornPalette.png",
+      "Packet": "BatchRAW01",
+      "SourceSHA256": "eeb897704be0b5636e6eac162df9340c40ea6e8713196b01d553dfc55de18ce4",
+      "PaletteSHA256": "9cdd1c5882e5791afe83a4bb60017ebf70a456ffc1c82d74615f3b53dfd9bb4e"
+    },
+    {
+      "Name": "CottonFiber",
+      "Model": "CottonFiber",
+      "SourcePath": "Assets/_Game/Art/Tier03/Raw/CottonFiber.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Raw/CottonFiberPalette.png",
+      "PrefabPath": "Tier03/Raw/CottonFiber",
+      "ItemIds": [
+        "material.cotton_fiber"
+      ],
+      "Triangles": 1252,
+      "BoundsMin": [
+        -0.248425,
+        0.0,
+        -0.197414
+      ],
+      "BoundsMax": [
+        0.272552,
+        0.231574,
+        0.184151
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchRAW02/Exports/CottonFiber.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchRAW02/Exports/CottonFiberPalette.png",
+      "Packet": "BatchRAW02",
+      "SourceSHA256": "8d95d38be2628bbaf8b7a603a61209d653b2f2f5ada6637677ab906d279defc1",
+      "PaletteSHA256": "65cb3c459341e5577492299ca27fa0e4dbd5fa7b2e3bf4f906d55715f8c38d11"
+    },
+    {
+      "Name": "Granite",
+      "Model": "Granite",
+      "SourcePath": "Assets/_Game/Art/Tier03/Raw/Granite.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Raw/GranitePalette.png",
+      "PrefabPath": "Tier03/Raw/Granite",
+      "ItemIds": [
+        "material.granite"
+      ],
+      "Triangles": 374,
+      "BoundsMin": [
+        -0.251628,
+        0.0,
+        -0.179335
+      ],
+      "BoundsMax": [
+        0.26486,
+        0.285558,
+        0.179335
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchRAW03/Exports/Granite.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchRAW03/Exports/GranitePalette.png",
+      "Packet": "BatchRAW03",
+      "SourceSHA256": "2b4d60dc0e3e7ffc53200c6d3453f5a75d09f1c56aac6ac275dc940ceee77c5c",
+      "PaletteSHA256": "2ba0f87813453cfc048e11a640dcbcd264564cf6954ba604c9e1c8689ba7f8a9"
+    },
+    {
+      "Name": "GreenChili",
+      "Model": "GreenChili",
+      "SourcePath": "Assets/_Game/Art/Tier03/Raw/GreenChili.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Raw/GreenChiliPalette.png",
+      "PrefabPath": "Tier03/Raw/GreenChili",
+      "ItemIds": [
+        "ingredient.green_chili"
+      ],
+      "Triangles": 340,
+      "BoundsMin": [
+        -0.043,
+        0.0,
+        -0.272389
+      ],
+      "BoundsMax": [
+        0.076,
+        0.056512,
+        0.213
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchRAW05/Exports/GreenChili.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchRAW05/Exports/GreenChiliPalette.png",
+      "Packet": "BatchRAW05",
+      "SourceSHA256": "b8c2b085a91fccbbc6da05f573b523f11cd752f7bb3af8cf2f29e19937285e1b",
+      "PaletteSHA256": "76eecd5de44e8f85cabc64f62dfbb96065c132941c73681770d073e5f97a6eae"
+    },
+    {
+      "Name": "IronOre",
+      "Model": "IronOre",
+      "SourcePath": "Assets/_Game/Art/Tier03/Raw/IronOre.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Raw/IronOrePalette.png",
+      "PrefabPath": "Tier03/Raw/IronOre",
+      "ItemIds": [
+        "material.iron_ore"
+      ],
+      "Triangles": 110,
+      "BoundsMin": [
+        -0.241622,
+        0.0,
+        -0.189468
+      ],
+      "BoundsMax": [
+        0.208684,
+        0.307832,
+        0.189468
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchRAW02/Exports/IronOre.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchRAW02/Exports/IronOrePalette.png",
+      "Packet": "BatchRAW02",
+      "SourceSHA256": "7bc2427bcde6d2ce3f5530ad59135fa322e798810804420d41616924f4fc9355",
+      "PaletteSHA256": "65cb3c459341e5577492299ca27fa0e4dbd5fa7b2e3bf4f906d55715f8c38d11"
+    },
+    {
+      "Name": "LakeTrout",
+      "Model": "LakeTrout",
+      "SourcePath": "Assets/_Game/Art/Tier03/Raw/LakeTrout.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Raw/LakeTroutPalette.png",
+      "PrefabPath": "Tier03/Raw/LakeTrout",
+      "ItemIds": [
+        "fish.lake_trout"
+      ],
+      "Triangles": 1468,
+      "BoundsMin": [
+        -0.7139,
+        0.0,
+        -0.163498
+      ],
+      "BoundsMax": [
+        0.54634,
+        0.214959,
+        0.149215
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchRAW09/Exports/LakeTrout.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchRAW09/Exports/LakeTroutPalette.png",
+      "Packet": "BatchRAW09",
+      "SourceSHA256": "11f138f0adddbe49577d5cd3933433cda800002d950a986c3544cb64d947d04e",
+      "PaletteSHA256": "9b5a2d1f8adfc3dacddf013dd8aae4aab1a011a7a33b193b2ef6fec76a84b217"
+    },
+    {
+      "Name": "LambMeat",
+      "Model": "LambMeat",
+      "SourcePath": "Assets/_Game/Art/Tier03/Raw/LambMeat.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Raw/LambMeatPalette.png",
+      "PrefabPath": "Tier03/Raw/LambMeat",
+      "ItemIds": [
+        "animal.lamb.meat"
+      ],
+      "Triangles": 534,
+      "BoundsMin": [
+        -0.158661,
+        0.0,
+        -0.096684
+      ],
+      "BoundsMax": [
+        0.160878,
+        0.127372,
+        0.165866
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchRAW10/Exports/LambMeat.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchRAW10/Exports/LambMeatPalette.png",
+      "Packet": "BatchRAW10",
+      "SourceSHA256": "fbfd06d34b1ac6764d494c93f38790b5db49b2dd610250c4c920e10e1a9d0318",
+      "PaletteSHA256": "8fe27c3a7ee0026a67479e99da8b3789adb543a820d00231c9ec8126b847d387"
+    },
+    {
+      "Name": "MesquiteBranches",
+      "Model": "MesquiteBranches",
+      "SourcePath": "Assets/_Game/Art/Tier03/Raw/MesquiteBranches.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Raw/MesquiteBranchesPalette.png",
+      "PrefabPath": "Tier03/Raw/MesquiteBranches",
+      "ItemIds": [
+        "material.mesquite_branch"
+      ],
+      "Triangles": 196,
+      "BoundsMin": [
+        -0.374065,
+        0.0,
+        -0.125504
+      ],
+      "BoundsMax": [
+        0.362798,
+        0.237358,
+        0.225154
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchRAW01/Exports/MesquiteBranches.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchRAW01/Exports/MesquiteBranchesPalette.png",
+      "Packet": "BatchRAW01",
+      "SourceSHA256": "2053b3d7a27de9a2aecacbe0bae55b970c9402a61d3f4b22dbe4f578424258cf",
+      "PaletteSHA256": "9cdd1c5882e5791afe83a4bb60017ebf70a456ffc1c82d74615f3b53dfd9bb4e"
+    },
+    {
+      "Name": "MesquitePods",
+      "Model": "MesquitePods",
+      "SourcePath": "Assets/_Game/Art/Tier03/Raw/MesquitePods.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Raw/MesquitePodsPalette.png",
+      "PrefabPath": "Tier03/Raw/MesquitePods",
+      "ItemIds": [
+        "ingredient.mesquite_pods"
+      ],
+      "Triangles": 1200,
+      "BoundsMin": [
+        -0.089787,
+        0.0,
+        -0.181671
+      ],
+      "BoundsMax": [
+        0.091752,
+        0.013598,
+        0.202645
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchRAW07/Exports/MesquitePods.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchRAW07/Exports/MesquitePodsPalette.png",
+      "Packet": "BatchRAW07",
+      "SourceSHA256": "ad4eefd69dfeaa8aef46479fdc5419e505fcaadaefb9d7971b6fffdff07ecefc",
+      "PaletteSHA256": "97d2df7f275554d238966cc8a0a8d15fd81a0966ae800f97944b1921a7eb2949"
+    },
+    {
+      "Name": "Pumpkin",
+      "Model": "Pumpkin",
+      "SourcePath": "Assets/_Game/Art/Tier03/Raw/Pumpkin.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Raw/PumpkinPalette.png",
+      "PrefabPath": "Tier03/Raw/Pumpkin",
+      "ItemIds": [
+        "ingredient.pumpkins"
+      ],
+      "Triangles": 704,
+      "BoundsMin": [
+        -0.2343,
+        0.0,
+        -0.222833
+      ],
+      "BoundsMax": [
+        0.2343,
+        0.436231,
+        0.222833
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchRAW03/Exports/Pumpkin.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchRAW03/Exports/PumpkinPalette.png",
+      "Packet": "BatchRAW03",
+      "SourceSHA256": "3f60193f2ba972e9cdb4fe02d797bfd7900a67069f7ff3bea584b6c8ac039545",
+      "PaletteSHA256": "2ba0f87813453cfc048e11a640dcbcd264564cf6954ba604c9e1c8689ba7f8a9"
+    },
+    {
+      "Name": "RawSquid",
+      "Model": "RawSquid",
+      "SourcePath": "Assets/_Game/Art/Tier03/Raw/RawSquid.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Raw/RawSquidPalette.png",
+      "PrefabPath": "Tier03/Raw/RawSquid",
+      "ItemIds": [
+        "fishery.squid"
+      ],
+      "Triangles": 2602,
+      "BoundsMin": [
+        -0.147882,
+        0.0,
+        -0.639342
+      ],
+      "BoundsMax": [
+        0.135789,
+        0.097329,
+        0.46
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchRAW10/Exports/RawSquid.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchRAW10/Exports/RawSquidPalette.png",
+      "Packet": "BatchRAW10",
+      "SourceSHA256": "d893f9fc676db524b58f6b74cff8596ea1ecc3c797b39f89c2a5e211488ebec0",
+      "PaletteSHA256": "8fe27c3a7ee0026a67479e99da8b3789adb543a820d00231c9ec8126b847d387"
+    },
+    {
+      "Name": "RawTurkeyMeat",
+      "Model": "RawTurkeyMeat",
+      "SourcePath": "Assets/_Game/Art/Tier03/Raw/RawTurkeyMeat.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Raw/RawTurkeyMeatPalette.png",
+      "PrefabPath": "Tier03/Raw/RawTurkeyMeat",
+      "ItemIds": [
+        "animal.turkey.meat"
+      ],
+      "Triangles": 552,
+      "BoundsMin": [
+        -0.245,
+        0.0,
+        -0.107079
+      ],
+      "BoundsMax": [
+        0.245,
+        0.103369,
+        0.107079
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchRAW07/Exports/RawTurkeyMeat.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchRAW07/Exports/RawTurkeyMeatPalette.png",
+      "Packet": "BatchRAW07",
+      "SourceSHA256": "28b27325cf8f42d6f0614ed516941b43185b7c5ba88c3cb80fc3ac77a09cf3c5",
+      "PaletteSHA256": "97d2df7f275554d238966cc8a0a8d15fd81a0966ae800f97944b1921a7eb2949"
+    },
+    {
+      "Name": "Salmon",
+      "Model": "Salmon",
+      "SourcePath": "Assets/_Game/Art/Tier03/Raw/Salmon.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Raw/SalmonPalette.png",
+      "PrefabPath": "Tier03/Raw/Salmon",
+      "ItemIds": [
+        "fish.salmon"
+      ],
+      "Triangles": 1310,
+      "BoundsMin": [
+        -0.61,
+        0.0,
+        -0.165854
+      ],
+      "BoundsMax": [
+        0.488,
+        0.22292,
+        0.138646
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchRAW08/Exports/Salmon.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchRAW08/Exports/SalmonPalette.png",
+      "Packet": "BatchRAW08",
+      "SourceSHA256": "10ea7a7a9f19bfbd01ca4dfca477730a82ff6cdd8cd522b4521560d664312adf",
+      "PaletteSHA256": "ad057d4e43db5dec95c51360bbf9164f651bf5029ee41e53d22d8f99db298271"
+    },
+    {
+      "Name": "SilverOre",
+      "Model": "SilverOre",
+      "SourcePath": "Assets/_Game/Art/Tier03/Raw/SilverOre.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Raw/SilverOrePalette.png",
+      "PrefabPath": "Tier03/Raw/SilverOre",
+      "ItemIds": [
+        "material.silver_ore"
+      ],
+      "Triangles": 340,
+      "BoundsMin": [
+        -0.232147,
+        0.0,
+        -0.182559
+      ],
+      "BoundsMax": [
+        0.232147,
+        0.3136,
+        0.182559
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchRAW06/Exports/SilverOre.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchRAW06/Exports/SilverOrePalette.png",
+      "Packet": "BatchRAW06",
+      "SourceSHA256": "b2224f463f5a5af75ba5dcb6c6d908fa850394b9ee44531490e1d70bccc06706",
+      "PaletteSHA256": "16d56b727300afe8630780d297b9388156476d1059b0201aa8d86b1ea1bfe07f"
+    },
+    {
+      "Name": "Slate",
+      "Model": "Slate",
+      "SourcePath": "Assets/_Game/Art/Tier03/Raw/Slate.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Raw/SlatePalette.png",
+      "PrefabPath": "Tier03/Raw/Slate",
+      "ItemIds": [
+        "material.slate"
+      ],
+      "Triangles": 128,
+      "BoundsMin": [
+        -0.27,
+        0.0,
+        -0.198253
+      ],
+      "BoundsMax": [
+        0.26,
+        0.11684,
+        0.185628
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchRAW04/Exports/Slate.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchRAW04/Exports/SlatePalette.png",
+      "Packet": "BatchRAW04",
+      "SourceSHA256": "f8b7a76ba5b79d39940559eda098bfee6ee4f984b80620a8c3e9ae8dd8bc1f2f",
+      "PaletteSHA256": "826f1d44fd599dc103999fb69d28932b6c7426d5c49236d48e85fe05887d4b7a"
+    },
+    {
+      "Name": "Soybeans",
+      "Model": "Soybeans",
+      "SourcePath": "Assets/_Game/Art/Tier03/Raw/Soybeans.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Raw/SoybeansPalette.png",
+      "PrefabPath": "Tier03/Raw/Soybeans",
+      "ItemIds": [
+        "ingredient.soybeans"
+      ],
+      "Triangles": 1200,
+      "BoundsMin": [
+        -0.061154,
+        0.0,
+        -0.044076
+      ],
+      "BoundsMax": [
+        0.061734,
+        0.031,
+        0.047449
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchRAW04/Exports/Soybeans.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchRAW04/Exports/SoybeansPalette.png",
+      "Packet": "BatchRAW04",
+      "SourceSHA256": "2b76da49766f4729aa1d4f2200725b6e49180b5f4046a6d410fdceb1e11df6b7",
+      "PaletteSHA256": "826f1d44fd599dc103999fb69d28932b6c7426d5c49236d48e85fe05887d4b7a"
+    },
+    {
+      "Name": "Sturgeon",
+      "Model": "Sturgeon",
+      "SourcePath": "Assets/_Game/Art/Tier03/Raw/Sturgeon.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Raw/SturgeonPalette.png",
+      "PrefabPath": "Tier03/Raw/Sturgeon",
+      "ItemIds": [
+        "fish.sturgeon"
+      ],
+      "Triangles": 1136,
+      "BoundsMin": [
+        -0.81,
+        0.0,
+        -0.1467
+      ],
+      "BoundsMax": [
+        0.628,
+        0.324128,
+        0.133713
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchRAW08/Exports/Sturgeon.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchRAW08/Exports/SturgeonPalette.png",
+      "Packet": "BatchRAW08",
+      "SourceSHA256": "680430a57a6a5d97050ca488b78dd93a3bac0eb8f3435a40c98b60d29b4eadbc",
+      "PaletteSHA256": "ad057d4e43db5dec95c51360bbf9164f651bf5029ee41e53d22d8f99db298271"
+    },
+    {
+      "Name": "SugarCane",
+      "Model": "SugarCane",
+      "SourcePath": "Assets/_Game/Art/Tier03/Raw/SugarCane.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Raw/SugarCanePalette.png",
+      "PrefabPath": "Tier03/Raw/SugarCane",
+      "ItemIds": [
+        "ingredient.sugar_cane"
+      ],
+      "Triangles": 1008,
+      "BoundsMin": [
+        -0.174243,
+        0.0,
+        -0.360967
+      ],
+      "BoundsMax": [
+        0.180711,
+        0.08856,
+        0.410921
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchRAW05/Exports/SugarCane.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchRAW05/Exports/SugarCanePalette.png",
+      "Packet": "BatchRAW05",
+      "SourceSHA256": "8bc4281ad699dd46a2a9e520349b785732062bb1414456e8f04b9328893bc41e",
+      "PaletteSHA256": "76eecd5de44e8f85cabc64f62dfbb96065c132941c73681770d073e5f97a6eae"
+    },
+    {
+      "Name": "SunflowerSeeds",
+      "Model": "SunflowerSeeds",
+      "SourcePath": "Assets/_Game/Art/Tier03/Raw/SunflowerSeeds.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Raw/SunflowerSeedsPalette.png",
+      "PrefabPath": "Tier03/Raw/SunflowerSeeds",
+      "ItemIds": [
+        "ingredient.sunflower_seeds"
+      ],
+      "Triangles": 600,
+      "BoundsMin": [
+        -0.060895,
+        0.0,
+        -0.059615
+      ],
+      "BoundsMax": [
+        0.070198,
+        0.012,
+        0.056869
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchRAW05/Exports/SunflowerSeeds.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchRAW05/Exports/SunflowerSeedsPalette.png",
+      "Packet": "BatchRAW05",
+      "SourceSHA256": "fe2af6a477490f9aac1b98a27c549abbb9b200f81765139fbafd88318623ff70",
+      "PaletteSHA256": "76eecd5de44e8f85cabc64f62dfbb96065c132941c73681770d073e5f97a6eae"
+    },
+    {
+      "Name": "TurkeyFeathers",
+      "Model": "TurkeyFeathers",
+      "SourcePath": "Assets/_Game/Art/Tier03/Raw/TurkeyFeathers.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Raw/TurkeyFeathersPalette.png",
+      "PrefabPath": "Tier03/Raw/TurkeyFeathers",
+      "ItemIds": [
+        "animal.turkey.feathers"
+      ],
+      "Triangles": 516,
+      "BoundsMin": [
+        -0.144841,
+        0.0,
+        -0.001902
+      ],
+      "BoundsMax": [
+        0.154988,
+        0.230488,
+        0.28876
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchRAW01/Exports/TurkeyFeathers.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchRAW01/Exports/TurkeyFeathersPalette.png",
+      "Packet": "BatchRAW01",
+      "SourceSHA256": "37137d47f1e67f7b8d2620f24f08fe30c5f1b8d5b29cab3dfc0b6aedb3f4fc2c",
+      "PaletteSHA256": "9cdd1c5882e5791afe83a4bb60017ebf70a456ffc1c82d74615f3b53dfd9bb4e"
+    },
+    {
+      "Name": "Turquoise",
+      "Model": "Turquoise",
+      "SourcePath": "Assets/_Game/Art/Tier03/Raw/Turquoise.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Raw/TurquoisePalette.png",
+      "PrefabPath": "Tier03/Raw/Turquoise",
+      "ItemIds": [
+        "material.turquoise"
+      ],
+      "Triangles": 324,
+      "BoundsMin": [
+        -0.213725,
+        0.0,
+        -0.153074
+      ],
+      "BoundsMax": [
+        0.213725,
+        0.264141,
+        0.153074
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchRAW04/Exports/Turquoise.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchRAW04/Exports/TurquoisePalette.png",
+      "Packet": "BatchRAW04",
+      "SourceSHA256": "8bb02477f31723b96f44fe648c509a8f66e5967a941c9f53ee0f65c650283c20",
+      "PaletteSHA256": "826f1d44fd599dc103999fb69d28932b6c7426d5c49236d48e85fe05887d4b7a"
+    },
+    {
+      "Name": "WildMint",
+      "Model": "WildMint",
+      "SourcePath": "Assets/_Game/Art/Tier03/Raw/WildMint.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Raw/WildMintPalette.png",
+      "PrefabPath": "Tier03/Raw/WildMint",
+      "ItemIds": [
+        "ingredient.wild_mint"
+      ],
+      "Triangles": 1600,
+      "BoundsMin": [
+        -0.119111,
+        0.0,
+        -0.150078
+      ],
+      "BoundsMax": [
+        0.119111,
+        0.023499,
+        0.150248
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchRAW06/Exports/WildMint.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchRAW06/Exports/WildMintPalette.png",
+      "Packet": "BatchRAW06",
+      "SourceSHA256": "86868b9eb3d424e2e4fdc999d5180d3ef3e77f905076e0503a568050635f3b72",
+      "PaletteSHA256": "16d56b727300afe8630780d297b9388156476d1059b0201aa8d86b1ea1bfe07f"
+    },
+    {
+      "Name": "EliteMesquiteAxe",
+      "Model": "EliteMesquiteAxe",
+      "SourcePath": "Assets/_Game/Art/Tier03/Tools/EliteMesquiteAxe.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Tools/EliteMesquiteAxePalette.png",
+      "PrefabPath": "Tier03/Tools/EliteMesquiteAxe",
+      "ItemIds": [
+        "debug.tool.axe.t3.elite"
+      ],
+      "Triangles": 2420,
+      "BoundsMin": [
+        -0.114048,
+        0.0,
+        -0.0756
+      ],
+      "BoundsMax": [
+        0.22032,
+        0.8388,
+        0.0756
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchTOOL01/Exports/EliteMesquiteAxe.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchTOOL01/Exports/EliteMesquiteAxePalette.png",
+      "Packet": "BatchTOOL01",
+      "SourceSHA256": "aabc5443219fea08fb40de7607f54719ee8aaf5e33b8d424e3d69d7ac6985905",
+      "PaletteSHA256": "7629706648d57514be70537e47528517dabd7de1796847fb9ffbfd977dc3a7cb"
+    },
+    {
+      "Name": "EliteMesquiteBow",
+      "Model": "EliteMesquiteBow",
+      "SourcePath": "Assets/_Game/Art/Tier03/Tools/EliteMesquiteBow.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Tools/EliteMesquiteBowPalette.png",
+      "PrefabPath": "Tier03/Tools/EliteMesquiteBow",
+      "ItemIds": [
+        "debug.tool.hunting.t3.elite"
+      ],
+      "Triangles": 4244,
+      "BoundsMin": [
+        -0.00615,
+        0.0,
+        -0.021
+      ],
+      "BoundsMax": [
+        0.740057,
+        1.5,
+        0.074568
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchTOOL02/Exports/EliteMesquiteBow.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchTOOL02/Exports/EliteMesquiteBowPalette.png",
+      "Packet": "BatchTOOL02",
+      "SourceSHA256": "bf886de6a7646ab1a0b4e339a7402367f8e3ad8f78c84f97df801e2f113bf009",
+      "PaletteSHA256": "05ad0a90fa03dc31ce5ef4e1694e506f65ba6c05d86f3619fdff346d3f132b3e"
+    },
+    {
+      "Name": "EliteMesquiteRod",
+      "Model": "EliteMesquiteRod",
+      "SourcePath": "Assets/_Game/Art/Tier03/Tools/EliteMesquiteRod.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Tools/EliteMesquiteRodPalette.png",
+      "PrefabPath": "Tier03/Tools/EliteMesquiteRod",
+      "ItemIds": [
+        "debug.tool.rod.t3.elite"
+      ],
+      "Triangles": 4898,
+      "BoundsMin": [
+        -0.121,
+        0.0,
+        -0.025413
+      ],
+      "BoundsMax": [
+        0.46,
+        1.7,
+        0.025413
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchTOOL03/Exports/EliteMesquiteRod.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchTOOL03/Exports/EliteMesquiteRodPalette.png",
+      "Packet": "BatchTOOL03",
+      "SourceSHA256": "144df9b8f7f4c07ca9b1a4373c8175e340a7aa4c8b01068d16abde6b02e8625f",
+      "PaletteSHA256": "d5f4de8c9010cab0353a9fc2b4c2db3a4cd851a035ccd835df53101e72dd2813"
+    },
+    {
+      "Name": "NormalMesquiteAxe",
+      "Model": "NormalMesquiteAxe",
+      "SourcePath": "Assets/_Game/Art/Tier03/Tools/NormalMesquiteAxe.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Tools/NormalMesquiteAxePalette.png",
+      "PrefabPath": "Tier03/Tools/NormalMesquiteAxe",
+      "ItemIds": [
+        "debug.tool.axe.t3.normal"
+      ],
+      "Triangles": 2244,
+      "BoundsMin": [
+        -0.114048,
+        0.0,
+        -0.0756
+      ],
+      "BoundsMax": [
+        0.22032,
+        0.8388,
+        0.0756
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchTOOL01/Exports/NormalMesquiteAxe.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchTOOL01/Exports/NormalMesquiteAxePalette.png",
+      "Packet": "BatchTOOL01",
+      "SourceSHA256": "13bd8259c749fe31834af008f513b1f5c73c28e5471005269cf91c89bd82c3fc",
+      "PaletteSHA256": "7629706648d57514be70537e47528517dabd7de1796847fb9ffbfd977dc3a7cb"
+    },
+    {
+      "Name": "NormalMesquiteBow",
+      "Model": "NormalMesquiteBow",
+      "SourcePath": "Assets/_Game/Art/Tier03/Tools/NormalMesquiteBow.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Tools/NormalMesquiteBowPalette.png",
+      "PrefabPath": "Tier03/Tools/NormalMesquiteBow",
+      "ItemIds": [
+        "debug.tool.hunting.t3.normal"
+      ],
+      "Triangles": 2980,
+      "BoundsMin": [
+        -0.00615,
+        0.0,
+        -0.01861
+      ],
+      "BoundsMax": [
+        0.740057,
+        1.5,
+        0.074568
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchTOOL02/Exports/NormalMesquiteBow.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchTOOL02/Exports/NormalMesquiteBowPalette.png",
+      "Packet": "BatchTOOL02",
+      "SourceSHA256": "9345b564dbd22e2011438e13f4acb4b89d80833c65d82ea9a0b90a9e060e00c5",
+      "PaletteSHA256": "05ad0a90fa03dc31ce5ef4e1694e506f65ba6c05d86f3619fdff346d3f132b3e"
+    },
+    {
+      "Name": "NormalMesquiteRod",
+      "Model": "NormalMesquiteRod",
+      "SourcePath": "Assets/_Game/Art/Tier03/Tools/NormalMesquiteRod.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Tools/NormalMesquiteRodPalette.png",
+      "PrefabPath": "Tier03/Tools/NormalMesquiteRod",
+      "ItemIds": [
+        "debug.tool.rod.t3.normal"
+      ],
+      "Triangles": 4010,
+      "BoundsMin": [
+        -0.121,
+        0.0,
+        -0.020804
+      ],
+      "BoundsMax": [
+        0.46,
+        1.7,
+        0.020888
+      ],
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchTOOL03/Exports/NormalMesquiteRod.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchTOOL03/Exports/NormalMesquiteRodPalette.png",
+      "Packet": "BatchTOOL03",
+      "SourceSHA256": "3cf398a92b04fb9343ce015e2a003ad6dc534d470d6fe056adb525c37ba1ed61",
+      "PaletteSHA256": "d5f4de8c9010cab0353a9fc2b4c2db3a4cd851a035ccd835df53101e72dd2813"
+    }
+  ]
+}
