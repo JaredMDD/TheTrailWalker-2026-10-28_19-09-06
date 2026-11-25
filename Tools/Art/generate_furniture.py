@@ -10,6 +10,10 @@ pivot at the FRONT-LEFT cell corner as seen from the camera, so the body spans x
 Top surfaces carry each piece's identity, since the angled interior view and the bird's-eye placement view look down.
 Colours use the house palette (HousePalette.png) so furniture shares the house material.
 Run: python Tools/Art/generate_furniture.py, then The Trail Walker > Art > Build Furniture.
+WARNING (Tier 3 integration slice C, November 24, 2026): three OBJs in Art/Settlement/Furniture were replaced by reviewed
+repairs that this script does not reproduce: FurnitureTrophyCabinet (plaque seated on the crown), FurnitureClothPress (caps
+sunk 5 mm into the crossbeam) and FurnitureMesquiteChest (hollow body). A full run rewrites them; restore those three from
+git afterwards, or port the repairs into trophy_cabinet / cloth_press / the mesquite chest body first.
 """
 from pathlib import Path
 import json

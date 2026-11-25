@@ -1,0 +1,21 @@
+{
+  "Revision": 1,
+  "Palette": "Assets/_Game/Art/Settlement/Houses/HousePalette.png",
+  "Pivot": "floor centre",
+  "Beds": [
+    {
+      "Asset": "PetBed",
+      "Triangles": 192,
+      "BoundsMin": [
+        -0.3429036683326192,
+        0.0,
+        -0.5315006859155599
+      ],
+      "BoundsMax": [
+        0.3429036683326192,
+        0.1925,
+        0.5315006859155599
+      ]
+    }
+  ]
+}

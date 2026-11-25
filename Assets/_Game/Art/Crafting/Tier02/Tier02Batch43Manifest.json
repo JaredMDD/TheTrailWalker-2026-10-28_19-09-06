@@ -1,0 +1,82 @@
+{
+  "Revision": 1,
+  "Batch": 43,
+  "Scope": "2 passive Companion static design art outputs; no gameplay value or shared shader changes.",
+  "BlenderVersion": "5.2.3 LTS",
+  "Items": [
+    {
+      "Name": "CompanionPigStanding",
+      "Model": "CompanionPigStanding",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/CompanionPigStanding.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/CompanionPigStandingPalette.png",
+      "PrefabPath": "Tier02/Companions/CompanionPigStanding",
+      "Triangles": 2926,
+      "BoundsMin": [
+        -0.13774,
+        0.0,
+        -0.312186
+      ],
+      "BoundsMax": [
+        0.137722,
+        0.450994,
+        0.377523
+      ],
+      "DisplayName": "Pig (Standing static study)",
+      "ItemId": "pet.pig",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive companion art; ownership/reward/home-display service binding pending",
+      "MissionCode": "",
+      "MissionRegion": 0,
+      "IngredientBrief": "Companion-store art; not an inventory item or crafting recipe",
+      "Role": "Companion static design",
+      "MaterialPath": "Assets/_Game/Resources/Tier02/ArtMaterials/CompanionPigStanding.mat",
+      "Representation": "companion",
+      "FrontAxis": "+Z",
+      "CompanionId": "pet.pig",
+      "Pose": "Standing",
+      "ReviewPoseOnly": false,
+      "AnimationScope": "Static anatomy/pose study; no rig, skinning or animation acceptance",
+      "UnlockSource": "House-level-3 companion store; existing design only",
+      "AnchorFrame": "Root ground centre; metres, +Y up/+Z forward",
+      "TriangleCeiling": 6000,
+      "HomeModelDeferred": true
+    },
+    {
+      "Name": "CompanionPigRooting",
+      "Model": "CompanionPigRooting",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/CompanionPigRooting.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/CompanionPigRootingPalette.png",
+      "PrefabPath": "Tier02/Companions/CompanionPigRooting",
+      "Triangles": 2922,
+      "BoundsMin": [
+        -0.13774,
+        0.0,
+        -0.312186
+      ],
+      "BoundsMax": [
+        0.137722,
+        0.422,
+        0.368523
+      ],
+      "DisplayName": "Pig (Rooting static study)",
+      "ItemId": "pet.pig",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive companion art; ownership/reward/home-display service binding pending",
+      "MissionCode": "",
+      "MissionRegion": 0,
+      "IngredientBrief": "Companion-store art; not an inventory item or crafting recipe",
+      "Role": "Companion static design",
+      "MaterialPath": "Assets/_Game/Resources/Tier02/ArtMaterials/CompanionPigRooting.mat",
+      "Representation": "companion",
+      "FrontAxis": "+Z",
+      "CompanionId": "pet.pig",
+      "Pose": "Rooting",
+      "ReviewPoseOnly": true,
+      "AnimationScope": "Static anatomy/pose study; no rig, skinning or animation acceptance",
+      "UnlockSource": "House-level-3 companion store; existing design only",
+      "AnchorFrame": "Root ground centre; metres, +Y up/+Z forward",
+      "TriangleCeiling": 6000,
+      "HomeModelDeferred": true
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "Revision": 1,
+  "Batch": 44,
+  "Scope": "2 passive Companion static design art outputs; no gameplay value or shared shader changes.",
+  "BlenderVersion": "5.2.3 LTS",
+  "Items": [
+    {
+      "Name": "CompanionSquirrelAlert",
+      "Model": "CompanionSquirrelAlert",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/CompanionSquirrelAlert.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/CompanionSquirrelAlertPalette.png",
+      "PrefabPath": "Tier02/Companions/CompanionSquirrelAlert",
+      "Triangles": 2388,
+      "BoundsMin": [
+        -0.087189,
+        0.0,
+        -0.270229
+      ],
+      "BoundsMax": [
+        0.087189,
+        0.378249,
+        0.139618
+      ],
+      "DisplayName": "Squirrel (Alert static study)",
+      "ItemId": "pet.squirrel",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive companion art; ownership/reward/home-display service binding pending",
+      "MissionCode": "",
+      "MissionRegion": 0,
+      "IngredientBrief": "Companion-store art; not an inventory item or crafting recipe",
+      "Role": "Companion static design",
+      "MaterialPath": "Assets/_Game/Resources/Tier02/ArtMaterials/CompanionSquirrelAlert.mat",
+      "Representation": "companion",
+      "FrontAxis": "+Z",
+      "CompanionId": "pet.squirrel",
+      "Pose": "Alert",
+      "ReviewPoseOnly": false,
+      "AnimationScope": "Static anatomy/pose study; no rig, skinning or animation acceptance",
+      "UnlockSource": "House-level-3 companion store; existing design only",
+      "AnchorFrame": "Root ground centre; metres, +Y up/+Z forward",
+      "TriangleCeiling": 6000,
+      "HomeModelDeferred": true
+    },
+    {
+      "Name": "CompanionSquirrelForaging",
+      "Model": "CompanionSquirrelForaging",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/CompanionSquirrelForaging.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/CompanionSquirrelForagingPalette.png",
+      "PrefabPath": "Tier02/Companions/CompanionSquirrelForaging",
+      "Triangles": 2558,
+      "BoundsMin": [
+        -0.087189,
+        0.0,
+        -0.270229
+      ],
+      "BoundsMax": [
+        0.087189,
+        0.378249,
+        0.201618
+      ],
+      "DisplayName": "Squirrel (Foraging static study)",
+      "ItemId": "pet.squirrel",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive companion art; ownership/reward/home-display service binding pending",
+      "MissionCode": "",
+      "MissionRegion": 0,
+      "IngredientBrief": "Companion-store art; not an inventory item or crafting recipe",
+      "Role": "Companion static design",
+      "MaterialPath": "Assets/_Game/Resources/Tier02/ArtMaterials/CompanionSquirrelForaging.mat",
+      "Representation": "companion",
+      "FrontAxis": "+Z",
+      "CompanionId": "pet.squirrel",
+      "Pose": "Foraging",
+      "ReviewPoseOnly": true,
+      "AnimationScope": "Static anatomy/pose study; no rig, skinning or animation acceptance",
+      "UnlockSource": "House-level-3 companion store; existing design only",
+      "AnchorFrame": "Root ground centre; metres, +Y up/+Z forward",
+      "TriangleCeiling": 6000,
+      "HomeModelDeferred": true
+    }
+  ]
+}

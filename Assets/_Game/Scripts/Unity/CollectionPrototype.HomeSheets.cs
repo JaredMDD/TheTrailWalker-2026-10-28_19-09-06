@@ -99,7 +99,7 @@ namespace TheTrailWalker
         private ScrollRect homeStoreScroll;
         private StoreSection homeStoreSection;
         private System.Action homeBuyConfirm;   // the YES action of a buy confirmation on screen, or null
-        private bool HomeSheetsOpen => (homeStoreMenu != null && homeStoreMenu.activeSelf) || UpgradeSheetOpen;
+        private bool HomeSheetsOpen => (homeStoreMenu != null && homeStoreMenu.activeSelf) || UpgradeSheetOpen || PetSheetOpen;
         private bool HomeInside => homeView == HomeView.Interior || homeView == HomeView.BirdsEye;
         private static readonly Color HomeRowBand = new Color(1f, 0.97f, 0.88f, 0.38f), HomeLockedBand = new Color(0.86f, 0.82f, 0.74f, 0.30f),
             HomeTickInk = new Color(0.2f, 0.45f, 0.18f), HomeLockInk = new Color(0.42f, 0.32f, 0.2f, 0.8f);

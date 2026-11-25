@@ -14,7 +14,7 @@ namespace TheTrailWalker
     // to it, Upgrade next to the user menu (greyed), Pet centred from house level 3.
     public sealed partial class CollectionPrototype
     {
-        public enum HomeView { None, Interior, BirdsEye }
+        public enum HomeView { None, Interior, BirdsEye, Backyard }   // Backyard: Milestone 15 (CollectionPrototype.Pets.cs)
         private HomeView homeView;
         // Between the tap and the cut: the street camera is still gliding to the plot (OpenHome). Counts as open, so the
         // street's list, drag and taps stay off while it glides.
@@ -40,7 +40,6 @@ namespace TheTrailWalker
             ("Home: Store", false, 1, 0),    // next to the inventory
             ("Home: Upgrade", true, 1, 0),   // next to the user menu (the drop pocket's spot, hidden in the settlement)
         };
-        public const string HomePetNote = "The backyard opens with pets.";
         public static bool HomePetButtonVisible(int houseLevel) => houseLevel >= 3;
         // Which inside button shows: all in the player's home (Pet from level 3), only Return in a neighbour's look-only room.
         public static bool HomeInsideButtonVisible(string name, int houseLevel, bool neighbour)
@@ -227,7 +226,7 @@ namespace TheTrailWalker
                 LeaveHome,
                 () => { if (homeView == HomeView.Interior && !NeighbourView) OpenStoreMenu(StoreSection.Furniture); },   // the store menu, on Furniture
                 () => { if (homeView == HomeView.Interior && !NeighbourView) OpenUpgradeSheet(); },   // the upgrade sheet; greyed at the cap, see below
-                () => { if (homeView == HomeView.Interior && !NeighbourView) ShowSettlementNote(HomePetNote); },
+                () => { if (homeView == HomeView.Interior && !NeighbourView) OpenBackyard(); },   // the backyard (Milestone 15)
             };
             for (int i = 0; i < HomeInsideButtonNames.Length; i++)
             {
@@ -246,6 +245,7 @@ namespace TheTrailWalker
             }
             homeInsideHud.gameObject.SetActive(false);
             CreateHomeBirdsEyeHud();
+            CreateBackyardHud();
         }
 
         // Places the inside squares on the bar line (the HUD squares' current one) and shows Pet from house level 3. In a
@@ -309,8 +309,10 @@ namespace TheTrailWalker
             bool showInside = homeView == HomeView.Interior && !panelsCovered;
             if (homeInsideHud.gameObject.activeSelf != showInside) homeInsideHud.gameObject.SetActive(showInside);
             if (showInside) LayoutHomeInsideHud();
+            UpdateCollectionBadge(showInside);
             bool showBirdsEye = homeView == HomeView.BirdsEye && !panelsCovered;
             if (homeBirdsEyeHud != null && homeBirdsEyeHud.gameObject.activeSelf != showBirdsEye) homeBirdsEyeHud.gameObject.SetActive(showBirdsEye);
+            UpdateBackyard(panelsCovered);
             if (homeView == HomeView.Interior) UpdateHomeInterior(panelsCovered);
             else if (homeView == HomeView.BirdsEye) UpdateBirdsEye(panelsCovered);
         }
@@ -437,6 +439,7 @@ namespace TheTrailWalker
             if (settlementNote != null && settlementNote.activeSelf) settlementNote.SetActive(false);
             interiorRoot = root;
             pieceViews = InstancePieces(root, shown);
+            PlaceEntryPet(root);   // the active pet on its bed below the door (Milestone 15; never in a neighbour's room)
             if (neighbourHome == null) RebuildAllRackPegs();   // hung items on every rack's pegs (CollectionPrototype.HomeStorage.cs)
             float fov = cameraView != null ? cameraView.fieldOfView : StreetCamera.FieldOfView;
             float aspect = cameraView != null ? cameraView.aspect : (Screen.height > 0 ? (float)Screen.width / Screen.height : 1116f / 2480f);
@@ -481,6 +484,8 @@ namespace TheTrailWalker
             CloseContainer();
             CloseHomeSheets();
             TearDownBirdsEye();
+            TearDownBackyard();
+            collectionBoxView = null;
             CancelInteriorPointer();
             interiorScroll = null;
             pieceViews = new Dictionary<string, GameObject>();
@@ -532,6 +537,7 @@ namespace TheTrailWalker
             interiorPointer = null; interiorDragging = false; interiorCaught = false; interiorHeld = false; interiorPiece = null;
             if (interiorScroll != null) { if (canceled || held) interiorScroll.Cancel(); else interiorScroll.End(Time.unscaledTime); }
             if (tap && piece != null && IsContainerPiece(piece)) OpenContainer(piece);
+            else if (tap && piece == null && !NeighbourView && TapCollectionBox(position)) OpenPetSheet(PetSheetMode.Collection);   // the pets' collection box (Milestone 15)
         }
         private void CancelInteriorPointer()
         {

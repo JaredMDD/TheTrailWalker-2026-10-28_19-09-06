@@ -223,6 +223,56 @@ namespace TheTrailWalker
             foreach (Collider c in interior.GetComponentsInChildren<Collider>(true)) DestroyImmediate(c);
             return interior.transform;
         }
+        // Milestone 15: the backyard behind the house (the house's Pet button), in the interior's holder so every interior
+        // teardown also clears it. The pet home in the house tier's look, the active pet on its ActivePetAnchor (or none), yard
+        // props from Settlement/Yards on a ground plane. Passive: colliders are removed.
+        public const string BackyardName = "Backyard";
+        public static string PetHomeFor(int houseLevel) => "Settlement/Houses/PetHomeT" + (houseLevel >= 7 ? 4 : houseLevel >= 5 ? 3 : 2);
+        public static readonly (string resource, Vector3 position, float yaw)[] BackyardProps = {
+            ("Settlement/Yards/Woodpile", new Vector3(1.6f, 0f, -2.3f), -20f), ("Settlement/Yards/GardenBed", new Vector3(-1.65f, 0f, -2.1f), 15f),
+            ("Settlement/Yards/WashingLine", new Vector3(0.1f, 0f, -3.4f), 0f) };
+        public Transform BuildBackyard(int houseLevel, string activePetModel)
+        {
+            ClearInterior();
+            var holder = new GameObject(InteriorHolderName).transform;
+            holder.SetParent(transform, false);
+            holder.SetPositionAndRotation(InteriorWorldPosition, Quaternion.identity);
+            var yard = new GameObject(BackyardName).transform; yard.SetParent(holder, false);
+            GameObject ground = GameObject.CreatePrimitive(PrimitiveType.Plane); ground.name = "Ground";
+            ground.transform.SetParent(yard, false); ground.transform.localScale = new Vector3(1.6f, 1f, 1.2f);   // 16 x 12 m
+            if (terrainMaterial != null) ground.GetComponent<Renderer>().sharedMaterial = terrainMaterial;
+            GameObject homePrefab = Resources.Load<GameObject>(PetHomeFor(houseLevel));
+            if (homePrefab == null) Debug.LogWarning("[Pets] Missing " + PetHomeFor(houseLevel));
+            GameObject petHome = homePrefab != null ? Instantiate(homePrefab, yard, false) : null;
+            if (petHome != null) petHome.name = homePrefab.name;
+            foreach (var (resource, position, yaw) in BackyardProps)
+            {
+                GameObject prop = Resources.Load<GameObject>(resource);
+                if (prop == null) continue;
+                GameObject placed = Instantiate(prop, yard, false); placed.name = prop.name;
+                placed.transform.localPosition = position; placed.transform.localRotation = Quaternion.Euler(0f, yaw, 0f);
+            }
+            GameObject petPrefab = activePetModel != null ? Resources.Load<GameObject>(activePetModel) : null;
+            if (petPrefab != null)
+            {
+                Transform anchor = petHome != null ? FindDeep(petHome.transform, "ActivePetAnchor") : null;
+                GameObject pet = Instantiate(petPrefab, anchor != null ? anchor : yard, false);
+                pet.name = "ActivePet";
+                if (anchor == null) pet.transform.localPosition = new Vector3(1.4f, 0f, 0.6f);
+            }
+            foreach (Collider c in yard.GetComponentsInChildren<Collider>(true)) DestroyImmediate(c);
+            return yard;
+        }
+        private static Transform FindDeep(Transform parent, string name)
+        {
+            foreach (Transform child in parent)
+            {
+                if (child.name == name) return child;
+                Transform found = FindDeep(child, name);
+                if (found != null) return found;
+            }
+            return null;
+        }
         public void ClearInterior()
         {
             // Immediate, so a rebuild in the same frame (and the Editor checks) never sees the old holder.

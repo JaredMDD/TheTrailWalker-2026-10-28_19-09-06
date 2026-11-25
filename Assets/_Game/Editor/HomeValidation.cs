@@ -394,7 +394,7 @@ namespace TheTrailWalker.Editor
         // Home revision 4 (spec sections 1 and 4): a tap goes straight inside; every house action is on the inside HUD.
         private static void InsideHudChecks()
         {
-            Check(Enum.GetNames(typeof(CollectionPrototype.HomeView)).SequenceEqual(new[] { "None", "Interior", "BirdsEye" }), "The home views are None, Interior and BirdsEye (no front view)");
+            Check(Enum.GetNames(typeof(CollectionPrototype.HomeView)).SequenceEqual(new[] { "None", "Interior", "BirdsEye", "Backyard" }), "The home views are None, Interior, BirdsEye and Backyard (Milestone 15; no front view)");
             const System.Reflection.BindingFlags all = System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Instance;
             string[] gone = { "HomeFrontButtonNames", "HomeFrontCaptions", "HomeFrontIcons", "HomeInteriorSoonNote", "OpenHomeFront", "HomeCameraPose", "CloseHomeInterior",
                 "HomeInteriorButtonNames", "HomeInteriorCaptions", "HomeInteriorIcons" };
@@ -406,7 +406,7 @@ namespace TheTrailWalker.Editor
                 "The Pet button is hidden below house level 3 and shown from level 3");
             Check(CollectionPrototype.CraftAvailable(false, true) && !CollectionPrototype.CraftAvailable(false, false) && CollectionPrototype.CraftAvailable(true, false),
                 "CRAFT is available at a camp and inside the house, nowhere else");
-            Check(CollectionPrototype.HomePetNote == "The backyard opens with pets.", "The Pet note reads \"The backyard opens with pets.\"");
+            Check(typeof(CollectionPrototype).GetMethod("OpenBackyard", all) != null && typeof(CollectionPrototype).GetField("HomePetNote", all) == null, "The Pet button opens the backyard (Milestone 15); the placeholder note is gone");
 
             Check(CollectionPrototype.HomeInsideButtonNames.SequenceEqual(new[] { "Home: Return", "Home: Store", "Home: Upgrade", "Home: Pet" }),
                 "The inside buttons are named Home: Return, Home: Store, Home: Upgrade and Home: Pet");

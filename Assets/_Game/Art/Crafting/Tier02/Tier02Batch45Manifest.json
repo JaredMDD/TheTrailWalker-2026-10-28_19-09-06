@@ -1,0 +1,82 @@
+{
+  "Revision": 1,
+  "Batch": 45,
+  "Scope": "2 passive Companion static design art outputs; no gameplay value or shared shader changes.",
+  "BlenderVersion": "5.2.3 LTS",
+  "Items": [
+    {
+      "Name": "CompanionTortoiseExtended",
+      "Model": "CompanionTortoiseExtended",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/CompanionTortoiseExtended.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/CompanionTortoiseExtendedPalette.png",
+      "PrefabPath": "Tier02/Companions/CompanionTortoiseExtended",
+      "Triangles": 2736,
+      "BoundsMin": [
+        -0.161372,
+        0.0,
+        -0.206368
+      ],
+      "BoundsMax": [
+        0.161613,
+        0.208787,
+        0.260895
+      ],
+      "DisplayName": "Tortoise (Extended static study)",
+      "ItemId": "pet.tortoise",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive companion art; ownership/reward/home-display service binding pending",
+      "MissionCode": "",
+      "MissionRegion": 0,
+      "IngredientBrief": "Companion-store art; not an inventory item or crafting recipe",
+      "Role": "Companion static design",
+      "MaterialPath": "Assets/_Game/Resources/Tier02/ArtMaterials/CompanionTortoiseExtended.mat",
+      "Representation": "companion",
+      "FrontAxis": "+Z",
+      "CompanionId": "pet.tortoise",
+      "Pose": "Extended",
+      "ReviewPoseOnly": false,
+      "AnimationScope": "Static anatomy/pose study; no rig, skinning or animation acceptance",
+      "UnlockSource": "House-level-3 companion store; existing design only",
+      "AnchorFrame": "Root ground centre; metres, +Y up/+Z forward",
+      "TriangleCeiling": 6000,
+      "HomeModelDeferred": true
+    },
+    {
+      "Name": "CompanionTortoiseTucked",
+      "Model": "CompanionTortoiseTucked",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/CompanionTortoiseTucked.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/CompanionTortoiseTuckedPalette.png",
+      "PrefabPath": "Tier02/Companions/CompanionTortoiseTucked",
+      "Triangles": 2702,
+      "BoundsMin": [
+        -0.161372,
+        0.0,
+        -0.206368
+      ],
+      "BoundsMax": [
+        0.161613,
+        0.208787,
+        0.215895
+      ],
+      "DisplayName": "Tortoise (Tucked static study)",
+      "ItemId": "pet.tortoise",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive companion art; ownership/reward/home-display service binding pending",
+      "MissionCode": "",
+      "MissionRegion": 0,
+      "IngredientBrief": "Companion-store art; not an inventory item or crafting recipe",
+      "Role": "Companion static design",
+      "MaterialPath": "Assets/_Game/Resources/Tier02/ArtMaterials/CompanionTortoiseTucked.mat",
+      "Representation": "companion",
+      "FrontAxis": "+Z",
+      "CompanionId": "pet.tortoise",
+      "Pose": "Tucked",
+      "ReviewPoseOnly": true,
+      "AnimationScope": "Static anatomy/pose study; no rig, skinning or animation acceptance",
+      "UnlockSource": "House-level-3 companion store; existing design only",
+      "AnchorFrame": "Root ground centre; metres, +Y up/+Z forward",
+      "TriangleCeiling": 6000,
+      "HomeModelDeferred": true
+    }
+  ]
+}

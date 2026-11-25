@@ -13,7 +13,8 @@ namespace TheTrailWalker.Editor
                 || assetPath.StartsWith("Assets/_Game/Resources/UI/Hud/", StringComparison.Ordinal) // wooden speed ruler tile
                 || assetPath.StartsWith("Assets/_Game/Resources/UI/Map/", StringComparison.Ordinal) // worn region maps
                 || assetPath.StartsWith("Assets/_Game/Resources/UI/Furniture/", StringComparison.Ordinal) // furniture store icons (art batch A, November 7, 2026)
-                || assetPath.StartsWith("Assets/_Game/Resources/UI/Lumber/", StringComparison.Ordinal); // lumber ledger log pictures
+                || assetPath.StartsWith("Assets/_Game/Resources/UI/Lumber/", StringComparison.Ordinal) // lumber ledger log pictures
+                || assetPath.StartsWith("Assets/_Game/Resources/UI/Pets/", StringComparison.Ordinal); // pet shop pictures (Milestone 15)
             if ((!assetPath.StartsWith("Assets/_Game/Resources/UI/Crafting/", StringComparison.Ordinal) && !missions) || !assetPath.EndsWith(".png", StringComparison.Ordinal)) return;
             var importer = (TextureImporter)assetImporter;
             importer.textureType = TextureImporterType.Sprite; importer.spriteImportMode = SpriteImportMode.Single; importer.spritePixelsPerUnit = 100;

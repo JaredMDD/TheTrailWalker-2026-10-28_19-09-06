@@ -1,0 +1,82 @@
+{
+  "Revision": 1,
+  "Batch": 42,
+  "Scope": "2 passive Companion static design art outputs; no gameplay value or shared shader changes.",
+  "BlenderVersion": "5.2.3 LTS",
+  "Items": [
+    {
+      "Name": "CompanionRabbitCrouched",
+      "Model": "CompanionRabbitCrouched",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/CompanionRabbitCrouched.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/CompanionRabbitCrouchedPalette.png",
+      "PrefabPath": "Tier02/Companions/CompanionRabbitCrouched",
+      "Triangles": 2632,
+      "BoundsMin": [
+        -0.121063,
+        0.0,
+        -0.206287
+      ],
+      "BoundsMax": [
+        0.121063,
+        0.350818,
+        0.206618
+      ],
+      "DisplayName": "Rabbit (Crouched static study)",
+      "ItemId": "pet.rabbit",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive companion art; ownership/reward/home-display service binding pending",
+      "MissionCode": "",
+      "MissionRegion": 0,
+      "IngredientBrief": "Companion-store art; not an inventory item or crafting recipe",
+      "Role": "Companion static design",
+      "MaterialPath": "Assets/_Game/Resources/Tier02/ArtMaterials/CompanionRabbitCrouched.mat",
+      "Representation": "companion",
+      "FrontAxis": "+Z",
+      "CompanionId": "pet.rabbit",
+      "Pose": "Crouched",
+      "ReviewPoseOnly": false,
+      "AnimationScope": "Static anatomy/pose study; no rig, skinning or animation acceptance",
+      "UnlockSource": "House-level-3 companion store; existing design only",
+      "AnchorFrame": "Root ground centre; metres, +Y up/+Z forward",
+      "TriangleCeiling": 6000,
+      "HomeModelDeferred": true
+    },
+    {
+      "Name": "CompanionRabbitAlert",
+      "Model": "CompanionRabbitAlert",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/CompanionRabbitAlert.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/CompanionRabbitAlertPalette.png",
+      "PrefabPath": "Tier02/Companions/CompanionRabbitAlert",
+      "Triangles": 2616,
+      "BoundsMin": [
+        -0.121063,
+        0.0,
+        -0.206287
+      ],
+      "BoundsMax": [
+        0.121063,
+        0.402715,
+        0.206618
+      ],
+      "DisplayName": "Rabbit (Alert static study)",
+      "ItemId": "pet.rabbit",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive companion art; ownership/reward/home-display service binding pending",
+      "MissionCode": "",
+      "MissionRegion": 0,
+      "IngredientBrief": "Companion-store art; not an inventory item or crafting recipe",
+      "Role": "Companion static design",
+      "MaterialPath": "Assets/_Game/Resources/Tier02/ArtMaterials/CompanionRabbitAlert.mat",
+      "Representation": "companion",
+      "FrontAxis": "+Z",
+      "CompanionId": "pet.rabbit",
+      "Pose": "Alert",
+      "ReviewPoseOnly": true,
+      "AnimationScope": "Static anatomy/pose study; no rig, skinning or animation acceptance",
+      "UnlockSource": "House-level-3 companion store; existing design only",
+      "AnchorFrame": "Root ground centre; metres, +Y up/+Z forward",
+      "TriangleCeiling": 6000,
+      "HomeModelDeferred": true
+    }
+  ]
+}

@@ -4154,6 +4154,76 @@ Dependencies: 14.
 
 **Exit check:** no pet access before level three in normal play, one offline interval pays once, switching pets cannot duplicate time, backward clock movement yields zero negative progress, first-purchase buffs remain capped.
 
+**Starting point (November 24, 2026; spec `Docs/superpowers/specs/2026-11-24-milestone-15-pets-design.md`):** steps 3 and 4 were already done. All 48 furniture types plus the tool rack are in `FurnitureCatalog` with art. The neighbour houses and their 1-3 region countdowns were built in Milestone 10. Milestone 15 is therefore pets and offline reconciliation, in two slices.
+
+**Decisions (user, November 24, 2026):**
+- All six pets ship now.
+- Development builds give 1,000 units per offline roll (release: 1).
+- No debug offline-time buttons; the checks use an injected clock.
+- The pet shop is a paper catalog sheet.
+- The supply-group placements stand: rock salt in stone/ore, reeds in fibres, pine cone and honey in produce.
+- The backyard shows only the active pet.
+- One shared pet bed.
+- Claude commits the six companion prefabs (the other tool's art) with the milestone.
+
+**Decisions (Claude):**
+- **Quality:** pet finds roll Q1-Q5 uniform, like loose trail drops (not Q5).
+- **Purchases:** a purchase never auto-activates a pet. Pets follow the furniture pattern (statistics spend, no trade-log entry).
+- **Claims:** a find moves to the bag only if it fits whole. Each find is one stack, so remainders are whole finds left in the queue.
+- **Collection box:** it shows the active pet's finds; another pet's finds are reached by making it active. There is no capped-earnings warning yet.
+
+**Slice 1, pets (Claude):**
+- **Domain:** `Domain/Pets/PetCatalog.cs` (six pets, section 13.5 weights, 1,000 cash), `PetSupplies.cs` (exact group lists over `RegionPlan`, with pelts and feathers excluded; effective weights over discovered regions) and `PetState.cs`.
+  - Slots are 1/2/3/4 at houses 3/4/6/8.
+  - Purchase is atomic, with no release and no auto-activation.
+  - Load drops unknown or duplicate pets.
+- **Save:** an optional `pets` block.
+- **Art:**
+  - a shared pet bed (`Tools/Art/generate_pet_bed.py`, 192 triangles, house palette);
+  - six transparent shop pictures in `Resources/UI/Pets`;
+  - `Editor/PetArtAssets.cs`, with a review capture in `Docs/Art/Settlement/Pets`.
+- **Screens:** `Unity/CollectionPrototype.Pets.cs`.
+  - The house's Pet button opens the **backyard** (`HomeView.Backyard`, built by `MovementPrototype.BuildBackyard`): the house tier's pet home (`PetHomeT2/T3/T4`), the active pet on its `ActivePetAnchor` and yard props. Its buttons are Shop, Pets and Return.
+  - The **pet shop** sheet shows slots used, the specialty, the effective find shares for the discovered regions, the price or Owned, the next slot level when full, and a confirmation.
+  - The **pet home** sheet sets the active pet.
+  - The active pet lies on the bed at `PetBedAnchor` in the house entry area.
+  - The placeholder Pet note is retired.
+
+**Slice 2, offline rewards (Claude):**
+- **Domain:** `Domain/Pets/PetIdle.cs`.
+  - The absence starts on pause, focus loss or quit, with a snapshot of the active pet and regions. It is settled once on resume or load.
+  - Each 30 minutes gives one roll, up to an 8-hour cap. Each pet's queue holds 16 finds; a full queue banks nothing.
+  - The sub-30-minute carry finishes with the pet it was earned with.
+  - A backward clock earns nothing, and the watermark never moves back.
+  - With no active pet there is no accrual.
+  - Rolls choose a group, then 70/30 highest/earlier tier, then an equal chance per item.
+  - Whole-find claims keep their quality.
+- **Save:** the `pets` block also holds the absence, the carry, the counters and the queues. A slice 1 save loads as "nothing earned yet".
+- **Screens:**
+  - the **collection box** (`PetCollectionContainer` at `CollectionBoxAnchor`, tappable) with a count tag;
+  - the collection sheet (Claim per find, Claim all, "No room in the bag");
+  - the pet home rows show how many finds are waiting.
+- **Checks:** `Editor/Milestone15Validation.cs`, chained in `Milestone5Setup.Prepare` (also a `m15-validate` request). It covers:
+  - catalog, supply lists, effective weights, slots and purchases, load and save;
+  - art, sheet words, the backyard scene and the entry anchors;
+  - injected-clock timing (29/31 minutes, 8-hour cap, replay, backward clock, no pet, double Begin, switch carry, full queue, nothing eligible);
+  - roll statistics (Dog wood about 47%, 70% highest tier, no truffle before region 10), claims, idle save round trips and words.
+- `HomeValidation` now expects the backyard view and the Pet button to open it.
+- `generate_furniture.py` warns that a full run would undo the three Tier 3 slice C furniture repairs.
+
+**Status:** full suite PASS and APK built 04:42 UTC November 25, 2026 (SHA-256 `b379a17aca28…`, 82.5 MB).
+
+**Phone round (user, November 24, 2026):** every check of both slices passed: backyard, shop and slots, switching, bed, collection box with real closed-app time, claims and reload.
+
+**Exit check status:**
+- no pet access below house level 3;
+- one absence pays once;
+- switching cannot duplicate time (the carry stays with its pet);
+- a backward clock gives zero;
+- furniture buffs unchanged.
+
+Milestone 15 is complete pending the commit.
+
 ### Milestone 16: Full mechanics and limits audit
 
 Dependencies: 15; keep full-stack pickups and debug tools enabled.

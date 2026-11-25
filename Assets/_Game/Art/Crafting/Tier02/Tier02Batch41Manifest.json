@@ -1,0 +1,82 @@
+{
+  "Revision": 1,
+  "Batch": 41,
+  "Scope": "2 passive Companion static design art outputs; no gameplay value or shared shader changes.",
+  "BlenderVersion": "5.2.3 LTS",
+  "Items": [
+    {
+      "Name": "CompanionCatStanding",
+      "Model": "CompanionCatStanding",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/CompanionCatStanding.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/CompanionCatStandingPalette.png",
+      "PrefabPath": "Tier02/Companions/CompanionCatStanding",
+      "Triangles": 2508,
+      "BoundsMin": [
+        -0.097775,
+        0.0,
+        -0.341519
+      ],
+      "BoundsMax": [
+        0.097775,
+        0.494493,
+        0.312523
+      ],
+      "DisplayName": "Cat (Standing static study)",
+      "ItemId": "pet.cat",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive companion art; ownership/reward/home-display service binding pending",
+      "MissionCode": "",
+      "MissionRegion": 0,
+      "IngredientBrief": "Companion-store art; not an inventory item or crafting recipe",
+      "Role": "Companion static design",
+      "MaterialPath": "Assets/_Game/Resources/Tier02/ArtMaterials/CompanionCatStanding.mat",
+      "Representation": "companion",
+      "FrontAxis": "+Z",
+      "CompanionId": "pet.cat",
+      "Pose": "Standing",
+      "ReviewPoseOnly": false,
+      "AnimationScope": "Static anatomy/pose study; no rig, skinning or animation acceptance",
+      "UnlockSource": "House-level-3 companion store; existing design only",
+      "AnchorFrame": "Root ground centre; metres, +Y up/+Z forward",
+      "TriangleCeiling": 6000,
+      "HomeModelDeferred": true
+    },
+    {
+      "Name": "CompanionCatSitting",
+      "Model": "CompanionCatSitting",
+      "SourcePath": "Assets/_Game/Art/Crafting/Tier02/CompanionCatSitting.obj",
+      "PalettePath": "Assets/_Game/Art/Items/Tier02Design/Palettes/CompanionCatSittingPalette.png",
+      "PrefabPath": "Tier02/Companions/CompanionCatSitting",
+      "Triangles": 2596,
+      "BoundsMin": [
+        -0.116895,
+        0.0,
+        -0.221995
+      ],
+      "BoundsMax": [
+        0.179068,
+        0.48048,
+        0.249523
+      ],
+      "DisplayName": "Cat (Sitting static study)",
+      "ItemId": "pet.cat",
+      "RecipeId": "",
+      "RuntimeBinding": "Passive companion art; ownership/reward/home-display service binding pending",
+      "MissionCode": "",
+      "MissionRegion": 0,
+      "IngredientBrief": "Companion-store art; not an inventory item or crafting recipe",
+      "Role": "Companion static design",
+      "MaterialPath": "Assets/_Game/Resources/Tier02/ArtMaterials/CompanionCatSitting.mat",
+      "Representation": "companion",
+      "FrontAxis": "+Z",
+      "CompanionId": "pet.cat",
+      "Pose": "Sitting",
+      "ReviewPoseOnly": true,
+      "AnimationScope": "Static anatomy/pose study; no rig, skinning or animation acceptance",
+      "UnlockSource": "House-level-3 companion store; existing design only",
+      "AnchorFrame": "Root ground centre; metres, +Y up/+Z forward",
+      "TriangleCeiling": 6000,
+      "HomeModelDeferred": true
+    }
+  ]
+}

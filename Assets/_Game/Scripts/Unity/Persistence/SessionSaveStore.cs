@@ -55,12 +55,24 @@ namespace TheTrailWalker.Persistence
         public SavedLumber lumber;   // Milestone 13; block 0 = absent
         public SavedShops shops;     // Milestone 14; block 0 = absent
         public SavedBalloon balloon; // Milestone 14 slice 3; block 0 = absent
+        public SavedPets pets; // Milestone 15; block 0 = absent (no pets)
         public List<TheTrailWalker.Domain.Economy.TradeRecord> warehouseLog = new List<TheTrailWalker.Domain.Economy.TradeRecord>();
     }
     [Serializable] public sealed class SavedWarehouse { public int block; public List<SavedCrate> crates = new List<SavedCrate>(); public int cycleCrates; public long cycleCash; }
     [Serializable] public sealed class SavedLumber { public int block; public int unlockedTier, lastZone, debugWoodTier; public long clockOffsetMinutes; public List<SavedMassiveTree> trees = new List<SavedMassiveTree>(); }
     [Serializable] public sealed class SavedShops { public int block; public int visitId, debugTier; public List<SavedShopStock> stock = new List<SavedShopStock>(); }
     [Serializable] public sealed class SavedBalloon { public int block; public long sessionId; public string openCampId; public List<SavedBalloonOffer> offers = new List<SavedBalloonOffer>(); public List<SavedBox> boxes = new List<SavedBox>(); }
+    [Serializable] public sealed class SavedPets
+    {
+        public int block; public List<string> owned = new List<string>(); public List<SavedPetPurchase> purchases = new List<SavedPetPurchase>(); public string active;
+        // Slice 2 (all optional; an older slice 1 block loads as "nothing earned yet").
+        public long offlineStartedTicks, lastSeenTicks, carriedTicks, intervalId, nextEntry;
+        public string carryPetId, snapshotPetId;
+        public List<int> carryRegions = new List<int>(), snapshotRegions = new List<int>();
+        public List<SavedPetFind> finds = new List<SavedPetFind>();
+    }
+    [Serializable] public sealed class SavedPetFind { public string petId, entryId, itemId; public int quantity, quality; public ulong seed; }
+    [Serializable] public sealed class SavedPetPurchase { public string petId; public long utcTicks; }
     [Serializable] public sealed class SavedBalloonOffer { public string kind, itemId; public int boxTier, revision; public long goldPrice; public bool sold; }
     [Serializable] public sealed class SavedBox { public string boxId; public int tier; public List<SavedBoxEntry> entries = new List<SavedBoxEntry>(); }
     [Serializable] public sealed class SavedBoxEntry { public string kind, itemId, recipeId, fallbackItemId, claimTxn; public int units, fallbackUnits; public SavedProfile profile, fallbackProfile; public bool claimed; }
@@ -457,6 +469,7 @@ namespace TheTrailWalker.Persistence
             RestoreLumber(data);
             RestoreShops(data);
             RestoreBalloon(data);
+            RestorePets(data);
         }
 
         public const string LumberPilePrefix = "lumber-";
@@ -623,6 +636,54 @@ namespace TheTrailWalker.Persistence
         // box that is not six entries are malformed and throw; everything else loads. Unknown reward items are mapped to a stand-in
         // material (saved on the next save), an unknown recipe keeps its id (Claim then takes the saved fallback), an open-session offer whose
         // item is gone loads sold out, and a session at a camp that is no longer a host loads closed. SessionId is raised to the highest box number.
+        // Milestone 15: owned pets, purchase records and the active pet. Unknown or duplicate pets and an active pet that is not
+        // owned are dropped with a log (a save must always load); a missing block means no pets.
+        public static SavedPets SavePets(TheTrailWalker.Domain.Pets.PetState s)
+        {
+            var saved = new SavedPets { block = 1, active = s.Active };
+            saved.owned.AddRange(s.Owned);
+            foreach (var p in s.Purchases) saved.purchases.Add(new SavedPetPurchase { petId = p.PetId, utcTicks = p.UtcTicks });
+            var idle = s.Idle;
+            saved.offlineStartedTicks = idle.OfflineStartedTicks; saved.lastSeenTicks = idle.LastSeenTicks; saved.carriedTicks = idle.CarriedTicks;
+            saved.intervalId = idle.IntervalId; saved.nextEntry = idle.NextEntry; saved.carryPetId = idle.CarryPetId; saved.snapshotPetId = idle.SnapshotPetId;
+            saved.carryRegions.AddRange(idle.CarryRegions); saved.snapshotRegions.AddRange(idle.SnapshotRegions);
+            foreach (string pet in idle.QueuedPets)
+                foreach (var f in idle.Queue(pet)) saved.finds.Add(new SavedPetFind { petId = pet, entryId = f.EntryId, itemId = f.ItemId, quantity = f.Quantity, quality = f.Quality, seed = f.Seed });
+            return saved;
+        }
+        public static TheTrailWalker.Domain.Pets.PetState RestorePets(SessionSnapshot data)
+        {
+            SavedPets saved = data?.pets;
+            if (saved == null || saved.block == 0) return new TheTrailWalker.Domain.Pets.PetState();
+            if (saved.block != 1) throw new InvalidDataException("Invalid pets: block " + saved.block);
+            var records = new List<TheTrailWalker.Domain.Pets.PetState.Purchase>();
+            if (saved.purchases != null) foreach (var p in saved.purchases) if (p != null) records.Add(new TheTrailWalker.Domain.Pets.PetState.Purchase { PetId = p.petId, UtcTicks = p.utcTicks });
+            var state = TheTrailWalker.Domain.Pets.PetState.Load(saved.owned, records, saved.active, out List<string> dropped);
+            var idle = new TheTrailWalker.Domain.Pets.PetIdle
+            {
+                OfflineStartedTicks = Math.Max(0, saved.offlineStartedTicks), LastSeenTicks = Math.Max(0, saved.lastSeenTicks),
+                CarriedTicks = Math.Max(0, Math.Min(saved.carriedTicks, TheTrailWalker.Domain.Pets.PetIdle.Roll.Ticks - 1)),
+                IntervalId = Math.Max(0, saved.intervalId), NextEntry = Math.Max(0, saved.nextEntry),
+                CarryPetId = TheTrailWalker.Domain.Pets.PetCatalog.Find(saved.carryPetId) != null ? saved.carryPetId : null,
+                SnapshotPetId = TheTrailWalker.Domain.Pets.PetCatalog.Find(saved.snapshotPetId) != null ? saved.snapshotPetId : null,
+                CarryRegions = saved.carryRegions ?? new List<int>(), SnapshotRegions = saved.snapshotRegions ?? new List<int>()
+            };
+            if (idle.SnapshotPetId == null) idle.OfflineStartedTicks = 0;   // an absence without its pet earns nothing
+            if (idle.CarryPetId == null) idle.CarriedTicks = 0;
+            if (saved.finds != null)
+                foreach (var f in saved.finds)
+                {
+                    if (f == null || !state.Owns(f.petId) || f.quantity < 1 || f.quality < 1 || f.quality > 5) { dropped.Add("find " + f?.entryId); continue; }
+                    // A find whose item left the catalog becomes a region 1 loose material (the balloon's stand-in rule).
+                    string item = TheTrailWalker.Domain.Crafting.Items.Find(f.itemId) != null ? f.itemId : "material.pine_branch";
+                    if (item != f.itemId) dropped.Add("item " + f.itemId);
+                    idle.RestoreFind(f.petId, new TheTrailWalker.Domain.Pets.PetFind { EntryId = f.entryId, ItemId = item, Quantity = Math.Min(f.quantity, 1000), Quality = f.quality, Seed = f.seed });
+                }
+            state.Idle = idle;
+            if (dropped.Count > 0) UnityEngine.Debug.LogWarning("[Pets] Dropped from the save: " + string.Join(", ", dropped));
+            return state;
+        }
+
         public static TheTrailWalker.Domain.Settlement.BalloonState RestoreBalloon(SessionSnapshot data)
         {
             var state = new TheTrailWalker.Domain.Settlement.BalloonState();
