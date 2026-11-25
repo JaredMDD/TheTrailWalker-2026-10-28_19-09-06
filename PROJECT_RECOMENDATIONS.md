@@ -4082,7 +4082,23 @@ Dependencies: 13.
   - The Editor request poller gained the `tier3-audit` and `tier3-build` commands.
 - Status: full suite PASS and APK built 01:26 UTC November 25, 2026 (SHA-256 `2c72f5a92d3c…`, 80.3 MB, +2.5 MB over the 77.8 MB balloon build; tiers 3-4 projected near 95-100 MB). Installed after a save backup (`.superpowers/save-backups/2026-11-24-before-t3-slice-a/`); the installed copy matches and `session-v1.json` is unchanged (`2519b15e`).
 - Phone round (user, November 24, 2026): every check passed (shops, bakery, bag/chests/tool rack, box rewards, debug T3 tools, tier 1-2 regression).
-- Next: slice B (tier 3 special gear displays and worn fits, the tier 3 mystery box), then slice C (tier 3 storefronts, lumber zone, house level 5/6 furniture).
+- Committed as `3b4cf4c` (branch `tier3-integration-slice-a`).
+
+**Tier 3 settlement integration, slice B: special gear (November 24, 2026).**
+- **Decisions:**
+  - The five tier 3 balloon special gear items show the refined MERCHANT01-03 models: displays, and male/female worn fits at the original anchors (hat on `HeadAnchor/HatAnchor`, pack on `BackpackAnchor`, others on `Root`). The original `SpecialT03*` models stay in the project, unused (user).
+  - The tier 3 mystery box needed no change. It was already bound to `MysteryBoxTier03` for regions 13-18, and MERCHANT04 accepted that art unchanged.
+  - The tier 3 shirt pocket and pack bag/opening skins sample the refined display (Claude).
+- **Built (Claude):**
+  - **Staging:** `Tools/Art/stage_tier03_slice_b.py` stages 15 models (Special: 5 displays plus 10 worn fits, hash-checked) into `Tier03SliceBManifest.json`. `Tools/Art/tier03_visuals.py` now regenerates `Tier3Visuals` from every slice manifest, using display rows only.
+  - **Builder:** `Tier03ArtAssets` builds every slice.
+  - **Binding:** `build_wearable_art_map.py` swaps the five tier 3 worn fits from the slice B manifest. `InventoryContainerAssets.MerchantDisplayPath` prefers the Tier 3 display.
+  - **Checks:** worn fits per body and anchor, and skin colours equal a fresh sample of the refined display.
+  - The Editor request poller gained `wearables-build`, `wearables-capture` and `containers-build`.
+  - The fitted-garment review render (`Docs/Art/Characters/Wearables/all-fitted-sets-*.png`) shows the set on both bodies, front and back.
+- Status: full suite PASS (75 models) and APK built 01:41 UTC November 25, 2026 (SHA-256 `d909dfea9417…`, 81.9 MB, +1.6 MB). Installed after a save backup (`.superpowers/save-backups/2026-11-24-before-t3-slice-b/`); the installed copy matches and `session-v1.json` is unchanged (`2519b15e`).
+- Phone round (user, November 24, 2026): every check passed.
+- Slice C decision (user, November 24, 2026): tier 3 changes the storefront **fronts only**, like tier 2; counters stay as they are.
 
 **Milestone 14 status (November 24, 2026):** slices 1-3 are built and pass on the phone. Slice 1 is committed (`c663277`); slices 2 and 3 are waiting for a commit request. Left out by the spec: tier 3-4 storefront looks, tier 3-4 goods art (placeholders, reachable only by debug), and bakery missions T2-G23/G24 and T4-G23/G24, which wait for a tier 2-4 mission catalog.
 

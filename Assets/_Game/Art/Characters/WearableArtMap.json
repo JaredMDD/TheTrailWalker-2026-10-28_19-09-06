@@ -225,41 +225,41 @@
       "itemId": "special.t3.hat",
       "slot": "Hat",
       "anchor": "HeadAnchor/HatAnchor",
-      "male": "Assets/_Game/Resources/BalloonGoods/Wearables/Male/SpecialT03HatMaleWorn.prefab",
-      "female": "Assets/_Game/Resources/BalloonGoods/Wearables/Female/SpecialT03HatFemaleWorn.prefab",
-      "source": "balloon special gear"
+      "male": "Assets/_Game/Resources/Tier03/Special/MaleWearDuneWrap.prefab",
+      "female": "Assets/_Game/Resources/Tier03/Special/FemaleWearDuneWrap.prefab",
+      "source": "tier 3 refined special gear"
     },
     {
       "itemId": "special.t3.boots",
       "slot": "Boots",
       "anchor": "Root",
-      "male": "Assets/_Game/Resources/BalloonGoods/Wearables/Male/SpecialT03BootsMaleWorn.prefab",
-      "female": "Assets/_Game/Resources/BalloonGoods/Wearables/Female/SpecialT03BootsFemaleWorn.prefab",
-      "source": "balloon special gear"
+      "male": "Assets/_Game/Resources/Tier03/Special/MaleWearMesaSandBoots.prefab",
+      "female": "Assets/_Game/Resources/Tier03/Special/FemaleWearMesaSandBoots.prefab",
+      "source": "tier 3 refined special gear"
     },
     {
       "itemId": "special.t3.shirt",
       "slot": "Shirt",
       "anchor": "Root",
-      "male": "Assets/_Game/Resources/BalloonGoods/Wearables/Male/SpecialT03ShirtMaleWorn.prefab",
-      "female": "Assets/_Game/Resources/BalloonGoods/Wearables/Female/SpecialT03ShirtFemaleWorn.prefab",
-      "source": "balloon special gear"
+      "male": "Assets/_Game/Resources/Tier03/Special/MaleWearNomadLinenRobe.prefab",
+      "female": "Assets/_Game/Resources/Tier03/Special/FemaleWearNomadLinenRobe.prefab",
+      "source": "tier 3 refined special gear"
     },
     {
       "itemId": "special.t3.pants",
       "slot": "Pants",
       "anchor": "Root",
-      "male": "Assets/_Game/Resources/BalloonGoods/Wearables/Male/SpecialT03PantsMaleWorn.prefab",
-      "female": "Assets/_Game/Resources/BalloonGoods/Wearables/Female/SpecialT03PantsFemaleWorn.prefab",
-      "source": "balloon special gear"
+      "male": "Assets/_Game/Resources/Tier03/Special/MaleWearCaravanWrapTrousers.prefab",
+      "female": "Assets/_Game/Resources/Tier03/Special/FemaleWearCaravanWrapTrousers.prefab",
+      "source": "tier 3 refined special gear"
     },
     {
       "itemId": "special.t3.pack",
       "slot": "Backpack",
       "anchor": "BackpackAnchor",
-      "male": "Assets/_Game/Resources/BalloonGoods/Wearables/Male/SpecialT03PackMaleWorn.prefab",
-      "female": "Assets/_Game/Resources/BalloonGoods/Wearables/Female/SpecialT03PackFemaleWorn.prefab",
-      "source": "balloon special gear"
+      "male": "Assets/_Game/Resources/Tier03/Special/MaleWearCaravanSaddlePack.prefab",
+      "female": "Assets/_Game/Resources/Tier03/Special/FemaleWearCaravanSaddlePack.prefab",
+      "source": "tier 3 refined special gear"
     },
     {
       "itemId": "special.t4.hat",

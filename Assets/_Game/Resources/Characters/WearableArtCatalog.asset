@@ -166,33 +166,33 @@ MonoBehaviour:
   - ItemId: special.t3.hat
     Slot: 0
     Anchor: HeadAnchor/HatAnchor
-    Male: {fileID: 4504544133689566229, guid: 9805620ecb46e3b46b7c4221b675efde, type: 3}
-    Female: {fileID: 1547137532221359708, guid: 71bf7dad059592c47a54af29eaebe4c5, type: 3}
-    Source: balloon special gear
+    Male: {fileID: 7502022845640296601, guid: c0e2026957f5af34bb16318a7602c519, type: 3}
+    Female: {fileID: 6426615974371638742, guid: 4eaca405eef08b54588878635e9c2b98, type: 3}
+    Source: tier 3 refined special gear
   - ItemId: special.t3.boots
     Slot: 1
     Anchor: Root
-    Male: {fileID: 3035193872091032872, guid: 14444ae9ee9f87a478ee8b68a77a14b1, type: 3}
-    Female: {fileID: 128687149224067492, guid: 6a65a33d1c731c64299e2ede9d81c2fa, type: 3}
-    Source: balloon special gear
+    Male: {fileID: 6177563854760845556, guid: 99ad3c3de744d46479de06b876bc53ba, type: 3}
+    Female: {fileID: 3969674332357948816, guid: c0020f226ba6393428de8fe88a7a0a2a, type: 3}
+    Source: tier 3 refined special gear
   - ItemId: special.t3.shirt
     Slot: 2
     Anchor: Root
-    Male: {fileID: 2687466565633163368, guid: 7fbb5729e9eff1b46b6f75ec9367be2d, type: 3}
-    Female: {fileID: 5893370512595530597, guid: 690430b3c5da4834b8d1256a5893ece5, type: 3}
-    Source: balloon special gear
+    Male: {fileID: 5928654218091479376, guid: 8dc03778749007445972e29adad7ad27, type: 3}
+    Female: {fileID: 406752169347927325, guid: 8f33e29a453b514449e92d89d0d270a2, type: 3}
+    Source: tier 3 refined special gear
   - ItemId: special.t3.pants
     Slot: 3
     Anchor: Root
-    Male: {fileID: 2594927626232913861, guid: 7d744c82d7f283f4ba6cc5b24eb7e4d6, type: 3}
-    Female: {fileID: 6258767369998665055, guid: 28c05f39fb068344989f4a93a99840dd, type: 3}
-    Source: balloon special gear
+    Male: {fileID: 94947065360696527, guid: 8fdb02da9eb2eb74c863174bbd24d34b, type: 3}
+    Female: {fileID: 5396195334359072564, guid: 71d498473d39fa846a19a323f2176730, type: 3}
+    Source: tier 3 refined special gear
   - ItemId: special.t3.pack
     Slot: 4
     Anchor: BackpackAnchor
-    Male: {fileID: 7684107809060848276, guid: bc89a7cac41e3b84c958d03b814a7814, type: 3}
-    Female: {fileID: 8687079251920282004, guid: c34e03d67255dec4fa235ecab86ae25b, type: 3}
-    Source: balloon special gear
+    Male: {fileID: 3485840879437259069, guid: 78ee1ffd1bc0a1a4cb1e8ec9327943b6, type: 3}
+    Female: {fileID: 3553124424873716932, guid: 3e9b085ec1b4b3542b1c09dd0f771ec2, type: 3}
+    Source: tier 3 refined special gear
   - ItemId: special.t4.hat
     Slot: 0
     Anchor: HeadAnchor/HatAnchor

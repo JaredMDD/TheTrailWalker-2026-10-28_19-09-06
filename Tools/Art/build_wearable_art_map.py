@@ -72,6 +72,17 @@ def main():
         slot = {'hat': 'Hat', 'boots': 'Boots', 'shirt': 'Shirt', 'pants': 'Pants', 'pack': 'Backpack'}[item['Slot']]
         for body, mesh in (('Male', item['MaleMesh']), ('Female', item['FemaleMesh'])):
             add(item['Id'], slot, anchor_of(item['Anchor']), body, f'Assets/_Game/Resources/BalloonGoods/Wearables/{body}/{mesh}.prefab', 'balloon special gear')
+    # Tier 3 integration slice B (user, November 24, 2026): the refined tier 3 special gear (MERCHANT01-03) replaces the
+    # balloon originals on both bodies, at the same anchors. The original prefabs stay in the project, unused.
+    slice_b = ROOT/'Assets/_Game/Art/Tier03/Tier03SliceBManifest.json'
+    if slice_b.exists():
+        for row in json.loads(slice_b.read_text(encoding='utf-8'))['Items']:
+            if row['Role'] not in ('MaleWorn', 'FemaleWorn'): continue
+            prefab = resource_prefab(row['PrefabPath'])
+            if not (ROOT/prefab).exists(): raise FileNotFoundError(prefab + ' (build the Tier 3 integration prefabs first)')
+            e = entries[row['ItemIds'][0]]
+            e['female' if row['Role'] == 'FemaleWorn' else 'male'] = prefab
+            e['source'] = 'tier 3 refined special gear'
 
     missing = [e['itemId'] for e in entries.values() if not e['male'] or not e['female']]
     if missing: raise ValueError('Missing a body fit: ' + ', '.join(missing))

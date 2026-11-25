@@ -1,31 +1,42 @@
 using System;
 using System.IO;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
 namespace TheTrailWalker.Editor
 {
-    // Tier 3 settlement integration, slice A: palette materials and display prefabs for the staged tier 3 item models
-    // (Tools/Art/stage_tier03_slice_a.py writes the manifest). Passive art only: no catalogs, rules or saves change.
+    // Tier 3 settlement integration: palette materials and passive prefabs for every staged tier 3 model
+    // (Tools/Art/stage_tier03_slice_*.py write the manifests). Passive art only: no catalogs, rules or saves change.
     public static class Tier03ArtAssets
     {
-        public const string ManifestPath = "Assets/_Game/Art/Tier03/Tier03SliceAManifest.json";
+        public const string ManifestFolder = "Assets/_Game/Art/Tier03";
         public const string MaterialPath = "Assets/_Game/Resources/Tier03/ArtMaterials/";
         public const string DetailAtlas = "Assets/_Game/Art/Shared/Detail/DetailAtlas.png";
 
         [Serializable] public sealed class Item
         {
-            public string Name, Model, SourcePath, PalettePath, PrefabPath, OriginSource, Packet, SourceSHA256, PaletteSHA256;
+            public string Name, Model, Role, SourcePath, PalettePath, PrefabPath, OriginSource, Packet, SourceSHA256, PaletteSHA256;
+            public string Manifest;
+            public bool IsDisplay => string.IsNullOrEmpty(Role) || Role == "Display";
             public string[] ItemIds;
             public int Triangles;
             public bool Readable;
         }
         [Serializable] public sealed class Manifest { public Item[] Items; }
-        public static Manifest Load() => JsonUtility.FromJson<Manifest>(File.ReadAllText(ManifestPath));
+        // Every slice manifest (A: item models; B: tier 3 special gear displays and worn fits), in name order.
+        public static string[] ManifestPaths() => Directory.GetFiles(ManifestFolder, "Tier03Slice*Manifest.json").Select(p => p.Replace('\\', '/')).OrderBy(p => p, StringComparer.Ordinal).ToArray();
+        public static Manifest Load(string path)
+        {
+            var m = JsonUtility.FromJson<Manifest>(File.ReadAllText(path));
+            foreach (var row in m.Items) row.Manifest = Path.GetFileName(path);
+            return m;
+        }
+        public static Manifest Load() => new Manifest { Items = ManifestPaths().SelectMany(p => Load(p).Items).ToArray() };
         public static string PrefabAssetPath(Item row) => "Assets/_Game/Resources/" + row.PrefabPath + ".prefab";
         public static string MaterialAssetPath(Item row) => MaterialPath + row.Model + ".mat";
 
-        [MenuItem("The Trail Walker/Tier 3/Build slice A item prefabs")]
+        [MenuItem("The Trail Walker/Tier 3/Build integration prefabs")]
         public static void Build()
         {
             if (EditorApplication.isPlayingOrWillChangePlaymode) throw new InvalidOperationException("Build outside Play mode.");
@@ -75,7 +86,7 @@ namespace TheTrailWalker.Editor
                 finally { UnityEngine.Object.DestroyImmediate(root); }
             }
             AssetDatabase.SaveAssets();
-            Debug.Log("Tier 3 slice A: built " + Load().Items.Length + " item prefabs.");
+            Debug.Log("Tier 3 integration: built " + Load().Items.Length + " prefabs.");
         }
     }
 }

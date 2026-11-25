@@ -78,13 +78,19 @@ namespace TheTrailWalker.Editor
             }
             finally{UnityEngine.Object.DestroyImmediate(root);}
         }
-        // Area-weighted palette sampling of "special.tN.shirt|pack" -> Resources/BalloonGoods/Items/SpecialT0N{Shirt|Pack}Item.
+        // Area-weighted palette sampling of "special.tN.shirt|pack" -> its display prefab (MerchantDisplayPath).
         // Cloth = most-used colour, Binding (outer rim) = darkest of the top three, Patch (top band) = most saturated of the top three;
         // if both pick one colour, Patch is the next most saturated distinct colour among the top five.
         public static string LastSampleReport="";
-        private static void SampleMerchantPalette(string itemId,out Color cloth,out Color binding,out Color patch)
+        // Tier 3 special gear shows its refined display (Tier3Visuals, Tier 3 integration slice B); other tiers keep the balloon display.
+        public static string MerchantDisplayPath(string itemId)
         {
-            string[] parts=itemId.Split('.');string path="BalloonGoods/Items/SpecialT0"+parts[1].Substring(1)+(parts[2]=="pack"?"Pack":"Shirt")+"Item";
+            string[] parts=itemId.Split('.');
+            return Tier3Visuals.PathFor(itemId)??"BalloonGoods/Items/SpecialT0"+parts[1].Substring(1)+(parts[2]=="pack"?"Pack":"Shirt")+"Item";
+        }
+        public static void SampleMerchantPalette(string itemId,out Color cloth,out Color binding,out Color patch)
+        {
+            string path=MerchantDisplayPath(itemId);
             var prefab=Resources.Load<GameObject>(path);if(prefab==null)throw new InvalidOperationException("Merchant display prefab missing: "+path);
             var weights=new Dictionary<Color32,double>();
             foreach(var renderer in prefab.GetComponentsInChildren<MeshRenderer>())

@@ -1,0 +1,275 @@
+{
+  "Slice": "Tier 3 integration slice B",
+  "Items": [
+    {
+      "Name": "DuneWrap",
+      "Model": "DuneWrap",
+      "Role": "Display",
+      "SourcePath": "Assets/_Game/Art/Tier03/Special/DuneWrap.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Special/DuneWrapPalette.png",
+      "PrefabPath": "Tier03/Special/DuneWrap",
+      "ItemIds": [
+        "special.t3.hat"
+      ],
+      "Triangles": 3248,
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchMERCHANT01/Exports/DuneWrap.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchMERCHANT01/Exports/DuneWrapPalette.png",
+      "Packet": "BatchMERCHANT01",
+      "SourceSHA256": "231d8090dce180eb70e84c6b8d0fbef10926a13e8dd28b7f3fcc023ff2da9a21",
+      "PaletteSHA256": "91a22769e3ca31b93cab5bdb1ef374a0f8267abace8fd08f9245c138050b093e"
+    },
+    {
+      "Name": "MaleWearDuneWrap",
+      "Model": "MaleWearDuneWrap",
+      "Role": "MaleWorn",
+      "SourcePath": "Assets/_Game/Art/Tier03/Special/MaleWearDuneWrap.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Special/MaleWearDuneWrapPalette.png",
+      "PrefabPath": "Tier03/Special/MaleWearDuneWrap",
+      "ItemIds": [
+        "special.t3.hat"
+      ],
+      "Triangles": 3248,
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchMERCHANT01/Exports/MaleWearDuneWrap.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchMERCHANT01/Exports/MaleWearDuneWrapPalette.png",
+      "Packet": "BatchMERCHANT01",
+      "SourceSHA256": "cce1137691c912045bc570998ca1a7b7c4b125a4153a2070172aa35a3f45e267",
+      "PaletteSHA256": "91a22769e3ca31b93cab5bdb1ef374a0f8267abace8fd08f9245c138050b093e"
+    },
+    {
+      "Name": "FemaleWearDuneWrap",
+      "Model": "FemaleWearDuneWrap",
+      "Role": "FemaleWorn",
+      "SourcePath": "Assets/_Game/Art/Tier03/Special/FemaleWearDuneWrap.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Special/FemaleWearDuneWrapPalette.png",
+      "PrefabPath": "Tier03/Special/FemaleWearDuneWrap",
+      "ItemIds": [
+        "special.t3.hat"
+      ],
+      "Triangles": 3248,
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchMERCHANT01/Exports/FemaleWearDuneWrap.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchMERCHANT01/Exports/FemaleWearDuneWrapPalette.png",
+      "Packet": "BatchMERCHANT01",
+      "SourceSHA256": "5d0fe291ab8646fc2bb460bbb3abc50cb405290be576b2d881248a45db2d335e",
+      "PaletteSHA256": "91a22769e3ca31b93cab5bdb1ef374a0f8267abace8fd08f9245c138050b093e"
+    },
+    {
+      "Name": "MesaSandBoots",
+      "Model": "MesaSandBoots",
+      "Role": "Display",
+      "SourcePath": "Assets/_Game/Art/Tier03/Special/MesaSandBoots.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Special/MesaSandBootsPalette.png",
+      "PrefabPath": "Tier03/Special/MesaSandBoots",
+      "ItemIds": [
+        "special.t3.boots"
+      ],
+      "Triangles": 2778,
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchMERCHANT01/Exports/MesaSandBoots.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchMERCHANT01/Exports/MesaSandBootsPalette.png",
+      "Packet": "BatchMERCHANT01",
+      "SourceSHA256": "fe89918cd1d731c597324a941ca11a8eae923cb8c5b99277737fc2eb87ee3fcd",
+      "PaletteSHA256": "91a22769e3ca31b93cab5bdb1ef374a0f8267abace8fd08f9245c138050b093e"
+    },
+    {
+      "Name": "MaleWearMesaSandBoots",
+      "Model": "MaleWearMesaSandBoots",
+      "Role": "MaleWorn",
+      "SourcePath": "Assets/_Game/Art/Tier03/Special/MaleWearMesaSandBoots.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Special/MaleWearMesaSandBootsPalette.png",
+      "PrefabPath": "Tier03/Special/MaleWearMesaSandBoots",
+      "ItemIds": [
+        "special.t3.boots"
+      ],
+      "Triangles": 5556,
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchMERCHANT01/Exports/MaleWearMesaSandBoots.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchMERCHANT01/Exports/MaleWearMesaSandBootsPalette.png",
+      "Packet": "BatchMERCHANT01",
+      "SourceSHA256": "2eaa0bbd58b9169389cf93a2c9a6d64800e2227b6802e4c10b26d8401691999d",
+      "PaletteSHA256": "91a22769e3ca31b93cab5bdb1ef374a0f8267abace8fd08f9245c138050b093e"
+    },
+    {
+      "Name": "FemaleWearMesaSandBoots",
+      "Model": "FemaleWearMesaSandBoots",
+      "Role": "FemaleWorn",
+      "SourcePath": "Assets/_Game/Art/Tier03/Special/FemaleWearMesaSandBoots.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Special/FemaleWearMesaSandBootsPalette.png",
+      "PrefabPath": "Tier03/Special/FemaleWearMesaSandBoots",
+      "ItemIds": [
+        "special.t3.boots"
+      ],
+      "Triangles": 5556,
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchMERCHANT01/Exports/FemaleWearMesaSandBoots.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchMERCHANT01/Exports/FemaleWearMesaSandBootsPalette.png",
+      "Packet": "BatchMERCHANT01",
+      "SourceSHA256": "9cb6bcb6489c0fa03fad44e9e078de2e22c15b7b877840e08a75240774f4c4bb",
+      "PaletteSHA256": "91a22769e3ca31b93cab5bdb1ef374a0f8267abace8fd08f9245c138050b093e"
+    },
+    {
+      "Name": "NomadLinenRobe",
+      "Model": "NomadLinenRobe",
+      "Role": "Display",
+      "SourcePath": "Assets/_Game/Art/Tier03/Special/NomadLinenRobe.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Special/NomadLinenRobePalette.png",
+      "PrefabPath": "Tier03/Special/NomadLinenRobe",
+      "ItemIds": [
+        "special.t3.shirt"
+      ],
+      "Triangles": 5042,
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchMERCHANT02/Exports/NomadLinenRobe.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchMERCHANT02/Exports/NomadLinenRobePalette.png",
+      "Packet": "BatchMERCHANT02",
+      "SourceSHA256": "0fd0dc1ccecfb6ebe98ec3f8f3ac739bc615199bc8f1537acbd4dcc57758aa83",
+      "PaletteSHA256": "91a22769e3ca31b93cab5bdb1ef374a0f8267abace8fd08f9245c138050b093e"
+    },
+    {
+      "Name": "MaleWearNomadLinenRobe",
+      "Model": "MaleWearNomadLinenRobe",
+      "Role": "MaleWorn",
+      "SourcePath": "Assets/_Game/Art/Tier03/Special/MaleWearNomadLinenRobe.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Special/MaleWearNomadLinenRobePalette.png",
+      "PrefabPath": "Tier03/Special/MaleWearNomadLinenRobe",
+      "ItemIds": [
+        "special.t3.shirt"
+      ],
+      "Triangles": 5042,
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchMERCHANT02/Exports/MaleWearNomadLinenRobe.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchMERCHANT02/Exports/MaleWearNomadLinenRobePalette.png",
+      "Packet": "BatchMERCHANT02",
+      "SourceSHA256": "573e65f627e371ce6dafcbfa146812e1f53f2f20277a34a043e65382707c6842",
+      "PaletteSHA256": "91a22769e3ca31b93cab5bdb1ef374a0f8267abace8fd08f9245c138050b093e"
+    },
+    {
+      "Name": "FemaleWearNomadLinenRobe",
+      "Model": "FemaleWearNomadLinenRobe",
+      "Role": "FemaleWorn",
+      "SourcePath": "Assets/_Game/Art/Tier03/Special/FemaleWearNomadLinenRobe.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Special/FemaleWearNomadLinenRobePalette.png",
+      "PrefabPath": "Tier03/Special/FemaleWearNomadLinenRobe",
+      "ItemIds": [
+        "special.t3.shirt"
+      ],
+      "Triangles": 4876,
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchMERCHANT02/Exports/FemaleWearNomadLinenRobe.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchMERCHANT02/Exports/FemaleWearNomadLinenRobePalette.png",
+      "Packet": "BatchMERCHANT02",
+      "SourceSHA256": "cd08406f1898e4eed44b1aeff80e1b6e6d4705197dbba0d4ae7f8bef466c00fc",
+      "PaletteSHA256": "91a22769e3ca31b93cab5bdb1ef374a0f8267abace8fd08f9245c138050b093e"
+    },
+    {
+      "Name": "CaravanWrapTrousers",
+      "Model": "CaravanWrapTrousers",
+      "Role": "Display",
+      "SourcePath": "Assets/_Game/Art/Tier03/Special/CaravanWrapTrousers.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Special/CaravanWrapTrousersPalette.png",
+      "PrefabPath": "Tier03/Special/CaravanWrapTrousers",
+      "ItemIds": [
+        "special.t3.pants"
+      ],
+      "Triangles": 9632,
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchMERCHANT02/Exports/CaravanWrapTrousers.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchMERCHANT02/Exports/CaravanWrapTrousersPalette.png",
+      "Packet": "BatchMERCHANT02",
+      "SourceSHA256": "318c9a7f8be7fd3638b14628e5bd456767762ecd69386a74ef0210ba9503c8e5",
+      "PaletteSHA256": "91a22769e3ca31b93cab5bdb1ef374a0f8267abace8fd08f9245c138050b093e"
+    },
+    {
+      "Name": "MaleWearCaravanWrapTrousers",
+      "Model": "MaleWearCaravanWrapTrousers",
+      "Role": "MaleWorn",
+      "SourcePath": "Assets/_Game/Art/Tier03/Special/MaleWearCaravanWrapTrousers.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Special/MaleWearCaravanWrapTrousersPalette.png",
+      "PrefabPath": "Tier03/Special/MaleWearCaravanWrapTrousers",
+      "ItemIds": [
+        "special.t3.pants"
+      ],
+      "Triangles": 9632,
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchMERCHANT02/Exports/MaleWearCaravanWrapTrousers.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchMERCHANT02/Exports/MaleWearCaravanWrapTrousersPalette.png",
+      "Packet": "BatchMERCHANT02",
+      "SourceSHA256": "f3ca21f30d731152f4a1c78b835901a9c433c0e6aefe142c43f6492441c2126a",
+      "PaletteSHA256": "91a22769e3ca31b93cab5bdb1ef374a0f8267abace8fd08f9245c138050b093e"
+    },
+    {
+      "Name": "FemaleWearCaravanWrapTrousers",
+      "Model": "FemaleWearCaravanWrapTrousers",
+      "Role": "FemaleWorn",
+      "SourcePath": "Assets/_Game/Art/Tier03/Special/FemaleWearCaravanWrapTrousers.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Special/FemaleWearCaravanWrapTrousersPalette.png",
+      "PrefabPath": "Tier03/Special/FemaleWearCaravanWrapTrousers",
+      "ItemIds": [
+        "special.t3.pants"
+      ],
+      "Triangles": 9656,
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchMERCHANT02/Exports/FemaleWearCaravanWrapTrousers.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchMERCHANT02/Exports/FemaleWearCaravanWrapTrousersPalette.png",
+      "Packet": "BatchMERCHANT02",
+      "SourceSHA256": "b6376568ba7d06cd1baf40814456011c97cbf265db1daf299c2e86629f3bb06f",
+      "PaletteSHA256": "91a22769e3ca31b93cab5bdb1ef374a0f8267abace8fd08f9245c138050b093e"
+    },
+    {
+      "Name": "CaravanSaddlePack",
+      "Model": "CaravanSaddlePack",
+      "Role": "Display",
+      "SourcePath": "Assets/_Game/Art/Tier03/Special/CaravanSaddlePack.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Special/CaravanSaddlePackPalette.png",
+      "PrefabPath": "Tier03/Special/CaravanSaddlePack",
+      "ItemIds": [
+        "special.t3.pack"
+      ],
+      "Triangles": 4788,
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchMERCHANT03/Exports/CaravanSaddlePack.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchMERCHANT03/Exports/CaravanSaddlePackPalette.png",
+      "Packet": "BatchMERCHANT03",
+      "SourceSHA256": "bf38cb6a90aa0294edb92b459f8b26f25f5b01288deca466afb49b7e2a77ecd5",
+      "PaletteSHA256": "91a22769e3ca31b93cab5bdb1ef374a0f8267abace8fd08f9245c138050b093e"
+    },
+    {
+      "Name": "MaleWearCaravanSaddlePack",
+      "Model": "MaleWearCaravanSaddlePack",
+      "Role": "MaleWorn",
+      "SourcePath": "Assets/_Game/Art/Tier03/Special/MaleWearCaravanSaddlePack.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Special/MaleWearCaravanSaddlePackPalette.png",
+      "PrefabPath": "Tier03/Special/MaleWearCaravanSaddlePack",
+      "ItemIds": [
+        "special.t3.pack"
+      ],
+      "Triangles": 5940,
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchMERCHANT03/Exports/MaleWearCaravanSaddlePack.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchMERCHANT03/Exports/MaleWearCaravanSaddlePackPalette.png",
+      "Packet": "BatchMERCHANT03",
+      "SourceSHA256": "1141f8cdde3ec0f1eae69bff2e7e51782d76750e961dbaad7f989a04e5a2e397",
+      "PaletteSHA256": "91a22769e3ca31b93cab5bdb1ef374a0f8267abace8fd08f9245c138050b093e"
+    },
+    {
+      "Name": "FemaleWearCaravanSaddlePack",
+      "Model": "FemaleWearCaravanSaddlePack",
+      "Role": "FemaleWorn",
+      "SourcePath": "Assets/_Game/Art/Tier03/Special/FemaleWearCaravanSaddlePack.obj",
+      "PalettePath": "Assets/_Game/Art/Tier03/Special/FemaleWearCaravanSaddlePackPalette.png",
+      "PrefabPath": "Tier03/Special/FemaleWearCaravanSaddlePack",
+      "ItemIds": [
+        "special.t3.pack"
+      ],
+      "Triangles": 6196,
+      "Readable": true,
+      "OriginSource": "Docs/Art/Tier03/BatchMERCHANT03/Exports/FemaleWearCaravanSaddlePack.obj",
+      "OriginPalette": "Docs/Art/Tier03/BatchMERCHANT03/Exports/FemaleWearCaravanSaddlePackPalette.png",
+      "Packet": "BatchMERCHANT03",
+      "SourceSHA256": "8bde0e4aae7bc81d0405df15615980966549a45b5dc751759c477dc34abefc35",
+      "PaletteSHA256": "91a22769e3ca31b93cab5bdb1ef374a0f8267abace8fd08f9245c138050b093e"
+    }
+  ]
+}
