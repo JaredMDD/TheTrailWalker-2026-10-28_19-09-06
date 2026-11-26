@@ -25,6 +25,7 @@ namespace TheTrailWalker.Editor
             passed.Clear();
             CatalogChecks();
             StockChecks();
+            OfferCountChecks();
             PurchaseChecks();
             SaveChecks();
             ModelChecks();
@@ -120,6 +121,48 @@ namespace TheTrailWalker.Editor
             Check(!ShopService.TryBuy(sh1, ShopCatalog.Tailor, empty, 0, 1, new Wallet(1000000), new SpatialInventory(), () => "x", out string why) && why == "Sold out", "ShortPoolLeavesSoldOutSlot (refusal)");
             var dt = new ShopState { VisitId = 1, DebugTier = 2 }; int[] r4 = { 1, 2, 3, 4 };
             Check(ShopService.ReachedTier(dt, r4) == 2 && ShopService.EffectiveRegions(dt, r4).Contains(10) && ShopCatalog.Eligible(ShopCatalog.Farm, ShopService.EffectiveRegions(dt, r4), 2).Any(e => e.ItemId == "ingredient.lavender") && ShopCatalog.Eligible(ShopCatalog.Ranch, ShopService.EffectiveRegions(dt, r4), 2).Any(e => e.ItemId == "animal.duck.meat"), "DebugTierUnlocks");
+        }
+
+        // Offers by tier (user, November 25, 2026): tiers 1-2 three, 3-4 five, 5-8 six; themed shops end with one special slot at
+        // three offers and two from five. The balloon keeps three (Milestone14BalloonValidation OfferShape).
+        private static void OfferCountChecks()
+        {
+            Check(Enumerable.Range(1, 8).Select(ShopService.OfferCount).SequenceEqual(new[] { 3, 3, 5, 5, 6, 6, 6, 6 }), "OfferCountByTier");
+            Check(ShopService.SpecialSlots(3) == 1 && ShopService.SpecialSlots(5) == 2 && ShopService.SpecialSlots(6) == 2, "SpecialSlotsByCount");
+            Check(CollectionPrototype.OfferMaxWidth(3) == 0f && CollectionPrototype.OfferMaxWidth(5) > CollectionPrototype.OfferMaxWidth(6) && CollectionPrototype.OfferMaxWidth(6) > 0f, "OfferMaxWidthShrinks");
+            Vector3[] five = CollectionPrototype.OfferSpots(new Vector3(-1.15f, 1.02f, 0.48f), new Vector3(1.4f, 1.02f, 0.48f), 5);
+            Check(five.Length == 5 && Mathf.Approximately(five[2].x, 0.125f) && Mathf.Approximately(five[4].x - five[0].x, 2f * CollectionPrototype.OfferRowHalfSpan) && five.All(v => Mathf.Approximately(v.y, 1.02f) && Mathf.Approximately(v.z, 0.48f)), "OfferSpotsEvenAlongCounter");
+            int[] r14 = { 1, 2, 3, 4 };
+            foreach (string shop in Shops.Concat(new[] { ShopCatalog.Bakery }))
+            {
+                Check(Offers(new ShopState { VisitId = 1 }, shop, r14).Length == 3 && Offers(new ShopState { VisitId = 1, DebugTier = 2 }, shop, r14).Length == 3, "ThreeOffersAtTiers1And2 " + shop);
+                for (int tier = 3; tier <= 4; tier++)
+                    for (int v = 1; v <= 60; v++)
+                    {
+                        ShopOffer[] o = Offers(new ShopState { VisitId = v, DebugTier = tier }, shop, r14);
+                        var ids = o.Where(x => !x.Empty).Select(x => x.ItemId).ToList();
+                        Check(o.Length == 5 && ids.Count == 5 && ids.Distinct().Count() == 5, "FiveDistinctOffers " + shop + " tier " + tier + " visit " + v);
+                        ShopSlotRole[] roles = o.Select(x => Entry(x.ItemId, shop).Role).ToArray();
+                        bool shape = shop == ShopCatalog.Tailor ? roles.Take(3).All(r => r == ShopSlotRole.RawFibre) && roles.Skip(3).All(r => r == ShopSlotRole.Processed || r == ShopSlotRole.ProcessedFine)
+                            : shop == ShopCatalog.Fishery ? roles.Take(3).All(r => r == ShopSlotRole.Fish) && roles.Skip(3).All(r => r == ShopSlotRole.Exclusive)
+                            : shop == ShopCatalog.Bakery ? roles.Take(3).All(r => r == ShopSlotRole.Common) && roles.Skip(3).All(r => r == ShopSlotRole.Premium)
+                            : roles.All(r => r == ShopSlotRole.Any);
+                        Check(shape, "FiveOfferRoles " + shop + " tier " + tier + " visit " + v + ": " + string.Join(",", roles));
+                        Check(o.Take(3).All(x => x.RecipeId == null), "RecipesOnlyInPremiumSlots " + shop);
+                    }
+            }
+            // A stock rolled at a lower tier keeps its three slots for the rest of the visit (TIER +1 mid-visit shows five from the next visit).
+            var kept = new ShopState { VisitId = 2 }; Offers(kept, ShopCatalog.Farm, r14); kept.DebugTier = 3;
+            Check(Offers(kept, ShopCatalog.Farm, r14).Length == 3 && Offers(kept, ShopCatalog.Mine, r14).Length == 5, "StockKeepsItsCountWithinVisit");
+            // Saves: a five-offer stock round-trips; two or seven offers are malformed.
+            var s5 = new ShopState { VisitId = 4, DebugTier = 3 };
+            foreach (string sh in Shops.Concat(new[] { ShopCatalog.Bakery })) Offers(s5, sh, r14);
+            ShopService.TryBuy(s5, ShopCatalog.Farm, 4, 0, 10, new Wallet(100000000), new SpatialInventory(), () => "s5", out _);
+            ShopState back5 = SessionSaveStore.RestoreShops(Roundtrip(new SessionSnapshot { shops = SessionSaveStore.SaveShops(s5) }));
+            Func<ShopState, string> dump5 = st => string.Join(";", st.Stock.OrderBy(k => k.Key).Select(k => k.Key + ":" + string.Join(",", k.Value.Offers.Select(o => (o.ItemId ?? "-") + "/" + o.UnitsLeft + "/" + o.Revision + "/" + (o.RecipeId ?? "")))));
+            Check(dump5(s5) == dump5(back5) && back5.Stock[ShopCatalog.Farm].Offers.Length == 5 && back5.Stock[ShopCatalog.Farm].Offers[4].UnitsLeft == 990, "FiveOfferStockRoundTrips");
+            Check(Rejects(x => x.stock[0].offers.RemoveAt(2)), "InvalidRejected (two offers)");
+            Check(Rejects(x => { while (x.stock[0].offers.Count < 7) x.stock[0].offers.Add(x.stock[0].offers[0]); }), "InvalidRejected (seven offers)");
         }
 
         private static string Snap(SpatialInventory bag) => string.Join(";", bag.Entries.Select(e => e.Id + "/" + e.Definition.Id + "/" + e.Quantity + "/" + e.Quality + "/" + e.Owner + "/" + e.X + "/" + e.Y));
@@ -282,6 +325,22 @@ namespace TheTrailWalker.Editor
                             Check(v.z > 0f && v.x > 0.05f && v.x < 0.95f && v.y > 0.12f && v.y < 0.48f, "CounterAnchorsInBand " + name + " OfferAnchor" + i + " at " + screen.x + "x" + screen.y + ": " + v.ToString("0.000"));
                         }
                         TagChecks(name, screen, cam, counter.transform);
+                        foreach (int n in new[] { 5, 6 })
+                        {
+                            Transform a1 = counter.transform.Find("OfferAnchor1"), a3 = counter.transform.Find("OfferAnchor3");
+                            Vector3[] local = CollectionPrototype.OfferSpots(counter.transform.InverseTransformPoint(a1.position), counter.transform.InverseTransformPoint(a3.position), n);
+                            var spots = new Transform[n];
+                            for (int i = 0; i < n; i++) { spots[i] = new GameObject("OfferSpot" + (i + 1)).transform; spots[i].SetParent(counter.transform, false); spots[i].localPosition = local[i]; spots[i].localRotation = a1.localRotation; }
+                            Pose spread = CollectionPrototype.ShopCounterPose(cam, counter.transform, spots, n);
+                            cam.transform.SetPositionAndRotation(spread.position, spread.rotation);
+                            for (int i = 0; i < n; i++)
+                            {
+                                Vector3 v = cam.WorldToViewportPoint(spots[i].position);
+                                Check(v.z > 0f && v.x > 0.05f && v.x < 0.95f && v.y > 0.12f && v.y < 0.48f, "SpreadSpotsInBand " + name + " " + n + " offers, spot " + (i + 1) + " at " + screen.x + "x" + screen.y + ": " + v.ToString("0.000"));
+                            }
+                            TagChecks(name, screen, cam, counter.transform, spots);
+                            foreach (Transform t in spots) UnityEngine.Object.DestroyImmediate(t.gameObject);
+                        }
                     }
                     finally { UnityEngine.Object.DestroyImmediate(cam.gameObject); UnityEngine.Object.DestroyImmediate(counter); }
                 }
@@ -361,18 +420,24 @@ namespace TheTrailWalker.Editor
 
         // Task 7 R1: price tags. Text, then layout at the counter framing (tags clear each other, sit in the area, rest on the model tops), then taps at tag centres.
         internal static Rect[] LastTagRects; internal static Vector2[] LastTagTops;
-        private static void TagChecks(string name, Vector2 screen, Camera cam, Transform counter)
+        // count 3: the art's OfferAnchor1-3 with tier 1 stock. More: the spread spots OpenShop builds (OfferSpots) with tier 3-4
+        // stock (six offers have no tier 5 content yet, so the sixth slot repeats a tier 4 good: layout only).
+        private static void TagChecks(string name, Vector2 screen, Camera cam, Transform counter, Transform[] spots = null)
         {
-            var offers = Offers(new ShopState { VisitId = 1 }, CollectionPrototype.ShopIdForKey(name.ToLowerInvariant()), new[] { 1, 2, 3, 4 });
-            var tops = new Vector2[3]; var texts = new string[3]; var models = new List<GameObject>(); var anchors = new Vector2?[3]; var modelRects = new Rect[3];
+            int count = spots != null ? spots.Length : 3;
+            var stock = Offers(new ShopState { VisitId = 1, DebugTier = count <= 3 ? 0 : count == 5 ? 3 : 4 }, CollectionPrototype.ShopIdForKey(name.ToLowerInvariant()), new[] { 1, 2, 3, 4 });
+            var offers = Enumerable.Range(0, count).Select(i => stock[i % stock.Length]).ToArray();
+            float maxWidth = CollectionPrototype.OfferMaxWidth(count);
+            var tops = new Vector2[count]; var texts = new string[count]; var models = new List<GameObject>(); var anchors = new Vector2?[count]; var modelRects = new Rect[count];
             try
             {
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < count; i++)
                 {
-                    Transform anchor = counter.Find("OfferAnchor" + (i + 1));
+                    Check(offers[i].ItemId != null, "SpreadStockFilled " + name + " slot " + i + " of " + count);
+                    Transform anchor = spots != null ? spots[i] : counter.Find("OfferAnchor" + (i + 1));
                     foreach (Transform baked in anchor) baked.gameObject.SetActive(false);
                     ItemDefinition def = Items.Find(offers[i].ItemId);
-                    GameObject model = CollectionPrototype.PlaceOfferModel(anchor, def); models.Add(model);
+                    GameObject model = CollectionPrototype.PlaceOfferModel(anchor, def, maxWidth); models.Add(model);
                     var b = new Bounds(anchor.position, Vector3.zero);
                     foreach (Renderer r in model.GetComponentsInChildren<Renderer>()) b.Encapsulate(r.bounds);
                     Vector3 top = cam.WorldToScreenPoint(new Vector3(anchor.position.x, b.max.y, anchor.position.z));
@@ -380,22 +445,23 @@ namespace TheTrailWalker.Editor
                     texts[i] = CollectionPrototype.OfferTagText(offers[i], def.Name);
                 }
                 Rect area = TagArea(screen, out float h, out float gap);
-                var chars = texts.Select(CollectionPrototype.LongestLine).ToArray(); var tags = new Rect[3];
+                var chars = texts.Select(CollectionPrototype.LongestLine).ToArray(); var tags = new Rect[count];
                 CollectionPrototype.ShopTagLayout(tops, chars, area, h, gap, tags, modelRects);
                 LastTagRects = tags; LastTagTops = tops;
                 CollectionPrototype.ShopTagLayout(tops, chars, area, h, gap, tags, modelRects);   // warm up
                 long before = GC.GetAllocatedBytesForCurrentThread();
                 for (int n = 0; n < 100; n++) CollectionPrototype.ShopTagLayout(tops, chars, area, h, gap, tags, modelRects);
                 Check(GC.GetAllocatedBytesForCurrentThread() - before == 0, "ShopTagLayoutAllocatesNothing " + name + " at " + screen.x + "x" + screen.y);
-                string at = " " + name + " at " + screen.x + "x" + screen.y + ": " + string.Join(" ", tags.Select(t => t.ToString("0")));
+                string at = " " + name + " (" + count + " offers) at " + screen.x + "x" + screen.y + ": " + string.Join(" ", tags.Select(t => t.ToString("0")));
                 Func<Rect, bool> inside = t => t.xMin >= area.xMin - 0.01f && t.xMax <= area.xMax + 0.01f && t.yMin >= area.yMin && t.yMax <= area.yMax + 0.01f && t.width > 0f;
                 // Negative control: a tag pushed 1 px past each edge must fail the same predicate, so the inset check can fail.
                 Check(!inside(new Rect(area.xMax - tags[0].width + 1f, tags[0].y, tags[0].width, h)) && !inside(new Rect(area.xMin - 1f, tags[0].y, tags[0].width, h)) && !inside(new Rect(tags[0].x, area.yMax - h + 1f, tags[0].width, h)) && inside(tags[0]), "InsetCheckCanFail" + at);
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < count; i++)
                 {
                     Check(inside(tags[i]), "TagInsideArea " + i + at);
                     Check(tags[i].yMin >= tops[i].y, "TagAboveModelTop " + i + at + " top " + tops[i].y.ToString("0"));
-                    for (int j = i + 1; j < 3; j++) Check(!tags[i].Overlaps(tags[j]), "TagsDoNotOverlap " + i + "," + j + at);
+                    for (int j = i + 1; j < count; j++) Check(!tags[i].Overlaps(tags[j]), "TagsDoNotOverlap " + i + "," + j + at);
+                    if (spots != null && i + 1 < count) Check(Mathf.Max(modelRects[i].xMin, modelRects[i + 1].xMin) >= Mathf.Min(modelRects[i].xMax, modelRects[i + 1].xMax) - 0.5f, "SpreadModelsApart " + i + "," + (i + 1) + at);
                     Check(CollectionPrototype.ShopTapPick(tags[i].center, anchors, tags, screen.x * 0.1f) == i, "TapAtTagCentre " + i + at);
                 }
             }

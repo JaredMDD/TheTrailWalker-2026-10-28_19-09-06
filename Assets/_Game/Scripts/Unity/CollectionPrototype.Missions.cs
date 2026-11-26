@@ -49,8 +49,19 @@ namespace TheTrailWalker
 
         // ---------------------------------------------------------------- rules context
 
+        // Shop-only mission items (milk, eggs, chicken, shrimp, tea herbs) count once a settlement can be reached: a discovered
+        // region whose final camp starts a settlement approach (region 4 today). It was never set, so those missions stayed
+        // locked as "sold at a settlement (later milestone)" (user report, November 25, 2026).
+        public static bool SettlementReachableFrom(TravelCatalog catalog, IEnumerable<string> discoveredRegionIds)
+        {
+            if (catalog == null || discoveredRegionIds == null) return false;
+            foreach (string id in discoveredRegionIds) { RegionDefinition region = catalog.Region(id); if (region != null && catalog.SettlementApproachFrom(region.FinalCamp.Id) != null) return true; }
+            return false;
+        }
+
         private MissionContext MissionContextNow() => new MissionContext
         {
+            SettlementReachable = travel != null && scene != null && SettlementReachableFrom(scene.Catalog, travel.DiscoveredRegions),
             RegionDiscovered = number =>
             {
                 if (travel == null || scene == null) return number == 1;

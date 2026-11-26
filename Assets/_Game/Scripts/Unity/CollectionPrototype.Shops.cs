@@ -20,17 +20,45 @@ namespace TheTrailWalker
         private static readonly int[] ShopAmounts = { 1, 10, 100, 1000 };
         private Transform shopHolder;
         private string shopId;
-        private readonly Transform[] shopAnchors = new Transform[3];
-        private readonly GameObject[] shopModels = new GameObject[3];
+        // Slot arrays hold the most offers a stock can have; the per-frame scratch below is sized to the open counter's count
+        // (ShopTagLayout spaces the tags over every entry it is given).
+        private readonly Transform[] shopAnchors = new Transform[ShopService.MaxOffers];
+        private readonly GameObject[] shopModels = new GameObject[ShopService.MaxOffers];
+        private int offerSlots = 3; private float offerMaxWidth;   // the open counter's slot count; the model width cap on a spread counter (0 = none)
         private RectTransform shopHud, shopSheetPage;
         private GameObject shopSheet;
-        private readonly Text[] shopSoldOutLabels = new Text[3];   // the price tags (a live offer or Sold out)
-        private readonly Rect[] shopTagRects = new Rect[3];       // screen px, width 0 = hidden
+        private readonly Text[] shopSoldOutLabels = new Text[ShopService.MaxOffers];   // the price tags (a live offer or Sold out)
+        private Rect[] shopTagRects = new Rect[3];       // screen px, width 0 = hidden
         private readonly Vector3[] shopSafeCorners = new Vector3[4];
-        private readonly RectTransform[] shopTagPlates = new RectTransform[3];
-        private readonly Vector2[] shopTops = new Vector2[3]; private readonly bool[] shopShown = new bool[3];   // per-frame scratch
-        private readonly int[] shopTagChars = new int[3]; private readonly float[] shopModelTopY = new float[3];   // set once in RefreshShopSlot
-        private readonly Bounds[] shopModelBounds = new Bounds[3]; private readonly Rect[] shopModelRects = new Rect[3];   // bounds set in RefreshShopSlot; screen rects per frame
+        private readonly RectTransform[] shopTagPlates = new RectTransform[ShopService.MaxOffers];
+        private Vector2[] shopTops = new Vector2[3]; private bool[] shopShown = new bool[3];   // per-frame scratch
+        private int[] shopTagChars = new int[3]; private float[] shopModelTopY = new float[3];   // set once in RefreshShopSlot
+        private Bounds[] shopModelBounds = new Bounds[3]; private Rect[] shopModelRects = new Rect[3];   // bounds set in RefreshShopSlot; screen rects per frame
+
+        // A counter opens with its stock's slot count (shops 3/5/6 by tier, the balloon 3); tags past it stay hidden.
+        private void SetOfferSlotCount(int n)
+        {
+            offerSlots = n;
+            if (shopTops.Length != n)
+            {
+                shopTagRects = new Rect[n]; shopTops = new Vector2[n]; shopShown = new bool[n];
+                shopTagChars = new int[n]; shopModelTopY = new float[n]; shopModelBounds = new Bounds[n]; shopModelRects = new Rect[n];
+            }
+            for (int i = n; i < shopTagPlates.Length; i++) if (shopTagPlates[i] != null) shopTagPlates[i].gameObject.SetActive(false);
+        }
+
+        // More than three offers: N spots evenly along the counter top, centred between the art's first and last anchors at
+        // their height and depth (counter space). The half span keeps the row inside the narrowest counter (Tailor, 5.4 m).
+        public const float OfferRowHalfSpan = 1.9f;
+        public static Vector3[] OfferSpots(Vector3 first, Vector3 last, int n)
+        {
+            var spots = new Vector3[n];
+            float centre = (first.x + last.x) * 0.5f, y = (first.y + last.y) * 0.5f, z = (first.z + last.z) * 0.5f;
+            for (int i = 0; i < n; i++) spots[i] = new Vector3(n == 1 ? centre : centre - OfferRowHalfSpan + 2f * OfferRowHalfSpan * i / (n - 1), y, z);
+            return spots;
+        }
+        // The widest a model may be on a spread counter: most of the gap between neighbouring spots (0 = no cap).
+        public static float OfferMaxWidth(int n) => n <= 3 ? 0f : 0.75f * 2f * OfferRowHalfSpan / (n - 1);
         private int shopSheetSlot = -1, shopSheetRevision, shopAmount;   // the open sheet's slot (-1 closed), the revision captured when it opened, the chosen units
 
         private bool ShopOpen => shopHolder != null;
@@ -83,19 +111,53 @@ namespace TheTrailWalker
         // Tag rects (screen px, y up) just above each model top, as wide as their text needs but never wider than the gap to the nearest other tag, inside the area.
         // With models (each slot's model on screen, width 0 = none), a tag also rises above a neighbouring model it would cover (R2 fix 1).
         // Allocation-free: longestLine[i] is the char count of tag i's longest line; the result goes into the caller's rects.
+        private static float Want(int chars, float areaWidth) => Mathf.Clamp(0.1f + 0.016f * chars, 0.34f, 0.8f) * areaWidth;   // = WarehouseLabelWidth for that many chars
         public static void ShopTagLayout(Vector2[] tops, int[] longestLine, Rect area, float height, float gap, Rect[] rects, Rect[] models = null)
         {
             float spacing = float.MaxValue;
             for (int i = 0; i < tops.Length; i++) for (int j = i + 1; j < tops.Length; j++) spacing = Mathf.Min(spacing, Mathf.Abs(tops[i].x - tops[j].x));
+            // Tags that would be squeezed below their wanted width alternate rows (user, November 25, 2026): the first up, the
+            // next down, the next up again. Same-row neighbours are then two slots apart, so each tag gets about twice the room.
+            bool stagger = false;
+            // Only spread counters (more than three offers) stagger: the three-offer counters keep their tested single row clear of the lamps.
+            for (int i = 0; i < tops.Length && tops.Length > 3; i++) if (Want(longestLine[i], area.width) > spacing - gap) stagger = true;
+            float room = Mathf.Max(0f, (stagger ? 2f * spacing : spacing) - gap);
+            float lower = float.MinValue;   // staggered: two shared rows, the lower one just clear of the tallest model or its top
+            if (stagger)
+            {
+                int perRow = (tops.Length + 1) / 2;   // the upper row holds the extra tag when the count is odd
+                room = Mathf.Min(room, Mathf.Max(0f, (area.width - (perRow - 1) * gap) / perRow));   // a full row always fits the screen
+                for (int i = 0; i < tops.Length; i++) lower = Mathf.Max(lower, Mathf.Max(tops[i].y, models != null && i < models.Length && models[i].width > 0f ? models[i].yMax : float.MinValue) + gap);
+                lower = Mathf.Min(lower, area.yMax - 2f * height - gap);
+            }
             for (int i = 0; i < tops.Length; i++)
             {
-                float width = Mathf.Min(Mathf.Clamp(0.1f + 0.016f * longestLine[i], 0.34f, 0.8f) * area.width, Mathf.Max(0f, spacing - gap));   // = WarehouseLabelWidth for that many chars
-                rects[i] = new Rect(WarehouseLabelLeft(tops[i].x, width, area.xMin, area.xMax), Mathf.Clamp(tops[i].y + gap, area.yMin, area.yMax - height), width, height);
-                if (models == null) continue;
+                float width = Mathf.Min(Want(longestLine[i], area.width), room);
+                float lift = stagger && i % 2 == 0 ? height + gap : 0f;   // slots 1, 3, 5 (index 0, 2, 4) take the upper row
+                float y = stagger ? lower + lift : tops[i].y + gap;
+                rects[i] = new Rect(WarehouseLabelLeft(tops[i].x, width, area.xMin, area.xMax), Mathf.Clamp(y, area.yMin, area.yMax - height), width, height);
+            }
+            // An edge tag held inside the screen can slide over its row neighbour: pack each row apart, left to right, then back
+            // from the right edge. The slots run along the counter, so index order is screen order (either direction).
+            if (stagger && tops.Length > 2)
+            {
+                bool rising = tops[tops.Length - 1].x >= tops[0].x;
+                for (int row = 0; row < 2; row++)
+                {
+                    int first = rising ? row : LastOfRow(tops.Length, row), step = rising ? 2 : -2;
+                    for (int i = first + step, prev = first; i >= 0 && i < tops.Length; prev = i, i += step)
+                        rects[i].x = Mathf.Max(rects[i].x, rects[prev].xMax + gap);
+                    int last = rising ? LastOfRow(tops.Length, row) : row;
+                    rects[last].x = Mathf.Min(rects[last].x, area.xMax - rects[last].width);
+                    for (int i = last - step, next = last; i >= 0 && i < tops.Length; next = i, i -= step)
+                        rects[i].x = Mathf.Max(area.xMin, Mathf.Min(rects[i].x, rects[next].x - gap - rects[i].width));
+                }
+            }
+            for (int i = 0; i < tops.Length && models != null && !stagger; i++)
                 for (int j = 0; j < models.Length; j++)
                     if (j != i && models[j].width > 0f && models[j].Overlaps(rects[i])) rects[i].y = Mathf.Min(models[j].yMax + gap, area.yMax - height);
-            }
         }
+        private static int LastOfRow(int count, int row) => (count - 1 - row) % 2 == 0 ? count - 1 : count - 2;
 
         public static int LongestLine(string text) { int best = 0, run = 0; foreach (char c in text) { if (c == '\n') run = 0; else best = Mathf.Max(best, ++run); } return best; }
 
@@ -132,14 +194,15 @@ namespace TheTrailWalker
 
         // The raw CustomerCameraAnchor view crops the outer offers on a portrait screen: turn toward the three offer anchors, then
         // the warehouse solver pitches and pulls back until all three sit in the band below the debug buttons (LumberCounterPose).
-        public static Pose ShopCounterPose(Camera cam, Transform counter)
+        // With spots (a spread counter), the first count spots are framed instead of OfferAnchor1-3.
+        public static Pose ShopCounterPose(Camera cam, Transform counter, Transform[] spots = null, int count = 0)
         {
             Transform eye = FindChild(counter, "CustomerCameraAnchor");
             if (eye == null) return new Pose(counter.position + new Vector3(0f, 1.55f, 3f), Quaternion.LookRotation(Vector3.back));
             var targets = new List<Bounds>();
-            for (int i = 1; i <= 3; i++)
+            for (int i = 1; i <= (spots != null ? count : 3); i++)
             {
-                Transform a = FindChild(counter, "OfferAnchor" + i);
+                Transform a = spots != null ? spots[i - 1] : FindChild(counter, "OfferAnchor" + i);
                 if (a != null) targets.Add(new Bounds(a.position, Vector3.one * 0.8f));   // ~a tap's reach around each
             }
             if (targets.Count == 0) return new Pose(eye.position, eye.rotation);
@@ -189,20 +252,33 @@ namespace TheTrailWalker
             var keeper = FindChild(counter, "Shopkeeper") == null ? Resources.Load<GameObject>("Characters/Shopkeepers/" + names[1]) : null;
             if (keeper != null) Instantiate(keeper, counter, false).name = "Shopkeeper";
             foreach (Collider c in counter.GetComponentsInChildren<Collider>(true)) Destroy(c);
+            int slots = ShopService.Offers(shops, id, ShopRegions(), crafting, MysteryBoxes.Reserved(balloon)).Length;   // shopId is set below: count the opening shop's stock
+            if (shopHud == null) CreateShopHud();
+            SetOfferSlotCount(slots); offerMaxWidth = OfferMaxWidth(slots);
+            System.Array.Clear(shopAnchors, 0, shopAnchors.Length);
             for (int i = 0; i < 3; i++)
             {
                 shopAnchors[i] = FindChild(counter, "OfferAnchor" + (i + 1));
                 if (shopAnchors[i] != null) foreach (Transform baked in shopAnchors[i]) baked.gameObject.SetActive(false);   // baked display props make way for the offers
             }
+            if (slots > 3 && shopAnchors[0] != null && shopAnchors[2] != null)
+            {
+                Vector3[] spots = OfferSpots(counter.InverseTransformPoint(shopAnchors[0].position), counter.InverseTransformPoint(shopAnchors[2].position), slots);
+                Quaternion facing = Quaternion.Inverse(counter.rotation) * shopAnchors[0].rotation;
+                for (int i = 0; i < slots; i++)
+                {
+                    var spot = new GameObject("OfferSpot" + (i + 1)).transform; spot.SetParent(counter, false); spot.localPosition = spots[i]; spot.localRotation = facing;
+                    shopAnchors[i] = spot;
+                }
+            }
             shopHolder = holder; shopId = id;
 
-            Pose pose = ShopCounterPose(cameraView, counter);
+            Pose pose = ShopCounterPose(cameraView, counter, shopAnchors, slots);
             StreetView.HoldAt(pose.position, pose.rotation);
 
-            if (shopHud == null) CreateShopHud();
             shopHud.gameObject.SetActive(true); CloseShopSheet(); SetCounterChrome(true);
             ShowScreenReturn(shopHud.gameObject, CloseShop);
-            for (int i = 0; i < 3; i++) RefreshShopSlot(i);
+            for (int i = 0; i < slots; i++) RefreshShopSlot(i);
             RefreshWalletLabels();
         }
 
@@ -225,8 +301,8 @@ namespace TheTrailWalker
             SetCounterChrome(false);
             CloseShopSheet();
             if (Application.isPlaying) Destroy(shopHolder.gameObject); else DestroyImmediate(shopHolder.gameObject);
-            shopHolder = null; shopId = null; lumberPointer = null;
-            System.Array.Clear(shopAnchors, 0, 3); System.Array.Clear(shopModels, 0, 3);
+            shopHolder = null; shopId = null; lumberPointer = null; offerMaxWidth = 0f;
+            System.Array.Clear(shopAnchors, 0, shopAnchors.Length); System.Array.Clear(shopModels, 0, shopModels.Length);
             if (shopHud != null) shopHud.gameObject.SetActive(false);
             if (shopHud != null && screenReturnOwner == shopHud.gameObject) HideScreenReturn();
         }
@@ -236,7 +312,7 @@ namespace TheTrailWalker
         {
             ShopOffer o = ShopOffers()[slot];
             ItemDefinition def = o.Empty ? null : TheTrailWalker.Domain.Crafting.Items.Find(o.ItemId);
-            SetOfferSlot(slot, OfferTagText(o, def != null ? def.Name : o.ItemId), o.Empty || o.UnitsLeft <= 0, def == null ? null : (System.Func<Transform, GameObject>)(a => PlaceOfferModel(a, def)));
+            SetOfferSlot(slot, OfferTagText(o, def != null ? def.Name : o.ItemId), o.Empty || o.UnitsLeft <= 0, def == null ? null : (System.Func<Transform, GameObject>)(a => PlaceOfferModel(a, def, offerMaxWidth)));
         }
 
         // Shared by the shop and balloon counters: the slot's tag (bold name line) and its model (placed on the anchor unless sold out).
@@ -257,8 +333,9 @@ namespace TheTrailWalker
             shopModelTopY[slot] = bounds.max.y; shopModelBounds[slot] = bounds;   // the model never moves while the counter is open
         }
 
-        // The trail's model at the trail's size (largest front side = the footprint), standing on the anchor.
-        public static GameObject PlaceOfferModel(Transform anchor, ItemDefinition def)
+        // The trail's model at the trail's size (largest front side = the footprint), standing on the anchor; maxWidth > 0 shrinks
+        // it to fit a spread counter (more than three offers).
+        public static GameObject PlaceOfferModel(Transform anchor, ItemDefinition def, float maxWidth = 0f)
         {
             var probe = new GameObject("Offer " + def.Id, typeof(MeshRenderer), typeof(MeshFilter));   // AttachPath hides this renderer
             probe.transform.SetParent(anchor, false);
@@ -266,6 +343,7 @@ namespace TheTrailWalker
             if (visual == null) return probe;   // no art yet: nothing to show (the sheet still sells it)
             Bounds b = LocalMeshBounds(probe.transform, visual);
             float scale = ResourceVisualTuning.World(def) * Mathf.Max(def.Width, def.Height) / 1000f / Mathf.Max(0.01f, Mathf.Max(b.size.x, b.size.y));
+            if (maxWidth > 0f) scale = Mathf.Min(scale, maxWidth / Mathf.Max(0.01f, Mathf.Max(b.size.x, b.size.z)));
             probe.transform.localScale = Vector3.one * scale;
             probe.transform.localPosition = new Vector3(-b.center.x, -b.min.y, -b.center.z) * scale;
             return probe;
@@ -280,7 +358,7 @@ namespace TheTrailWalker
             shopHud = Rect("Shop HUD", safe, 0, 0, 1, 1);
             shopHud.SetAsFirstSibling();
             CreateWalletLabels(shopHud);
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < ShopService.MaxOffers; i++)
             {
                 RectTransform plate = Rect("Offer tag " + i, shopHud, 0, 0, 0, 0); plate.pivot = Vector2.zero; plate.sizeDelta = new Vector2(150f, 76f);
                 Image back = plate.gameObject.AddComponent<Image>(); back.color = new Color(0.12f, 0.105f, 0.085f, 0.8f); back.raycastTarget = false;
@@ -389,7 +467,7 @@ namespace TheTrailWalker
             UpdateWalletLabels();
             safe.GetWorldCorners(shopSafeCorners);   // overlay canvas: screen pixels
             float scale = CanvasScale;
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < offerSlots; i++)
             {
                 shopShown[i] = false;
                 if (shopAnchors[i] == null) continue;
@@ -397,9 +475,9 @@ namespace TheTrailWalker
                 Vector3 p = cameraView.WorldToScreenPoint(float.IsNaN(shopModelTopY[i]) ? new Vector3(a.x, a.y + 0.05f, a.z) : new Vector3(a.x, shopModelTopY[i], a.z));
                 shopShown[i] = p.z > 0f; shopTops[i] = p;
             }
-            for (int i = 0; i < 3; i++) shopModelRects[i] = ScreenBoundsRect(cameraView, shopModelBounds[i]);
+            for (int i = 0; i < offerSlots; i++) shopModelRects[i] = ScreenBoundsRect(cameraView, shopModelBounds[i]);
             ShopTagLayout(shopTops, shopTagChars, UnityEngine.Rect.MinMaxRect(shopSafeCorners[0].x, shopSafeCorners[0].y, shopSafeCorners[2].x, shopSafeCorners[2].y), 76f * scale, Screen.height * 0.01f, shopTagRects, shopModelRects);
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < offerSlots; i++)
             {
                 RectTransform plate = shopTagPlates[i];
                 plate.localScale = shopShown[i] ? Vector3.one : Vector3.zero;
@@ -442,8 +520,8 @@ namespace TheTrailWalker
         // Shared by the shop and balloon counters: the offer slot under a tap (its anchor or tag), or -1.
         private int OfferTapPick(Vector2 screen)
         {
-            var anchors = new Vector2?[3];
-            for (int i = 0; i < 3; i++) if (LumberAnchorDistance(shopAnchors[i], screen) < float.MaxValue) anchors[i] = cameraView.WorldToScreenPoint(shopAnchors[i].position);
+            var anchors = new Vector2?[offerSlots];
+            for (int i = 0; i < offerSlots; i++) if (LumberAnchorDistance(shopAnchors[i], screen) < float.MaxValue) anchors[i] = cameraView.WorldToScreenPoint(shopAnchors[i].position);
             return ShopTapPick(screen, anchors, shopTagRects, LumberReach);
         }
 

@@ -561,12 +561,12 @@ namespace TheTrailWalker.Persistence
             state.VisitId = saved.visitId; state.DebugTier = saved.debugTier;
             foreach (SavedShopStock box in saved.stock)
             {
-                if (box == null || box.offers == null || box.visit < 0 || box.visit > saved.visitId || box.offers.Count != 3 || state.Stock.ContainsKey(box.shopId ?? "")) throw new InvalidDataException("Invalid shops: stock row");
+                if (box == null || box.offers == null || box.visit < 0 || box.visit > saved.visitId || box.offers.Count < TheTrailWalker.Domain.Settlement.ShopService.MinOffers || box.offers.Count > TheTrailWalker.Domain.Settlement.ShopService.MaxOffers || state.Stock.ContainsKey(box.shopId ?? "")) throw new InvalidDataException("Invalid shops: stock row");
                 var rows = new List<TheTrailWalker.Domain.Settlement.ShopEntry>();
                 foreach (var e in TheTrailWalker.Domain.Settlement.ShopCatalog.All) if (e.ShopId == box.shopId) rows.Add(e);
                 if (rows.Count == 0) throw new InvalidDataException("Invalid shops: unknown shop " + box.shopId);
-                var offers = new TheTrailWalker.Domain.Settlement.ShopOffer[3];
-                for (int i = 0; i < 3; i++)
+                var offers = new TheTrailWalker.Domain.Settlement.ShopOffer[box.offers.Count];   // 3, 5 or 6 by the tier it was rolled at
+                for (int i = 0; i < offers.Length; i++)
                 {
                     SavedShopOffer row = box.offers[i];
                     if (row == null || row.revision < 0 || row.unitsLeft < 0 || row.unitsLeft > MaxUnits) throw new InvalidDataException("Invalid shops: offer " + box.shopId + "-" + i);

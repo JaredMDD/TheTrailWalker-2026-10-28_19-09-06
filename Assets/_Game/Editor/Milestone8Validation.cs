@@ -163,6 +163,7 @@ namespace TheTrailWalker.Editor
         {
             passed.Clear();
             StatisticsChecks();
+            SettlementReachableChecks();
             // ---- Data: twelve specified starters plus proposed tier-one extensions.
             var all = MissionBook.All;
             Check(all.Select(m => m.Id).Distinct().Count() == all.Count && all.Select(m => m.Code).Distinct().Count() == all.Count, "Mission IDs and codes are unique");
@@ -505,6 +506,17 @@ namespace TheTrailWalker.Editor
         }
 
         private static MissionContext WithSettlements(MissionContext context) { context.SettlementReachable = true; return context; }
+
+        // The game's context sets SettlementReachable from travel (it was never set, so shop-only missions stayed locked).
+        internal static void SettlementReachableChecks()
+        {
+            TravelCatalog catalog = TravelCatalog.Prototype();
+            string Id(int n) => catalog.Regions.First(r => r.Number == n).Id;
+            Check(!CollectionPrototype.SettlementReachableFrom(catalog, new[] { Id(1), Id(2), Id(3) }) && CollectionPrototype.SettlementReachableFrom(catalog, new[] { Id(1), Id(2), Id(3), Id(4) })
+                && !CollectionPrototype.SettlementReachableFrom(catalog, new string[0]) && !CollectionPrototype.SettlementReachableFrom(null, new[] { Id(4) }), "SettlementReachableFromRegion4");
+            var context = Context(4, id => true, f => true);
+            Check(!ItemSources.Obtainable("food.milk.cow", context) && ItemSources.Obtainable("food.milk.cow", WithSettlements(context)) && ItemSources.Obtainable("ingredient.tea_herbs", WithSettlements(context)), "ShopOnlyItemsNeedTheSettlement");
+        }
         // A bag holding exactly what a mission asks for: a full stack, or ten finished instances.
         private static SpatialInventory Supply(MissionDefinition mission)
         {

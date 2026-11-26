@@ -207,6 +207,9 @@ namespace TheTrailWalker
             Transform room = Instantiate(prefab, holder, false).transform;   // the merchant is baked in as Shopkeeper
             foreach (Collider c in room.GetComponentsInChildren<Collider>(true)) { if (Application.isPlaying) Destroy(c); else DestroyImmediate(c); }
             HangLanternLights(holder);
+            if (shopHud == null) CreateShopHud();
+            SetOfferSlotCount(3); offerMaxWidth = 0f;   // the balloon keeps three offers at every tier
+            System.Array.Clear(shopAnchors, 0, shopAnchors.Length);
             for (int i = 0; i < 3; i++) shopAnchors[i] = FindChild(room, "OfferAnchor" + (i + 1));
             balloonHolder = holder; balloonRegion = BalloonHosts.Region(travel.CurrentCampId);
             BalloonShop.Open(balloon, travel.CurrentCampId, BalloonRegions(), ShopService.ReachedTier(shops, ShopRegions()), new System.Random());   // keeps an open session
@@ -244,7 +247,7 @@ namespace TheTrailWalker
             CloseShopSheet();
             if (Application.isPlaying) Destroy(balloonHolder.gameObject); else DestroyImmediate(balloonHolder.gameObject);
             balloonHolder = null; lumberPointer = null;
-            System.Array.Clear(shopAnchors, 0, 3); System.Array.Clear(shopModels, 0, 3);
+            System.Array.Clear(shopAnchors, 0, shopAnchors.Length); System.Array.Clear(shopModels, 0, shopModels.Length);
             BalloonShop.Close(balloon);
             if (CameraRig != null) CameraRig.enabled = true;
             if (router != null) router.SpeedAreaEnabled = true;   // the balloon only opens at camps

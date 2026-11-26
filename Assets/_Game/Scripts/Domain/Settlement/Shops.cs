@@ -8,7 +8,7 @@ using TheTrailWalker.Domain.Items;
 
 namespace TheTrailWalker.Domain.Settlement
 {
-    // One of a shop's three slots for the current visit. An empty slot (short pool) has no item and no units.
+    // One of a shop's slots for the current visit (3, 5 or 6 by tier: ShopService.OfferCount). An empty slot (short pool) has no item and no units.
     public sealed class ShopOffer
     {
         public string ItemId;
@@ -32,6 +32,12 @@ namespace TheTrailWalker.Domain.Settlement
     public static class ShopService
     {
         public const int StartUnits = 1000, Q = 5, Probe = int.MinValue + 15;
+        public const int MinOffers = 3, MaxOffers = 6;
+
+        // Offers per stock by the reached tier (user, November 25, 2026): tiers 1-2 three, 3-4 five, 5-8 six. The balloon keeps three.
+        public static int OfferCount(int tier) => tier <= 2 ? 3 : tier <= 4 ? 5 : 6;
+        // Themed shops (tailor, fishery, bakery) end with their special role: one slot at three offers, two from five.
+        public static int SpecialSlots(int offers) => offers <= 3 ? 1 : 2;
 
         public static int ReachedTier(ShopState s, ICollection<int> discoveredRegions)
         {
@@ -71,39 +77,42 @@ namespace TheTrailWalker.Domain.Settlement
                 if (pool.Count == 0) return null;
                 int i = random.Next(pool.Count); ShopEntry e = pool[i]; pool.RemoveAt(i); return e;
             }
-            var picks = new ShopEntry[3];
+            int count = OfferCount(ReachedTier(s, discoveredRegions)), special = SpecialSlots(count), regular = count - special;
+            var picks = new ShopEntry[count];
+            // At three offers the draws run in the original order, so tier 1-2 stock rolls exactly as before.
             if (shopId == ShopCatalog.Tailor)
             {
                 List<ShopEntry> raw = Pool(ShopSlotRole.RawFibre), processed = Pool(ShopSlotRole.Processed), fine = Pool(ShopSlotRole.ProcessedFine);
-                picks[0] = Take(raw); picks[1] = Take(raw);
-                bool wantFine = random.Next(100) < 20;
-                picks[2] = Take(wantFine && fine.Count > 0 ? fine : processed.Count > 0 ? processed : fine);
+                for (int i = 0; i < regular; i++) picks[i] = Take(raw);
+                for (int i = regular; i < count; i++)
+                {
+                    bool wantFine = random.Next(100) < 20;
+                    picks[i] = Take(wantFine && fine.Count > 0 ? fine : processed.Count > 0 ? processed : fine);
+                }
             }
-            else if (shopId == ShopCatalog.Fishery)
+            else if (shopId == ShopCatalog.Fishery || shopId == ShopCatalog.Bakery)
             {
-                List<ShopEntry> fish = Pool(ShopSlotRole.Fish);
-                picks[0] = Take(fish); picks[1] = Take(fish); picks[2] = Take(Pool(ShopSlotRole.Exclusive));
-            }
-            else if (shopId == ShopCatalog.Bakery)
-            {
-                List<ShopEntry> common = Pool(ShopSlotRole.Common);
-                picks[0] = Take(common); picks[1] = Take(common); picks[2] = Take(Pool(ShopSlotRole.Premium));
+                bool fishery = shopId == ShopCatalog.Fishery;
+                List<ShopEntry> main = Pool(fishery ? ShopSlotRole.Fish : ShopSlotRole.Common), extra = Pool(fishery ? ShopSlotRole.Exclusive : ShopSlotRole.Premium);
+                for (int i = 0; i < regular; i++) picks[i] = Take(main);
+                for (int i = regular; i < count; i++) picks[i] = Take(extra);
             }
             else
             {
                 List<ShopEntry> any = Pool(ShopSlotRole.Any);
-                for (int i = 0; i < 3; i++) picks[i] = Take(any);
+                for (int i = 0; i < count; i++) picks[i] = Take(any);
             }
             ShopOffer[] offers = picks.Select(e => e == null ? new ShopOffer() : e.GoldPerServing.HasValue
                 ? new ShopOffer { ItemId = e.ItemId, UnitPriceMinor = e.GoldPerServing.Value, UnitsLeft = StartUnits, Currency = Currency.Gold }
                 : new ShopOffer { ItemId = e.ItemId, UnitPriceMinor = ShopCatalog.UnitPriceMinor(e), UnitsLeft = StartUnits }).ToArray();
-            if (shopId == ShopCatalog.Bakery && picks[2] != null)
+            for (int i = regular; shopId == ShopCatalog.Bakery && i < count; i++)
             {
-                // The draw happens even when the gate fails, so seeds stay stable. One premium slot per stock, so a recipe cannot repeat inside it.
+                if (picks[i] == null) continue;
+                // The draw happens even when the gate fails, so seeds stay stable. Premium slots draw without replacement, so a recipe cannot repeat inside a stock.
                 bool hit = random.Next(100) < 5;
-                string recipeId = ShopCatalog.RecipeFor(picks[2].ItemId);
+                string recipeId = ShopCatalog.RecipeFor(picks[i].ItemId);
                 if (hit && BakeryGate.Eligible(recipeId, EffectiveRegions(s, discoveredRegions), ReachedTier(s, discoveredRegions), crafting, out _, boxReserved))
-                { offers[2].RecipeId = recipeId; offers[2].UnitsLeft = 1; offers[2].UnitPriceMinor = picks[2].GoldPerServing.Value * 10; }
+                { offers[i].RecipeId = recipeId; offers[i].UnitsLeft = 1; offers[i].UnitPriceMinor = picks[i].GoldPerServing.Value * 10; }
             }
             return offers;
         }
